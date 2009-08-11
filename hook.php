@@ -100,7 +100,6 @@ function plugin_addressing_uninstall(){
 
 	// TODO check is this is needed...
 	plugin_init_addressing();
-	cleanCache("GLPI_HEADER_".$_SESSION["glpiID"]);
 
 	return true;
 }
