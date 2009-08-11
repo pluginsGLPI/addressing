@@ -36,6 +36,75 @@
 foreach (glob(GLPI_ROOT . '/plugins/addressing/inc/*.php') as $file)
 	include_once ($file);
 
+
+function plugin_addressing_install(){
+	global $DB, $LANG, $CFG_GLPI;
+
+	include_once (GLPI_ROOT."/inc/profile.class.php");
+
+	if (!TableExists("glpi_plugin_addressing_display") &&!TableExists("glpi_plugin_addressing") && !TableExists("glpi_plugin_addressing_configs")) {
+
+		plugin_addressing_Installv180();
+
+	}elseif(!TableExists("glpi_plugin_addressing_profiles") && !FieldExists("glpi_plugin_addressing_display","ipconf1")) {//1.4
+
+    plugin_addressing_updatev14();
+    plugin_addressing_updatev15();
+		plugin_addressing_updatev16();
+		plugin_addressing_updatev170();
+		plugin_addressing_updatev180();
+
+	}elseif(!TableExists("glpi_plugin_addressing") && FieldExists("glpi_plugin_addressing_display","ipconf1")) {
+
+    plugin_addressing_updatev15();
+		plugin_addressing_updatev16();
+		plugin_addressing_updatev170();
+		plugin_addressing_updatev180();
+
+	}elseif (TableExists("glpi_plugin_addressing") && !FieldExists("glpi_plugin_addressing","ipdeb")) {
+
+		plugin_addressing_updatev16();
+		plugin_addressing_updatev170();
+		plugin_addressing_updatev180();
+
+	}elseif(TableExists("glpi_plugin_addressing_profiles") && FieldExists("glpi_plugin_addressing_profiles","interface")) {
+
+		plugin_addressing_updatev170();
+		plugin_addressing_updatev180();
+
+	}elseif(!TableExists("glpi_plugin_addressing_configs")) {
+
+		plugin_addressing_updatev180();
+
+	}
+
+	plugin_addressing_createFirstAccess($_SESSION['glpiactiveprofile']['id']);
+	return true;
+}
+
+function plugin_addressing_uninstall(){
+	global $DB;
+
+	$tables = array("glpi_plugin_addressing",
+					"glpi_plugin_addressing_configs",
+					"glpi_plugin_addressing_profiles");
+
+	foreach($tables as $table)
+		$DB->query("DROP TABLE `$table`;");
+
+  $tables_glpi = array("glpi_displayprefs",
+					"glpi_bookmarks");
+
+	foreach($tables_glpi as $table_glpi)
+		$DB->query("DELETE FROM `$table_glpi` WHERE `itemtype` = '".PLUGIN_ADDRESSING_TYPE."';");
+
+	// TODO check is this is needed...
+	plugin_init_addressing();
+	cleanCache("GLPI_HEADER_".$_SESSION["glpiID"]);
+
+	return true;
+}
+
 ////// SEARCH FUNCTIONS ///////(){
 
 // Define search option for types of the plugins
@@ -298,59 +367,6 @@ function plugin_headings_addressing($type,$ID,$withtemplate=0){
 			$prof->showForm($CFG_GLPI["root_doc"]."/plugins/addressing/front/plugin_addressing.profile.php",$ID);
 		break;
 	}
-}
-
-function plugin_addressing_install(){
-	global $DB, $LANG, $CFG_GLPI;
-
-	include_once (GLPI_ROOT."/inc/profile.class.php");
-
-	if (!TableExists("glpi_plugin_addressing") && !TableExists("glpi_plugin_addressing_configs")) {
-
-		plugin_addressing_Installv180();
-
-	}elseif (TableExists("glpi_plugin_addressing") && !FieldExists("glpi_plugin_addressing","ipdeb")) {
-
-		plugin_addressing_updatev16();
-		plugin_addressing_updatev170();
-		plugin_addressing_updatev180();
-
-	}elseif(TableExists("glpi_plugin_addressing_profiles") && FieldExists("glpi_plugin_addressing_profiles","interface")) {
-
-		plugin_addressing_updatev170();
-		plugin_addressing_updatev180();
-
-	}elseif(!TableExists("glpi_plugin_addressing_configs")) {
-
-		plugin_addressing_updatev180();
-
-	}
-
-	plugin_addressing_createFirstAccess($_SESSION['glpiactiveprofile']['id']);
-	return true;
-}
-
-function plugin_addressing_uninstall(){
-	global $DB;
-
-	$tables = array("glpi_plugin_addressing",
-					"glpi_plugin_addressing_configs",
-					"glpi_plugin_addressing_profiles");
-
-	foreach($tables as $table)
-		$DB->query("DROP TABLE `$table`;");
-
-  $tables_glpi = array("glpi_displayprefs",
-					"glpi_bookmarks");
-
-	foreach($tables_glpi as $table_glpi)
-		$DB->query("DELETE FROM `$table_glpi` WHERE `itemtype` = '".PLUGIN_ADDRESSING_TYPE."';");
-
-	// TODO check is this is needed...
-	plugin_init_addressing();
-	cleanCache("GLPI_HEADER_".$_SESSION["glpiID"]);
-
-	return true;
 }
 
 ?>
