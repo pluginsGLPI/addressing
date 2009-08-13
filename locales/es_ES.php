@@ -33,7 +33,6 @@ $title="Direccionamiento IP";
 $LANG['plugin_addressing']['title'][1] = "".$title."";
 
 $LANG['plugin_addressing'][1] = "Ningún informe encontrado";
-$LANG['plugin_addressing'][2] = "Informe IP";
 $LANG['plugin_addressing'][3] = "Enlace";
 $LANG['plugin_addressing'][4] = "Generar";
 

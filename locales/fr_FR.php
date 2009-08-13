@@ -33,7 +33,6 @@ $title="Adressage IP";
 $LANG['plugin_addressing']['title'][1] = "".$title."";
 
 $LANG['plugin_addressing'][1] = "Pas de rapport trouvé";
-$LANG['plugin_addressing'][2] = "Rapport IP";
 $LANG['plugin_addressing'][3] = "Lien";
 $LANG['plugin_addressing'][4] = "Génération";
 
