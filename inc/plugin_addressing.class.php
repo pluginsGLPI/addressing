@@ -120,12 +120,8 @@ class PluginAddressing extends CommonDBTM {
 		if ($con_spotted){
 
 			$this->showTabs($ID, $withtemplate,$_SESSION['glpi_tab']);
-
-			echo "<form method='post' name=form action='$target' onSubmit='return plugaddr_Check(\"".$LANG['plugin_addressing']['reports'][37]."\")'>";
-			echo "<input type='hidden' name='entities_id' value='".$this->fields["entities_id"]."'>";
-			echo "<div class='center' id='tabsbody'>";
-			echo "<table class='tab_cadre_fixe'>";
-			$this->showFormHeader($target,$ID,'',2);
+			$onsubmit="onSubmit='return plugaddr_Check(\"".$LANG['plugin_addressing']['reports'][37]."\")'";
+			$this->showFormHeader($target,$ID,$withtemplate,2,$onsubmit);
 
 			echo "<tr><td class='tab_bg_1' valign='top'>";
 
@@ -231,34 +227,7 @@ class PluginAddressing extends CommonDBTM {
 			echo "</td>";
 			echo "</tr>";
 
-			if (plugin_addressing_haveRight("addressing","w")){
-				if ($ID=="") {
-
-					echo "<tr>";
-					echo "<td class='tab_bg_2' valign='top' colspan='3'>";
-					echo "<div align='center'><input type='submit' name='add' value=\"".$LANG['buttons'][8]."\" class='submit'></div>";
-					echo "</td>";
-					echo "</tr>";
-
-				} else {
-
-					echo "<tr>";
-					echo "<td class='tab_bg_2'  colspan='3' valign='top'><div align='center'>";
-
-					echo "<input type='hidden' name='ID' value=\"$ID\">\n";
-					echo "<input type='submit' name='update' value=\"".$LANG['buttons'][7]."\" class='submit' >";
-					if ($this->fields["is_deleted"]=='0')
-						echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' name='delete' value=\"".$LANG['buttons'][6]."\" class='submit'></div>";
-					else {
-						echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' name='restore' value=\"".$LANG['buttons'][21]."\" class='submit'>";
-
-						echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' name='purge' value=\"".$LANG['buttons'][22]."\" class='submit'></div>";
-					}
-					echo "</td>";
-					echo "</tr>";
-				}
-			}
-			echo "</table></div></form>";
+			$this->showFormButtons($ID,$withtemplate,2);
 			echo "<div id='tabcontent'></div>";
 			echo "<script type='text/javascript'>loadDefaultTab();</script>";
 
