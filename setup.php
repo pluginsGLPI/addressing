@@ -94,7 +94,7 @@ function plugin_version_addressing(){
 		'name' => $LANG['plugin_addressing']['title'][1],
 		'version' => '1.8.0',
 		'author'=>'Gilles Portheault, Xavier Caillaud, Remi Collet',
-		'homepage'=>'http://glpi-project.org/wiki/doku.php?id='.substr($_SESSION["glpilanguage"],0,2).':plugins:pluginslist',
+		'homepage'=>'https://forge.indepnet.net/projects/show/addressing',
 		'minGlpiVersion' => '0.80',// For compatibility / no install in version < 0.72
 	);
 }
