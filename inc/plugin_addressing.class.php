@@ -87,7 +87,7 @@ class PluginAddressing extends CommonDBTM {
 			$sql .= " AND `networks_id` = ".$this->fields["networks_id"];
 
 		foreach ($CFG_GLPI["netport_types"] as $type) {
-			$sql .= " UNION SELECT `port`.`ID`, `itemtype`, `items_id`, `dev`.`name` AS dname, `port`.`name` AS pname, `port`.`ip`, `port`.`mac`, `users_id`, INET_ATON(`port`.`ip`) AS ipnum " .
+			$sql .= " UNION SELECT `port`.`id`, `itemtype`, `items_id`, `dev`.`name` AS dname, `port`.`name` AS pname, `port`.`ip`, `port`.`mac`, `users_id`, INET_ATON(`port`.`ip`) AS ipnum " .
 					"FROM `glpi_networkports` port, `" . $LINK_ID_TABLE[$type] . "` dev " .
 					"WHERE `itemtype` = '$type' AND `port`.`items_id` = `dev`.`id` AND INET_ATON(`port`.`ip`) >= '$ipdeb' AND INET_ATON(`port`.`ip`) <= '$ipfin' AND `is_deleted` = 0 AND `is_template` = 0 " .
 					getEntitiesRestrictRequest(" AND ", "dev");
