@@ -255,7 +255,7 @@ function plugin_addressing_MassiveActionsProcess($data){
 	switch ($data['action']){
 
 		case "plugin_addressing_transfert":
-			if ($data['device_type']==PLUGIN_ADDRESSING_TYPE){
+			if ($data['itemtype']==PLUGIN_ADDRESSING_TYPE){
 				foreach ($data["item"] as $key => $val){
 					if ($val==1){
 						$PluginAddressing=new PluginAddressing;
