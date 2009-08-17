@@ -262,7 +262,7 @@ function plugin_addressing_MassiveActionsProcess($data){
 						$PluginAddressing->getFromDB($key);
 
 						$query="UPDATE `glpi_plugin_addressing`
-									SET `FK_entities` = '".$data['entities_id']."'
+									SET `entities_id` = '".$data['entities_id']."'
 									WHERE `glpi_plugin_addressing`.`id` ='$key'";
 						$DB->query($query);
 					}
