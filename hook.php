@@ -61,7 +61,7 @@ function plugin_addressing_install(){
 		plugin_addressing_updatev170();
 		plugin_addressing_updatev180();
 
-	}elseif (TableExists("glpi_plugin_addressing") && !FieldExists("glpi_plugin_addressing","ipdeb")) {
+	}elseif (TableExists("glpi_plugin_addressing_display") && !FieldExists("glpi_plugin_addressing","ipdeb")) {
 
 		plugin_addressing_updatev16();
 		plugin_addressing_updatev170();
