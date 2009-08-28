@@ -129,7 +129,7 @@ class PluginAddressing extends CommonDBTM {
 
 			echo "<tr><td>".$LANG['common'][16].": </td>";
 			echo "<td>";
-			autocompletionTextField("name","glpi_plugin_addressing","name",$this->fields["name"],20,$this->fields["entities_id"]);
+			autocompletionTextField("name",$this->table,"name",$this->fields["name"],20,$this->fields["entities_id"]);
 			echo "</td></tr>";
 
 			echo "<tr><td>".$LANG['plugin_addressing']['reports'][3]."</td>";
