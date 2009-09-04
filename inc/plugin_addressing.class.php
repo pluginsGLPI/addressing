@@ -108,134 +108,126 @@ class PluginAddressing extends CommonDBTM {
 
 		if (!plugin_addressing_haveRight("addressing","r")) return false;
 
-		$con_spotted=false;
+		if ($ID > 0) {
+       $this->check($ID,'r');
+    } else {
+       // Create item
+       $this->check(-1,'r');
+       $this->getEmpty();
+    }
 
-		if (empty($ID) ||$ID==-1) {
+    $this->showTabs($ID, $withtemplate,$_SESSION['glpi_tab']);
+    $onsubmit="onSubmit='return plugaddr_Check(\"".$LANG['plugin_addressing']['reports'][37]."\")'";
+    $this->showFormHeader($target,$ID,$withtemplate,2,$onsubmit);
 
-			if($this->getEmpty()) $con_spotted = true;
-		} else {
-			if($this->getfromDB($ID)&&haveAccessToEntity($this->fields["entities_id"])) $con_spotted = true;
-		}
+    echo "<tr><td class='tab_bg_1' valign='top'>";
 
-		if ($con_spotted){
+    echo "<table cellpadding='2' cellspacing='2' border='0'>\n";
 
-			$this->showTabs($ID, $withtemplate,$_SESSION['glpi_tab']);
-			$onsubmit="onSubmit='return plugaddr_Check(\"".$LANG['plugin_addressing']['reports'][37]."\")'";
-			$this->showFormHeader($target,$ID,$withtemplate,2,$onsubmit);
+    echo "<tr><td>".$LANG['common'][16].": </td>";
+    echo "<td>";
+    autocompletionTextField("name",$this->table,"name",$this->fields["name"],20,$this->fields["entities_id"]);
+    echo "</td></tr>";
 
-			echo "<tr><td class='tab_bg_1' valign='top'>";
+    echo "<tr><td>".$LANG['plugin_addressing']['reports'][3]."</td>";
+    echo "<td>";
+    dropdownValue("glpi_networks", "networks_id", $this->fields["networks_id"]);
+    echo "</td></tr>";
 
-			echo "<table cellpadding='2' cellspacing='2' border='0'>\n";
+    echo "<tr><td>".$LANG['plugin_addressing']['reports'][36]."</td>";
+    echo "<td>";
+    plugin_addressing_dropdownSubnet($ID>0 ? $this->fields["entities_id"] : $_SESSION["glpiactive_entity"]);
+    echo "</td></tr>";
 
-			echo "<tr><td>".$LANG['common'][16].": </td>";
-			echo "<td>";
-			autocompletionTextField("name",$this->table,"name",$this->fields["name"],20,$this->fields["entities_id"]);
-			echo "</td></tr>";
+    echo "<tr><td>".$LANG['plugin_addressing']['reports'][38]." : </td>"; // Subnet
+    echo "<td>";
+    echo "<input type='text' id='plugaddr_ipdeb0' value='' name='_ipdeb0' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>.";
+    echo "<input type='text' id='plugaddr_ipdeb1' value='' name='_ipdeb1' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>.";
+    echo "<input type='text' id='plugaddr_ipdeb2' value='' name='_ipdeb2' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>.";
+    echo "<input type='text' id='plugaddr_ipdeb3' value='' name='_ipdeb3' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>";
+    echo "</td></tr>";
 
-			echo "<tr><td>".$LANG['plugin_addressing']['reports'][3]."</td>";
-			echo "<td>";
-			dropdownValue("glpi_networks", "networks_id", $this->fields["networks_id"]);
-			echo "</td></tr>";
+    echo "<tr><td>".$LANG['plugin_addressing']['reports'][39]." : </td>"; // Mask
+    echo "<td>";
+    echo "<input type='text' id='plugaddr_ipfin0' value='' name='_ipfin0' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>.";
+    echo "<input type='text' id='plugaddr_ipfin1' value='' name='_ipfin1' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>.";
+    echo "<input type='text' id='plugaddr_ipfin2' value='' name='_ipfin2' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>.";
+    echo "<input type='text' id='plugaddr_ipfin3' value='' name='_ipfin3' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>";
+    echo "</td></tr>";
 
-			echo "<tr><td>".$LANG['plugin_addressing']['reports'][36]."</td>";
-			echo "<td>";
-			plugin_addressing_dropdownSubnet($ID>0 ? $this->fields["entities_id"] : $_SESSION["glpiactive_entity"]);
-			echo "</td></tr>";
+    echo "<tr><td>".$LANG['plugin_addressing']['reports'][1]." : </td>"; // Mask
+    echo "<td>";
+    echo "<input type='hidden' id='plugaddr_ipdeb' value='".$this->fields["begin_ip"]."' name='begin_ip'>";
+    echo "<input type='hidden' id='plugaddr_ipfin' value='".$this->fields["end_ip"]."' name='end_ip'>";
+    echo "<div id='plugaddr_range'>-</div>";
+    echo "</td></tr>";
 
-			echo "<tr><td>".$LANG['plugin_addressing']['reports'][38]." : </td>"; // Subnet
-			echo "<td>";
-			echo "<input type='text' id='plugaddr_ipdeb0' value='' name='_ipdeb0' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>.";
-			echo "<input type='text' id='plugaddr_ipdeb1' value='' name='_ipdeb1' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>.";
-			echo "<input type='text' id='plugaddr_ipdeb2' value='' name='_ipdeb2' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>.";
-			echo "<input type='text' id='plugaddr_ipdeb3' value='' name='_ipdeb3' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>";
-			echo "</td></tr>";
+    if ($ID>0) {
+      echo "<tr><td><script language='JavaScript' type='text/javascript'>plugaddr_Init(\"".$LANG['plugin_addressing']['reports'][37]."\");</script></td></tr>";
+    }
 
-			echo "<tr><td>".$LANG['plugin_addressing']['reports'][39]." : </td>"; // Mask
-			echo "<td>";
-			echo "<input type='text' id='plugaddr_ipfin0' value='' name='_ipfin0' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>.";
-			echo "<input type='text' id='plugaddr_ipfin1' value='' name='_ipfin1' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>.";
-			echo "<input type='text' id='plugaddr_ipfin2' value='' name='_ipfin2' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>.";
-			echo "<input type='text' id='plugaddr_ipfin3' value='' name='_ipfin3' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>";
-			echo "</td></tr>";
+    echo "</table>";
+    echo "</td>";
+    echo "<td class='tab_bg_1' valign='top'>";
+    echo "<table cellpadding='2' cellspacing='2' border='0'>";
 
-			echo "<tr><td>".$LANG['plugin_addressing']['reports'][1]." : </td>"; // Mask
-			echo "<td>";
-			echo "<input type='hidden' id='plugaddr_ipdeb' value='".$this->fields["begin_ip"]."' name='begin_ip'>";
-			echo "<input type='hidden' id='plugaddr_ipfin' value='".$this->fields["end_ip"]."' name='end_ip'>";
-			echo "<div id='plugaddr_range'>-</div>";
-			echo "</td></tr>";
+    $PluginAddressingConfig=new PluginAddressingConfig();
+    $PluginAddressingConfig->getFromDB('1');
 
-			if ($ID>0) {
-				echo "<tr><td><script language='JavaScript' type='text/javascript'>plugaddr_Init(\"".$LANG['plugin_addressing']['reports'][37]."\");</script></td></tr>";
-			}
+    if ($PluginAddressingConfig->fields["alloted_ip"]) {
+      echo "<tr><td>".$LANG['plugin_addressing']['setup'][11]."</td><td>";
+      dropdownYesNo('alloted_ip',$this->fields["alloted_ip"]);
+      echo "</td></tr>";
+    } else {
+      echo "<input type='hidden' name='alloted_ip' value='0''>\n";
+    }
+    if ($PluginAddressingConfig->fields["free_ip"]) {
+      echo "<tr><td>".$LANG['plugin_addressing']['setup'][12]."</td><td>";
+      dropdownYesNo('free_ip',$this->fields["free_ip"]);
+      echo "</td></tr>";
+    } else {
+      echo "<input type='hidden' name='free_ip' value='0''>\n";
+    }
+    if ($PluginAddressingConfig->fields["double_ip"]) {
+      echo "<tr><td>".$LANG['plugin_addressing']['setup'][13]."</td><td>";
+      dropdownYesNo('double_ip',$this->fields["double_ip"]);
+      echo "</td></tr>";
+    } else {
+      echo "<input type='hidden' name='double_ip' value='0''>\n";
+    }
+    if ($PluginAddressingConfig->fields["reserved_ip"]) {
+      echo "<tr><td>".$LANG['plugin_addressing']['setup'][14]."</td><td>";
+      dropdownYesNo('reserved_ip',$this->fields["reserved_ip"]);
+      echo "</td></tr>";
+    } else {
+      echo "<input type='hidden' name='reserved_ip' value='0''>\n";
+    }
 
-			echo "</table>";
-			echo "</td>";
-			echo "<td class='tab_bg_1' valign='top'>";
-			echo "<table cellpadding='2' cellspacing='2' border='0'>";
+    if ($PluginAddressingConfig->fields["use_ping"]) {
+      echo "<tr><td>".$LANG['plugin_addressing']['reports'][30].": </td><td>";
+      dropdownYesNo('use_ping',$this->fields["use_ping"]);
+      echo "</td></tr>";
+    } else {
+      echo "<input type='hidden' name='use_ping' value=\"0\">\n";
+    }
+    echo "</table>";
 
-			$PluginAddressingConfig=new PluginAddressingConfig();
-			$PluginAddressingConfig->getFromDB('1');
+    echo "</td>";
 
-			if ($PluginAddressingConfig->fields["alloted_ip"]) {
-				echo "<tr><td>".$LANG['plugin_addressing']['setup'][11]."</td><td>";
-				dropdownYesNo('alloted_ip',$this->fields["alloted_ip"]);
-				echo "</td></tr>";
-			} else {
-				echo "<input type='hidden' name='alloted_ip' value='0''>\n";
-			}
-			if ($PluginAddressingConfig->fields["free_ip"]) {
-				echo "<tr><td>".$LANG['plugin_addressing']['setup'][12]."</td><td>";
-				dropdownYesNo('free_ip',$this->fields["free_ip"]);
-				echo "</td></tr>";
-			} else {
-				echo "<input type='hidden' name='free_ip' value='0''>\n";
-			}
-			if ($PluginAddressingConfig->fields["double_ip"]) {
-				echo "<tr><td>".$LANG['plugin_addressing']['setup'][13]."</td><td>";
-				dropdownYesNo('double_ip',$this->fields["double_ip"]);
-				echo "</td></tr>";
-			} else {
-				echo "<input type='hidden' name='double_ip' value='0''>\n";
-			}
-			if ($PluginAddressingConfig->fields["reserved_ip"]) {
-				echo "<tr><td>".$LANG['plugin_addressing']['setup'][14]."</td><td>";
-				dropdownYesNo('reserved_ip',$this->fields["reserved_ip"]);
-				echo "</td></tr>";
-			} else {
-				echo "<input type='hidden' name='reserved_ip' value='0''>\n";
-			}
+    echo "<td class='tab_bg_1' valign='top'>";
 
-			if ($PluginAddressingConfig->fields["use_ping"]) {
-				echo "<tr><td>".$LANG['plugin_addressing']['reports'][30].": </td><td>";
-				dropdownYesNo('use_ping',$this->fields["use_ping"]);
-				echo "</td></tr>";
-			} else {
-				echo "<input type='hidden' name='use_ping' value=\"0\">\n";
-			}
-			echo "</table>";
+    echo "<table cellpadding='2' cellspacing='2' border='0'><tr><td>";
+    echo $LANG['common'][25].":	</td></tr>";
+    echo "<tr><td align='center'><textarea cols='35' rows='4' name='comment' >".$this->fields["comment"]."</textarea>";
+    echo "</td></tr></table>";
 
-			echo "</td>";
+    echo "</td>";
+    echo "</tr>";
 
-			echo "<td class='tab_bg_1' valign='top'>";
+    $this->showFormButtons($ID,$withtemplate,2);
+    echo "<div id='tabcontent'></div>";
+    echo "<script type='text/javascript'>loadDefaultTab();</script>";
 
-			echo "<table cellpadding='2' cellspacing='2' border='0'><tr><td>";
-			echo $LANG['common'][25].":	</td></tr>";
-			echo "<tr><td align='center'><textarea cols='35' rows='4' name='comment' >".$this->fields["comment"]."</textarea>";
-			echo "</td></tr></table>";
-
-			echo "</td>";
-			echo "</tr>";
-
-			$this->showFormButtons($ID,$withtemplate,2);
-			echo "<div id='tabcontent'></div>";
-			echo "<script type='text/javascript'>loadDefaultTab();</script>";
-
-		} else {
-			echo "<div align='center'><b>".$LANG['plugin_addressing'][1]."</b></div>";
-			return false;
-
-		}
 		return true;
 	}
 }
