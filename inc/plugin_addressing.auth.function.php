@@ -1,12 +1,12 @@
 <?php
 /*
- * @version $Id: auth.function.php 3576 2006-06-12 08:40:44Z moyo $
- ----------------------------------------------------------------------
+ * @version $Id: HEADER 1 2009-09-21 14:58 Tsmr $
+ -------------------------------------------------------------------------
  GLPI - Gestionnaire Libre de Parc Informatique
- Copyright (C) 2003-2008 by the INDEPNET Development Team.
+ Copyright (C) 2003-2009 by the INDEPNET Development Team.
 
  http://indepnet.net/   http://glpi-project.org
- ----------------------------------------------------------------------
+ -------------------------------------------------------------------------
 
  LICENSE
 
@@ -25,13 +25,13 @@
  You should have received a copy of the GNU General Public License
  along with GLPI; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- ------------------------------------------------------------------------
+ --------------------------------------------------------------------------
+ 
+// ----------------------------------------------------------------------
+// Original Author of file: CAILLAUD Xavier & COLLET Remi
+// Purpose of file: plugin addressing v1.8.0 - GLPI 0.80
+// ----------------------------------------------------------------------
  */
-
-// ----------------------------------------------------------------------
-// Original Author of file: GRISARD Jean Marc
-// Purpose of file:
-// ----------------------------------------------------------------------
 
 if (!defined('GLPI_ROOT')){
 	die("Sorry. You can't access directly to this file");

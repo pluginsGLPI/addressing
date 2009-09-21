@@ -1,12 +1,12 @@
 <?php
 /*
- * @version $Id: hook.php 7355 2008-10-03 15:31:00Z moyo $
- ----------------------------------------------------------------------
+ * @version $Id: HEADER 1 2009-09-21 14:58 Tsmr $
+ -------------------------------------------------------------------------
  GLPI - Gestionnaire Libre de Parc Informatique
- Copynetwork (C) 2003-2006 by the INDEPNET Development Team.
+ Copyright (C) 2003-2009 by the INDEPNET Development Team.
 
- http://indepnet.net/   http://glpi-project.org/
- ----------------------------------------------------------------------
+ http://indepnet.net/   http://glpi-project.org
+ -------------------------------------------------------------------------
 
  LICENSE
 
@@ -25,13 +25,13 @@
  You should have received a copy of the GNU General Public License
  along with GLPI; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- ------------------------------------------------------------------------
+ --------------------------------------------------------------------------
+ 
+// ----------------------------------------------------------------------
+// Original Author of file: CAILLAUD Xavier & COLLET Remi
+// Purpose of file: plugin addressing v1.8.0 - GLPI 0.80
+// ----------------------------------------------------------------------
  */
-
-// ----------------------------------------------------------------------
-// Original Author of file: DOMBRE Julien
-// Purpose of file:
-// ----------------------------------------------------------------------
 
 foreach (glob(GLPI_ROOT . '/plugins/addressing/inc/*.php') as $file)
 	include_once ($file);
