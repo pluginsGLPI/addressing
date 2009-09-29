@@ -101,7 +101,7 @@ function plugin_addressing_ping($system,$ip)
 
     case 1:
     //windows
-        exec("ping.exe -n 1 -w 1 -i 1 ".$ip, $list);
+        exec("ping.exe -n 1 -w 1 -i 4 ".$ip, $list);
         $nb=count($list);
         if (isset($nb)){
             for($i=0;$i<$nb;$i++)
