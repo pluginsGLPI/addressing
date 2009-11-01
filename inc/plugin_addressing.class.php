@@ -43,7 +43,65 @@ class PluginAddressing extends CommonDBTM {
 		$this->table="glpi_plugin_addressing";
 		$this->type=PLUGIN_ADDRESSING_TYPE;
 	}
+  
+  function getSearchOptions() {
+      global $LANG;
 
+      $tab = array();
+
+      $tab['common'] = $LANG['plugin_addressing']['title'][1];
+
+      $tab[1]['table']='glpi_plugin_addressing';
+      $tab[1]['field']='name';
+      $tab[1]['linkfield']='name';
+      $tab[1]['name']=$LANG['common'][16];
+      $tab[1]['datatype']='itemlink';
+
+      $tab[2]['table']='glpi_networks';
+      $tab[2]['field']='name';
+      $tab[2]['linkfield']='networks_id';
+      $tab[2]['name']=$LANG['plugin_addressing']['setup'][24];
+
+      $tab[3]['table']='glpi_plugin_addressing';
+      $tab[3]['field']='comment';
+      $tab[3]['linkfield']='comment';
+      $tab[3]['name']=$LANG['common'][25];
+      $tab[3]['datatype']='text';
+
+      $tab[4]['table']='glpi_plugin_addressing';
+      $tab[4]['field']='use_ping';
+      $tab[4]['linkfield']='use_ping';
+      $tab[4]['name']=$LANG['plugin_addressing']['reports'][30];
+      $tab[4]['datatype']='bool';
+
+      $tab[5]['table']='glpi_plugin_addressing';
+      $tab[5]['field']='generation_link';
+      $tab[5]['linkfield']='';
+      $tab[5]['name']=$LANG['plugin_addressing'][3];
+
+      $tab[30]['table']='glpi_plugin_addressing';
+      $tab[30]['field']='id';
+      $tab[30]['linkfield']='';
+      $tab[30]['name']=$LANG['common'][2];
+
+      $tab[80]['table']='glpi_entities';
+      $tab[80]['field']='completename';
+      $tab[80]['linkfield']='entities_id';
+      $tab[80]['name']=$LANG['entity'][0];
+
+      $tab[1000]['table']='glpi_plugin_addressing';
+      $tab[1000]['field']='begin_ip';
+      $tab[1000]['linkfield']='';
+      $tab[1000]['name']=$LANG['plugin_addressing']['reports'][38];
+
+      $tab[1001]['table']='glpi_plugin_addressing';
+      $tab[1001]['field']='end_ip';
+      $tab[1001]['linkfield']='';
+      $tab[1001]['name']=$LANG['plugin_addressing']['reports'][39];
+		
+		 return $tab;
+   }
+   
 	function defineTabs($ID,$withtemplate){
 		global $LANG;
 		$ong[1]=$LANG['title'][26];

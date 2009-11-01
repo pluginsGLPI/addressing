@@ -104,79 +104,32 @@ function plugin_addressing_uninstall(){
 	return true;
 }
 
-////// SEARCH FUNCTIONS ///////(){
-
-// Define search option for types of the plugins
-function plugin_addressing_getSearchOption(){
+function plugin_addressing_getAddSearchOptions($itemtype){
 	global $LANG;
-	$sopt=array();
 
-	// Part header
-	$sopt[PLUGIN_ADDRESSING_TYPE]['common']=$LANG['plugin_addressing']['title'][1];
+    $sopt=array();
 
-	$sopt[PLUGIN_ADDRESSING_TYPE][1]['table']='glpi_plugin_addressing';
-	$sopt[PLUGIN_ADDRESSING_TYPE][1]['field']='name';
-	$sopt[PLUGIN_ADDRESSING_TYPE][1]['linkfield']='name';
-	$sopt[PLUGIN_ADDRESSING_TYPE][1]['name']=$LANG['common'][16];
-	$sopt[PLUGIN_ADDRESSING_TYPE][1]['datatype']='itemlink';
+    if ($itemtype==PROFILE_TYPE) {
+      if (plugin_addressing_haveRight("addressing","r")){
+        // Use a plugin type reservation to avoid conflict
+        $sopt[5000]['table']='glpi_plugin_addressing_profiles';
+        $sopt[5000]['field']='addressing';
+        $sopt[5000]['linkfield']='id';
+        $sopt[5000]['name']=$LANG['plugin_addressing']['title'][1];
+        //$sopt[5000]['datatype']='bool';
+      }
 
-	$sopt[PLUGIN_ADDRESSING_TYPE][2]['table']='glpi_networks';
-	$sopt[PLUGIN_ADDRESSING_TYPE][2]['field']='name';
-	$sopt[PLUGIN_ADDRESSING_TYPE][2]['linkfield']='networks_id';
-	$sopt[PLUGIN_ADDRESSING_TYPE][2]['name']=$LANG['plugin_addressing']['setup'][24];
-
-	$sopt[PLUGIN_ADDRESSING_TYPE][3]['table']='glpi_plugin_addressing';
-	$sopt[PLUGIN_ADDRESSING_TYPE][3]['field']='comment';
-	$sopt[PLUGIN_ADDRESSING_TYPE][3]['linkfield']='comment';
-	$sopt[PLUGIN_ADDRESSING_TYPE][3]['name']=$LANG['common'][25];
-	$sopt[PLUGIN_ADDRESSING_TYPE][3]['datatype']='text';
-
-	$sopt[PLUGIN_ADDRESSING_TYPE][4]['table']='glpi_plugin_addressing';
-	$sopt[PLUGIN_ADDRESSING_TYPE][4]['field']='use_ping';
-	$sopt[PLUGIN_ADDRESSING_TYPE][4]['linkfield']='use_ping';
-	$sopt[PLUGIN_ADDRESSING_TYPE][4]['name']=$LANG['plugin_addressing']['reports'][30];
-	$sopt[PLUGIN_ADDRESSING_TYPE][4]['datatype']='bool';
-
-	$sopt[PLUGIN_ADDRESSING_TYPE][5]['table']='glpi_plugin_addressing';
-	$sopt[PLUGIN_ADDRESSING_TYPE][5]['field']='generation_link';
-	$sopt[PLUGIN_ADDRESSING_TYPE][5]['linkfield']='';
-	$sopt[PLUGIN_ADDRESSING_TYPE][5]['name']=$LANG['plugin_addressing'][3];
-
-	$sopt[PLUGIN_ADDRESSING_TYPE][30]['table']='glpi_plugin_addressing';
-	$sopt[PLUGIN_ADDRESSING_TYPE][30]['field']='id';
-	$sopt[PLUGIN_ADDRESSING_TYPE][30]['linkfield']='';
-	$sopt[PLUGIN_ADDRESSING_TYPE][30]['name']=$LANG['common'][2];
-
-	$sopt[PLUGIN_ADDRESSING_TYPE][80]['table']='glpi_entities';
-	$sopt[PLUGIN_ADDRESSING_TYPE][80]['field']='completename';
-	$sopt[PLUGIN_ADDRESSING_TYPE][80]['linkfield']='entities_id';
-	$sopt[PLUGIN_ADDRESSING_TYPE][80]['name']=$LANG['entity'][0];
-
-	$sopt[PLUGIN_ADDRESSING_TYPE][1000]['table']='glpi_plugin_addressing';
-	$sopt[PLUGIN_ADDRESSING_TYPE][1000]['field']='begin_ip';
-	$sopt[PLUGIN_ADDRESSING_TYPE][1000]['linkfield']='';
-	$sopt[PLUGIN_ADDRESSING_TYPE][1000]['name']=$LANG['plugin_addressing']['reports'][38];
-
-	$sopt[PLUGIN_ADDRESSING_TYPE][1001]['table']='glpi_plugin_addressing';
-	$sopt[PLUGIN_ADDRESSING_TYPE][1001]['field']='end_ip';
-	$sopt[PLUGIN_ADDRESSING_TYPE][1001]['linkfield']='';
-	$sopt[PLUGIN_ADDRESSING_TYPE][1001]['name']=$LANG['plugin_addressing']['reports'][39];
-
-	// Use a plugin type reservation to avoid conflict
-	$sopt[PROFILE_TYPE][5000]['table']='glpi_plugin_addressing_profiles';
-	$sopt[PROFILE_TYPE][5000]['field']='addressing';
-	$sopt[PROFILE_TYPE][5000]['linkfield']='id';
-	$sopt[PROFILE_TYPE][5000]['name']=$LANG['plugin_addressing']['title'][1];
-	//$sopt[PROFILE_TYPE][5000]['datatype']='bool';
-
+	}
 	return $sopt;
 }
 
 function plugin_addressing_giveItem($type,$ID,$data,$num){
-	global $CFG_GLPI, $INFOFORM_PAGES, $LANG,$SEARCH_OPTION;
-
-	$table=$SEARCH_OPTION[$type][$ID]["table"];
-	$field=$SEARCH_OPTION[$type][$ID]["field"];
+	global $CFG_GLPI, $INFOFORM_PAGES, $LANG;
+  
+  $searchopt=&getSearchOptions($type);
+  
+	$table=$searchopt[$ID]["table"];
+	$field=$searchopt[$ID]["field"];
 
 	switch ($table.'.'.$field){
 		case "glpi_plugin_addressing.generation_link" :
