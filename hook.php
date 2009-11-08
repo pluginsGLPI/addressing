@@ -26,7 +26,7 @@
  along with GLPI; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  --------------------------------------------------------------------------
- 
+
 // ----------------------------------------------------------------------
 // Original Author of file: CAILLAUD Xavier & COLLET Remi
 // Purpose of file: plugin addressing v1.8.0 - GLPI 0.80
@@ -126,9 +126,9 @@ function plugin_addressing_getAddSearchOptions($itemtype){
 
 function plugin_addressing_giveItem($type,$ID,$data,$num){
 	global $CFG_GLPI, $INFOFORM_PAGES, $LANG;
-  
+
   $searchopt=&getSearchOptions($type);
-  
+
 	$table=$searchopt[$ID]["table"];
 	$field=$searchopt[$ID]["field"];
 
@@ -268,7 +268,10 @@ function plugin_addressing_dynamicReport($parm){
 
 	$PluginAddressing=new PluginAddressing;
 
-	if ($parm["item_type"]==PLUGIN_ADDRESSING_REPORT_TYPE && isset($_GET["id"]) && isset($_GET["display_type"]) && $PluginAddressing->getFromDB($_GET["id"])) {
+	if ($parm["item_type"]==PLUGIN_ADDRESSING_REPORT_TYPE
+       && isset($parm["id"])
+       && isset($parm["display_type"])
+       && $PluginAddressing->getFromDB($parm["id"])) {
 
 		$result=$PluginAddressing->compute();
 		$PluginAddressing->display($result, $PluginAddressing);
