@@ -26,7 +26,7 @@
  along with GLPI; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  --------------------------------------------------------------------------
- 
+
 // ----------------------------------------------------------------------
 // Original Author of file: CAILLAUD Xavier & COLLET Remi
 // Purpose of file: plugin addressing v1.8.0 - GLPI 0.80
@@ -43,7 +43,7 @@ class PluginAddressing extends CommonDBTM {
 		$this->table="glpi_plugin_addressing";
 		$this->type=PLUGIN_ADDRESSING_TYPE;
 	}
-  
+
   function getSearchOptions() {
       global $LANG;
 
@@ -98,10 +98,10 @@ class PluginAddressing extends CommonDBTM {
       $tab[1001]['field']='end_ip';
       $tab[1001]['linkfield']='';
       $tab[1001]['name']=$LANG['plugin_addressing']['reports'][39];
-		
+
 		 return $tab;
    }
-   
+
 	function defineTabs($ID,$withtemplate){
 		global $LANG;
 		$ong[1]=$LANG['title'][26];
@@ -160,7 +160,7 @@ class PluginAddressing extends CommonDBTM {
 
 		return $result;
 	}
-	
+
 	function dropdownSubnet($entity) {
 
 	GLOBAL $DB;
@@ -316,7 +316,7 @@ class PluginAddressing extends CommonDBTM {
 
 		return true;
 	}
-	
+
 	function displaySearchNewLine($type,$odd=false){
 		$out="";
 		switch ($type){
@@ -329,7 +329,7 @@ class PluginAddressing extends CommonDBTM {
 			case CSV_OUTPUT : //csv
 				//$out="\n";
 				break;
-	
+
 			default :
 				$class=" class='tab_bg_2' ";
 				if ($odd){
@@ -355,33 +355,33 @@ class PluginAddressing extends CommonDBTM {
 		}
 		return $out;
 	}
-	
-	function display(&$result, $this) {
-	
+
+	function display(&$result) {
+
 		global $DB,$LANG,$CFG_GLPI,$INFOFORM_PAGES;
-	
+
 		$network=$this->fields["networks_id"];
 		$ping=$this->fields["use_ping"];
-	
+
 		$PluginAddressingConfig=new PluginAddressingConfig();
 		$PluginAddressingConfig->getFromDB('1');
 		$system=$PluginAddressingConfig->fields["used_system"];
-	
+
 		// Set display type for export if define
 		$output_type=HTML_OUTPUT;
-	
+
 		if (isset($_GET["display_type"]))
 			$output_type=$_GET["display_type"];
-	
+
 		$ping_response=0;
-	
+
 		$nbcols=6;
 		$parameters="id=";
-	
+
 		echo displaySearchHeader($output_type,1,$nbcols);
 		echo $this->displaySearchNewLine($output_type);
 		$header_num=1;
-	
+
 		echo displaySearchHeaderItem($output_type,$LANG['plugin_addressing']['reports'][2],$header_num);
 		echo displaySearchHeaderItem($output_type,$LANG['plugin_addressing']['reports'][9],$header_num);
 		echo displaySearchHeaderItem($output_type,$LANG['plugin_addressing']['reports'][14],$header_num);
@@ -391,13 +391,13 @@ class PluginAddressing extends CommonDBTM {
 		// End Line for column headers
 		echo displaySearchEndLine($output_type);
 		$row_num=1;
-	
+
 		$ci=new CommonItem();
 		$user = new User();
-	
+
 		foreach ($result as $num => $lines) {
 			$ip=long2ip(substr($num,2));
-	
+
 			if (count($lines)) {
 				if (count($lines)>1) {
 					$disp = $this->fields["double_ip"];
@@ -412,7 +412,7 @@ class PluginAddressing extends CommonDBTM {
 					// IP
 					echo $this->displaySearchNewLine($output_type,(count($lines)>1 ? "double" : $row_num%2));
 					echo displaySearchItem($output_type,$ip,$item_num,$row_num);
-	
+
 					// Device
 					$ci->setType($line["itemtype"]);
 					if ($line["itemtype"] != NETWORKING_TYPE){
@@ -431,11 +431,11 @@ class PluginAddressing extends CommonDBTM {
 						}
 					}
 					echo displaySearchItem($output_type,$output_iddev,$item_num,$row_num);
-	
+
 					// User
 					if ($line["users_id"] && $user->getFromDB($line["users_id"])) {
 						$username=formatUserName($user->fields["id"],$user->fields["name"],$user->fields["realname"],$user->fields["firstname"]);
-	
+
 						if (haveTypeRight(USER_TYPE, "r")) {
 							$output_iduser="<a href='".$CFG_GLPI["root_doc"]."/front/user.form.php?id=".$line["users_id"]."'>".$username."</a>";
 						} else {
@@ -445,7 +445,7 @@ class PluginAddressing extends CommonDBTM {
 					} else {
 						echo displaySearchItem($output_type," ",$item_num,$row_num);
 					}
-	
+
 					// Mac
 					if($line["id"]){
 						if (haveTypeRight($line["itemtype"], "r")) {
@@ -459,18 +459,18 @@ class PluginAddressing extends CommonDBTM {
 					}
 					// Type
 					echo displaySearchItem($output_type,$ci->getType(),$item_num,$row_num);
-	
+
 					// Reserved
 					if ($this->fields["reserved_ip"] && strstr($line["pname"],"reserv")) {
 						echo displaySearchItem($output_type,$LANG['plugin_addressing']['reports'][13],$item_num,$row_num);
 					} else {
 						echo displaySearchItem($output_type," ",$item_num,$row_num);
 					}
-	
+
 					// End
 					echo displaySearchEndLine($output_type);
 				}
-	
+
 			} else if ($this->fields["free_ip"]) {
 				$row_num++;
 				$item_num=1;
@@ -480,7 +480,7 @@ class PluginAddressing extends CommonDBTM {
 					echo displaySearchItem($output_type," ",$item_num,$row_num);
 				} else {
 					if ($output_type==HTML_OUTPUT) glpi_flush();
-	
+
 					if (plugin_addressing_ping($system,$ip)) {
 						$ping_response++;
 						echo $this->displaySearchNewLine($output_type,"ping_off");
@@ -499,10 +499,10 @@ class PluginAddressing extends CommonDBTM {
 				echo displaySearchEndLine($output_type);
 			}
 		}
-	
+
 		// Display footer
 		echo displaySearchFooter($output_type,$this->getTitle());
-	
+
 		return $ping_response;
 	}
 
