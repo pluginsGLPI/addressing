@@ -160,6 +160,33 @@ class PluginAddressing extends CommonDBTM {
 
 		return $result;
 	}
+	
+	function dropdownSubnet($entity) {
+
+	GLOBAL $DB;
+
+	$rand=mt_rand();
+	echo "<select name='_subnet' id='plugaddr_subnet' onChange='plugaddr_ChangeList();'>";
+	echo "<option value=''>-----</option>";
+
+	$sql="SELECT DISTINCT `subnet`, `netmask`
+			FROM `glpi_networkports` " .
+			"LEFT JOIN `glpi_computers` ON (`glpi_computers`.`id` = `glpi_networkports`.`items_id`) " .
+			"WHERE `itemtype` = '".COMPUTER_TYPE."'
+			AND `entities_id` = '".$entity."'
+			AND `subnet` NOT IN ('','0.0.0.0','127.0.0.0')
+			AND `netmask` NOT IN ('','0.0.0.0','255.255.255.255')" .
+			getEntitiesRestrictRequest(" AND ","glpi_computers","entities_id",$entity) .
+			"ORDER BY INET_ATON(`subnet`)";
+	$result=array();
+	$result[0]="-----";
+	$res=$DB->query($sql);
+	if ($res) while ($row=$DB->fetch_assoc($res)) {
+		$val = $row["subnet"]."/".$row["netmask"];
+		echo "<option value='$val'>$val</option>";
+	}
+	echo "</select>\n";
+}
 
 	function showForm ($target,$ID,$withtemplate='') {
 
@@ -195,7 +222,7 @@ class PluginAddressing extends CommonDBTM {
 
     echo "<tr><td>".$LANG['plugin_addressing']['reports'][36]."</td>";
     echo "<td>";
-    plugin_addressing_dropdownSubnet($ID>0 ? $this->fields["entities_id"] : $_SESSION["glpiactive_entity"]);
+    $this->dropdownSubnet($ID>0 ? $this->fields["entities_id"] : $_SESSION["glpiactive_entity"]);
     echo "</td></tr>";
 
     echo "<tr><td>".$LANG['plugin_addressing']['reports'][38]." : </td>"; // Subnet
@@ -289,56 +316,210 @@ class PluginAddressing extends CommonDBTM {
 
 		return true;
 	}
+	
+	function displaySearchNewLine($type,$odd=false){
+		$out="";
+		switch ($type){
+			case PDF_OUTPUT_LANDSCAPE : //pdf
+			case PDF_OUTPUT_PORTRAIT :
+				break;
+			case SYLK_OUTPUT : //sylk
+	//			$out="\n";
+				break;
+			case CSV_OUTPUT : //csv
+				//$out="\n";
+				break;
+	
+			default :
+				$class=" class='tab_bg_2' ";
+				if ($odd){
+					switch ($odd){
+						case "double" : //double
+							$class=" class='plugin_addressing_ip_double'";
+						break;
+						case "free" : //free
+							$class=" class='plugin_addressing_ip_free'";
+						break;
+						case "ping_on" : //ping_on
+							$class=" class='plugin_addressing_ping_on'";
+						break;
+						case "ping_off" : //ping_off
+							$class=" class='plugin_addressing_ping_off'";
+						break;
+						default :
+							$class=" class='tab_bg_1' ";
+					}
+				}
+			$out="<tr $class>";
+			break;
+		}
+		return $out;
+	}
+	
+	function display(&$result, $this) {
+	
+		global $DB,$LANG,$CFG_GLPI,$INFOFORM_PAGES;
+	
+		$network=$this->fields["networks_id"];
+		$ping=$this->fields["use_ping"];
+	
+		$PluginAddressingConfig=new PluginAddressingConfig();
+		$PluginAddressingConfig->getFromDB('1');
+		$system=$PluginAddressingConfig->fields["used_system"];
+	
+		// Set display type for export if define
+		$output_type=HTML_OUTPUT;
+	
+		if (isset($_GET["display_type"]))
+			$output_type=$_GET["display_type"];
+	
+		$ping_response=0;
+	
+		$nbcols=6;
+		$parameters="id=";
+	
+		echo displaySearchHeader($output_type,1,$nbcols);
+		echo $this->displaySearchNewLine($output_type);
+		$header_num=1;
+	
+		echo displaySearchHeaderItem($output_type,$LANG['plugin_addressing']['reports'][2],$header_num);
+		echo displaySearchHeaderItem($output_type,$LANG['plugin_addressing']['reports'][9],$header_num);
+		echo displaySearchHeaderItem($output_type,$LANG['plugin_addressing']['reports'][14],$header_num);
+		echo displaySearchHeaderItem($output_type,$LANG['plugin_addressing']['reports'][5],$header_num);
+		echo displaySearchHeaderItem($output_type,$LANG['plugin_addressing']['reports'][8],$header_num);
+		echo displaySearchHeaderItem($output_type,$LANG['plugin_addressing']['reports'][23],$header_num);
+		// End Line for column headers
+		echo displaySearchEndLine($output_type);
+		$row_num=1;
+	
+		$ci=new CommonItem();
+		$user = new User();
+	
+		foreach ($result as $num => $lines) {
+			$ip=long2ip(substr($num,2));
+	
+			if (count($lines)) {
+				if (count($lines)>1) {
+					$disp = $this->fields["double_ip"];
+				} else {
+					$disp = $this->fields["alloted_ip"];
+				}
+				if ($disp) foreach ($lines as $line){
+					$row_num++;
+					$item_num=1;
+					$name=$line["dname"];
+					$namep=$line["pname"];
+					// IP
+					echo $this->displaySearchNewLine($output_type,(count($lines)>1 ? "double" : $row_num%2));
+					echo displaySearchItem($output_type,$ip,$item_num,$row_num);
+	
+					// Device
+					$ci->setType($line["itemtype"]);
+					if ($line["itemtype"] != NETWORKING_TYPE){
+						if (haveTypeRight($line["itemtype"], "r")) {
+							$output_iddev = "<a href='".$CFG_GLPI["root_doc"]."/".$INFOFORM_PAGES[$line["itemtype"]]."?id=".$line["on_device"]."'>".$name
+								.(empty($name) || $_SESSION["glpiis_ids_visible"]?" (".$line["on_device"].")":"")."</a>";
+						} else {
+							$output_iddev = $name.(empty($name) || $_SESSION["glpiis_ids_visible"]?" (".$line["on_device"].")":"");
+						}
+					}else{
+						if (haveTypeRight($line["itemtype"], "r")) {
+							$output_iddev = "<a href='".$CFG_GLPI["root_doc"]."/".$INFOFORM_PAGES[$line["itemtype"]]."?id=".$line["on_device"]."'>".$namep." - ".$name
+								.(empty($name) || $_SESSION["glpiis_ids_visible"]?" (".$line["on_device"].")":"")."</a>";
+						} else {
+							$output_iddev = $namep." - ".$name.(empty($name) || $_SESSION["glpiis_ids_visible"]?" (".$line["on_device"].")":"");
+						}
+					}
+					echo displaySearchItem($output_type,$output_iddev,$item_num,$row_num);
+	
+					// User
+					if ($line["users_id"] && $user->getFromDB($line["users_id"])) {
+						$username=formatUserName($user->fields["id"],$user->fields["name"],$user->fields["realname"],$user->fields["firstname"]);
+	
+						if (haveTypeRight(USER_TYPE, "r")) {
+							$output_iduser="<a href='".$CFG_GLPI["root_doc"]."/front/user.form.php?id=".$line["users_id"]."'>".$username."</a>";
+						} else {
+							$output_iduser=$username;
+						}
+						echo displaySearchItem($output_type,$output_iduser,$item_num,$row_num);
+					} else {
+						echo displaySearchItem($output_type," ",$item_num,$row_num);
+					}
+	
+					// Mac
+					if($line["id"]){
+						if (haveTypeRight($line["itemtype"], "r")) {
+							$output_mac = "<a href='".$CFG_GLPI["root_doc"]."/front/networking.port.php?id=".$line["id"]."'>".$line["mac"]."</a>";
+						} else {
+							$output_mac = $line["mac"];
+						}
+						echo displaySearchItem($output_type,$output_mac,$item_num,$row_num);
+					} else {
+						echo displaySearchItem($output_type," ",$item_num,$row_num);
+					}
+					// Type
+					echo displaySearchItem($output_type,$ci->getType(),$item_num,$row_num);
+	
+					// Reserved
+					if ($this->fields["reserved_ip"] && strstr($line["pname"],"reserv")) {
+						echo displaySearchItem($output_type,$LANG['plugin_addressing']['reports'][13],$item_num,$row_num);
+					} else {
+						echo displaySearchItem($output_type," ",$item_num,$row_num);
+					}
+	
+					// End
+					echo displaySearchEndLine($output_type);
+				}
+	
+			} else if ($this->fields["free_ip"]) {
+				$row_num++;
+				$item_num=1;
+				if (!$ping) {
+					echo $this->displaySearchNewLine($output_type,"free");
+					echo displaySearchItem($output_type,$ip,$item_num,$row_num);
+					echo displaySearchItem($output_type," ",$item_num,$row_num);
+				} else {
+					if ($output_type==HTML_OUTPUT) glpi_flush();
+	
+					if (plugin_addressing_ping($system,$ip)) {
+						$ping_response++;
+						echo $this->displaySearchNewLine($output_type,"ping_off");
+						echo displaySearchItem($output_type,$ip,$item_num,$row_num);
+						echo displaySearchItem($output_type,$LANG['plugin_addressing']['reports'][31],$item_num,$row_num);
+					} else {
+						echo $this->displaySearchNewLine($output_type,"ping_on");
+						echo displaySearchItem($output_type,$ip,$item_num,$row_num);
+						echo displaySearchItem($output_type,$LANG['plugin_addressing']['reports'][32],$item_num,$row_num);
+					}
+				}
+				echo displaySearchItem($output_type," ",$item_num,$row_num);
+				echo displaySearchItem($output_type," ",$item_num,$row_num);
+				echo displaySearchItem($output_type," ",$item_num,$row_num);
+				echo displaySearchItem($output_type," ",$item_num,$row_num);
+				echo displaySearchEndLine($output_type);
+			}
+		}
+	
+		// Display footer
+		echo displaySearchFooter($output_type,$this->getTitle());
+	
+		return $ping_response;
+	}
+
 }
+
+class PluginAddressingReport extends CommonDBTM {
+
+	function __construct () {
+		$this->table="glpi_plugin_addressing";
+		$this->type=PLUGIN_ADDRESSING_REPORT_TYPE;
+	}
+}
+
 class PluginAddressingConfig extends CommonDBTM {
 
 	function __construct () {
 		$this->table="glpi_plugin_addressing_configs";
-	}
-}
-
-class PluginAddressingProfile extends CommonDBTM {
-
-	function __construct () {
-		$this->table="glpi_plugin_addressing_profiles";
-		$this->type=-1;
-	}
-
-	//if profile deleted
-	function cleanProfiles($ID) {
-
-		$this->delete(array('id'=>$ID));
-	}
-
-	//profiles modification
-	function showForm($target,$ID){
-		global $LANG;
-
-		if (!haveRight("profile","r")) return false;
-		$canedit=haveRight("profile","w");
-		if ($ID){
-			$this->getFromDB($ID);
-		}
-		echo "<form action='".$target."' method='post'>";
-		echo "<table class='tab_cadre_fixe'>";
-
-		echo "<tr><th colspan='2' align='center'><strong>".$LANG['plugin_addressing']['profile'][0]." ".$this->fields["name"]."</strong></th></tr>";
-
-		echo "<tr class='tab_bg_2'>";
-		echo "<td>".$LANG['plugin_addressing']['profile'][3].":</td><td>";
-		dropdownNoneReadWrite("addressing",$this->fields["addressing"],1,1,1);
-		echo "</td>";
-		echo "</tr>";
-
-		if ($canedit){
-			echo "<tr class='tab_bg_1'>";
-			echo "<td align='center' colspan='2'>";
-			echo "<input type='hidden' name='id' value=$ID>";
-			echo "<input type='submit' name='update_user_profile' value=\"".$LANG['buttons'][7]."\" class='submit'>";
-			echo "</td></tr>";
-		}
-		echo "</table></form>";
-
 	}
 }
 

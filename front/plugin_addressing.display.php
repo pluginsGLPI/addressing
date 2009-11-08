@@ -112,7 +112,7 @@ if ($PluginAddressing->getFromDB($_GET["id"])){
 
 	//////////////////////////liste ips////////////////////////////////////////////////////////////
 
-	$ping_response = plugin_addressing_display($result, $PluginAddressing);
+	$ping_response = $PluginAddressing->display($result, $PluginAddressing);
 
 	if ($PluginAddressing->fields['use_ping']){
 		$total_realfreeip=$nbipf-$ping_response;

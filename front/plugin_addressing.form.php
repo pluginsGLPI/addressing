@@ -48,6 +48,7 @@ if (isset($_GET["start"])) $start=$_GET["start"];
 else $start=0;
 
 $PluginAddressing=new PluginAddressing();
+$PluginAddressingProfile=new PluginAddressingProfile();
 
 if (isset($_POST["add"]))
 {
@@ -92,7 +93,7 @@ else if (isset($_POST["update"]))
 else
 {
 
-	plugin_addressing_checkRight("addressing","r");
+	$PluginAddressingProfile->checkRight("addressing","r");
 
 	if (!isset($_SESSION['glpi_tab'])) $_SESSION['glpi_tab']=1;
 	if (isset($_GET['onglet'])) {

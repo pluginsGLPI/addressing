@@ -33,8 +33,7 @@
 // ----------------------------------------------------------------------
  */
 
-include_once ("inc/plugin_addressing.auth.function.php");
-include_once ("inc/plugin_addressing.class.php");
+include_once ("inc/plugin_addressing.profile.class.php");
 
 // Init the hooks of the plugins -Needed
 function plugin_init_addressing() {
@@ -54,7 +53,8 @@ function plugin_init_addressing() {
 		));
 
 	registerPluginType('addressing', 'PLUGIN_ADDRESSING_REPORT_TYPE', 5001, array(
-		'classname' => 'PluginAddressing'
+		'classname' => 'PluginAddressingReport',
+		'tablename'  => 'glpi_plugin_addressing'
 		));
 
 	if (isset($_SESSION["glpiID"])){
@@ -111,6 +111,25 @@ function plugin_addressing_check_prerequisites(){
 // Uninstall process for plugin : need to return true if succeeded : may display messages or add to message after redirect
 function plugin_addressing_check_config(){
 	return true;
+}
+
+function plugin_addressing_changeProfile()
+{
+	$PluginAddressingProfile=new PluginAddressingProfile();
+	$PluginAddressingProfile->changeProfile();
+}
+
+function plugin_addressing_haveRight($module,$right){
+	$matches=array(
+			""  => array("","r","w"), // ne doit pas arriver normalement
+			"r" => array("r","w"),
+			"w" => array("w"),
+			"1" => array("1"),
+			"0" => array("0","1"), // ne doit pas arriver non plus
+		      );
+	if (isset($_SESSION["glpi_plugin_addressing_profile"][$module])&&in_array($_SESSION["glpi_plugin_addressing_profile"][$module],$matches[$right]))
+		return true;
+	else return false;
 }
 
 // Define rights for the plugin types

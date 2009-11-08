@@ -47,8 +47,8 @@ if(!isset($_POST["sort"])) $_POST["sort"] = "";
 if(!isset($_POST["order"])) $_POST["order"] = "";
 if(!isset($_POST["withtemplate"])) $_POST["withtemplate"] = "";
 
-
-	plugin_addressing_checkRight("addressing","r");
+	$PluginAddressingProfile=new PluginAddressingProfile();
+	$PluginAddressingProfile->checkRight("addressing","r");
 
 	if (empty($_POST["id"])){
 		switch($_POST['glpi_tab']){

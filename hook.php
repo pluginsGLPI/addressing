@@ -48,15 +48,15 @@ function plugin_addressing_install(){
 
 	}elseif(!TableExists("glpi_plugin_addressing_profiles") && !FieldExists("glpi_plugin_addressing_display","ipconf1")) {//1.4
 
-    plugin_addressing_updatev14();
-    plugin_addressing_updatev15();
+		plugin_addressing_updatev14();
+		plugin_addressing_updatev15();
 		plugin_addressing_updatev16();
 		plugin_addressing_updatev170();
 		plugin_addressing_updatev180();
 
 	}elseif(!TableExists("glpi_plugin_addressing") && FieldExists("glpi_plugin_addressing_display","ipconf1")) {
 
-    plugin_addressing_updatev15();
+		plugin_addressing_updatev15();
 		plugin_addressing_updatev16();
 		plugin_addressing_updatev170();
 		plugin_addressing_updatev180();
@@ -78,7 +78,8 @@ function plugin_addressing_install(){
 
 	}
 
-	plugin_addressing_createFirstAccess($_SESSION['glpiactiveprofile']['id']);
+	$PluginAddressingProfile=new PluginAddressingProfile();
+	$PluginAddressingProfile->createFirstAccess($_SESSION['glpiactiveprofile']['id']);
 	return true;
 }
 
@@ -270,7 +271,7 @@ function plugin_addressing_dynamicReport($parm){
 	if ($parm["item_type"]==PLUGIN_ADDRESSING_REPORT_TYPE && isset($_GET["id"]) && isset($_GET["display_type"]) && $PluginAddressing->getFromDB($_GET["id"])) {
 
 		$result=$PluginAddressing->compute();
-		plugin_addressing_display($result, $PluginAddressing);
+		$PluginAddressing->display($result, $PluginAddressing);
 
 		return true;
 	}
@@ -278,7 +279,6 @@ function plugin_addressing_dynamicReport($parm){
 	// Return false if no specific display is done, then use standard display
 	return false;
 }
-
 
 // Define headings added by the plugin
 function plugin_get_headings_addressing($type,$ID,$withtemplate){
@@ -315,7 +315,7 @@ function plugin_headings_addressing($type,$ID,$withtemplate=0){
 		case PROFILE_TYPE :
 			$prof=new PluginAddressingProfile();
 			if (!$prof->GetfromDB($ID))
-				plugin_addressing_createAccess($ID);
+				$prof->createAccess($ID);
 			$prof->showForm($CFG_GLPI["root_doc"]."/plugins/addressing/front/plugin_addressing.profile.php",$ID);
 		break;
 	}
