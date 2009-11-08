@@ -51,12 +51,12 @@ if(!isset($_POST["withtemplate"])) $_POST["withtemplate"] = "";
 	$PluginAddressingProfile->checkRight("addressing","r");
 
 	if (empty($_POST["id"])){
-		switch($_POST['glpi_tab']){
+		switch($_REQUEST['glpi_tab']) {
 			default :
 				break;
 		}
 	}else{
-		switch($_POST['glpi_tab']){
+		switch($_REQUEST['glpi_tab']) {
 			default :
 				break;
 		}
