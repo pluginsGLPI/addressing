@@ -481,7 +481,7 @@ class PluginAddressing extends CommonDBTM {
 				} else {
 					if ($output_type==HTML_OUTPUT) glpi_flush();
 
-					if (plugin_addressing_ping($system,$ip)) {
+					if ($this->ping($system,$ip)) {
 						$ping_response++;
 						echo $this->displaySearchNewLine($output_type,"ping_off");
 						echo displaySearchItem($output_type,$ip,$item_num,$row_num);
@@ -505,7 +505,72 @@ class PluginAddressing extends CommonDBTM {
 
 		return $ping_response;
 	}
+	
+	function ping($system,$ip){
+    $list ='';
+      switch ($system){
 
+      case 0:
+      // linux ping
+          exec("ping -c 1 -w 1 ".$ip, $list);
+          $nb=count($list);
+          if (isset($nb)){
+              for($i=0;$i<$nb;$i++)
+              {
+                  if(strpos($list[$i],"ttl=")>0) return true;
+              }
+          }
+      break;
+
+      case 1:
+      //windows
+          exec("ping.exe -n 1 -w 1 -i 4 ".$ip, $list);
+          $nb=count($list);
+          if (isset($nb)){
+              for($i=0;$i<$nb;$i++)
+              {
+                  if(strpos($list[$i],"TTL")>0) return true;
+              }
+          }
+      break;
+
+    case 2:
+      //linux fping
+      exec("fping -r1 -c1 -t100 ".$ip, $list);
+          $nb=count($list);
+          if (isset($nb)){
+              for($i=0;$i<$nb;$i++)
+              {
+                  if(strpos($list[$i],"bytes")>0) return true;
+              }
+          }
+      break;
+
+      case 3:
+      // *BSD ping
+          exec("ping -c 1 -W 1 ".$ip, $list);
+          $nb=count($list);
+          if (isset($nb)){
+              for($i=0;$i<$nb;$i++)
+              {
+                  if(strpos($list[$i],"ttl=")>0) return true;
+              }
+          }
+      break;
+
+      case 4:
+      // MacOSX ping
+          exec("ping -c 1 -t 1 ".$ip, $list);
+          $nb=count($list);
+          if (isset($nb)){
+              for($i=0;$i<$nb;$i++)
+              {
+                  if(strpos($list[$i],"ttl=")>0) return true;
+              }
+          }
+      break;
+      }
+  }
 }
 
 class PluginAddressingReport extends CommonDBTM {
