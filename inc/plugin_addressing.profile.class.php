@@ -111,7 +111,7 @@ class PluginAddressingProfile extends CommonDBTM {
 		echo "<form action='".$target."' method='post'>";
 		echo "<table class='tab_cadre_fixe'>";
 
-		echo "<tr><th colspan='2' align='center'><strong>".$LANG['plugin_addressing']['profile'][0]." ".$this->fields["name"]."</strong></th></tr>";
+		echo "<tr><th colspan='2' class='center b'>".$LANG['plugin_addressing']['profile'][0]." ".$this->fields["name"]."</th></tr>";
 
 		echo "<tr class='tab_bg_2'>";
 		echo "<td>".$LANG['plugin_addressing']['profile'][3].":</td><td>";
