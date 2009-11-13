@@ -204,7 +204,7 @@ class PluginAddressing extends CommonDBTM {
     $onsubmit="onSubmit='return plugaddr_Check(\"".$LANG['plugin_addressing']['reports'][37]."\")'";
     $this->showFormHeader($target,$ID,$withtemplate,2,$onsubmit);
 
-    echo "<tr><td class='tab_bg_1' valign='top'>";
+    echo "<tr><td class='tab_bg_1 top'>";
 
     echo "<table cellpadding='2' cellspacing='2' border='0'>\n";
 
@@ -252,7 +252,7 @@ class PluginAddressing extends CommonDBTM {
 
     echo "</table>";
     echo "</td>";
-    echo "<td class='tab_bg_1' valign='top'>";
+    echo "<td class='tab_bg_1 top'>";
     echo "<table cellpadding='2' cellspacing='2' border='0'>";
 
     $PluginAddressingConfig=new PluginAddressingConfig();
@@ -298,7 +298,7 @@ class PluginAddressing extends CommonDBTM {
 
     echo "</td>";
 
-    echo "<td class='tab_bg_1' valign='top'>";
+    echo "<td class='tab_bg_1 top'>";
 
     echo "<table cellpadding='2' cellspacing='2' border='0'><tr><td>";
     echo $LANG['common'][25].":	</td></tr>";
