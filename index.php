@@ -39,7 +39,7 @@ include (GLPI_ROOT . "/inc/includes.php");
 
 commonHeader($LANG['plugin_addressing']['title'][1],$_SERVER['PHP_SELF'],"plugins","addressing");
 
-if(plugin_addressing_haveRight("addressing","r") || haveRight("config","w")){
+if(plugin_addressing_haveRight("addressing","r") || haveRight("config","w")) {
 	
 	manageGetValuesInSearch(PLUGIN_ADDRESSING_TYPE);
 		
@@ -47,7 +47,7 @@ if(plugin_addressing_haveRight("addressing","r") || haveRight("config","w")){
 
 	showList(PLUGIN_ADDRESSING_TYPE,$_GET);
 
-}else{
+} else {
 	echo "<div align='center'><br><br><img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt=\"warning\"><br><br>";
 	echo "<b>".$LANG['login'][5]."</b></div>";
 }

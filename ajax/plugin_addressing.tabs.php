@@ -43,24 +43,21 @@ header_nocache();
 if(!isset($_POST["id"])) {
 	exit();
 }
-if(!isset($_POST["sort"])) $_POST["sort"] = "";
-if(!isset($_POST["order"])) $_POST["order"] = "";
-if(!isset($_POST["withtemplate"])) $_POST["withtemplate"] = "";
 
-	$PluginAddressingProfile=new PluginAddressingProfile();
-	$PluginAddressingProfile->checkRight("addressing","r");
+$PluginAddressingProfile=new PluginAddressingProfile();
+$PluginAddressingProfile->checkRight("addressing","r");
 
-	if (empty($_POST["id"])){
-		switch($_REQUEST['glpi_tab']) {
-			default :
-				break;
-		}
-	}else{
-		switch($_REQUEST['glpi_tab']) {
-			default :
-				break;
-		}
-		ajaxFooter();
-	}
+if (empty($_POST["id"])) {
+   switch($_REQUEST['glpi_tab']) {
+      default :
+         break;
+   }
+} else {
+   switch($_REQUEST['glpi_tab']) {
+      default :
+         break;
+   }
+   ajaxFooter();
+}
 
 ?>

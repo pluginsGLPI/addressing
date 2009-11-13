@@ -39,7 +39,7 @@ if (!defined('GLPI_ROOT')){
 
 class PluginAddressingProfile extends CommonDBTM {
 
-	function __construct () {
+	function __construct() {
 		$this->table="glpi_plugin_addressing_profiles";
 		$this->type=-1;
 	}
@@ -50,9 +50,9 @@ class PluginAddressingProfile extends CommonDBTM {
 		$this->delete(array('id'=>$ID));
 	}
 	
-	function createFirstAccess($ID){
+	function createFirstAccess($ID) {
 
-		if (!$this->GetfromDB($ID)){
+		if (!$this->GetfromDB($ID)) {
 	
 			$Profile=new Profile();
 			$Profile->GetfromDB($ID);
@@ -66,7 +66,7 @@ class PluginAddressingProfile extends CommonDBTM {
 	
 	}
 	
-	function createAccess($ID){
+	function createAccess($ID) {
 	
 		$Profile=new Profile();
 		$Profile->GetfromDB($ID);
@@ -100,12 +100,12 @@ class PluginAddressingProfile extends CommonDBTM {
 	}
 
 	//profiles modification
-	function showForm($target,$ID){
+	function showForm($target,$ID) {
 		global $LANG;
 
 		if (!haveRight("profile","r")) return false;
 		$canedit=haveRight("profile","w");
-		if ($ID){
+		if ($ID) {
 			$this->getFromDB($ID);
 		}
 		echo "<form action='".$target."' method='post'>";
@@ -119,7 +119,7 @@ class PluginAddressingProfile extends CommonDBTM {
 		echo "</td>";
 		echo "</tr>";
 
-		if ($canedit){
+		if ($canedit) {
 			echo "<tr class='tab_bg_1'>";
 			echo "<td align='center' colspan='2'>";
 			echo "<input type='hidden' name='id' value=$ID>";
@@ -127,7 +127,6 @@ class PluginAddressingProfile extends CommonDBTM {
 			echo "</td></tr>";
 		}
 		echo "</table></form>";
-
 	}
 }
 

@@ -37,7 +37,7 @@ if (!defined('GLPI_ROOT')){
 	die("Sorry. You can't access directly to this file");
 	}
 
-function plugin_addressing_execute($DB_file){
+function plugin_addressing_execute($DB_file) {
 
 	global $DB;
 
@@ -57,27 +57,27 @@ function plugin_addressing_Installv180() {
 	plugin_addressing_execute(GLPI_ROOT ."/plugins/addressing/inc/plugin_addressing-1.8.0-empty.sql");
 }
 
-function plugin_addressing_updatev14(){
+function plugin_addressing_updatev14() {
 
 	plugin_addressing_execute(GLPI_ROOT ."/plugins/addressing/inc/plugin_addressing-1.4-update.sql");
 }
 
-function plugin_addressing_updatev15(){
+function plugin_addressing_updatev15() {
 
 	plugin_addressing_execute(GLPI_ROOT ."/plugins/addressing/inc/plugin_addressing-1.5-update.sql");
 }
 
-function plugin_addressing_updatev16(){
+function plugin_addressing_updatev16() {
 
 	plugin_addressing_execute(GLPI_ROOT ."/plugins/addressing/inc/plugin_addressing-1.6-update.sql");
 }
 
-function plugin_addressing_updatev170(){
+function plugin_addressing_updatev170() {
 
 	plugin_addressing_execute(GLPI_ROOT ."/plugins/addressing/inc/plugin_addressing-1.7.0-update.sql");
 }
 
-function plugin_addressing_updatev180(){
+function plugin_addressing_updatev180() {
 
 	plugin_addressing_execute(GLPI_ROOT ."/plugins/addressing/inc/plugin_addressing-1.8.0-update.sql");
 }

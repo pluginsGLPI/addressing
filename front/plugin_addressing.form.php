@@ -59,29 +59,25 @@ if (isset($_POST["add"]))
 		else
 			addMessageAfterRedirect($LANG['plugin_addressing']['setup'][27],false,ERROR);
 	glpi_header($_SERVER['HTTP_REFERER']);
-}
-else if (isset($_POST["delete"]))
-{
+	
+} else if (isset($_POST["delete"])) {
 
 	if( plugin_addressing_haveRight("addressing","w"))
 		$PluginAddressing->delete($_POST);
 	glpi_header($CFG_GLPI["root_doc"]."/plugins/addressing/index.php");
-}
-else if (isset($_POST["restore"]))
-{
+	
+} else if (isset($_POST["restore"])) {
 
 	if( plugin_addressing_haveRight("addressing","w"))
 		$PluginAddressing->restore($_POST);
 	glpi_header($CFG_GLPI["root_doc"]."/plugins/addressing/index.php");
-}
-else if (isset($_POST["purge"]))
-{
+	
+} else if (isset($_POST["purge"])) {
 	if( plugin_addressing_haveRight("addressing","w"))
 		$PluginAddressing->delete($_POST,1);
 	glpi_header($CFG_GLPI["root_doc"]."/plugins/addressing/index.php");
-}
-else if (isset($_POST["update"]))
-{
+	
+} else if (isset($_POST["update"])) {
 	if( plugin_addressing_haveRight("addressing","w")) {
 		if (!empty($_POST["name"]) && !empty($_POST["begin_ip"]) && !empty($_POST["end_ip"]))
 			$PluginAddressing->update($_POST);
@@ -89,9 +85,8 @@ else if (isset($_POST["update"]))
 			addMessageAfterRedirect($LANG['plugin_addressing']['setup'][27],false,ERROR);
 	}
 	glpi_header($_SERVER['HTTP_REFERER']);
-}
-else
-{
+	
+} else {
 
 	$PluginAddressingProfile->checkRight("addressing","r");
 

@@ -47,7 +47,7 @@ commonHeader($LANG['plugin_addressing']['title'][1],$_SERVER['PHP_SELF'],"plugin
 
 $PluginAddressing=new PluginAddressing;
 
-if ($PluginAddressing->getFromDB($_GET["id"])){
+if ($PluginAddressing->getFromDB($_GET["id"])) {
 
 	$result=$PluginAddressing->compute();
 	//echo "<pre>"; print_r($result);	echo "</pre>";
@@ -90,7 +90,7 @@ if ($PluginAddressing->getFromDB($_GET["id"])){
 	if ($PluginAddressing->fields['double_ip']) {
 		echo "<span class='plugin_addressing_ip_double'>".$LANG['plugin_addressing']['reports'][15]."</span> : ".$LANG['plugin_addressing']['reports'][16]."<br>";
 	}
-	if (isset($PluginAddressing->fields['use_ping']) && $PluginAddressing->fields['use_ping']){
+	if (isset($PluginAddressing->fields['use_ping']) && $PluginAddressing->fields['use_ping']) {
 		echo $LANG['plugin_addressing']['reports'][30]." : <br>";
 		echo "<span class='plugin_addressing_ping_off'>".$LANG['plugin_addressing']['reports'][31]."</span><br>";
 		echo "<span class='plugin_addressing_ping_on'>".$LANG['plugin_addressing']['reports'][32]."</span>";
@@ -114,7 +114,7 @@ if ($PluginAddressing->getFromDB($_GET["id"])){
 
 	$ping_response = $PluginAddressing->display($result, $PluginAddressing);
 
-	if ($PluginAddressing->fields['use_ping']){
+	if ($PluginAddressing->fields['use_ping']) {
 		$total_realfreeip=$nbipf-$ping_response;
 		echo "<table class='tab_cadre_report'><tr class='tab_bg_2' align='center'>";
 		echo "<td>";

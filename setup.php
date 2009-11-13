@@ -57,16 +57,16 @@ function plugin_init_addressing() {
 		'tablename'  => 'glpi_plugin_addressing'
 		));
 
-	if (isset($_SESSION["glpiID"])){
+	if (isset($_SESSION["glpiID"])) {
 
-		if (plugin_addressing_haveRight("addressing","r")){
+		if (plugin_addressing_haveRight("addressing","r")) {
 
 			$PLUGIN_HOOKS['menu_entry']['addressing'] = true;
 			$PLUGIN_HOOKS['submenu_entry']['addressing']['search'] = 'index.php';
 			$PLUGIN_HOOKS['headings']['addressing'] = 'plugin_get_headings_addressing';
 			$PLUGIN_HOOKS['headings_action']['addressing'] = 'plugin_headings_actions_addressing';
 		}
-		if (plugin_addressing_haveRight("addressing","w")){
+		if (plugin_addressing_haveRight("addressing","w")) {
 			$PLUGIN_HOOKS['submenu_entry']['addressing']['add'] = 'front/plugin_addressing.form.php?new=1';
 			$PLUGIN_HOOKS['use_massive_action']['addressing']=1;
 			$PLUGIN_HOOKS['pre_item_delete']['addressing'] = 'plugin_pre_item_delete_addressing';
@@ -87,7 +87,7 @@ function plugin_init_addressing() {
 
 }
 // Get the name and the version of the plugin - Needed
-function plugin_version_addressing(){
+function plugin_version_addressing() {
 	global $LANG;
 
 	return array (
@@ -100,8 +100,8 @@ function plugin_version_addressing(){
 }
 
 // Optional : check prerequisites before install : may print errors or add to message after redirect
-function plugin_addressing_check_prerequisites(){
-	if (GLPI_VERSION>=0.80){
+function plugin_addressing_check_prerequisites() {
+	if (GLPI_VERSION>=0.80) {
 		return true;
 	} else {
 		echo "GLPI version not compatible need 0.80";
@@ -109,17 +109,16 @@ function plugin_addressing_check_prerequisites(){
 }
 
 // Uninstall process for plugin : need to return true if succeeded : may display messages or add to message after redirect
-function plugin_addressing_check_config(){
+function plugin_addressing_check_config() {
 	return true;
 }
 
-function plugin_addressing_changeProfile()
-{
+function plugin_addressing_changeProfile() {
 	$PluginAddressingProfile=new PluginAddressingProfile();
 	$PluginAddressingProfile->changeProfile();
 }
 
-function plugin_addressing_haveRight($module,$right){
+function plugin_addressing_haveRight($module,$right) {
 	$matches=array(
 			""  => array("","r","w"), // ne doit pas arriver normalement
 			"r" => array("r","w"),
@@ -133,7 +132,7 @@ function plugin_addressing_haveRight($module,$right){
 }
 
 // Define rights for the plugin types
-function plugin_addressing_haveTypeRight($type,$right){
+function plugin_addressing_haveTypeRight($type,$right) {
 	switch ($type){
 		case PLUGIN_ADDRESSING_TYPE :
 			// 1 - All rights for all users

@@ -39,7 +39,7 @@ if (!defined('GLPI_ROOT')){
 
 class PluginAddressing extends CommonDBTM {
 
-	function __construct () {
+	function __construct() {
 		$this->table="glpi_plugin_addressing";
 		$this->type=PLUGIN_ADDRESSING_TYPE;
 	}
@@ -102,20 +102,21 @@ class PluginAddressing extends CommonDBTM {
 		 return $tab;
    }
 
-	function defineTabs($ID,$withtemplate){
+	function defineTabs($ID,$withtemplate) {
 		global $LANG;
+		
 		$ong[1]=$LANG['title'][26];
 		return $ong;
 	}
 
-	function getTitle () {
+	function getTitle() {
 		global $LANG;
 
 		return $LANG['plugin_addressing']['reports'][1]." ".$this->fields["begin_ip"]." ".
 			  $LANG['plugin_addressing']['reports'][20]." ".$this->fields["end_ip"];
 	}
 
-	function compute () {
+	function compute() {
 		global $DB, $CFG_GLPI, $LINK_ID_TABLE;
 
 		// sprintf to solve 32/64 bits issue
@@ -192,132 +193,132 @@ class PluginAddressing extends CommonDBTM {
 
 		if (!plugin_addressing_haveRight("addressing","r")) return false;
 
-		if ($ID > 0) {
-       $this->check($ID,'r');
-    } else {
-       // Create item
-       $this->check(-1,'r');
-       $this->getEmpty();
-    }
+      if ($ID > 0) {
+         $this->check($ID,'r');
+      } else {
+      // Create item
+         $this->check(-1,'r');
+         $this->getEmpty();
+      }
 
-    $this->showTabs($ID, $withtemplate,$_SESSION['glpi_tab']);
-    $onsubmit="onSubmit='return plugaddr_Check(\"".$LANG['plugin_addressing']['reports'][37]."\")'";
-    $this->showFormHeader($target,$ID,$withtemplate,2,$onsubmit);
+      $this->showTabs($ID, $withtemplate,$_SESSION['glpi_tab']);
+      $onsubmit="onSubmit='return plugaddr_Check(\"".$LANG['plugin_addressing']['reports'][37]."\")'";
+      $this->showFormHeader($target,$ID,$withtemplate,2,$onsubmit);
 
-    echo "<tr><td class='tab_bg_1 top'>";
+      echo "<tr><td class='tab_bg_1 top'>";
 
-    echo "<table cellpadding='2' cellspacing='2' border='0'>\n";
+      echo "<table cellpadding='2' cellspacing='2' border='0'>\n";
 
-    echo "<tr><td>".$LANG['common'][16].": </td>";
-    echo "<td>";
-    autocompletionTextField("name",$this->table,"name",$this->fields["name"],20,$this->fields["entities_id"]);
-    echo "</td></tr>";
-
-    echo "<tr><td>".$LANG['plugin_addressing']['reports'][3]."</td>";
-    echo "<td>";
-    dropdownValue("glpi_networks", "networks_id", $this->fields["networks_id"]);
-    echo "</td></tr>";
-
-    echo "<tr><td>".$LANG['plugin_addressing']['reports'][36]."</td>";
-    echo "<td>";
-    $this->dropdownSubnet($ID>0 ? $this->fields["entities_id"] : $_SESSION["glpiactive_entity"]);
-    echo "</td></tr>";
-
-    echo "<tr><td>".$LANG['plugin_addressing']['reports'][38]." : </td>"; // Subnet
-    echo "<td>";
-    echo "<input type='text' id='plugaddr_ipdeb0' value='' name='_ipdeb0' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>.";
-    echo "<input type='text' id='plugaddr_ipdeb1' value='' name='_ipdeb1' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>.";
-    echo "<input type='text' id='plugaddr_ipdeb2' value='' name='_ipdeb2' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>.";
-    echo "<input type='text' id='plugaddr_ipdeb3' value='' name='_ipdeb3' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>";
-    echo "</td></tr>";
-
-    echo "<tr><td>".$LANG['plugin_addressing']['reports'][39]." : </td>"; // Mask
-    echo "<td>";
-    echo "<input type='text' id='plugaddr_ipfin0' value='' name='_ipfin0' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>.";
-    echo "<input type='text' id='plugaddr_ipfin1' value='' name='_ipfin1' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>.";
-    echo "<input type='text' id='plugaddr_ipfin2' value='' name='_ipfin2' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>.";
-    echo "<input type='text' id='plugaddr_ipfin3' value='' name='_ipfin3' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>";
-    echo "</td></tr>";
-
-    echo "<tr><td>".$LANG['plugin_addressing']['reports'][1]." : </td>"; // Mask
-    echo "<td>";
-    echo "<input type='hidden' id='plugaddr_ipdeb' value='".$this->fields["begin_ip"]."' name='begin_ip'>";
-    echo "<input type='hidden' id='plugaddr_ipfin' value='".$this->fields["end_ip"]."' name='end_ip'>";
-    echo "<div id='plugaddr_range'>-</div>";
-    echo "</td></tr>";
-
-    if ($ID>0) {
-      echo "<tr><td><script language='JavaScript' type='text/javascript'>plugaddr_Init(\"".$LANG['plugin_addressing']['reports'][37]."\");</script></td></tr>";
-    }
-
-    echo "</table>";
-    echo "</td>";
-    echo "<td class='tab_bg_1 top'>";
-    echo "<table cellpadding='2' cellspacing='2' border='0'>";
-
-    $PluginAddressingConfig=new PluginAddressingConfig();
-    $PluginAddressingConfig->getFromDB('1');
-
-    if ($PluginAddressingConfig->fields["alloted_ip"]) {
-      echo "<tr><td>".$LANG['plugin_addressing']['setup'][11]."</td><td>";
-      dropdownYesNo('alloted_ip',$this->fields["alloted_ip"]);
+      echo "<tr><td>".$LANG['common'][16].": </td>";
+      echo "<td>";
+      autocompletionTextField("name",$this->table,"name",$this->fields["name"],20,$this->fields["entities_id"]);
       echo "</td></tr>";
-    } else {
-      echo "<input type='hidden' name='alloted_ip' value='0''>\n";
-    }
-    if ($PluginAddressingConfig->fields["free_ip"]) {
-      echo "<tr><td>".$LANG['plugin_addressing']['setup'][12]."</td><td>";
-      dropdownYesNo('free_ip',$this->fields["free_ip"]);
+
+      echo "<tr><td>".$LANG['plugin_addressing']['reports'][3]."</td>";
+      echo "<td>";
+      dropdownValue("glpi_networks", "networks_id", $this->fields["networks_id"]);
       echo "</td></tr>";
-    } else {
-      echo "<input type='hidden' name='free_ip' value='0''>\n";
-    }
-    if ($PluginAddressingConfig->fields["double_ip"]) {
-      echo "<tr><td>".$LANG['plugin_addressing']['setup'][13]."</td><td>";
-      dropdownYesNo('double_ip',$this->fields["double_ip"]);
+
+      echo "<tr><td>".$LANG['plugin_addressing']['reports'][36]."</td>";
+      echo "<td>";
+      $this->dropdownSubnet($ID>0 ? $this->fields["entities_id"] : $_SESSION["glpiactive_entity"]);
       echo "</td></tr>";
-    } else {
-      echo "<input type='hidden' name='double_ip' value='0''>\n";
-    }
-    if ($PluginAddressingConfig->fields["reserved_ip"]) {
-      echo "<tr><td>".$LANG['plugin_addressing']['setup'][14]."</td><td>";
-      dropdownYesNo('reserved_ip',$this->fields["reserved_ip"]);
+
+      echo "<tr><td>".$LANG['plugin_addressing']['reports'][38]." : </td>"; // Subnet
+      echo "<td>";
+      echo "<input type='text' id='plugaddr_ipdeb0' value='' name='_ipdeb0' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>.";
+      echo "<input type='text' id='plugaddr_ipdeb1' value='' name='_ipdeb1' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>.";
+      echo "<input type='text' id='plugaddr_ipdeb2' value='' name='_ipdeb2' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>.";
+      echo "<input type='text' id='plugaddr_ipdeb3' value='' name='_ipdeb3' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>";
       echo "</td></tr>";
-    } else {
-      echo "<input type='hidden' name='reserved_ip' value='0''>\n";
-    }
 
-    if ($PluginAddressingConfig->fields["use_ping"]) {
-      echo "<tr><td>".$LANG['plugin_addressing']['reports'][30].": </td><td>";
-      dropdownYesNo('use_ping',$this->fields["use_ping"]);
+      echo "<tr><td>".$LANG['plugin_addressing']['reports'][39]." : </td>"; // Mask
+      echo "<td>";
+      echo "<input type='text' id='plugaddr_ipfin0' value='' name='_ipfin0' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>.";
+      echo "<input type='text' id='plugaddr_ipfin1' value='' name='_ipfin1' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>.";
+      echo "<input type='text' id='plugaddr_ipfin2' value='' name='_ipfin2' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>.";
+      echo "<input type='text' id='plugaddr_ipfin3' value='' name='_ipfin3' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>";
       echo "</td></tr>";
-    } else {
-      echo "<input type='hidden' name='use_ping' value=\"0\">\n";
-    }
-    echo "</table>";
 
-    echo "</td>";
+      echo "<tr><td>".$LANG['plugin_addressing']['reports'][1]." : </td>"; // Mask
+      echo "<td>";
+      echo "<input type='hidden' id='plugaddr_ipdeb' value='".$this->fields["begin_ip"]."' name='begin_ip'>";
+      echo "<input type='hidden' id='plugaddr_ipfin' value='".$this->fields["end_ip"]."' name='end_ip'>";
+      echo "<div id='plugaddr_range'>-</div>";
+      echo "</td></tr>";
 
-    echo "<td class='tab_bg_1 top'>";
+      if ($ID>0) {
+         echo "<tr><td><script language='JavaScript' type='text/javascript'>plugaddr_Init(\"".$LANG['plugin_addressing']['reports'][37]."\");</script></td></tr>";
+      }
 
-    echo "<table cellpadding='2' cellspacing='2' border='0'><tr><td>";
-    echo $LANG['common'][25].":	</td></tr>";
-    echo "<tr><td align='center'><textarea cols='35' rows='4' name='comment' >".$this->fields["comment"]."</textarea>";
-    echo "</td></tr></table>";
+      echo "</table>";
+      echo "</td>";
+      echo "<td class='tab_bg_1 top'>";
+      echo "<table cellpadding='2' cellspacing='2' border='0'>";
 
-    echo "</td>";
-    echo "</tr>";
+      $PluginAddressingConfig=new PluginAddressingConfig();
+      $PluginAddressingConfig->getFromDB('1');
 
-    $this->showFormButtons($ID,$withtemplate,2);
-    echo "<div id='tabcontent'></div>";
-    echo "<script type='text/javascript'>loadDefaultTab();</script>";
+      if ($PluginAddressingConfig->fields["alloted_ip"]) {
+         echo "<tr><td>".$LANG['plugin_addressing']['setup'][11]."</td><td>";
+         dropdownYesNo('alloted_ip',$this->fields["alloted_ip"]);
+         echo "</td></tr>";
+      } else {
+         echo "<input type='hidden' name='alloted_ip' value='0''>\n";
+      }
+      if ($PluginAddressingConfig->fields["free_ip"]) {
+         echo "<tr><td>".$LANG['plugin_addressing']['setup'][12]."</td><td>";
+         dropdownYesNo('free_ip',$this->fields["free_ip"]);
+         echo "</td></tr>";
+      } else {
+         echo "<input type='hidden' name='free_ip' value='0''>\n";
+      }
+      if ($PluginAddressingConfig->fields["double_ip"]) {
+         echo "<tr><td>".$LANG['plugin_addressing']['setup'][13]."</td><td>";
+         dropdownYesNo('double_ip',$this->fields["double_ip"]);
+         echo "</td></tr>";
+      } else {
+         echo "<input type='hidden' name='double_ip' value='0''>\n";
+      }
+      if ($PluginAddressingConfig->fields["reserved_ip"]) {
+         echo "<tr><td>".$LANG['plugin_addressing']['setup'][14]."</td><td>";
+         dropdownYesNo('reserved_ip',$this->fields["reserved_ip"]);
+         echo "</td></tr>";
+      } else {
+         echo "<input type='hidden' name='reserved_ip' value='0''>\n";
+      }
+
+      if ($PluginAddressingConfig->fields["use_ping"]) {
+         echo "<tr><td>".$LANG['plugin_addressing']['reports'][30].": </td><td>";
+         dropdownYesNo('use_ping',$this->fields["use_ping"]);
+         echo "</td></tr>";
+      } else {
+         echo "<input type='hidden' name='use_ping' value=\"0\">\n";
+      }
+      echo "</table>";
+
+      echo "</td>";
+
+      echo "<td class='tab_bg_1 top'>";
+
+      echo "<table cellpadding='2' cellspacing='2' border='0'><tr><td>";
+      echo $LANG['common'][25].":	</td></tr>";
+      echo "<tr><td align='center'><textarea cols='35' rows='4' name='comment' >".$this->fields["comment"]."</textarea>";
+      echo "</td></tr></table>";
+
+      echo "</td>";
+      echo "</tr>";
+
+      $this->showFormButtons($ID,$withtemplate,2);
+      echo "<div id='tabcontent'></div>";
+      echo "<script type='text/javascript'>loadDefaultTab();</script>";
 
 		return true;
 	}
 
-	function displaySearchNewLine($type,$odd=false){
+	function displaySearchNewLine($type,$odd=false) {
 		$out="";
-		switch ($type){
+		switch ($type) {
 			case PDF_OUTPUT_LANDSCAPE : //pdf
 			case PDF_OUTPUT_PORTRAIT :
 				break;
@@ -401,7 +402,7 @@ class PluginAddressing extends CommonDBTM {
 				} else {
 					$disp = $this->fields["alloted_ip"];
 				}
-				if ($disp) foreach ($lines as $line){
+				if ($disp) foreach ($lines as $line) {
 					$row_num++;
 					$item_num=1;
 					$name=$line["dname"];
@@ -412,14 +413,14 @@ class PluginAddressing extends CommonDBTM {
 
 					// Device
 					$ci->setType($line["itemtype"]);
-					if ($line["itemtype"] != NETWORKING_TYPE){
+					if ($line["itemtype"] != NETWORKING_TYPE) {
 						if (haveTypeRight($line["itemtype"], "r")) {
 							$output_iddev = "<a href='".$CFG_GLPI["root_doc"]."/".$INFOFORM_PAGES[$line["itemtype"]]."?id=".$line["on_device"]."'>".$name
 								.(empty($name) || $_SESSION["glpiis_ids_visible"]?" (".$line["on_device"].")":"")."</a>";
 						} else {
 							$output_iddev = $name.(empty($name) || $_SESSION["glpiis_ids_visible"]?" (".$line["on_device"].")":"");
 						}
-					}else{
+					} else {
 						if (haveTypeRight($line["itemtype"], "r")) {
 							$output_iddev = "<a href='".$CFG_GLPI["root_doc"]."/".$INFOFORM_PAGES[$line["itemtype"]]."?id=".$line["on_device"]."'>".$namep." - ".$name
 								.(empty($name) || $_SESSION["glpiis_ids_visible"]?" (".$line["on_device"].")":"")."</a>";
@@ -444,7 +445,7 @@ class PluginAddressing extends CommonDBTM {
 					}
 
 					// Mac
-					if($line["id"]){
+					if($line["id"]) {
 						if (haveTypeRight($line["itemtype"], "r")) {
 							$output_mac = "<a href='".$CFG_GLPI["root_doc"]."/front/networking.port.php?id=".$line["id"]."'>".$line["mac"]."</a>";
 						} else {
@@ -503,17 +504,16 @@ class PluginAddressing extends CommonDBTM {
 		return $ping_response;
 	}
 	
-	function ping($system,$ip){
+	function ping($system,$ip) {
     $list ='';
-      switch ($system){
+      switch ($system) {
 
       case 0:
       // linux ping
           exec("ping -c 1 -w 1 ".$ip, $list);
           $nb=count($list);
-          if (isset($nb)){
-              for($i=0;$i<$nb;$i++)
-              {
+          if (isset($nb)) {
+              for($i=0;$i<$nb;$i++) {
                   if(strpos($list[$i],"ttl=")>0) return true;
               }
           }
@@ -523,9 +523,8 @@ class PluginAddressing extends CommonDBTM {
       //windows
           exec("ping.exe -n 1 -w 1 -i 4 ".$ip, $list);
           $nb=count($list);
-          if (isset($nb)){
-              for($i=0;$i<$nb;$i++)
-              {
+          if (isset($nb)) {
+              for($i=0;$i<$nb;$i++) {
                   if(strpos($list[$i],"TTL")>0) return true;
               }
           }
@@ -535,9 +534,8 @@ class PluginAddressing extends CommonDBTM {
       //linux fping
       exec("fping -r1 -c1 -t100 ".$ip, $list);
           $nb=count($list);
-          if (isset($nb)){
-              for($i=0;$i<$nb;$i++)
-              {
+          if (isset($nb)) {
+              for($i=0;$i<$nb;$i++) {
                   if(strpos($list[$i],"bytes")>0) return true;
               }
           }
@@ -547,9 +545,8 @@ class PluginAddressing extends CommonDBTM {
       // *BSD ping
           exec("ping -c 1 -W 1 ".$ip, $list);
           $nb=count($list);
-          if (isset($nb)){
-              for($i=0;$i<$nb;$i++)
-              {
+          if (isset($nb)) {
+              for($i=0;$i<$nb;$i++) {
                   if(strpos($list[$i],"ttl=")>0) return true;
               }
           }
@@ -559,9 +556,8 @@ class PluginAddressing extends CommonDBTM {
       // MacOSX ping
           exec("ping -c 1 -t 1 ".$ip, $list);
           $nb=count($list);
-          if (isset($nb)){
-              for($i=0;$i<$nb;$i++)
-              {
+          if (isset($nb)) {
+              for($i=0;$i<$nb;$i++) {
                   if(strpos($list[$i],"ttl=")>0) return true;
               }
           }
@@ -572,7 +568,7 @@ class PluginAddressing extends CommonDBTM {
 
 class PluginAddressingReport extends CommonDBTM {
 
-	function __construct () {
+	function __construct() {
 		$this->table="glpi_plugin_addressing";
 		$this->type=PLUGIN_ADDRESSING_REPORT_TYPE;
 	}
@@ -580,7 +576,7 @@ class PluginAddressingReport extends CommonDBTM {
 
 class PluginAddressingConfig extends CommonDBTM {
 
-	function __construct () {
+	function __construct() {
 		$this->table="glpi_plugin_addressing_configs";
 	}
 }
