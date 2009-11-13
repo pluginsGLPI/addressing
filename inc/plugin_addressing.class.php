@@ -45,7 +45,7 @@ class PluginAddressing extends CommonDBTM {
 	}
 
   function getSearchOptions() {
-      global $LANG;
+    global $LANG;
 
       $tab = array();
 
@@ -162,8 +162,7 @@ class PluginAddressing extends CommonDBTM {
 	}
 
 	function dropdownSubnet($entity) {
-
-	GLOBAL $DB;
+    global $DB;
 
 	$rand=mt_rand();
 	echo "<select name='_subnet' id='plugaddr_subnet' onChange='plugaddr_ChangeList();'>";
@@ -189,8 +188,7 @@ class PluginAddressing extends CommonDBTM {
 }
 
 	function showForm ($target,$ID,$withtemplate='') {
-
-		GLOBAL $CFG_GLPI, $LANG;
+		global $CFG_GLPI,$LANG;
 
 		if (!plugin_addressing_haveRight("addressing","r")) return false;
 
@@ -357,7 +355,6 @@ class PluginAddressing extends CommonDBTM {
 	}
 
 	function display(&$result) {
-
 		global $DB,$LANG,$CFG_GLPI,$INFOFORM_PAGES;
 
 		$network=$this->fields["networks_id"];
