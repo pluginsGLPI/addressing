@@ -121,7 +121,7 @@ class PluginAddressingProfile extends CommonDBTM {
 
 		if ($canedit) {
 			echo "<tr class='tab_bg_1'>";
-			echo "<td align='center' colspan='2'>";
+			echo "<td class='center' colspan='2'>";
 			echo "<input type='hidden' name='id' value=$ID>";
 			echo "<input type='submit' name='update_user_profile' value=\"".$LANG['buttons'][7]."\" class='submit'>";
 			echo "</td></tr>";

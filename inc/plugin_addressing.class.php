@@ -303,7 +303,7 @@ class PluginAddressing extends CommonDBTM {
 
       echo "<table cellpadding='2' cellspacing='2' border='0'><tr><td>";
       echo $LANG['common'][25].":	</td></tr>";
-      echo "<tr><td align='center'><textarea cols='35' rows='4' name='comment' >".$this->fields["comment"]."</textarea>";
+      echo "<tr><td class='center'><textarea cols='35' rows='4' name='comment' >".$this->fields["comment"]."</textarea>";
       echo "</td></tr></table>";
 
       echo "</td>";

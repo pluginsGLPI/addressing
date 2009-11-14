@@ -71,7 +71,7 @@ if ($PluginAddressing->getFromDB($_GET["id"])) {
 	////title
 	echo "<div align='center'><b>".$PluginAddressing->getTitle(). "</b><br>";
 
-	echo "<table class='tab_cadre_report'><tr class='tab_bg_2' align='left'>";
+	echo "<table class='tab_cadre_report'><tr class='tab_bg_2 left'>";
 	echo "<td>";
 	if ($PluginAddressing->fields['free_ip']) {
 		echo $LANG['plugin_addressing']['reports'][26]." : ".$nbipf."<br>" ;
@@ -116,7 +116,7 @@ if ($PluginAddressing->getFromDB($_GET["id"])) {
 
 	if ($PluginAddressing->fields['use_ping']) {
 		$total_realfreeip=$nbipf-$ping_response;
-		echo "<table class='tab_cadre_report'><tr class='tab_bg_2' align='center'>";
+		echo "<table class='tab_cadre_report'><tr class='tab_bg_2 center'>";
 		echo "<td>";
 		echo $LANG['plugin_addressing']['reports'][34].": ".$total_realfreeip;
 		echo "</td></tr>";
