@@ -285,7 +285,6 @@ function plugin_addressing_dynamicReport($parm) {
 
 // Define headings added by the plugin
 function plugin_get_headings_addressing($type,$ID,$withtemplate) {
-
 	global $LANG;
 
 	if ($type==PROFILE_TYPE) {

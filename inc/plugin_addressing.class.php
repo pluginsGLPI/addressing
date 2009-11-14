@@ -99,7 +99,7 @@ class PluginAddressing extends CommonDBTM {
       $tab[1001]['linkfield']='';
       $tab[1001]['name']=$LANG['plugin_addressing']['reports'][39];
 
-		 return $tab;
+		return $tab;
    }
 
 	function defineTabs($ID,$withtemplate) {
@@ -163,29 +163,29 @@ class PluginAddressing extends CommonDBTM {
 	}
 
 	function dropdownSubnet($entity) {
-    global $DB;
+      global $DB;
 
-	$rand=mt_rand();
-	echo "<select name='_subnet' id='plugaddr_subnet' onChange='plugaddr_ChangeList();'>";
-	echo "<option value=''>-----</option>";
+      $rand=mt_rand();
+      echo "<select name='_subnet' id='plugaddr_subnet' onChange='plugaddr_ChangeList();'>";
+      echo "<option value=''>-----</option>";
 
-	$sql="SELECT DISTINCT `subnet`, `netmask`
-			FROM `glpi_networkports` " .
-			"LEFT JOIN `glpi_computers` ON (`glpi_computers`.`id` = `glpi_networkports`.`items_id`) " .
-			"WHERE `itemtype` = '".COMPUTER_TYPE."'
-			AND `entities_id` = '".$entity."'
-			AND `subnet` NOT IN ('','0.0.0.0','127.0.0.0')
-			AND `netmask` NOT IN ('','0.0.0.0','255.255.255.255')" .
-			getEntitiesRestrictRequest(" AND ","glpi_computers","entities_id",$entity) .
-			"ORDER BY INET_ATON(`subnet`)";
-	$result=array();
-	$result[0]="-----";
-	$res=$DB->query($sql);
-	if ($res) while ($row=$DB->fetch_assoc($res)) {
-		$val = $row["subnet"]."/".$row["netmask"];
-		echo "<option value='$val'>$val</option>";
-	}
-	echo "</select>\n";
+      $sql="SELECT DISTINCT `subnet`, `netmask`
+            FROM `glpi_networkports` " .
+            "LEFT JOIN `glpi_computers` ON (`glpi_computers`.`id` = `glpi_networkports`.`items_id`) " .
+            "WHERE `itemtype` = '".COMPUTER_TYPE."'
+            AND `entities_id` = '".$entity."'
+            AND `subnet` NOT IN ('','0.0.0.0','127.0.0.0')
+            AND `netmask` NOT IN ('','0.0.0.0','255.255.255.255')" .
+            getEntitiesRestrictRequest(" AND ","glpi_computers","entities_id",$entity) .
+            "ORDER BY INET_ATON(`subnet`)";
+      $result=array();
+      $result[0]="-----";
+      $res=$DB->query($sql);
+      if ($res) while ($row=$DB->fetch_assoc($res)) {
+         $val = $row["subnet"]."/".$row["netmask"];
+         echo "<option value='$val'>$val</option>";
+      }
+      echo "</select>\n";
 }
 
 	function showForm ($target,$ID,$withtemplate='') {
@@ -530,7 +530,7 @@ class PluginAddressing extends CommonDBTM {
           }
       break;
 
-    case 2:
+      case 2:
       //linux fping
       exec("fping -r1 -c1 -t100 ".$ip, $list);
           $nb=count($list);

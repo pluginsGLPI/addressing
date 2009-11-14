@@ -38,7 +38,6 @@ if (!defined('GLPI_ROOT')){
 	}
 
 function plugin_addressing_execute($DB_file) {
-
 	global $DB;
 
 	$DBf_handle = fopen($DB_file, "rt");
@@ -51,7 +50,6 @@ function plugin_addressing_execute($DB_file) {
 }
 
 function plugin_addressing_Installv180() {
-
 	global $DB;
 
 	plugin_addressing_execute(GLPI_ROOT ."/plugins/addressing/inc/plugin_addressing-1.8.0-empty.sql");
