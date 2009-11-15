@@ -79,7 +79,7 @@ class PluginAddressingProfile extends CommonDBTM {
 	
 	function changeProfile(){
    
-		if($this->getFromDB($_SESSION['glpiactiveprofile']['id']))
+		if ($this->getFromDB($_SESSION['glpiactiveprofile']['id']))
 		  $_SESSION["glpi_plugin_addressing_profile"]=$this->fields;
 		else
 		  unset($_SESSION["glpi_plugin_addressing_profile"]);

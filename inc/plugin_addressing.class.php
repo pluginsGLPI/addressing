@@ -445,7 +445,7 @@ class PluginAddressing extends CommonDBTM {
 					}
 
 					// Mac
-					if($line["id"]) {
+					if ($line["id"]) {
 						if (haveTypeRight($line["itemtype"], "r")) {
 							$output_mac = "<a href='".$CFG_GLPI["root_doc"]."/front/networking.port.php?id=".$line["id"]."'>".$line["mac"]."</a>";
 						} else {
@@ -514,7 +514,7 @@ class PluginAddressing extends CommonDBTM {
           $nb=count($list);
           if (isset($nb)) {
               for($i=0;$i<$nb;$i++) {
-                  if(strpos($list[$i],"ttl=")>0) return true;
+                  if (strpos($list[$i],"ttl=")>0) return true;
               }
           }
       break;
@@ -525,7 +525,7 @@ class PluginAddressing extends CommonDBTM {
           $nb=count($list);
           if (isset($nb)) {
               for($i=0;$i<$nb;$i++) {
-                  if(strpos($list[$i],"TTL")>0) return true;
+                  if (strpos($list[$i],"TTL")>0) return true;
               }
           }
       break;
@@ -536,7 +536,7 @@ class PluginAddressing extends CommonDBTM {
           $nb=count($list);
           if (isset($nb)) {
               for($i=0;$i<$nb;$i++) {
-                  if(strpos($list[$i],"bytes")>0) return true;
+                  if (strpos($list[$i],"bytes")>0) return true;
               }
           }
       break;
@@ -547,7 +547,7 @@ class PluginAddressing extends CommonDBTM {
           $nb=count($list);
           if (isset($nb)) {
               for($i=0;$i<$nb;$i++) {
-                  if(strpos($list[$i],"ttl=")>0) return true;
+                  if (strpos($list[$i],"ttl=")>0) return true;
               }
           }
       break;
@@ -558,7 +558,7 @@ class PluginAddressing extends CommonDBTM {
           $nb=count($list);
           if (isset($nb)) {
               for($i=0;$i<$nb;$i++) {
-                  if(strpos($list[$i],"ttl=")>0) return true;
+                  if (strpos($list[$i],"ttl=")>0) return true;
               }
           }
       break;

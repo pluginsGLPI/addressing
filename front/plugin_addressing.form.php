@@ -40,9 +40,9 @@ include (GLPI_ROOT."/inc/includes.php");
 
 useplugin('addressing',true);
 
-if(isset($_GET)) $tab = $_GET;
-if(empty($tab) && isset($_POST)) $tab = $_POST;
-if(!isset($tab["id"])) $tab["id"] = "";
+if (isset($_GET)) $tab = $_GET;
+if (empty($tab) && isset($_POST)) $tab = $_POST;
+if (!isset($tab["id"])) $tab["id"] = "";
 
 if (isset($_GET["start"])) $start=$_GET["start"];
 else $start=0;
@@ -52,7 +52,7 @@ $PluginAddressingProfile=new PluginAddressingProfile();
 
 if (isset($_POST["add"]))
 {
-	if( plugin_addressing_haveRight("addressing","w"))
+	if ( plugin_addressing_haveRight("addressing","w"))
 
 		if (!empty($_POST["name"]) && !empty($_POST["begin_ip"]) && !empty($_POST["end_ip"]))
 			$newID=$PluginAddressing->add($_POST);
@@ -62,23 +62,23 @@ if (isset($_POST["add"]))
 	
 } else if (isset($_POST["delete"])) {
 
-	if( plugin_addressing_haveRight("addressing","w"))
+	if ( plugin_addressing_haveRight("addressing","w"))
 		$PluginAddressing->delete($_POST);
 	glpi_header($CFG_GLPI["root_doc"]."/plugins/addressing/index.php");
 	
 } else if (isset($_POST["restore"])) {
 
-	if( plugin_addressing_haveRight("addressing","w"))
+	if ( plugin_addressing_haveRight("addressing","w"))
 		$PluginAddressing->restore($_POST);
 	glpi_header($CFG_GLPI["root_doc"]."/plugins/addressing/index.php");
 	
 } else if (isset($_POST["purge"])) {
-	if( plugin_addressing_haveRight("addressing","w"))
+	if ( plugin_addressing_haveRight("addressing","w"))
 		$PluginAddressing->delete($_POST,1);
 	glpi_header($CFG_GLPI["root_doc"]."/plugins/addressing/index.php");
 	
 } else if (isset($_POST["update"])) {
-	if( plugin_addressing_haveRight("addressing","w")) {
+	if ( plugin_addressing_haveRight("addressing","w")) {
 		if (!empty($_POST["name"]) && !empty($_POST["begin_ip"]) && !empty($_POST["end_ip"]))
 			$PluginAddressing->update($_POST);
 		else

@@ -33,7 +33,7 @@
 // ----------------------------------------------------------------------
  */
 
-if(!defined('GLPI_ROOT')) {
+if (!defined('GLPI_ROOT')) {
 	define('GLPI_ROOT', '../../..');
 	$NEEDED_ITEMS=array("setup");
 	include (GLPI_ROOT . "/inc/includes.php");
