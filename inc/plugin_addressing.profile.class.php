@@ -33,9 +33,9 @@
 // ----------------------------------------------------------------------
  */
 
-if (!defined('GLPI_ROOT')){
+if (!defined('GLPI_ROOT')) {
 	die("Sorry. You can't access directly to this file");
-	}
+}
 
 class PluginAddressingProfile extends CommonDBTM {
 
@@ -77,7 +77,7 @@ class PluginAddressingProfile extends CommonDBTM {
 			'name' => $name));
 	}
 	
-	function changeProfile(){
+	function changeProfile() {
    
 		if ($this->getFromDB($_SESSION['glpiactiveprofile']['id']))
 		  $_SESSION["glpi_plugin_addressing_profile"]=$this->fields;

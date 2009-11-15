@@ -133,7 +133,7 @@ function plugin_addressing_haveRight($module,$right) {
 
 // Define rights for the plugin types
 function plugin_addressing_haveTypeRight($type,$right) {
-	switch ($type){
+	switch ($type) {
 		case PLUGIN_ADDRESSING_TYPE :
 			// 1 - All rights for all users
 			// return true;

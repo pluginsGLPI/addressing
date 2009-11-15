@@ -33,9 +33,9 @@
 // ----------------------------------------------------------------------
  */
 
-if (!defined('GLPI_ROOT')){
+if (!defined('GLPI_ROOT')) {
 	die("Sorry. You can't access directly to this file");
-	}
+}
 
 function plugin_addressing_execute($DB_file) {
 	global $DB;
@@ -50,7 +50,6 @@ function plugin_addressing_execute($DB_file) {
 }
 
 function plugin_addressing_Installv180() {
-	global $DB;
 
 	plugin_addressing_execute(GLPI_ROOT ."/plugins/addressing/inc/plugin_addressing-1.8.0-empty.sql");
 }

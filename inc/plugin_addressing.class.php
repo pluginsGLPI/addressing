@@ -33,9 +33,9 @@
 // ----------------------------------------------------------------------
  */
 
-if (!defined('GLPI_ROOT')){
+if (!defined('GLPI_ROOT')) {
 	die("Sorry. You can't access directly to this file");
-	}
+}
 
 class PluginAddressing extends CommonDBTM {
 
@@ -331,8 +331,8 @@ class PluginAddressing extends CommonDBTM {
 
 			default :
 				$class=" class='tab_bg_2' ";
-				if ($odd){
-					switch ($odd){
+				if ($odd) {
+					switch ($odd) {
 						case "double" : //double
 							$class=" class='plugin_addressing_ip_double'";
 						break;

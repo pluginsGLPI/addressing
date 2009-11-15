@@ -93,7 +93,7 @@ function plugin_addressing_uninstall() {
 	foreach($tables as $table)
 		$DB->query("DROP TABLE `$table`;");
 
-  $tables_glpi = array("glpi_displayprefs",
+   $tables_glpi = array("glpi_displayprefs",
 					"glpi_bookmarks");
 
 	foreach($tables_glpi as $table_glpi)
@@ -108,18 +108,17 @@ function plugin_addressing_uninstall() {
 function plugin_addressing_getAddSearchOptions($itemtype) {
 	global $LANG;
 
-    $sopt=array();
+   $sopt=array();
 
-    if ($itemtype==PROFILE_TYPE) {
+   if ($itemtype==PROFILE_TYPE) {
       if (plugin_addressing_haveRight("addressing","r")) {
-        // Use a plugin type reservation to avoid conflict
-        $sopt[5000]['table']='glpi_plugin_addressing_profiles';
-        $sopt[5000]['field']='addressing';
-        $sopt[5000]['linkfield']='id';
-        $sopt[5000]['name']=$LANG['plugin_addressing']['title'][1];
-        //$sopt[5000]['datatype']='bool';
+         // Use a plugin type reservation to avoid conflict
+         $sopt[5000]['table']='glpi_plugin_addressing_profiles';
+         $sopt[5000]['field']='addressing';
+         $sopt[5000]['linkfield']='id';
+         $sopt[5000]['name']=$LANG['plugin_addressing']['title'][1];
+         //$sopt[5000]['datatype']='bool';
       }
-
 	}
 	return $sopt;
 }
@@ -132,7 +131,7 @@ function plugin_addressing_giveItem($type,$ID,$data,$num) {
 	$table=$searchopt[$ID]["table"];
 	$field=$searchopt[$ID]["field"];
 
-	switch ($table.'.'.$field){
+	switch ($table.'.'.$field) {
 		case "glpi_plugin_addressing.generation_link" :
 			$out= "<a href=\"front/plugin_addressing.display.php?id=".$data["id"]."\">".$LANG['plugin_addressing'][4]."</a>";
 			return $out;
@@ -206,10 +205,10 @@ function plugin_addressing_MassiveActionsDisplay($type,$action) {
 function plugin_addressing_MassiveActionsProcess($data) {
 	global $LANG,$DB;
 
-	switch ($data['action']){
+	switch ($data['action']) {
 
 		case "plugin_addressing_transfert":
-			if ($data['itemtype']==PLUGIN_ADDRESSING_TYPE){
+			if ($data['itemtype']==PLUGIN_ADDRESSING_TYPE) {
 				foreach ($data["item"] as $key => $val) {
 					if ($val==1) {
 						$PluginAddressing=new PluginAddressing;
@@ -303,8 +302,8 @@ function plugin_headings_actions_addressing($type) {
 
 	if (in_array($type,array(PROFILE_TYPE))) {
 		return array(
-					1 => "plugin_headings_addressing",
-					);
+         1 => "plugin_headings_addressing",
+         );
 	}
 	return false;
 }
@@ -319,7 +318,7 @@ function plugin_headings_addressing($type,$ID,$withtemplate=0) {
 			if (!$prof->GetfromDB($ID))
 				$prof->createAccess($ID);
 			$prof->showForm($CFG_GLPI["root_doc"]."/plugins/addressing/front/plugin_addressing.profile.php",$ID);
-		break;
+         break;
 	}
 }
 
