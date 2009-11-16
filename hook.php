@@ -38,7 +38,6 @@ foreach (glob(GLPI_ROOT . '/plugins/addressing/inc/*.php') as $file)
 
 
 function plugin_addressing_install() {
-	global $DB, $LANG, $CFG_GLPI;
 
 	include_once (GLPI_ROOT."/inc/profile.class.php");
 
@@ -124,7 +123,7 @@ function plugin_addressing_getAddSearchOptions($itemtype) {
 }
 
 function plugin_addressing_giveItem($type,$ID,$data,$num) {
-	global $CFG_GLPI, $INFOFORM_PAGES, $LANG;
+	global $LANG;
 
   $searchopt=&getSearchOptions($type);
 
@@ -176,7 +175,7 @@ function plugin_addressing_MassiveActions($type) {
 }
 
 function plugin_addressing_MassiveActionsDisplay($type,$action) {
-	global $LANG,$CFG_GLPI;
+	global $LANG;
 
 	switch ($type) {
 
@@ -203,7 +202,7 @@ function plugin_addressing_MassiveActionsDisplay($type,$action) {
 }
 
 function plugin_addressing_MassiveActionsProcess($data) {
-	global $LANG,$DB;
+	global $DB;
 
 	switch ($data['action']) {
 
@@ -251,6 +250,7 @@ function plugin_addressing_MassiveActionsProcess($data) {
 // Hook done on delete item case
 
 function plugin_pre_item_delete_addressing($input) {
+
 	if (isset($input["_item_type_"]))
 		switch ($input["_item_type_"]) {
 			case PROFILE_TYPE :
@@ -310,7 +310,7 @@ function plugin_headings_actions_addressing($type) {
 
 // action heading
 function plugin_headings_addressing($type,$ID,$withtemplate=0) {
-	global $CFG_GLPI,$LANG;
+	global $CFG_GLPI;
 
 	switch ($type) {
 		case PROFILE_TYPE :
