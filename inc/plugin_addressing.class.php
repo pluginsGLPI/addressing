@@ -44,8 +44,8 @@ class PluginAddressing extends CommonDBTM {
 		$this->type=PLUGIN_ADDRESSING_TYPE;
 	}
 
-  function getSearchOptions() {
-    global $LANG;
+   function getSearchOptions() {
+      global $LANG;
 
       $tab = array();
 
@@ -505,65 +505,62 @@ class PluginAddressing extends CommonDBTM {
 	}
 	
 	function ping($system,$ip) {
-    $list ='';
+      
+      $list ='';
       switch ($system) {
 
       case 0:
-      // linux ping
+         // linux ping
           exec("ping -c 1 -w 1 ".$ip, $list);
-          $nb=count($list);
-          if (isset($nb)) {
-              for($i=0;$i<$nb;$i++) {
-                  if (strpos($list[$i],"ttl=")>0) return true;
-              }
-          }
-      break;
-
+         $nb=count($list);
+         if (isset($nb)) {
+            for($i=0;$i<$nb;$i++) {
+               if (strpos($list[$i],"ttl=")>0) return true;
+            }
+         }
+         break;
       case 1:
-      //windows
-          exec("ping.exe -n 1 -w 1 -i 4 ".$ip, $list);
-          $nb=count($list);
-          if (isset($nb)) {
-              for($i=0;$i<$nb;$i++) {
-                  if (strpos($list[$i],"TTL")>0) return true;
-              }
-          }
-      break;
-
+         //windows
+         exec("ping.exe -n 1 -w 1 -i 4 ".$ip, $list);
+         $nb=count($list);
+         if (isset($nb)) {
+            for($i=0;$i<$nb;$i++) {
+               if (strpos($list[$i],"TTL")>0) return true;
+            }
+         }
+         break;
       case 2:
-      //linux fping
-      exec("fping -r1 -c1 -t100 ".$ip, $list);
-          $nb=count($list);
-          if (isset($nb)) {
-              for($i=0;$i<$nb;$i++) {
-                  if (strpos($list[$i],"bytes")>0) return true;
-              }
-          }
-      break;
-
+         //linux fping
+         exec("fping -r1 -c1 -t100 ".$ip, $list);
+         $nb=count($list);
+         if (isset($nb)) {
+            for($i=0;$i<$nb;$i++) {
+               if (strpos($list[$i],"bytes")>0) return true;
+            }
+         }
+         break;
       case 3:
-      // *BSD ping
-          exec("ping -c 1 -W 1 ".$ip, $list);
-          $nb=count($list);
-          if (isset($nb)) {
-              for($i=0;$i<$nb;$i++) {
-                  if (strpos($list[$i],"ttl=")>0) return true;
-              }
-          }
-      break;
-
+         // *BSD ping
+         exec("ping -c 1 -W 1 ".$ip, $list);
+         $nb=count($list);
+         if (isset($nb)) {
+            for($i=0;$i<$nb;$i++) {
+               if (strpos($list[$i],"ttl=")>0) return true;
+            }
+         }
+         break;
       case 4:
-      // MacOSX ping
-          exec("ping -c 1 -t 1 ".$ip, $list);
-          $nb=count($list);
-          if (isset($nb)) {
-              for($i=0;$i<$nb;$i++) {
-                  if (strpos($list[$i],"ttl=")>0) return true;
-              }
-          }
-      break;
+         // MacOSX ping
+         exec("ping -c 1 -t 1 ".$ip, $list);
+         $nb=count($list);
+         if (isset($nb)) {
+            for($i=0;$i<$nb;$i++) {
+               if (strpos($list[$i],"ttl=")>0) return true;
+            }
+         }
+         break;
       }
-  }
+   }
 }
 
 class PluginAddressingReport extends CommonDBTM {
