@@ -61,7 +61,9 @@ if ($PluginAddressing->getFromDB($_GET["ID"])){
 		if (count($lines)) {
 			if (count($lines)>1) {
 				$nbipd++;
-			}	
+			}
+			if ((isset($lines[0]['pname']) && strstr($lines[0]['pname'],"reserv")))
+            $nbipr++;
 			$nbipt++;
 		} else {
 			$nbipf++;
