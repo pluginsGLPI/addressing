@@ -92,7 +92,7 @@ function plugin_version_addressing(){
 	
 	return array (
 		'name' => $LANG['plugin_addressing']['title'][1],
-		'version' => '1.7.1',
+		'version' => '1.7.2',
 		'author'=>'Gilles Portheault, Xavier Caillaud, Remi Collet',
 		'homepage'=>'http://glpi-project.org/wiki/doku.php?id='.substr($_SESSION["glpilanguage"],0,2).':plugins:pluginslist',
 		'minGlpiVersion' => '0.72',// For compatibility / no install in version < 0.72
