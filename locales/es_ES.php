@@ -39,7 +39,6 @@ $LANG['plugin_addressing']['title'][1] = "".$title."";
 
 $LANG['plugin_addressing'][1] = "Ningún informe encontrado";
 $LANG['plugin_addressing'][3] = "Enlace";
-$LANG['plugin_addressing'][4] = "Generar";
 
 $LANG['plugin_addressing']['reports'][1] = "Informe para el rango IP";
 $LANG['plugin_addressing']['reports'][2] = "IP";

@@ -58,7 +58,8 @@ if (empty($_POST["id"])) {
 } else {
    switch($_REQUEST['glpi_tab']) {
       default :
-         $PluginAddressingAddressing->showReport($_POST["id"]);
+         $PluginAddressingAddressing->linkToExport($_POST["id"]);
+         $PluginAddressingAddressing->showReport($_POST);
          break;
    }
 }

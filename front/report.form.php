@@ -46,9 +46,10 @@ useplugin('addressing',true);
 commonHeader($LANG['plugin_addressing']['title'][1],$_SERVER['PHP_SELF'],"plugins","addressing");
 
 if (!isset($_GET["start"])) $_GET["start"] = 0;
+if (!isset($_GET["export"])) $_GET["export"] = false;
 
 $PluginAddressingAddressing=new PluginAddressingAddressing;
-$PluginAddressingAddressing->showReport($_GET["id"],$_GET["start"]);
+$PluginAddressingAddressing->showReport($_GET);
 
 commonFooter();
 

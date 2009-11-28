@@ -72,11 +72,6 @@ class PluginAddressingAddressing extends CommonDBTM {
       $tab[4]['name']=$LANG['plugin_addressing']['reports'][30];
       $tab[4]['datatype']='bool';
 
-      $tab[5]['table']=$this->table;
-      $tab[5]['field']='generation_link';
-      $tab[5]['linkfield']='';
-      $tab[5]['name']=$LANG['plugin_addressing'][3];
-
       $tab[30]['table']=$this->table;
       $tab[30]['field']='id';
       $tab[30]['linkfield']='';
@@ -112,52 +107,6 @@ class PluginAddressingAddressing extends CommonDBTM {
 
 		return $LANG['plugin_addressing']['reports'][1]." ".$this->fields["begin_ip"]." ".
 			  $LANG['plugin_addressing']['reports'][20]." ".$this->fields["end_ip"];
-	}
-
-	function compute() {
-		global $DB, $CFG_GLPI, $LINK_ID_TABLE;
-
-		// sprintf to solve 32/64 bits issue
-		$ipdeb=sprintf("%u", ip2long($this->fields["begin_ip"]));
-		$ipfin=sprintf("%u", ip2long($this->fields["end_ip"]));
-
-		if (!isset($_GET['export_all'])) {
-			if (isset($_GET["start"])) {
-				$ipdeb+=$_GET["start"];
-			}
-			if ($ipdeb > $ipfin) {
-				$ipdeb = $ipfin;
-			}
-			if ($ipdeb+$_SESSION["glpilist_limit"]<=$ipfin) {
-				$ipfin = $ipdeb+$_SESSION["glpilist_limit"]-1;
-			}
-		}
-
-		$result=array();
-		for ($ip=$ipdeb ; $ip<=$ipfin ; $ip++)
-			$result["IP".$ip]=array();
-
-		$sql = "SELECT 0 AS id, ".NETWORKING_TYPE." AS itemtype, `id` AS on_device, `dev`.`name` AS dname, '' AS pname, `ip`, `mac`, `users_id`, INET_ATON(`ip`) AS ipnum " .
-				"FROM `glpi_networkequipments`  dev " .
-				"WHERE INET_ATON(`ip`) >= '$ipdeb' AND INET_ATON(`ip`) <= '$ipfin' AND `is_deleted` = 0 AND `is_template` = 0 " .
-				getEntitiesRestrictRequest(" AND ","dev");
-		if ($this->fields["networks_id"])
-			$sql .= " AND `networks_id` = ".$this->fields["networks_id"];
-
-		foreach ($CFG_GLPI["netport_types"] as $type) {
-			$sql .= " UNION SELECT `port`.`id`, `itemtype`, `items_id`, `dev`.`name` AS dname, `port`.`name` AS pname, `port`.`ip`, `port`.`mac`, `users_id`, INET_ATON(`port`.`ip`) AS ipnum " .
-					"FROM `glpi_networkports` port, `" . $LINK_ID_TABLE[$type] . "` dev " .
-					"WHERE `itemtype` = '$type' AND `port`.`items_id` = `dev`.`id` AND INET_ATON(`port`.`ip`) >= '$ipdeb' AND INET_ATON(`port`.`ip`) <= '$ipfin' AND `is_deleted` = 0 AND `is_template` = 0 " .
-					getEntitiesRestrictRequest(" AND ", "dev");
-			if ($this->fields["networks_id"] && $type!=PERIPHERAL_TYPE && $type!=PHONE_TYPE)
-				$sql .= " AND `networks_id`= ".$this->fields["networks_id"];
-		}
-		$res=$DB->query($sql);
-		if ($res) while ($row=$DB->fetch_assoc($res)) {
-			$result["IP".$row["ipnum"]][]=$row;
-		}
-
-		return $result;
 	}
 
 	function dropdownSubnet($entity) {
@@ -314,14 +263,81 @@ class PluginAddressingAddressing extends CommonDBTM {
 		return true;
 	}
 	
-	function showReport($ID) {
+	function linkToExport($ID) {
+      global $LANG;
+      
+      echo "<div align='center'>";
+      echo "<a href='./report.form.php?id=".$ID."&export=true'>".$LANG['buttons'][31]."</a>";
+      echo "</div>";
+   }
+   
+	function compute($start) {
+		global $DB, $CFG_GLPI, $LINK_ID_TABLE;
+         
+		// sprintf to solve 32/64 bits issue
+		$ipdeb=sprintf("%u", ip2long($this->fields["begin_ip"]));
+		$ipfin=sprintf("%u", ip2long($this->fields["end_ip"]));
+
+		if (!isset($_GET["export_all"])) {
+			if (isset($start)) {
+				$ipdeb+=$start;
+			}
+			if ($ipdeb > $ipfin) {
+				$ipdeb = $ipfin;
+			}
+			if ($ipdeb+$_SESSION["glpilist_limit"]<=$ipfin) {
+				$ipfin = $ipdeb+$_SESSION["glpilist_limit"]-1;
+			}
+		}
+
+		$result=array();
+		for ($ip=$ipdeb ; $ip<=$ipfin ; $ip++)
+			$result["IP".$ip]=array();
+
+		$sql = "SELECT 0 AS id, ".NETWORKING_TYPE." AS itemtype, `id` AS on_device, `dev`.`name` AS dname, '' AS pname, `ip`, `mac`, `users_id`, INET_ATON(`ip`) AS ipnum " .
+				"FROM `glpi_networkequipments`  dev " .
+				"WHERE INET_ATON(`ip`) >= '$ipdeb' AND INET_ATON(`ip`) <= '$ipfin' AND `is_deleted` = 0 AND `is_template` = 0 " .
+				getEntitiesRestrictRequest(" AND ","dev");
+		if ($this->fields["networks_id"])
+			$sql .= " AND `networks_id` = ".$this->fields["networks_id"];
+
+		foreach ($CFG_GLPI["netport_types"] as $type) {
+			$sql .= " UNION SELECT `port`.`id`, `itemtype`, `items_id`, `dev`.`name` AS dname, `port`.`name` AS pname, `port`.`ip`, `port`.`mac`, `users_id`, INET_ATON(`port`.`ip`) AS ipnum " .
+					"FROM `glpi_networkports` port, `" . $LINK_ID_TABLE[$type] . "` dev " .
+					"WHERE `itemtype` = '$type' AND `port`.`items_id` = `dev`.`id` AND INET_ATON(`port`.`ip`) >= '$ipdeb' AND INET_ATON(`port`.`ip`) <= '$ipfin' AND `is_deleted` = 0 AND `is_template` = 0 " .
+					getEntitiesRestrictRequest(" AND ", "dev");
+			if ($this->fields["networks_id"] && $type!=PERIPHERAL_TYPE && $type!=PHONE_TYPE)
+				$sql .= " AND `networks_id`= ".$this->fields["networks_id"];
+		}
+		$res=$DB->query($sql);
+		if ($res) while ($row=$DB->fetch_assoc($res)) {
+			$result["IP".$row["ipnum"]][]=$row;
+		}
+
+		return $result;
+	}
+	
+	function showReport($params) {
       global $CFG_GLPI,$LANG;
       
       $PluginAddressingReport=new PluginAddressingReport;
+      
+      // Default values of parameters
+      $default_values["start"]=0;
+      $default_values["id"]=0;
+      $default_values["export"]=false;
+      
+      foreach ($default_values as $key => $val) {
+         if (isset($params[$key])) {
+            $$key=$params[$key];
+         } else {
+            $$key=$default_values[$key];
+         }
+      }
+      
+      if ($this->getFromDB($id)) {
 
-      if ($this->getFromDB($ID)) {
-
-         $result=$this->compute();
+         $result=$this->compute($start);
          //echo "<pre>"; print_r($result);	echo "</pre>";
 
          $nbipf=0;	// ip libres
@@ -375,15 +391,11 @@ class PluginAddressingAddressing extends CommonDBTM {
          echo "</table>";
          echo "<br>";
 
-         if (isset($_REQUEST["start"])) {
-            $start = $_REQUEST["start"];
-         } else {
-            $start = 0;
-         }
          $numrows=1+ip2long($this->fields['end_ip'])-ip2long($this->fields['begin_ip']);
-         //printPager($start,$numrows,$_SERVER["PHP_SELF"],"start=$start&amp;id=".$ID,PLUGIN_ADDRESSING_REPORT_TYPE);
-         
-         printAjaxPager("",$start,$numrows);
+         if ($export)
+            printPager($start,$numrows,$_SERVER["PHP_SELF"],"start=$start&amp;id=".$id,PLUGIN_ADDRESSING_REPORT_TYPE);
+         else
+            printAjaxPager("",$start,$numrows);
          //////////////////////////liste ips////////////////////////////////////////////////////////////
 
          $ping_response = $PluginAddressingReport->display($result, $this);

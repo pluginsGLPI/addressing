@@ -10,7 +10,7 @@ ALTER TABLE `glpi_plugin_addressing_addressing` CHANGE `ip_double` `double_ip` t
 ALTER TABLE `glpi_plugin_addressing_addressing` CHANGE `ip_free` `free_ip` tinyint(1) NOT NULL default '0';
 ALTER TABLE `glpi_plugin_addressing_addressing` CHANGE `ip_reserved` `reserved_ip` tinyint(1) NOT NULL default '0';
 ALTER TABLE `glpi_plugin_addressing_addressing` CHANGE `ping` `use_ping` tinyint(1) NOT NULL default '0';
-ALTER TABLE `glpi_plugin_addressing_addressing` CHANGE `link` `generation_link` tinyint(1) NOT NULL default '0';
+ALTER TABLE `glpi_plugin_addressing_addressing` DROP INDEX `generation_link`;
 ALTER TABLE `glpi_plugin_addressing_addressing` CHANGE `comments` `comment` text collate utf8_unicode_ci;
 ALTER TABLE `glpi_plugin_addressing_addressing` CHANGE `deleted` `is_deleted` tinyint(1) NOT NULL default '0';
 
@@ -32,3 +32,5 @@ ALTER TABLE `glpi_plugin_addressing_configs` CHANGE `system` `used_system` tinyi
 ALTER TABLE `glpi_plugin_addressing_profiles` CHANGE `ID` `id` int(11) NOT NULL auto_increment;
 ALTER TABLE `glpi_plugin_addressing_profiles` CHANGE `name` `name` varchar(255) collate utf8_unicode_ci default NULL;
 ALTER TABLE `glpi_plugin_addressing_profiles` CHANGE `addressing` `addressing` char(1) collate utf8_unicode_ci default NULL;
+
+DELETE FROM `glpi_displayprefs` WHERE `itemtype` = 5000 AND `num` = 5;

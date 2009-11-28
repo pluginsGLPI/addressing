@@ -273,7 +273,7 @@ function plugin_addressing_dynamicReport($parm) {
        && isset($parm["display_type"])
        && $PluginAddressingAddressing->getFromDB($parm["id"])) {
 
-		$result=$PluginAddressingAddressing->compute();
+		$result=$PluginAddressingAddressing->compute($parm["start"]);
 		$PluginAddressingReport->display($result, $PluginAddressingAddressing);
 
 		return true;
