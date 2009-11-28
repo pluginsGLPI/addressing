@@ -33,50 +33,18 @@
 // ----------------------------------------------------------------------
  */
 
-if (!defined('GLPI_ROOT')) {
-	die("Sorry. You can't access directly to this file");
-}
+$NEEDED_ITEMS=array("profile");
+define('GLPI_ROOT', '../../..');
+include (GLPI_ROOT."/inc/includes.php");
+checkRight("profile","r");
 
-function plugin_addressing_execute($DB_file) {
-	global $DB;
+useplugin('addressing',true);
 
-	$DBf_handle = fopen($DB_file, "rt");
-	$sql_query = fread($DBf_handle, filesize($DB_file));
-	fclose($DBf_handle);
-	foreach ( explode(";\n", "$sql_query") as $sql_line) {
-		if (get_magic_quotes_runtime()) $sql_line=stripslashes_deep($sql_line);
-		$DB->query($sql_line);
-	}
-}
-
-function plugin_addressing_Installv180() {
-
-	plugin_addressing_execute(GLPI_ROOT ."/plugins/addressing/inc/plugin_addressing-1.8.0-empty.sql");
-}
-
-function plugin_addressing_updatev14() {
-
-	plugin_addressing_execute(GLPI_ROOT ."/plugins/addressing/inc/plugin_addressing-1.4-update.sql");
-}
-
-function plugin_addressing_updatev15() {
-
-	plugin_addressing_execute(GLPI_ROOT ."/plugins/addressing/inc/plugin_addressing-1.5-update.sql");
-}
-
-function plugin_addressing_updatev16() {
-
-	plugin_addressing_execute(GLPI_ROOT ."/plugins/addressing/inc/plugin_addressing-1.6-update.sql");
-}
-
-function plugin_addressing_updatev170() {
-
-	plugin_addressing_execute(GLPI_ROOT ."/plugins/addressing/inc/plugin_addressing-1.7.0-update.sql");
-}
-
-function plugin_addressing_updatev180() {
-
-	plugin_addressing_execute(GLPI_ROOT ."/plugins/addressing/inc/plugin_addressing-1.8.0-update.sql");
+$prof=new PluginAddressingProfile();
+//Save profile
+if (isset ($_POST['update_user_profile'])) {
+	$prof->update($_POST);
+	glpi_header($_SERVER['HTTP_REFERER']);
 }
 
 ?>

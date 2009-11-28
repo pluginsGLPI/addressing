@@ -33,16 +33,34 @@
 // ----------------------------------------------------------------------
  */
 
-$NEEDED_ITEMS=array("profile");
-define('GLPI_ROOT', '../../..');
-include (GLPI_ROOT."/inc/includes.php");
-checkRight("profile","r");
-
-$prof=new PluginAddressingProfile();
-//Save profile
-if (isset ($_POST['update_user_profile'])) {
-	$prof->update($_POST);
-	glpi_header($_SERVER['HTTP_REFERER']);
+if (!defined('GLPI_ROOT')) {
+	define('GLPI_ROOT', '../../..');
+	$NEEDED_ITEMS=array("setup");
+	include (GLPI_ROOT . "/inc/includes.php");
 }
 
+useplugin('addressing',true);
+
+$PluginAddressingConfig=new PluginAddressingConfig();
+
+checkRight("config","w");
+
+if (isset($_POST["update"])) {
+
+	checkRight("config","w");
+	$PluginAddressingConfig->update($_POST);
+	glpi_header($_SERVER['HTTP_REFERER']);
+
+} else {
+
+	$plugin = new Plugin();
+	if ($plugin->isActivated("addressing"))
+		commonHeader($LANG['plugin_addressing']['title'][1],$_SERVER["PHP_SELF"],"plugins","addressing");
+	else
+		commonHeader($LANG['common'][12],$_SERVER['PHP_SELF'],"config","plugins");
+
+	$PluginAddressingConfig->showForm();
+
+	commonFooter();
+}
 ?>

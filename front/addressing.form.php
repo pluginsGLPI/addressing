@@ -47,48 +47,46 @@ if (!isset($tab["id"])) $tab["id"] = "";
 if (isset($_GET["start"])) $start=$_GET["start"];
 else $start=0;
 
-$PluginAddressing=new PluginAddressing();
-$PluginAddressingProfile=new PluginAddressingProfile();
+$PluginAddressingAddressing=new PluginAddressingAddressing();
 
-if (isset($_POST["add"]))
-{
-	if ( plugin_addressing_haveRight("addressing","w"))
+if (isset($_POST["add"])) {
 
-		if (!empty($_POST["name"]) && !empty($_POST["begin_ip"]) && !empty($_POST["end_ip"]))
-			$newID=$PluginAddressing->add($_POST);
-		else
-			addMessageAfterRedirect($LANG['plugin_addressing']['setup'][27],false,ERROR);
+	$PluginAddressingAddressing->check(-1,'w',$_POST);
+   if (!empty($_POST["name"]) && !empty($_POST["begin_ip"]) && !empty($_POST["end_ip"]))
+      $newID=$PluginAddressingAddressing->add($_POST);
+   else
+      addMessageAfterRedirect($LANG['plugin_addressing']['setup'][27],false,ERROR);
 	glpi_header($_SERVER['HTTP_REFERER']);
 	
 } else if (isset($_POST["delete"])) {
 
-	if ( plugin_addressing_haveRight("addressing","w"))
-		$PluginAddressing->delete($_POST);
+	$PluginAddressingAddressing->check($_POST['id'],'w');
+   $PluginAddressingAddressing->delete($_POST);
 	glpi_header($CFG_GLPI["root_doc"]."/plugins/addressing/index.php");
 	
 } else if (isset($_POST["restore"])) {
 
-	if ( plugin_addressing_haveRight("addressing","w"))
-		$PluginAddressing->restore($_POST);
+	$PluginAddressingAddressing->check($_POST['id'],'w');
+   $PluginAddressingAddressing->restore($_POST);
 	glpi_header($CFG_GLPI["root_doc"]."/plugins/addressing/index.php");
 	
 } else if (isset($_POST["purge"])) {
-	if ( plugin_addressing_haveRight("addressing","w"))
-		$PluginAddressing->delete($_POST,1);
+	$PluginAddressingAddressing->check($_POST['id'],'w');
+   $PluginAddressingAddressing->delete($_POST,1);
 	glpi_header($CFG_GLPI["root_doc"]."/plugins/addressing/index.php");
 	
 } else if (isset($_POST["update"])) {
-	if ( plugin_addressing_haveRight("addressing","w")) {
-		if (!empty($_POST["name"]) && !empty($_POST["begin_ip"]) && !empty($_POST["end_ip"]))
-			$PluginAddressing->update($_POST);
-		else
-			addMessageAfterRedirect($LANG['plugin_addressing']['setup'][27],false,ERROR);
-	}
+	
+	$PluginAddressingAddressing->check($_POST['id'],'w');
+   if (!empty($_POST["name"]) && !empty($_POST["begin_ip"]) && !empty($_POST["end_ip"]))
+      $PluginAddressingAddressing->update($_POST);
+   else
+      addMessageAfterRedirect($LANG['plugin_addressing']['setup'][27],false,ERROR);
 	glpi_header($_SERVER['HTTP_REFERER']);
 	
 } else {
 
-	$PluginAddressingProfile->checkRight("addressing","r");
+	PluginAddressingProfile::checkRight("addressing","r");
 
 	if (!isset($_SESSION['glpi_tab'])) $_SESSION['glpi_tab']=1;
 	if (isset($_GET['onglet'])) {
@@ -97,7 +95,7 @@ if (isset($_POST["add"]))
 	}
 	commonHeader($LANG['plugin_addressing']['title'][1],$_SERVER["PHP_SELF"],"plugins","addressing");
 
-	$PluginAddressing->showForm($_SERVER["PHP_SELF"],$tab["id"]);
+	$PluginAddressingAddressing->showForm($_SERVER["PHP_SELF"],$tab["id"]);
 
 	commonFooter();
 }

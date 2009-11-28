@@ -33,24 +33,22 @@
 // ----------------------------------------------------------------------
  */
 
-$NEEDED_ITEMS=array("search");
-define('GLPI_ROOT', '../..'); 
-include (GLPI_ROOT . "/inc/includes.php"); 
+//Options for GLPI 0.71 and newer : need slave db to access the report
+$USEDBREPLICATE=1;
+$DBCONNECTION_REQUIRED=0;
+
+$NEEDED_ITEMS=array("networking","computer","printer","peripheral","phone","user","group");
+define('GLPI_ROOT', '../../..');
+include (GLPI_ROOT."/inc/includes.php");
+
+useplugin('addressing',true);
 
 commonHeader($LANG['plugin_addressing']['title'][1],$_SERVER['PHP_SELF'],"plugins","addressing");
 
-if (plugin_addressing_haveRight("addressing","r") || haveRight("config","w")) {
-	
-	manageGetValuesInSearch(PLUGIN_ADDRESSING_TYPE);
+if (!isset($_GET["start"])) $_GET["start"] = 0;
 
-	searchForm(PLUGIN_ADDRESSING_TYPE,$_GET);
-
-	showList(PLUGIN_ADDRESSING_TYPE,$_GET);
-
-} else {
-	echo "<div align='center'><br><br><img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt=\"warning\"><br><br>";
-	echo "<b>".$LANG['login'][5]."</b></div>";
-}
+$PluginAddressingAddressing=new PluginAddressingAddressing;
+$PluginAddressingAddressing->showReport($_GET["id"],$_GET["start"]);
 
 commonFooter();
 

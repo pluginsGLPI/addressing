@@ -33,29 +33,27 @@
 // ----------------------------------------------------------------------
  */
 
-include_once ("inc/plugin_addressing.profile.class.php");
-
 // Init the hooks of the plugins -Needed
 function plugin_init_addressing() {
 
-	global $PLUGIN_HOOKS,$CFG_GLPI,$LANG;
+	global $PLUGIN_HOOKS;
 
-	$PLUGIN_HOOKS['change_profile']['addressing'] = 'plugin_addressing_changeProfile';
+	$PLUGIN_HOOKS['change_profile']['addressing'] = array('PluginAddressingProfile','changeProfile');
 
 	// Params : plugin name - string type - number - class - table - form page
 	registerPluginType('addressing', 'PLUGIN_ADDRESSING_TYPE', 5000, array(
-		'classname'  => 'PluginAddressing',
-		'tablename'  => 'glpi_plugin_addressing',
-		'formpage'   => 'front/plugin_addressing.form.php',
+		'classname'  => 'PluginAddressingAddressing',
+		'tablename'  => 'glpi_plugin_addressing_addressing',
+		'formpage'   => 'front/addressing.form.php',
 		'searchpage' => 'index.php',
 		'deleted_tables' => true,
 		'specif_entities_tables' => true
-		));
+	));
 
 	registerPluginType('addressing', 'PLUGIN_ADDRESSING_REPORT_TYPE', 5001, array(
-		'classname' => 'PluginAddressingReport',
-		'tablename'  => 'glpi_plugin_addressing'
-		));
+		'classname' => 'PluginAddressingAddressingReport',
+		'tablename'  => 'glpi_plugin_addressing_addressing'
+	));
 
 	if (isset($_SESSION["glpiID"])) {
 
@@ -67,14 +65,14 @@ function plugin_init_addressing() {
 			$PLUGIN_HOOKS['headings_action']['addressing'] = 'plugin_headings_actions_addressing';
 		}
 		if (plugin_addressing_haveRight("addressing","w")) {
-			$PLUGIN_HOOKS['submenu_entry']['addressing']['add'] = 'front/plugin_addressing.form.php?new=1';
+			$PLUGIN_HOOKS['submenu_entry']['addressing']['add'] = 'front/addressing.form.php?new=1';
 			$PLUGIN_HOOKS['use_massive_action']['addressing']=1;
 			$PLUGIN_HOOKS['pre_item_delete']['addressing'] = 'plugin_pre_item_delete_addressing';
 		}
 		// Config page
 		if (haveRight("config","w")) {
-			$PLUGIN_HOOKS['submenu_entry']['addressing']['config'] = 'front/plugin_addressing.config.php';
-			$PLUGIN_HOOKS['config_page']['addressing'] = 'front/plugin_addressing.config.php';
+			$PLUGIN_HOOKS['submenu_entry']['addressing']['config'] = 'front/addressing.config.php';
+			$PLUGIN_HOOKS['config_page']['addressing'] = 'front/addressing.config.php';
 		}
 
 		// Add specific files to add to the header : javascript or css
@@ -111,11 +109,6 @@ function plugin_addressing_check_prerequisites() {
 // Uninstall process for plugin : need to return true if succeeded : may display messages or add to message after redirect
 function plugin_addressing_check_config() {
 	return true;
-}
-
-function plugin_addressing_changeProfile() {
-	$PluginAddressingProfile=new PluginAddressingProfile();
-	$PluginAddressingProfile->changeProfile();
 }
 
 function plugin_addressing_haveRight($module,$right) {

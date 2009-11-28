@@ -40,12 +40,15 @@ include (GLPI_ROOT . "/inc/includes.php");
 header("Content-Type: text/html; charset=UTF-8");
 header_nocache();
 
+useplugin('addressing',true);
+
 if (!isset($_POST["id"])) {
 	exit();
 }
 
-$PluginAddressingProfile=new PluginAddressingProfile();
-$PluginAddressingProfile->checkRight("addressing","r");
+PluginAddressingProfile::checkRight("addressing","r");
+
+$PluginAddressingAddressing=new PluginAddressingAddressing;
 
 if (empty($_POST["id"])) {
    switch($_REQUEST['glpi_tab']) {
@@ -55,9 +58,11 @@ if (empty($_POST["id"])) {
 } else {
    switch($_REQUEST['glpi_tab']) {
       default :
+         $PluginAddressingAddressing->showReport($_POST["id"]);
          break;
    }
-   ajaxFooter();
 }
+
+ajaxFooter();
 
 ?>
