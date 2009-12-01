@@ -174,7 +174,7 @@ class PluginAddressingReport extends CommonDBTM {
 					// Mac
 					if ($line["id"]) {
 						if (haveTypeRight($line["itemtype"], "r")) {
-							$output_mac = "<a href='".$CFG_GLPI["root_doc"]."/front/networking.port.php?id=".$line["id"]."'>".$line["mac"]."</a>";
+							$output_mac = "<a href='".$CFG_GLPI["root_doc"]."/front/networkport.form.php?id=".$line["id"]."'>".$line["mac"]."</a>";
 						} else {
 							$output_mac = $line["mac"];
 						}
