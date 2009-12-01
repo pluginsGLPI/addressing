@@ -92,7 +92,7 @@ function plugin_addressing_uninstall() {
 	foreach($tables as $table)
 		$DB->query("DROP TABLE `$table`;");
 
-   $tables_glpi = array("glpi_displayprefs",
+   $tables_glpi = array("glpi_displaypreferences",
 					"glpi_bookmarks");
 
 	foreach($tables_glpi as $table_glpi)

@@ -22,7 +22,7 @@ ALTER TABLE `glpi_plugin_addressing_display` DROP `ipconf3`;
 ALTER TABLE `glpi_plugin_addressing_display` DROP `ipconf4`;
 ALTER TABLE `glpi_plugin_addressing_display` DROP `netconf`;
 
-INSERT INTO `glpi_displayprefs` VALUES (NULL,'5000','2','2','0');
-INSERT INTO `glpi_displayprefs` VALUES (NULL,'5000','3','3','0');
-INSERT INTO `glpi_displayprefs` VALUES (NULL,'5000','4','4','0');
-INSERT INTO `glpi_displayprefs` VALUES (NULL,'5000','5','5','0');
+INSERT INTO `glpi_displaypreferences` VALUES (NULL,'5000','2','2','0');
+INSERT INTO `glpi_displaypreferences` VALUES (NULL,'5000','3','3','0');
+INSERT INTO `glpi_displaypreferences` VALUES (NULL,'5000','4','4','0');
+INSERT INTO `glpi_displaypreferences` VALUES (NULL,'5000','5','5','0');

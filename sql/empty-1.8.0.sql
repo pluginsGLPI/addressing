@@ -43,8 +43,8 @@ CREATE TABLE `glpi_plugin_addressing_profiles` (
 	KEY `name` (`name`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `glpi_displayprefs` VALUES (NULL,5000,2,2,0);
-INSERT INTO `glpi_displayprefs` VALUES (NULL,5000,3,6,0);
-INSERT INTO `glpi_displayprefs` VALUES (NULL,5000,4,5,0);
-INSERT INTO `glpi_displayprefs` VALUES (NULL,5000,1000,3,0);
-INSERT INTO `glpi_displayprefs` VALUES (NULL,5000,1001,4,0);
+INSERT INTO `glpi_displaypreferences` VALUES (NULL,5000,2,2,0);
+INSERT INTO `glpi_displaypreferences` VALUES (NULL,5000,3,6,0);
+INSERT INTO `glpi_displaypreferences` VALUES (NULL,5000,4,5,0);
+INSERT INTO `glpi_displaypreferences` VALUES (NULL,5000,1000,3,0);
+INSERT INTO `glpi_displaypreferences` VALUES (NULL,5000,1001,4,0);

@@ -19,10 +19,10 @@ ALTER TABLE `glpi_plugin_addressing`
 	DROP `ipdebut4`,
 	DROP `ipfin4`;
 
-DELETE FROM `glpi_displayprefs` WHERE `itemtype` = 5000;
-INSERT INTO `glpi_displayprefs` VALUES (NULL ,5000,2,2,0);
-INSERT INTO `glpi_displayprefs` VALUES (NULL ,5000,3,6,0);
-INSERT INTO `glpi_displayprefs` VALUES (NULL ,5000,4,5,0);
-INSERT INTO `glpi_displayprefs` VALUES (NULL ,5000,5,7,0);
-INSERT INTO `glpi_displayprefs` VALUES (NULL ,5000,1000,3,0);
-INSERT INTO `glpi_displayprefs` VALUES (NULL ,5000,1001,4,0);
+DELETE FROM `glpi_displaypreferences` WHERE `itemtype` = 5000;
+INSERT INTO `glpi_displaypreferences` VALUES (NULL ,5000,2,2,0);
+INSERT INTO `glpi_displaypreferences` VALUES (NULL ,5000,3,6,0);
+INSERT INTO `glpi_displaypreferences` VALUES (NULL ,5000,4,5,0);
+INSERT INTO `glpi_displaypreferences` VALUES (NULL ,5000,5,7,0);
+INSERT INTO `glpi_displaypreferences` VALUES (NULL ,5000,1000,3,0);
+INSERT INTO `glpi_displaypreferences` VALUES (NULL ,5000,1001,4,0);
