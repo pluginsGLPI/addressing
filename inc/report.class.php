@@ -40,7 +40,7 @@ if (!defined('GLPI_ROOT')) {
 class PluginAddressingReport extends CommonDBTM {
    
    public $table = 'glpi_plugin_addressing_addressing';
-   public $type = PLUGIN_ADDRESSING_REPORT_TYPE;
+   public $type = 'PluginAddressingAddressingReport';
    
    function displaySearchNewLine($type,$odd=false) {
 		$out="";
@@ -140,7 +140,7 @@ class PluginAddressingReport extends CommonDBTM {
 
 					// Device
 					$ci->setType($line["itemtype"]);
-					if ($line["itemtype"] != NETWORKING_TYPE) {
+					if ($line["itemtype"] != 'NetworkEquipment') {
 						if (haveTypeRight($line["itemtype"], "r")) {
 							$output_iddev = "<a href='".$CFG_GLPI["root_doc"]."/".$INFOFORM_PAGES[$line["itemtype"]]."?id=".$line["on_device"]."'>".$name
 								.(empty($name) || $_SESSION["glpiis_ids_visible"]?" (".$line["on_device"].")":"")."</a>";
@@ -161,7 +161,7 @@ class PluginAddressingReport extends CommonDBTM {
 					if ($line["users_id"] && $user->getFromDB($line["users_id"])) {
 						$username=formatUserName($user->fields["id"],$user->fields["name"],$user->fields["realname"],$user->fields["firstname"]);
 
-						if (haveTypeRight(USER_TYPE, "r")) {
+						if (haveTypeRight('User', "r")) {
 							$output_iduser="<a href='".$CFG_GLPI["root_doc"]."/front/user.form.php?id=".$line["users_id"]."'>".$username."</a>";
 						} else {
 							$output_iduser=$username;

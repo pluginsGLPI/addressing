@@ -41,16 +41,16 @@ function plugin_init_addressing() {
 	$PLUGIN_HOOKS['change_profile']['addressing'] = array('PluginAddressingProfile','changeProfile');
 
 	// Params : plugin name - string type - number - class - table - form page
-	registerPluginType('addressing', 'PLUGIN_ADDRESSING_TYPE', 5000, array(
+	Plugin::registerClass('PluginAddressingAddressing', array(
 		'classname'  => 'PluginAddressingAddressing',
 		'tablename'  => 'glpi_plugin_addressing_addressing',
 		'formpage'   => 'front/addressing.form.php',
-		'searchpage' => 'index.php',
+		'searchpage' => 'front/addressing.php',
 		'deleted_tables' => true,
 		'specif_entities_tables' => true
 	));
 
-	registerPluginType('addressing', 'PLUGIN_ADDRESSING_REPORT_TYPE', 5001, array(
+	Plugin::registerClass('PluginAddressingAddressingReport', array(
 		'classname' => 'PluginAddressingAddressingReport',
 		'tablename'  => 'glpi_plugin_addressing_addressing'
 	));
@@ -59,8 +59,8 @@ function plugin_init_addressing() {
 
 		if (plugin_addressing_haveRight("addressing","r")) {
 
-			$PLUGIN_HOOKS['menu_entry']['addressing'] = true;
-			$PLUGIN_HOOKS['submenu_entry']['addressing']['search'] = 'index.php';
+			$PLUGIN_HOOKS['menu_entry']['addressing'] = 'front/addressing.php';
+			$PLUGIN_HOOKS['submenu_entry']['addressing']['search'] = 'front/addressing.php';
 			$PLUGIN_HOOKS['headings']['addressing'] = 'plugin_get_headings_addressing';
 			$PLUGIN_HOOKS['headings_action']['addressing'] = 'plugin_headings_actions_addressing';
 		}
@@ -127,7 +127,7 @@ function plugin_addressing_haveRight($module,$right) {
 // Define rights for the plugin types
 function plugin_addressing_haveTypeRight($type,$right) {
 	switch ($type) {
-		case PLUGIN_ADDRESSING_TYPE :
+		case 'PluginAddressingAddressing' :
 			// 1 - All rights for all users
 			// return true;
 			// 2 - Similarity right : same right of computer

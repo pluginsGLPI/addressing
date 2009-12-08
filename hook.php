@@ -33,14 +33,10 @@
 // ----------------------------------------------------------------------
  */
 
-foreach (glob(GLPI_ROOT . '/plugins/addressing/inc/*.php') as $file)
-	include_once ($file);
-
-
 function plugin_addressing_install() {
    global $DB;
    
-	include_once (GLPI_ROOT."/inc/profile.class.php");
+	include_once (GLPI_ROOT."/plugins/addressing/inc/profile.class.php");
 
 	if (!TableExists("glpi_plugin_addressing_display") &&!TableExists("glpi_plugin_addressing") && !TableExists("glpi_plugin_addressing_configs")) {
 
@@ -96,7 +92,7 @@ function plugin_addressing_uninstall() {
 					"glpi_bookmarks");
 
 	foreach($tables_glpi as $table_glpi)
-		$DB->query("DELETE FROM `$table_glpi` WHERE `itemtype` = '".PLUGIN_ADDRESSING_TYPE."';");
+		$DB->query("DELETE FROM `$table_glpi` WHERE `itemtype` = '".'PluginAddressingAddressing'."';");
 
 	// TODO check is this is needed...
 	plugin_init_addressing();
@@ -109,7 +105,7 @@ function plugin_addressing_getAddSearchOptions($itemtype) {
 
    $sopt=array();
 
-   if ($itemtype==PROFILE_TYPE) {
+   if ($itemtype=='Profile') {
       if (plugin_addressing_haveRight("addressing","r")) {
          // Use a plugin type reservation to avoid conflict
          $sopt[5000]['table']='glpi_plugin_addressing_profiles';
@@ -131,10 +127,10 @@ function plugin_addressing_giveItem($type,$ID,$data,$num) {
 	$field=$searchopt[$ID]["field"];
 
 	switch ($table.'.'.$field) {
-		case "glpi_plugin_addressing_addressing.generation_link" :
+		/*case "glpi_plugin_addressing_addressing.generation_link" :
 			$out= "<a href=\"front/report.form.php?id=".$data["id"]."\">".$LANG['plugin_addressing'][4]."</a>";
 			return $out;
-			break;
+			break;*/
 		case "glpi_plugin_addressing_profiles.addressing":
 			switch($data["ITEM_$num"]) {
 				case 'w':
@@ -159,12 +155,12 @@ function plugin_addressing_MassiveActions($type) {
 
 	switch ($type) {
 
-		case PLUGIN_ADDRESSING_TYPE:
+		case 'PluginAddressingAddressing':
 			return array(
 				"plugin_addressing_transfert"=>$LANG['buttons'][48],
 				);
 			break;
-		case PROFILE_TYPE:
+		case 'Profile':
 			return array(
 				"plugin_addressing_allow" => $LANG['plugin_addressing']['title'][1] . " - " . $LANG['plugin_addressing']['profile'][3],
 				);
@@ -179,7 +175,7 @@ function plugin_addressing_MassiveActionsDisplay($type,$action) {
 
 	switch ($type) {
 
-		case PLUGIN_ADDRESSING_TYPE:
+		case 'PluginAddressingAddressing':
 			switch ($action) {
 				case "plugin_addressing_transfert":
 					dropdownValue("glpi_entities", "entities_id", '');
@@ -188,7 +184,7 @@ function plugin_addressing_MassiveActionsDisplay($type,$action) {
 			}
 			break;
 
-		case PROFILE_TYPE:
+		case 'Profile':
 			switch ($action) {
 				case 'plugin_addressing_allow':
 					dropdownNoneReadWrite('use','');
@@ -207,7 +203,7 @@ function plugin_addressing_MassiveActionsProcess($data) {
 	switch ($data['action']) {
 
 		case "plugin_addressing_transfert":
-			if ($data['itemtype']==PLUGIN_ADDRESSING_TYPE) {
+			if ($data['itemtype']=='PluginAddressingAddressing') {
 				foreach ($data["item"] as $key => $val) {
 					if ($val==1) {
 						$PluginAddressingAddressing=new PluginAddressingAddressing;
@@ -223,7 +219,7 @@ function plugin_addressing_MassiveActionsProcess($data) {
 			break;
 
 		case 'plugin_addressing_allow':
-			if ($data['itemtype']==PROFILE_TYPE) {
+			if ($data['itemtype']=='Profile') {
 				$profglpi = new Profile();
 				$prof = new PluginAddressingProfile();
 				foreach ($data["item"] as $key => $val) {
@@ -253,7 +249,7 @@ function plugin_pre_item_delete_addressing($input) {
 
 	if (isset($input["_item_type_"]))
 		switch ($input["_item_type_"]) {
-			case PROFILE_TYPE :
+			case 'Profile' :
 				// Manipulate data if needed
 				$PluginAddressingProfile=new PluginAddressingProfile;
 				$PluginAddressingProfile->cleanProfiles($input["id"]);
@@ -268,7 +264,7 @@ function plugin_addressing_dynamicReport($parm) {
 	$PluginAddressingAddressing=new PluginAddressingAddressing;
    $PluginAddressingReport=new PluginAddressingReport;
    
-	if ($parm["item_type"]==PLUGIN_ADDRESSING_REPORT_TYPE
+	if ($parm["item_type"]=='PluginAddressingAddressingReport'
        && isset($parm["id"])
        && isset($parm["display_type"])
        && $PluginAddressingAddressing->getFromDB($parm["id"])) {
@@ -284,12 +280,12 @@ function plugin_addressing_dynamicReport($parm) {
 }
 
 // Define headings added by the plugin
-function plugin_get_headings_addressing($type,$ID,$withtemplate) {
+function plugin_get_headings_addressing($item,$withtemplate) {
 	global $LANG;
 
-	if ($type==PROFILE_TYPE) {
+	if (get_class($item)=='Profile') {
 		$prof = new Profile();
-		if ($ID>0 && $prof->getFromDB($ID) && $prof->fields['interface']!='helpdesk') {
+		if ($item->getField('id') && $prof->fields['interface']!='helpdesk') {
 			return array(
 				1 => $LANG['plugin_addressing']['title'][1],
 				);
@@ -299,9 +295,9 @@ function plugin_get_headings_addressing($type,$ID,$withtemplate) {
 }
 
 // Define headings actions added by the plugin
-function plugin_headings_actions_addressing($type) {
+function plugin_headings_actions_addressing($item) {
 
-	if (in_array($type,array(PROFILE_TYPE))) {
+	if (in_array(get_class($item),array('Profile'))) {
 		return array(
          1 => "plugin_headings_addressing",
          );
@@ -310,15 +306,15 @@ function plugin_headings_actions_addressing($type) {
 }
 
 // action heading
-function plugin_headings_addressing($type,$ID,$withtemplate=0) {
+function plugin_headings_addressing($item,$withtemplate=0) {
 	global $CFG_GLPI;
 
-	switch ($type) {
-		case PROFILE_TYPE :
+	switch (get_class($item)) {
+		case 'Profile' :
 			$prof=new PluginAddressingProfile();
-			if (!$prof->GetfromDB($ID))
-				$prof->createAccess($ID);
-			$prof->showForm($CFG_GLPI["root_doc"]."/plugins/addressing/front/profile.form.php",$ID);
+			if (!$prof->GetfromDB($item->getField('id')))
+				$prof->createAccess($item->getField('id'));
+			$prof->showForm($CFG_GLPI["root_doc"]."/plugins/addressing/front/profile.form.php",$item->getField('id'));
          break;
 	}
 }

@@ -37,11 +37,8 @@
 $USEDBREPLICATE=1;
 $DBCONNECTION_REQUIRED=0;
 
-$NEEDED_ITEMS=array("networking","computer","printer","peripheral","phone","user","group");
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT."/inc/includes.php");
-
-useplugin('addressing',true);
 
 commonHeader($LANG['plugin_addressing']['title'][1],$_SERVER['PHP_SELF'],"plugins","addressing");
 

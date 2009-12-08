@@ -40,7 +40,7 @@ if (!defined('GLPI_ROOT')) {
 class PluginAddressingAddressing extends CommonDBTM {
    
    public $table = 'glpi_plugin_addressing_addressing';
-   public $type = PLUGIN_ADDRESSING_TYPE;
+   public $type = 'PluginAddressingAddressing';
 
    function getSearchOptions() {
       global $LANG;
@@ -119,7 +119,7 @@ class PluginAddressingAddressing extends CommonDBTM {
       $sql="SELECT DISTINCT `subnet`, `netmask`
             FROM `glpi_networkports` " .
             "LEFT JOIN `glpi_computers` ON (`glpi_computers`.`id` = `glpi_networkports`.`items_id`) " .
-            "WHERE `itemtype` = '".COMPUTER_TYPE."'
+            "WHERE `itemtype` = 'Computer'
             AND `entities_id` = '".$entity."'
             AND `subnet` NOT IN ('','0.0.0.0','127.0.0.0')
             AND `netmask` NOT IN ('','0.0.0.0','255.255.255.255')" .
@@ -294,7 +294,7 @@ class PluginAddressingAddressing extends CommonDBTM {
 		for ($ip=$ipdeb ; $ip<=$ipfin ; $ip++)
 			$result["IP".$ip]=array();
 
-		$sql = "SELECT 0 AS id, ".NETWORKING_TYPE." AS itemtype, `id` AS on_device, `dev`.`name` AS dname, '' AS pname, `ip`, `mac`, `users_id`, INET_ATON(`ip`) AS ipnum " .
+		$sql = "SELECT 0 AS id, 'NetworkEquipment' AS itemtype, `id` AS on_device, `dev`.`name` AS dname, '' AS pname, `ip`, `mac`, `users_id`, INET_ATON(`ip`) AS ipnum " .
 				"FROM `glpi_networkequipments`  dev " .
 				"WHERE INET_ATON(`ip`) >= '$ipdeb' AND INET_ATON(`ip`) <= '$ipfin' AND `is_deleted` = 0 AND `is_template` = 0 " .
 				getEntitiesRestrictRequest(" AND ","dev");
@@ -306,7 +306,7 @@ class PluginAddressingAddressing extends CommonDBTM {
 					"FROM `glpi_networkports` port, `" . $LINK_ID_TABLE[$type] . "` dev " .
 					"WHERE `itemtype` = '$type' AND `port`.`items_id` = `dev`.`id` AND INET_ATON(`port`.`ip`) >= '$ipdeb' AND INET_ATON(`port`.`ip`) <= '$ipfin' AND `is_deleted` = 0 AND `is_template` = 0 " .
 					getEntitiesRestrictRequest(" AND ", "dev");
-			if ($this->fields["networks_id"] && $type!=PERIPHERAL_TYPE && $type!=PHONE_TYPE)
+			if ($this->fields["networks_id"] && $type!='Peripheral' && $type!='Phone')
 				$sql .= " AND `networks_id`= ".$this->fields["networks_id"];
 		}
 		$res=$DB->query($sql);
@@ -393,7 +393,7 @@ class PluginAddressingAddressing extends CommonDBTM {
 
          $numrows=1+ip2long($this->fields['end_ip'])-ip2long($this->fields['begin_ip']);
          if ($export)
-            printPager($start,$numrows,$_SERVER["PHP_SELF"],"start=$start&amp;id=".$id,PLUGIN_ADDRESSING_REPORT_TYPE);
+            printPager($start,$numrows,$_SERVER["PHP_SELF"],"start=$start&amp;id=".$id,'PluginAddressingAddressingReport');
          else
             printAjaxPager("",$start,$numrows);
          //////////////////////////liste ips////////////////////////////////////////////////////////////

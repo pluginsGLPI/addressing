@@ -33,19 +33,18 @@
 // ----------------------------------------------------------------------
  */
 
-$NEEDED_ITEMS=array("search");
-define('GLPI_ROOT', '../..'); 
+define('GLPI_ROOT', '../../..'); 
 include (GLPI_ROOT . "/inc/includes.php"); 
 
 commonHeader($LANG['plugin_addressing']['title'][1],$_SERVER['PHP_SELF'],"plugins","addressing");
 
 if (plugin_addressing_haveRight("addressing","r") || haveRight("config","w")) {
 	
-	manageGetValuesInSearch(PLUGIN_ADDRESSING_TYPE);
+	manageGetValuesInSearch('PluginAddressingAddressing');
 
-	searchForm(PLUGIN_ADDRESSING_TYPE,$_GET);
+	searchForm('PluginAddressingAddressing',$_GET);
 
-	showList(PLUGIN_ADDRESSING_TYPE,$_GET);
+	showList('PluginAddressingAddressing',$_GET);
 
 } else {
 	echo "<div align='center'><br><br><img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt=\"warning\"><br><br>";

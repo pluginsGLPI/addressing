@@ -33,14 +33,10 @@
 // ----------------------------------------------------------------------
  */
 
-$NEEDED_ITEMS=array("computer","printer","networking","monitor","software","peripheral","phone","tracking","document","user","enterprise","contract","infocom","group");
-
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT . "/inc/includes.php");
 header("Content-Type: text/html; charset=UTF-8");
 header_nocache();
-
-useplugin('addressing',true);
 
 if (!isset($_POST["id"])) {
 	exit();

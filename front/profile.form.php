@@ -33,12 +33,10 @@
 // ----------------------------------------------------------------------
  */
 
-$NEEDED_ITEMS=array("profile");
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT."/inc/includes.php");
-checkRight("profile","r");
 
-useplugin('addressing',true);
+checkRight("profile","r");
 
 $prof=new PluginAddressingProfile();
 //Save profile

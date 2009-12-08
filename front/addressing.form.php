@@ -33,17 +33,10 @@
 // ----------------------------------------------------------------------
  */
 
-$NEEDED_ITEMS=array("computer","printer","networking","monitor","software","peripheral","phone","tracking","document","user","enterprise","contract","infocom","group");
-
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT."/inc/includes.php");
 
-useplugin('addressing',true);
-
-if (isset($_GET)) $tab = $_GET;
-if (empty($tab) && isset($_POST)) $tab = $_POST;
-if (!isset($tab["id"])) $tab["id"] = "";
-
+if (!isset($_GET["id"])) $_GET["id"] = "";
 if (isset($_GET["start"])) $start=$_GET["start"];
 else $start=0;
 
@@ -61,19 +54,19 @@ if (isset($_POST["add"])) {
 } else if (isset($_POST["delete"])) {
 
 	$PluginAddressingAddressing->check($_POST['id'],'w');
-   $PluginAddressingAddressing->delete($_POST);
-	glpi_header($CFG_GLPI["root_doc"]."/plugins/addressing/index.php");
+	$PluginAddressingAddressing->delete($_POST);
+	glpi_header($CFG_GLPI["root_doc"]."/plugins/addressing/front/addressing.php");
 	
 } else if (isset($_POST["restore"])) {
 
 	$PluginAddressingAddressing->check($_POST['id'],'w');
-   $PluginAddressingAddressing->restore($_POST);
-	glpi_header($CFG_GLPI["root_doc"]."/plugins/addressing/index.php");
+	$PluginAddressingAddressing->restore($_POST);
+	glpi_header($CFG_GLPI["root_doc"]."/plugins/addressing/front/addressing.php");
 	
 } else if (isset($_POST["purge"])) {
 	$PluginAddressingAddressing->check($_POST['id'],'w');
-   $PluginAddressingAddressing->delete($_POST,1);
-	glpi_header($CFG_GLPI["root_doc"]."/plugins/addressing/index.php");
+	$PluginAddressingAddressing->delete($_POST,1);
+	glpi_header($CFG_GLPI["root_doc"]."/plugins/addressing/front/addressing.php");
 	
 } else if (isset($_POST["update"])) {
 	
@@ -95,7 +88,7 @@ if (isset($_POST["add"])) {
 	}
 	commonHeader($LANG['plugin_addressing']['title'][1],$_SERVER["PHP_SELF"],"plugins","addressing");
 
-	$PluginAddressingAddressing->showForm($_SERVER["PHP_SELF"],$tab["id"]);
+	$PluginAddressingAddressing->showForm($_SERVER["PHP_SELF"],$_GET["id"]);
 
 	commonFooter();
 }
