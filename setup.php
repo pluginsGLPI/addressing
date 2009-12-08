@@ -71,8 +71,8 @@ function plugin_init_addressing() {
 		}
 		// Config page
 		if (haveRight("config","w")) {
-			$PLUGIN_HOOKS['submenu_entry']['addressing']['config'] = 'front/addressing.config.php';
-			$PLUGIN_HOOKS['config_page']['addressing'] = 'front/addressing.config.php';
+			$PLUGIN_HOOKS['submenu_entry']['addressing']['config'] = 'front/config.form.php';
+			$PLUGIN_HOOKS['config_page']['addressing'] = 'front/config.form.php';
 		}
 
 		// Add specific files to add to the header : javascript or css

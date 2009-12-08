@@ -40,11 +40,7 @@ commonHeader($LANG['plugin_addressing']['title'][1],$_SERVER['PHP_SELF'],"plugin
 
 if (plugin_addressing_haveRight("addressing","r") || haveRight("config","w")) {
 	
-	manageGetValuesInSearch('PluginAddressingAddressing');
-
-	searchForm('PluginAddressingAddressing',$_GET);
-
-	showList('PluginAddressingAddressing',$_GET);
+	Search::show("PluginAddressingAddressing");
 
 } else {
 	echo "<div align='center'><br><br><img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt=\"warning\"><br><br>";

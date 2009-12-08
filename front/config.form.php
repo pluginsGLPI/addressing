@@ -56,7 +56,7 @@ if (isset($_POST["update"])) {
 	else
 		commonHeader($LANG['common'][12],$_SERVER['PHP_SELF'],"config","plugins");
 
-	$PluginAddressingConfig->showForm();
+	$PluginAddressingConfig->showForm($_SERVER["PHP_SELF"]);
 
 	commonFooter();
 }

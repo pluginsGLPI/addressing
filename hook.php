@@ -37,13 +37,15 @@ function plugin_addressing_install() {
    global $DB;
    
 	include_once (GLPI_ROOT."/plugins/addressing/inc/profile.class.php");
-
+   
+   $update=false;
 	if (!TableExists("glpi_plugin_addressing_display") &&!TableExists("glpi_plugin_addressing") && !TableExists("glpi_plugin_addressing_configs")) {
 
 		$DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/empty-1.8.0.sql");
 
 	} else if (!TableExists("glpi_plugin_addressing_profiles") && !FieldExists("glpi_plugin_addressing_display","ipconf1")) {//1.4
-
+      
+      $update=true;
 		$DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.4.sql");
 		$DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.5.sql");
 		$DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.6.sql");
@@ -51,27 +53,38 @@ function plugin_addressing_install() {
 		$DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.8.0.sql");
 
 	} else if (!TableExists("glpi_plugin_addressing") && FieldExists("glpi_plugin_addressing_display","ipconf1")) {
-
+      
+      $update=true;
 		$DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.5.sql");
 		$DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.6.sql");
 		$DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.7.0.sql");
 		$DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.8.0.sql");
 
 	} else if (TableExists("glpi_plugin_addressing_display") && !FieldExists("glpi_plugin_addressing","ipdeb")) {
-
+      
+      $update=true;
 		$DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.6.sql");
 		$DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.7.0.sql");
 		$DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.8.0.sql");
 
 	} else if (TableExists("glpi_plugin_addressing_profiles") && FieldExists("glpi_plugin_addressing_profiles","interface")) {
-
+      
+      $update=true;
 		$DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.7.0.sql");
 		$DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.8.0.sql");
 
 	} else if (!TableExists("glpi_plugin_addressing_configs")) {
-
+      
+      $update=true;
 		$DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.8.0.sql");
 
+	}
+	
+	if ($update) {
+      Plugin::migrateItemType(
+         array(5000=>'PluginAddressingAddressing',5001=>'PluginAddressingAddressingReport'),
+         array("glpi_bookmarks", "glpi_bookmarks_users", "glpi_displaypreferences",
+               "glpi_documents_items", "glpi_infocoms", "glpi_logs", "glpi_tickets"));
 	}
 
 	PluginAddressingProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
@@ -121,7 +134,7 @@ function plugin_addressing_getAddSearchOptions($itemtype) {
 function plugin_addressing_giveItem($type,$ID,$data,$num) {
 	global $LANG;
 
-  $searchopt=&getSearchOptions($type);
+  $searchopt=&Search::getOptions($type);
 
 	$table=$searchopt[$ID]["table"];
 	$field=$searchopt[$ID]["field"];
@@ -178,7 +191,7 @@ function plugin_addressing_MassiveActionsDisplay($type,$action) {
 		case 'PluginAddressingAddressing':
 			switch ($action) {
 				case "plugin_addressing_transfert":
-					dropdownValue("glpi_entities", "entities_id", '');
+					CommonDropdown::dropdownValue("glpi_entities", "entities_id", '');
 					echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
 					break;
 			}
@@ -187,7 +200,7 @@ function plugin_addressing_MassiveActionsDisplay($type,$action) {
 		case 'Profile':
 			switch ($action) {
 				case 'plugin_addressing_allow':
-					dropdownNoneReadWrite('use','');
+					Profile::dropdownNoneReadWrite('use','');
 					echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
 					break;
 			}
@@ -284,12 +297,15 @@ function plugin_get_headings_addressing($item,$withtemplate) {
 	global $LANG;
 
 	if (get_class($item)=='Profile') {
-		$prof = new Profile();
-		if ($item->getField('id') && $prof->fields['interface']!='helpdesk') {
+		if ($item->getField('id') && $item->getField('interface')!='helpdesk') {
 			return array(
 				1 => $LANG['plugin_addressing']['title'][1],
 				);
 		}
+	} else if (get_class($item)=='Config') {
+      return array(
+         1 => $LANG['plugin_addressing']['title'][1],
+         );
 	}
 	return false;
 }
@@ -297,7 +313,7 @@ function plugin_get_headings_addressing($item,$withtemplate) {
 // Define headings actions added by the plugin
 function plugin_headings_actions_addressing($item) {
 
-	if (in_array(get_class($item),array('Profile'))) {
+	if (in_array(get_class($item),array('Profile','Config'))) {
 		return array(
          1 => "plugin_headings_addressing",
          );
@@ -315,6 +331,10 @@ function plugin_headings_addressing($item,$withtemplate=0) {
 			if (!$prof->GetfromDB($item->getField('id')))
 				$prof->createAccess($item->getField('id'));
 			$prof->showForm($CFG_GLPI["root_doc"]."/plugins/addressing/front/profile.form.php",$item->getField('id'));
+         break;
+      case 'Config' :
+			$PluginAddressingConfig=new PluginAddressingConfig();
+			$PluginAddressingConfig->showForm($CFG_GLPI["root_doc"]."/plugins/addressing/front/config.form.php");
          break;
 	}
 }

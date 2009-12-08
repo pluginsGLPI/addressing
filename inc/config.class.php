@@ -41,7 +41,7 @@ class PluginAddressingConfig extends CommonDBTM {
 	
 	public $table = 'glpi_plugin_addressing_configs';
 	
-	function showForm() {
+	function showForm($target) {
       global $LANG;
 
       $this->getFromDB('1');
@@ -55,9 +55,9 @@ class PluginAddressingConfig extends CommonDBTM {
       
       echo "<div align='center'>";
       
-      echo "<form method='post' action=\"./addressing.config.php\">";
+      echo "<form method='post' action=\"$target\">";
 
-      echo "<table class='tab_cadre' cellpadding='5'>";
+      echo "<table class='tab_cadre_fixe' cellpadding='5'>";
       echo "<tr><th colspan='4'>".$LANG['plugin_addressing']['setup'][19]."</th></tr>";
 
       echo "<tr class='tab_bg_1'><td colspan='4'><div align='center'><select name=\"used_system\">";

@@ -163,7 +163,7 @@ class PluginAddressingAddressing extends CommonDBTM {
 
       echo "<tr><td>".$LANG['plugin_addressing']['reports'][3]."</td>";
       echo "<td>";
-      dropdownValue("glpi_networks", "networks_id", $this->fields["networks_id"]);
+      CommonDropdown::dropdownValue("glpi_networks", "networks_id", $this->fields["networks_id"]);
       echo "</td></tr>";
 
       echo "<tr><td>".$LANG['plugin_addressing']['reports'][36]."</td>";

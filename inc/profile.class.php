@@ -116,7 +116,7 @@ class PluginAddressingProfile extends CommonDBTM {
 
 		echo "<tr class='tab_bg_2'>";
 		echo "<td>".$LANG['plugin_addressing']['profile'][3].":</td><td>";
-		dropdownNoneReadWrite("addressing",$this->fields["addressing"],1,1,1);
+		Profile::dropdownNoneReadWrite("addressing",$this->fields["addressing"],1,1,1);
 		echo "</td>";
 		echo "</tr>";
 
