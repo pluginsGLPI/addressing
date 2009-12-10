@@ -39,7 +39,7 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginAddressingReport extends CommonDBTM {
    
-   public $table = 'glpi_plugin_addressing_addressing';
+   public $table = 'glpi_plugin_addressing_addressings';
    public $type = 'PluginAddressingAddressingReport';
    
    function displaySearchNewLine($type,$odd=false) {

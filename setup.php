@@ -43,7 +43,7 @@ function plugin_init_addressing() {
 	// Params : plugin name - string type - number - class - table - form page
 	Plugin::registerClass('PluginAddressingAddressing', array(
 		'classname'  => 'PluginAddressingAddressing',
-		'tablename'  => 'glpi_plugin_addressing_addressing',
+		'tablename'  => 'glpi_plugin_addressing_addressings',
 		'formpage'   => 'front/addressing.form.php',
 		'searchpage' => 'front/addressing.php',
 		'deleted_tables' => true,
@@ -52,7 +52,7 @@ function plugin_init_addressing() {
 
 	Plugin::registerClass('PluginAddressingAddressingReport', array(
 		'classname' => 'PluginAddressingAddressingReport',
-		'tablename'  => 'glpi_plugin_addressing_addressing'
+		'tablename'  => 'glpi_plugin_addressing_addressings'
 	));
 
 	if (isset($_SESSION["glpiID"])) {

@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS `glpi_plugin_addressing_addressing`;
-CREATE TABLE `glpi_plugin_addressing_addressing` (
+DROP TABLE IF EXISTS `glpi_plugin_addressing_addressings`;
+CREATE TABLE `glpi_plugin_addressing_addressings` (
 	`id` int(11) NOT NULL auto_increment,
 	`entities_id` int(11) NOT NULL default '0',
 	`name` varchar(255) collate utf8_unicode_ci default NULL,

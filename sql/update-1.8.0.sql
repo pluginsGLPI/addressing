@@ -1,5 +1,5 @@
-ALTER TABLE `glpi_plugin_addressing` RENAME `glpi_plugin_addressing_addressing`;
-ALTER TABLE `glpi_plugin_addressing_addressing` 
+ALTER TABLE `glpi_plugin_addressing` RENAME `glpi_plugin_addressing_addressings`;
+ALTER TABLE `glpi_plugin_addressing_addressings` 
    CHANGE `ID` `id` int(11) NOT NULL auto_increment,
    CHANGE `FK_entities` `entities_id` int(11) NOT NULL default '0',
    CHANGE `name` `name` varchar(255) collate utf8_unicode_ci default NULL,

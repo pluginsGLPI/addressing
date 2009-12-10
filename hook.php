@@ -94,7 +94,7 @@ function plugin_addressing_install() {
 function plugin_addressing_uninstall() {
 	global $DB;
 
-	$tables = array("glpi_plugin_addressing_addressing",
+	$tables = array("glpi_plugin_addressing_addressings",
 					"glpi_plugin_addressing_configs",
 					"glpi_plugin_addressing_profiles");
 
@@ -140,10 +140,6 @@ function plugin_addressing_giveItem($type,$ID,$data,$num) {
 	$field=$searchopt[$ID]["field"];
 
 	switch ($table.'.'.$field) {
-		/*case "glpi_plugin_addressing_addressing.generation_link" :
-			$out= "<a href=\"front/report.form.php?id=".$data["id"]."\">".$LANG['plugin_addressing'][4]."</a>";
-			return $out;
-			break;*/
 		case "glpi_plugin_addressing_profiles.addressing":
 			switch($data["ITEM_$num"]) {
 				case 'w':
@@ -191,7 +187,7 @@ function plugin_addressing_MassiveActionsDisplay($type,$action) {
 		case 'PluginAddressingAddressing':
 			switch ($action) {
 				case "plugin_addressing_transfert":
-					CommonDropdown::dropdownValue("glpi_entities", "entities_id", '');
+					Dropdown::dropdownValue("glpi_entities", "entities_id", '');
 					echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
 					break;
 			}
@@ -222,9 +218,9 @@ function plugin_addressing_MassiveActionsProcess($data) {
 						$PluginAddressingAddressing=new PluginAddressingAddressing;
 						$PluginAddressingAddressing->getFromDB($key);
 
-						$query="UPDATE `glpi_plugin_addressing_addressing`
+						$query="UPDATE `glpi_plugin_addressing_addressings`
 									SET `entities_id` = '".$data['entities_id']."'
-									WHERE `glpi_plugin_addressing_addressing`.`id` ='$key'";
+									WHERE `glpi_plugin_addressing_addressings`.`id` ='$key'";
 						$DB->query($query);
 					}
 				}

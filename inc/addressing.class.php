@@ -39,7 +39,7 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginAddressingAddressing extends CommonDBTM {
    
-   public $table = 'glpi_plugin_addressing_addressing';
+   public $table = 'glpi_plugin_addressing_addressings';
    public $type = 'PluginAddressingAddressing';
 
    function getSearchOptions() {
@@ -163,7 +163,7 @@ class PluginAddressingAddressing extends CommonDBTM {
 
       echo "<tr><td>".$LANG['plugin_addressing']['reports'][3]."</td>";
       echo "<td>";
-      CommonDropdown::dropdownValue("glpi_networks", "networks_id", $this->fields["networks_id"]);
+      Dropdown::dropdownValue("glpi_networks", "networks_id", $this->fields["networks_id"]);
       echo "</td></tr>";
 
       echo "<tr><td>".$LANG['plugin_addressing']['reports'][36]."</td>";
@@ -272,7 +272,7 @@ class PluginAddressingAddressing extends CommonDBTM {
    }
    
 	function compute($start) {
-		global $DB, $CFG_GLPI, $LINK_ID_TABLE;
+		global $DB, $CFG_GLPI;
          
 		// sprintf to solve 32/64 bits issue
 		$ipdeb=sprintf("%u", ip2long($this->fields["begin_ip"]));
@@ -302,8 +302,9 @@ class PluginAddressingAddressing extends CommonDBTM {
 			$sql .= " AND `networks_id` = ".$this->fields["networks_id"];
 
 		foreach ($CFG_GLPI["netport_types"] as $type) {
+         $itemtable=getTableForItemType($type);
 			$sql .= " UNION SELECT `port`.`id`, `itemtype`, `items_id`, `dev`.`name` AS dname, `port`.`name` AS pname, `port`.`ip`, `port`.`mac`, `users_id`, INET_ATON(`port`.`ip`) AS ipnum " .
-					"FROM `glpi_networkports` port, `" . $LINK_ID_TABLE[$type] . "` dev " .
+					"FROM `glpi_networkports` port, `" . $itemtable . "` dev " .
 					"WHERE `itemtype` = '$type' AND `port`.`items_id` = `dev`.`id` AND INET_ATON(`port`.`ip`) >= '$ipdeb' AND INET_ATON(`port`.`ip`) <= '$ipfin' AND `is_deleted` = 0 AND `is_template` = 0 " .
 					getEntitiesRestrictRequest(" AND ", "dev");
 			if ($this->fields["networks_id"] && $type!='Peripheral' && $type!='Phone')
