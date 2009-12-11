@@ -124,16 +124,4 @@ function plugin_addressing_haveRight($module,$right) {
 	else return false;
 }
 
-// Define rights for the plugin types
-function plugin_addressing_haveTypeRight($type,$right) {
-	switch ($type) {
-		case 'PluginAddressingAddressing' :
-			// 1 - All rights for all users
-			// return true;
-			// 2 - Similarity right : same right of computer
-			return plugin_addressing_haveRight("addressing",$right);
-			break;
-	}
-}
-
 ?>

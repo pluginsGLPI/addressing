@@ -41,7 +41,21 @@ class PluginAddressingAddressing extends CommonDBTM {
    
    public $table = 'glpi_plugin_addressing_addressings';
    public $type = 'PluginAddressingAddressing';
+   
+   static function getTypeName() {
+      global $LANG;
 
+      return $LANG['plugin_addressing']['title'][1];
+   }
+   
+   static function canCreate() {
+      return plugin_addressing_haveRight('addressing', 'w');
+   }
+
+   static function canView() {
+      return plugin_addressing_haveRight('addressing', 'r');
+   }
+   
    function getSearchOptions() {
       global $LANG;
 
