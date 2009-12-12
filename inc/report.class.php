@@ -82,7 +82,7 @@ class PluginAddressingReport extends CommonDBTM {
 	}
 	
    function display(&$result, $PluginAddressingAddressing) {
-		global $DB,$LANG,$CFG_GLPI,$INFOFORM_PAGES;
+		global $DB,$LANG,$CFG_GLPI;
       
 		$network=$PluginAddressingAddressing->fields["networks_id"];
 		$ping=$PluginAddressingAddressing->fields["use_ping"];
@@ -140,16 +140,17 @@ class PluginAddressingReport extends CommonDBTM {
 
 					// Device
 					$ci->setType($line["itemtype"]);
+					$link=getItemTypeFormURL($line["itemtype"]);
 					if ($line["itemtype"] != 'NetworkEquipment') {
 						if (haveTypeRight($line["itemtype"], "r")) {
-							$output_iddev = "<a href='".$CFG_GLPI["root_doc"]."/".$INFOFORM_PAGES[$line["itemtype"]]."?id=".$line["on_device"]."'>".$name
+							$output_iddev = "<a href='".$link."?id=".$line["on_device"]."'>".$name
 								.(empty($name) || $_SESSION["glpiis_ids_visible"]?" (".$line["on_device"].")":"")."</a>";
 						} else {
 							$output_iddev = $name.(empty($name) || $_SESSION["glpiis_ids_visible"]?" (".$line["on_device"].")":"");
 						}
 					} else {
 						if (haveTypeRight($line["itemtype"], "r")) {
-							$output_iddev = "<a href='".$CFG_GLPI["root_doc"]."/".$INFOFORM_PAGES[$line["itemtype"]]."?id=".$line["on_device"]."'>".$namep." - ".$name
+							$output_iddev = "<a href='".$link."?id=".$line["on_device"]."'>".$namep." - ".$name
 								.(empty($name) || $_SESSION["glpiis_ids_visible"]?" (".$line["on_device"].")":"")."</a>";
 						} else {
 							$output_iddev = $namep." - ".$name.(empty($name) || $_SESSION["glpiis_ids_visible"]?" (".$line["on_device"].")":"");

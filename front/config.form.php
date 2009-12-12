@@ -38,26 +38,32 @@ if (!defined('GLPI_ROOT')) {
 	include (GLPI_ROOT . "/inc/includes.php");
 }
 
-$PluginAddressingConfig=new PluginAddressingConfig();
+$plugin = new Plugin();
+if ($plugin->isActivated("addressing")) {
+	
+   $PluginAddressingConfig=new PluginAddressingConfig();
 
-checkRight("config","w");
+   checkRight("config","w");
 
-if (isset($_POST["update"])) {
+   if (isset($_POST["update"])) {
 
-	checkRight("config","w");
-	$PluginAddressingConfig->update($_POST);
-	glpi_header($_SERVER['HTTP_REFERER']);
+      checkRight("config","w");
+      $PluginAddressingConfig->update($_POST);
+      glpi_header($_SERVER['HTTP_REFERER']);
 
+   } else {
+
+      commonHeader($LANG['plugin_addressing']['title'][1],$_SERVER["PHP_SELF"],"plugins","addressing");
+
+      $PluginAddressingConfig->showForm($_SERVER["PHP_SELF"]);
+
+      commonFooter();
+   }
 } else {
-
-	$plugin = new Plugin();
-	if ($plugin->isActivated("addressing"))
-		commonHeader($LANG['plugin_addressing']['title'][1],$_SERVER["PHP_SELF"],"plugins","addressing");
-	else
-		commonHeader($LANG['common'][12],$_SERVER['PHP_SELF'],"config","plugins");
-
-	$PluginAddressingConfig->showForm($_SERVER["PHP_SELF"]);
-
-	commonFooter();
+   commonHeader($LANG["common"][12],$_SERVER['PHP_SELF'],"config","plugins");
+   echo "<div align='center'><br><br><img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt=\"warning\"><br><br>";
+   echo "<b>Please activate the plugin</b></div>";
+   commonFooter();
 }
+
 ?>
