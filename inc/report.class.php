@@ -150,7 +150,8 @@ class PluginAddressingReport extends CommonDBTM {
 						}
 					} else {
 						if (haveTypeRight($line["itemtype"], "r")) {
-							$output_iddev = "<a href='".$link."?id=".$line["on_device"]."'>".$namep." - ".$name
+                     if (empty($namep)) $linkp=''; else $linkp=$namep." - ";
+							$output_iddev = "<a href='".$link."?id=".$line["on_device"]."'>".$linkp.$name
 								.(empty($name) || $_SESSION["glpiis_ids_visible"]?" (".$line["on_device"].")":"")."</a>";
 						} else {
 							$output_iddev = $namep." - ".$name.(empty($name) || $_SESSION["glpiis_ids_visible"]?" (".$line["on_device"].")":"");
