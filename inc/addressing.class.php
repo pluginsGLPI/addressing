@@ -222,28 +222,28 @@ class PluginAddressingAddressing extends CommonDBTM {
 
       if ($PluginAddressingConfig->fields["alloted_ip"]) {
          echo "<tr><td>".$LANG['plugin_addressing']['setup'][11]."</td><td>";
-         dropdownYesNo('alloted_ip',$this->fields["alloted_ip"]);
+         Dropdown::showYesNo('alloted_ip',$this->fields["alloted_ip"]);
          echo "</td></tr>";
       } else {
          echo "<input type='hidden' name='alloted_ip' value='0''>\n";
       }
       if ($PluginAddressingConfig->fields["free_ip"]) {
          echo "<tr><td>".$LANG['plugin_addressing']['setup'][12]."</td><td>";
-         dropdownYesNo('free_ip',$this->fields["free_ip"]);
+         Dropdown::showYesNo('free_ip',$this->fields["free_ip"]);
          echo "</td></tr>";
       } else {
          echo "<input type='hidden' name='free_ip' value='0''>\n";
       }
       if ($PluginAddressingConfig->fields["double_ip"]) {
          echo "<tr><td>".$LANG['plugin_addressing']['setup'][13]."</td><td>";
-         dropdownYesNo('double_ip',$this->fields["double_ip"]);
+         Dropdown::showYesNo('double_ip',$this->fields["double_ip"]);
          echo "</td></tr>";
       } else {
          echo "<input type='hidden' name='double_ip' value='0''>\n";
       }
       if ($PluginAddressingConfig->fields["reserved_ip"]) {
          echo "<tr><td>".$LANG['plugin_addressing']['setup'][14]."</td><td>";
-         dropdownYesNo('reserved_ip',$this->fields["reserved_ip"]);
+         Dropdown::showYesNo('reserved_ip',$this->fields["reserved_ip"]);
          echo "</td></tr>";
       } else {
          echo "<input type='hidden' name='reserved_ip' value='0''>\n";
@@ -251,7 +251,7 @@ class PluginAddressingAddressing extends CommonDBTM {
 
       if ($PluginAddressingConfig->fields["use_ping"]) {
          echo "<tr><td>".$LANG['plugin_addressing']['reports'][30].": </td><td>";
-         dropdownYesNo('use_ping',$this->fields["use_ping"]);
+         Dropdown::showYesNo('use_ping',$this->fields["use_ping"]);
          echo "</td></tr>";
       } else {
          echo "<input type='hidden' name='use_ping' value=\"0\">\n";
