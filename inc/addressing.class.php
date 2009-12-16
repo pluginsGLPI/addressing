@@ -48,11 +48,11 @@ class PluginAddressingAddressing extends CommonDBTM {
       return $LANG['plugin_addressing']['title'][1];
    }
    
-   static function canCreate() {
+   function canCreate() {
       return plugin_addressing_haveRight('addressing', 'w');
    }
 
-   static function canView() {
+   function canView() {
       return plugin_addressing_haveRight('addressing', 'r');
    }
    

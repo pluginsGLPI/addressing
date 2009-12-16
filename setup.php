@@ -41,10 +41,7 @@ function plugin_init_addressing() {
 	$PLUGIN_HOOKS['change_profile']['addressing'] = array('PluginAddressingProfile','changeProfile');
 
 	// Params : plugin name - string type - number - class - table - form page
-	Plugin::registerClass('PluginAddressingAddressing', array(
-		'deleted_tables' => true,
-		'specif_entities_tables' => true
-	));
+	Plugin::registerClass('PluginAddressingAddressing');
 
 	Plugin::registerClass('PluginAddressingAddressingReport');
 
@@ -60,7 +57,7 @@ function plugin_init_addressing() {
 		if (plugin_addressing_haveRight("addressing","w")) {
 			$PLUGIN_HOOKS['submenu_entry']['addressing']['add'] = 'front/addressing.form.php?new=1';
 			$PLUGIN_HOOKS['use_massive_action']['addressing']=1;
-			$PLUGIN_HOOKS['pre_item_delete']['addressing'] = 'plugin_pre_item_delete_addressing';
+			$PLUGIN_HOOKS['pre_item_purge']['addressing'] = 'plugin_pre_item_purge_addressing';
 		}
 		// Config page
 		if (haveRight("config","w")) {

@@ -117,7 +117,6 @@ class PluginAddressingReport extends CommonDBTM {
 		echo displaySearchEndLine($output_type);
 		$row_num=1;
 
-		$ci=new CommonItem();
 		$user = new User();
 
 		foreach ($result as $num => $lines) {
@@ -139,17 +138,17 @@ class PluginAddressingReport extends CommonDBTM {
 					echo displaySearchItem($output_type,$ip,$item_num,$row_num);
 
 					// Device
-					$ci->setType($line["itemtype"]);
+					$item = new $line["itemtype"]();
 					$link=getItemTypeFormURL($line["itemtype"]);
 					if ($line["itemtype"] != 'NetworkEquipment') {
-						if (haveTypeRight($line["itemtype"], "r")) {
+						if ($item->canView()) {
 							$output_iddev = "<a href='".$link."?id=".$line["on_device"]."'>".$name
 								.(empty($name) || $_SESSION["glpiis_ids_visible"]?" (".$line["on_device"].")":"")."</a>";
 						} else {
 							$output_iddev = $name.(empty($name) || $_SESSION["glpiis_ids_visible"]?" (".$line["on_device"].")":"");
 						}
 					} else {
-						if (haveTypeRight($line["itemtype"], "r")) {
+						if ($item->canView()) {
                      if (empty($namep)) $linkp=''; else $linkp=$namep." - ";
 							$output_iddev = "<a href='".$link."?id=".$line["on_device"]."'>".$linkp.$name
 								.(empty($name) || $_SESSION["glpiis_ids_visible"]?" (".$line["on_device"].")":"")."</a>";
@@ -163,7 +162,7 @@ class PluginAddressingReport extends CommonDBTM {
 					if ($line["users_id"] && $user->getFromDB($line["users_id"])) {
 						$username=formatUserName($user->fields["id"],$user->fields["name"],$user->fields["realname"],$user->fields["firstname"]);
 
-						if (haveTypeRight('User', "r")) {
+						if ($user->canView()) {
 							$output_iduser="<a href='".$CFG_GLPI["root_doc"]."/front/user.form.php?id=".$line["users_id"]."'>".$username."</a>";
 						} else {
 							$output_iduser=$username;
@@ -175,7 +174,7 @@ class PluginAddressingReport extends CommonDBTM {
 
 					// Mac
 					if ($line["id"]) {
-						if (haveTypeRight($line["itemtype"], "r")) {
+						if ($item->canView()) {
 							$output_mac = "<a href='".$CFG_GLPI["root_doc"]."/front/networkport.form.php?id=".$line["id"]."'>".$line["mac"]."</a>";
 						} else {
 							$output_mac = $line["mac"];
@@ -185,7 +184,7 @@ class PluginAddressingReport extends CommonDBTM {
 						echo displaySearchItem($output_type," ",$item_num,$row_num);
 					}
 					// Type
-					echo displaySearchItem($output_type,$ci->getType(),$item_num,$row_num);
+					echo displaySearchItem($output_type,$line["itemtype"],$item_num,$row_num);
 
 					// Reserved
 					if ($PluginAddressingAddressing->fields["reserved_ip"] && strstr($line["pname"],"reserv")) {
