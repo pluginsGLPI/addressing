@@ -99,7 +99,14 @@ function plugin_addressing_uninstall() {
 					"glpi_plugin_addressing_profiles");
 
 	foreach($tables as $table)
-		$DB->query("DROP TABLE `$table`;");
+		$DB->query("DROP TABLE IF EXISTS `$table`;");
+		
+	//old versions	
+   $tables = array("glpi_plugin_addressing_display",
+					"glpi_plugin_addressing");
+
+	foreach($tables as $table)
+		$DB->query("DROP TABLE IF EXISTS `$table`;");
 
    $tables_glpi = array("glpi_displaypreferences",
 					"glpi_bookmarks");
@@ -254,17 +261,16 @@ function plugin_addressing_MassiveActionsProcess($data) {
 
 // Hook done on delete item case
 
-function plugin_pre_item_delete_addressing($input) {
+function plugin_pre_item_purge_addressing($item) {
 
-	if (isset($input["_item_type_"]))
-		switch ($input["_item_type_"]) {
-			case 'Profile' :
-				// Manipulate data if needed
-				$PluginAddressingProfile=new PluginAddressingProfile;
-				$PluginAddressingProfile->cleanProfiles($input["id"]);
-				break;
-		}
-	return $input;
+	switch (get_class($item)) {
+      case 'Profile' :
+         // Manipulate data if needed
+         $PluginAddressingProfile=new PluginAddressingProfile;
+         $PluginAddressingProfile->cleanProfiles($item->getField('id'));
+         break;
+   }
+	
 }
 
 // Do special actions for dynamic report
