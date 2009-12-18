@@ -40,11 +40,6 @@ function plugin_init_addressing() {
 
 	$PLUGIN_HOOKS['change_profile']['addressing'] = array('PluginAddressingProfile','changeProfile');
 
-	// Params : plugin name - string type - number - class - table - form page
-	Plugin::registerClass('PluginAddressingAddressing');
-
-	Plugin::registerClass('PluginAddressingAddressingReport');
-
 	if (isset($_SESSION["glpiID"])) {
 
 		if (plugin_addressing_haveRight("addressing","r")) {
