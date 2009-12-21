@@ -162,7 +162,7 @@ class PluginAddressingAddressing extends CommonDBTM {
          $this->getEmpty();
       }
 
-      $this->showTabs($ID, $withtemplate,getActiveTab($this->type));
+      $this->showTabs($ID, $withtemplate);
       $onsubmit="onSubmit='return plugaddr_Check(\"".$LANG['plugin_addressing']['reports'][37]."\")'";
       $this->showFormHeader($target,$ID,$withtemplate,2,$onsubmit);
 
