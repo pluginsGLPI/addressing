@@ -52,7 +52,7 @@ function plugin_addressing_install() {
 		$DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.7.0.sql");
 		$DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.8.0.sql");
 
-	} else if (!TableExists("glpi_plugin_addressing") && FieldExists("glpi_plugin_addressing_display","ipconf1")) {
+	} else if (!TableExists("glpi_plugin_addressing") && TableExists("glpi_plugin_addressing_display") && FieldExists("glpi_plugin_addressing_display","ipconf1")) {
       
       $update=true;
 		$DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.5.sql");
@@ -194,7 +194,7 @@ function plugin_addressing_MassiveActionsDisplay($type,$action) {
 		case 'PluginAddressingAddressing':
 			switch ($action) {
 				case "plugin_addressing_transfert":
-					Dropdown::dropdownValue("glpi_entities", "entities_id", '');
+					Dropdown::show('Entity');
 					echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
 					break;
 			}
