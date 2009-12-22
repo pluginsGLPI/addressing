@@ -114,9 +114,6 @@ function plugin_addressing_uninstall() {
 	foreach($tables_glpi as $table_glpi)
 		$DB->query("DELETE FROM `$table_glpi` WHERE `itemtype` = '".'PluginAddressingAddressing'."';");
 
-	// TODO check is this is needed...
-	plugin_init_addressing();
-
 	return true;
 }
 
