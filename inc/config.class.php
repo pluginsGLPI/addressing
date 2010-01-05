@@ -39,8 +39,6 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginAddressingConfig extends CommonDBTM {
 	
-	public $table = 'glpi_plugin_addressing_configs';
-	
 	function showForm($target) {
       global $LANG;
 

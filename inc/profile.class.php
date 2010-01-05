@@ -39,10 +39,6 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginAddressingProfile extends CommonDBTM {
 	
-	// From CommonDBTM
-   public $table = 'glpi_plugin_addressing_profiles';
-   public $type  = -1;
-
 	//if profile deleted
 	function cleanProfiles($ID) {
 

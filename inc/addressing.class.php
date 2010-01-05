@@ -39,9 +39,6 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginAddressingAddressing extends CommonDBTM {
    
-   public $table = 'glpi_plugin_addressing_addressings';
-   public $type = 'PluginAddressingAddressing';
-   
    static function getTypeName() {
       global $LANG;
 
@@ -63,7 +60,7 @@ class PluginAddressingAddressing extends CommonDBTM {
 
       $tab['common'] = $LANG['plugin_addressing']['title'][1];
 
-      $tab[1]['table']=$this->table;
+      $tab[1]['table']=$this->getTable();
       $tab[1]['field']='name';
       $tab[1]['linkfield']='name';
       $tab[1]['name']=$LANG['common'][16];
@@ -74,19 +71,19 @@ class PluginAddressingAddressing extends CommonDBTM {
       $tab[2]['linkfield']='networks_id';
       $tab[2]['name']=$LANG['plugin_addressing']['setup'][24];
 
-      $tab[3]['table']=$this->table;
+      $tab[3]['table']=$this->getTable();
       $tab[3]['field']='comment';
       $tab[3]['linkfield']='comment';
       $tab[3]['name']=$LANG['common'][25];
       $tab[3]['datatype']='text';
 
-      $tab[4]['table']=$this->table;
+      $tab[4]['table']=$this->getTable();
       $tab[4]['field']='use_ping';
       $tab[4]['linkfield']='use_ping';
       $tab[4]['name']=$LANG['plugin_addressing']['reports'][30];
       $tab[4]['datatype']='bool';
 
-      $tab[30]['table']=$this->table;
+      $tab[30]['table']=$this->getTable();
       $tab[30]['field']='id';
       $tab[30]['linkfield']='';
       $tab[30]['name']=$LANG['common'][2];
@@ -96,12 +93,12 @@ class PluginAddressingAddressing extends CommonDBTM {
       $tab[80]['linkfield']='entities_id';
       $tab[80]['name']=$LANG['entity'][0];
 
-      $tab[1000]['table']=$this->table;
+      $tab[1000]['table']=$this->getTable();
       $tab[1000]['field']='begin_ip';
       $tab[1000]['linkfield']='';
       $tab[1000]['name']=$LANG['plugin_addressing']['reports'][38];
 
-      $tab[1001]['table']=$this->table;
+      $tab[1001]['table']=$this->getTable();
       $tab[1001]['field']='end_ip';
       $tab[1001]['linkfield']='';
       $tab[1001]['name']=$LANG['plugin_addressing']['reports'][39];
@@ -172,7 +169,7 @@ class PluginAddressingAddressing extends CommonDBTM {
 
       echo "<tr><td>".$LANG['common'][16].": </td>";
       echo "<td>";
-      autocompletionTextField("name",$this->table,"name",$this->fields["name"],20,$this->fields["entities_id"]);
+      autocompletionTextField($this,"name");
       echo "</td></tr>";
 
       echo "<tr><td>".$LANG['plugin_addressing']['reports'][3]."</td>";
