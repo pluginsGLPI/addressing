@@ -81,20 +81,6 @@ class PluginAddressingProfile extends CommonDBTM {
       else
          unset($_SESSION["glpi_plugin_addressing_profile"]);
    }
-	  
-	static function checkRight($module, $right) {
-		global $CFG_GLPI;
-		
-		if (!plugin_addressing_haveRight($module, $right)) {
-		  // Gestion timeout session
-		  if (!isset ($_SESSION["glpiID"])) {
-			glpi_header($CFG_GLPI["root_doc"] . "/index.php");
-			exit ();
-		  }
-		
-		  displayRightError();
-		}
-	}
 
 	//profiles modification
 	function showForm($target,$ID) {

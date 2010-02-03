@@ -106,7 +106,7 @@ class PluginAddressingAddressing extends CommonDBTM {
 		return $tab;
    }
 
-	function defineTabs($ID,$withtemplate) {
+	function defineTabs($options=array()) {
 		global $LANG;
 		
 		$ong[1]=$LANG['title'][26];
@@ -146,7 +146,7 @@ class PluginAddressingAddressing extends CommonDBTM {
       echo "</select>\n";
 }
 
-	function showForm ($target,$ID,$withtemplate='') {
+	function showForm ($ID, $options=array()) {
 		global $CFG_GLPI,$LANG;
 
 		if (!plugin_addressing_haveRight("addressing","r")) return false;
@@ -159,9 +159,9 @@ class PluginAddressingAddressing extends CommonDBTM {
          $this->getEmpty();
       }
 
-      $this->showTabs($ID, $withtemplate);
-      $onsubmit="onSubmit='return plugaddr_Check(\"".$LANG['plugin_addressing']['reports'][37]."\")'";
-      $this->showFormHeader($target,$ID,$withtemplate,2,$onsubmit);
+      $this->showTabs($options);
+      $options['formoptions'] = "onSubmit='return plugaddr_Check(\"".$LANG['plugin_addressing']['reports'][37]."\")'";
+      $this->showFormHeader($options);
 
       echo "<tr><td class='tab_bg_1 top'>";
 
@@ -267,7 +267,7 @@ class PluginAddressingAddressing extends CommonDBTM {
       echo "</td>";
       echo "</tr>";
 
-      $this->showFormButtons($ID,$withtemplate,2);
+      $this->showFormButtons($options);
       echo "<div id='tabcontent'></div>";
       echo "<script type='text/javascript'>loadDefaultTab();</script>";
 

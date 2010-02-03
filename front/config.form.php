@@ -47,7 +47,6 @@ if ($plugin->isActivated("addressing")) {
 
    if (isset($_POST["update"])) {
 
-      checkRight("config","w");
       $PluginAddressingConfig->update($_POST);
       glpi_header($_SERVER['HTTP_REFERER']);
 

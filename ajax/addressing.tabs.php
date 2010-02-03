@@ -42,9 +42,8 @@ if (!isset($_POST["id"])) {
 	exit();
 }
 
-PluginAddressingProfile::checkRight("addressing","r");
-
-$PluginAddressingAddressing=new PluginAddressingAddressing;
+$PluginAddressingAddressing = new PluginAddressingAddressing();
+$PluginAddressingAddressing->checkGlobal("r");
 
 if (empty($_POST["id"])) {
    switch($_REQUEST['glpi_tab']) {

@@ -40,7 +40,7 @@ if (!isset($_GET["id"])) $_GET["id"] = "";
 if (isset($_GET["start"])) $start=$_GET["start"];
 else $start=0;
 
-$PluginAddressingAddressing=new PluginAddressingAddressing();
+$PluginAddressingAddressing = new PluginAddressingAddressing();
 
 if (isset($_POST["add"])) {
 
@@ -79,7 +79,7 @@ if (isset($_POST["add"])) {
 	
 } else {
 
-	PluginAddressingProfile::checkRight("addressing","r");
+	$PluginAddressingAddressing->checkGlobal("r");
 
 	if (!isset($_SESSION['glpi_tab'])) $_SESSION['glpi_tab']=1;
 	if (isset($_GET['onglet'])) {
@@ -88,7 +88,7 @@ if (isset($_POST["add"])) {
 	}
 	commonHeader($LANG['plugin_addressing']['title'][1],$_SERVER["PHP_SELF"],"plugins","addressing");
 
-	$PluginAddressingAddressing->showForm($_SERVER["PHP_SELF"],$_GET["id"]);
+	$PluginAddressingAddressing->showForm($_GET["id"]);
 
 	commonFooter();
 }
