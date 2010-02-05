@@ -183,13 +183,13 @@ function plugin_addressing_MassiveActions($type) {
 	return array();
 }
 
-function plugin_addressing_MassiveActionsDisplay($type,$action) {
+function plugin_addressing_MassiveActionsDisplay($options=array()) {
 	global $LANG;
 
-	switch ($type) {
+	switch ($options['itemtype']) {
 
 		case 'PluginAddressingAddressing':
-			switch ($action) {
+			switch ($options['action']) {
 				case "plugin_addressing_transfert":
 					Dropdown::show('Entity');
 					echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";
@@ -198,7 +198,7 @@ function plugin_addressing_MassiveActionsDisplay($type,$action) {
 			break;
 
 		case 'Profile':
-			switch ($action) {
+			switch ($options['action']) {
 				case 'plugin_addressing_allow':
 					Profile::dropdownNoneReadWrite('use','');
 					echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value=\"".$LANG['buttons'][2]."\" >";

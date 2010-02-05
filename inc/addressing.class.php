@@ -144,7 +144,7 @@ class PluginAddressingAddressing extends CommonDBTM {
          echo "<option value='$val'>$val</option>";
       }
       echo "</select>\n";
-}
+   }
 
 	function showForm ($ID, $options=array()) {
 		global $CFG_GLPI,$LANG;
