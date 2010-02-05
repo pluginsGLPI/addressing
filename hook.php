@@ -117,6 +117,24 @@ function plugin_addressing_uninstall() {
 	return true;
 }
 
+// Define database relations
+function plugin_addressing_getDatabaseRelations() {
+
+	$plugin = new Plugin();
+
+	if ($plugin->isActivated("addressing"))
+		return array (
+			"glpi_networks" => array (
+				"glpi_plugin_addressing_addressings" => "networks_id"
+			),
+			"glpi_entities" => array (
+				"glpi_plugin_addressing_addressings" => "entities_id"
+			)
+		);
+	else
+		return array ();
+}
+
 function plugin_addressing_getAddSearchOptions($itemtype) {
 	global $LANG;
 
