@@ -114,7 +114,7 @@ class PluginAddressingProfile extends CommonDBTM {
 		global $LANG;
 
 		if (!haveRight("profile","r")) return false;
-		$canedit=haveRight("profile","w");
+
 		$prof = new Profile();
 		if ($ID) {
 			$this->getFromDBByProfile($ID);
@@ -132,7 +132,9 @@ class PluginAddressingProfile extends CommonDBTM {
 		echo "</td>";
 		
 		echo "</tr>";
-
+      
+      echo "<input type='hidden' name='id' value=".$this->fields["id"].">";
+      
 		$options['candel'] = false;
       $this->showFormButtons($options);
 	}
