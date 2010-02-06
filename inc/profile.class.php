@@ -46,11 +46,11 @@ class PluginAddressingProfile extends CommonDBTM {
    }
    
    function canCreate() {
-      return haveRight('config', 'w');
+      return haveRight('profile', 'w');
    }
 
    function canView() {
-      return haveRight('config', 'r');
+      return haveRight('profile', 'r');
    }
    
 	//if profile deleted

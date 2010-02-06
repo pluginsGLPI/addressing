@@ -40,7 +40,7 @@ checkRight("profile","r");
 
 $prof=new PluginAddressingProfile();
 //Save profile
-if (isset ($_POST['update_user_profile'])) {
+if (isset ($_POST['update'])) {
 	$prof->update($_POST);
 	glpi_header($_SERVER['HTTP_REFERER']);
 }
