@@ -40,7 +40,7 @@ CREATE TABLE `glpi_plugin_addressing_profiles` (
 	`profiles_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_profiles (id)',
 	`addressing` char(1) collate utf8_unicode_ci default NULL,
 	PRIMARY KEY  (`id`),
-	KEY `name` (`name`)
+	KEY `profiles_id` (`profiles_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `glpi_displaypreferences` VALUES (NULL,'PluginAddressingAddressing',2,2,0);

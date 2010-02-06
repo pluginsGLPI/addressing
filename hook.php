@@ -80,26 +80,25 @@ function plugin_addressing_install() {
 
 	}
 	
-	//Do One time on 0.80
-	$query_="SELECT *
-			FROM `glpi_plugin_addressing_profiles` ";
-	$result_=$DB->query($query_);
-	if ($DB->numrows($result_)>0) {
-
-		while ($data=$DB->fetch_array($result_)) {
-			$query="UPDATE `glpi_plugin_addressing_profiles`
-					SET `profiles_id` = '".$data["id"]."'
-					WHERE `id` = '".$data["id"]."';";
-			$result=$DB->query($query);
-
-		}
-	}
-	
-	$query="ALTER TABLE `glpi_plugin_addressing_profiles`
-            DROP `name` ;";
-   $result=$DB->query($query);
-   
 	if ($update) {
+      $query_="SELECT *
+            FROM `glpi_plugin_addressing_profiles` ";
+      $result_=$DB->query($query_);
+      if ($DB->numrows($result_)>0) {
+
+         while ($data=$DB->fetch_array($result_)) {
+            $query="UPDATE `glpi_plugin_addressing_profiles`
+                  SET `profiles_id` = '".$data["id"]."'
+                  WHERE `id` = '".$data["id"]."';";
+            $result=$DB->query($query);
+
+         }
+      }
+      
+      $query="ALTER TABLE `glpi_plugin_addressing_profiles`
+               DROP `name` ;";
+      $result=$DB->query($query);
+
       Plugin::migrateItemType(
          array(5000=>'PluginAddressingAddressing',5001=>'PluginAddressingAddressingReport'),
          array("glpi_bookmarks", "glpi_bookmarks_users", "glpi_displaypreferences",
