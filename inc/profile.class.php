@@ -39,77 +39,102 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginAddressingProfile extends CommonDBTM {
 	
+	static function getTypeName() {
+      global $LANG;
+
+      return $LANG['plugin_addressing']['profile'][0];
+   }
+   
+   function canCreate() {
+      return haveRight('config', 'w');
+   }
+
+   function canView() {
+      return haveRight('config', 'r');
+   }
+   
 	//if profile deleted
 	function cleanProfiles($ID) {
 
-		$this->delete(array('id'=>$ID));
+		$query = "DELETE 
+				FROM `".$this->getTable()."`
+				WHERE `profiles_id` = '$ID' ";
+		
+		$DB->query($query);
+	}
+	
+	function getFromDBByProfile($profiles_id) {
+		global $DB;
+		
+		$query = "SELECT * FROM `".$this->getTable()."`
+					WHERE `profiles_id` = '" . $profiles_id . "' ";
+		if ($result = $DB->query($query)) {
+			if ($DB->numrows($result) != 1) {
+				return false;
+			}
+			$this->fields = $DB->fetch_assoc($result);
+			if (is_array($this->fields) && count($this->fields)) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+		return false;
 	}
 	
 	static function createFirstAccess($ID) {
       
       $myProf = new self();
-		if (!$myProf->GetfromDB($ID)) {
-	
-			$Profile=new Profile();
-			$Profile->GetfromDB($ID);
-			$name=$Profile->fields["name"];
-	
-			$myProf->add(array(
-				'id' => $ID,
-				'name' => $name,
-				'addressing' => 'w'));
-		}
-	
-	}
+      if (!$myProf->getFromDBByProfile($ID)) {
+
+         $myProf->add(array(
+            'profiles_id' => $ID,
+            'addressing' => 'w'));
+            
+      }
+   }
 	
 	function createAccess($ID) {
-	
-		$Profile=new Profile();
-		$Profile->GetfromDB($ID);
-		$name=$Profile->fields["name"];
-	
-		$this->add(array(
-			'id' => $ID,
-			'name' => $name));
-	}
+
+      $this->add(array(
+      'profiles_id' => $ID));
+   }
 	
 	static function changeProfile() {
       
       $prof = new self();
-      if ($prof->getFromDB($_SESSION['glpiactiveprofile']['id']))
+      if ($prof->getFromDBByProfile($_SESSION['glpiactiveprofile']['id']))
          $_SESSION["glpi_plugin_addressing_profile"]=$prof->fields;
       else
          unset($_SESSION["glpi_plugin_addressing_profile"]);
    }
 
 	//profiles modification
-	function showForm($target,$ID) {
+	function showForm ($ID, $options=array()) {
 		global $LANG;
 
 		if (!haveRight("profile","r")) return false;
 		$canedit=haveRight("profile","w");
+		$prof = new Profile();
 		if ($ID) {
-			$this->getFromDB($ID);
+			$this->getFromDBByProfile($ID);
+			$prof->getFromDB($ID);
 		}
-		echo "<form action='".$target."' method='post'>";
-		echo "<table class='tab_cadre_fixe'>";
 
-		echo "<tr><th colspan='2' class='center b'>".$LANG['plugin_addressing']['profile'][0]." ".$this->fields["name"]."</th></tr>";
+      $this->showFormHeader($options);
 
 		echo "<tr class='tab_bg_2'>";
+		
+		echo "<th colspan='2'>".$LANG['plugin_addressing']['profile'][0]." ".$prof->fields["name"]."</th>";
+		
 		echo "<td>".$LANG['plugin_addressing']['profile'][3].":</td><td>";
 		Profile::dropdownNoneReadWrite("addressing",$this->fields["addressing"],1,1,1);
 		echo "</td>";
+		
 		echo "</tr>";
 
-		if ($canedit) {
-			echo "<tr class='tab_bg_1'>";
-			echo "<td class='center' colspan='2'>";
-			echo "<input type='hidden' name='id' value=$ID>";
-			echo "<input type='submit' name='update_user_profile' value=\"".$LANG['buttons'][7]."\" class='submit'>";
-			echo "</td></tr>";
-		}
-		echo "</table></form>";
+		$options['candel'] = false;
+      $this->showFormButtons($options);
 	}
 }
 

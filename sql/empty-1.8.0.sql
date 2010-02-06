@@ -37,7 +37,7 @@ INSERT INTO `glpi_plugin_addressing_configs` VALUES ('1','1','1','1','1','0','0'
 DROP TABLE IF EXISTS `glpi_plugin_addressing_profiles`;
 CREATE TABLE `glpi_plugin_addressing_profiles` (
 	`id` int(11) NOT NULL auto_increment,
-	`name` varchar(255) collate utf8_unicode_ci default NULL,
+	`profiles_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_profiles (id)',
 	`addressing` char(1) collate utf8_unicode_ci default NULL,
 	PRIMARY KEY  (`id`),
 	KEY `name` (`name`)

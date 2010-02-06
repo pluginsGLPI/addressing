@@ -32,7 +32,8 @@ ALTER TABLE `glpi_plugin_addressing_configs`
 
 ALTER TABLE `glpi_plugin_addressing_profiles` 
    CHANGE `ID` `id` int(11) NOT NULL auto_increment,
-   CHANGE `name` `name` varchar(255) collate utf8_unicode_ci default NULL,
-   CHANGE `addressing` `addressing` char(1) collate utf8_unicode_ci default NULL;
+   ADD `profiles_id` int(11) NOT NULL default '0' COMMENT 'RELATION to glpi_profiles (id)',
+   CHANGE `addressing` `addressing` char(1) collate utf8_unicode_ci default NULL,
+   ADD INDEX (`profiles_id`);
 
 DELETE FROM `glpi_displaypreferences` WHERE `itemtype` = 5000 AND `num` = 5;

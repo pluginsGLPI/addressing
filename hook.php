@@ -80,6 +80,25 @@ function plugin_addressing_install() {
 
 	}
 	
+	//Do One time on 0.80
+	$query_="SELECT *
+			FROM `glpi_plugin_addressing_profiles` ";
+	$result_=$DB->query($query_);
+	if ($DB->numrows($result_)>0) {
+
+		while ($data=$DB->fetch_array($result_)) {
+			$query="UPDATE `glpi_plugin_addressing_profiles`
+					SET `profiles_id` = '".$data["id"]."'
+					WHERE `id` = '".$data["id"]."';";
+			$result=$DB->query($query);
+
+		}
+	}
+	
+	$query="ALTER TABLE `glpi_plugin_addressing_profiles`
+            DROP `name` ;";
+   $result=$DB->query($query);
+   
 	if ($update) {
       Plugin::migrateItemType(
          array(5000=>'PluginAddressingAddressing',5001=>'PluginAddressingAddressingReport'),
@@ -255,15 +274,16 @@ function plugin_addressing_MassiveActionsProcess($data) {
 				$prof = new PluginAddressingProfile();
 				foreach ($data["item"] as $key => $val) {
 					if ($profglpi->getFromDB($key) && $profglpi->fields['interface']!='helpdesk') {
-						if ($prof->getFromDB($key)) {
+						if ($prof->getFromDBByProfile($key)) {
 							$prof->update(array(
-								'id' => $key,
+								'id' => $prof->fields['id'],
+								'profiles_id' => $key,
 								'addressing' => $data['use']
 							));
 						} else {
 							$prof->add(array(
-								'id' => $key,
-								'name' => $profglpi->fields['name'],
+								'id' => $prof->fields['id'],
+								'profiles_id' => $key,
 								'addressing' => $data['use']
 							));
 						}
@@ -345,9 +365,9 @@ function plugin_headings_addressing($item,$withtemplate=0) {
 	switch (get_class($item)) {
 		case 'Profile' :
 			$prof=new PluginAddressingProfile();
-			if (!$prof->GetfromDB($item->getField('id')))
+			if (!$prof->getFromDBByProfile($item->getField('id')))
 				$prof->createAccess($item->getField('id'));
-			$prof->showForm($CFG_GLPI["root_doc"]."/plugins/addressing/front/profile.form.php",$item->getField('id'));
+			$prof->showForm($item->getField('id'), array('target' => $CFG_GLPI["root_doc"]."/plugins/addressing/front/profile.form.php"));
          break;
       case 'Config' :
 			$PluginAddressingConfig=new PluginAddressingConfig();
