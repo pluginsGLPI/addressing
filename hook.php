@@ -148,6 +148,9 @@ function plugin_addressing_getDatabaseRelations() {
 			),
 			"glpi_entities" => array (
 				"glpi_plugin_addressing_addressings" => "entities_id"
+			),
+			"glpi_profiles" => array (
+				"glpi_plugin_addressing_profiles" => "profiles_id"
 			)
 		);
 	else
