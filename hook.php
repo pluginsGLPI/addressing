@@ -100,7 +100,7 @@ function plugin_addressing_install() {
       $result=$DB->query($query);
 
       Plugin::migrateItemType(
-         array(5000=>'PluginAddressingAddressing',5001=>'PluginAddressingAddressingReport'),
+         array(5000=>'PluginAddressingAddressing',5001=>'PluginAddressingReport'),
          array("glpi_bookmarks", "glpi_bookmarks_users", "glpi_displaypreferences",
                "glpi_documents_items", "glpi_infocoms", "glpi_logs", "glpi_tickets"));
 	}

@@ -420,7 +420,7 @@ class PluginAddressingAddressing extends CommonDBTM {
 
          $numrows=1+ip2long($this->fields['end_ip'])-ip2long($this->fields['begin_ip']);
          if (strpos($_SERVER['PHP_SELF'],"report.form.php"))
-            printPager($start,$numrows,$_SERVER["PHP_SELF"],"start=$start&amp;id=".$id,'PluginAddressingAddressingReport');
+            printPager($start,$numrows,$_SERVER["PHP_SELF"],"start=$start&amp;id=".$id,'PluginAddressingReport');
          else
             printAjaxPager("",$start,$numrows);
          //////////////////////////liste ips////////////////////////////////////////////////////////////
