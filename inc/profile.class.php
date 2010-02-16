@@ -53,7 +53,12 @@ class PluginAddressingProfile extends CommonDBTM {
       return haveRight('profile', 'r');
    }
    
-	//if profile deleted
+   //if profile deleted
+	static function purgeProfiles(Profile $prof) {
+      $plugprof = new self();
+      $plugprof->cleanProfiles($prof->getField("id"));
+   }
+   
 	function cleanProfiles($ID) {
 
 		$query = "DELETE 

@@ -296,20 +296,6 @@ function plugin_addressing_MassiveActionsProcess($data) {
 	}
 }
 
-// Hook done on delete item case
-
-function plugin_pre_item_purge_addressing($item) {
-
-	switch (get_class($item)) {
-      case 'Profile' :
-         // Manipulate data if needed
-         $PluginAddressingProfile=new PluginAddressingProfile;
-         $PluginAddressingProfile->cleanProfiles($item->getField('id'));
-         break;
-   }
-	
-}
-
 // Do special actions for dynamic report
 function plugin_addressing_dynamicReport($parm) {
 

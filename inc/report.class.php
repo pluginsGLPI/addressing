@@ -100,18 +100,18 @@ class PluginAddressingReport extends CommonDBTM {
 		$nbcols=6;
 		$parameters="id=";
 
-		echo displaySearchHeader($output_type,1,$nbcols,1);
+		echo Search::showHeader($output_type,1,$nbcols,1);
 		echo $this->displaySearchNewLine($output_type);
 		$header_num=1;
 
-		echo displaySearchHeaderItem($output_type,$LANG['plugin_addressing']['reports'][2],$header_num);
-		echo displaySearchHeaderItem($output_type,$LANG['plugin_addressing']['reports'][9],$header_num);
-		echo displaySearchHeaderItem($output_type,$LANG['plugin_addressing']['reports'][14],$header_num);
-		echo displaySearchHeaderItem($output_type,$LANG['plugin_addressing']['reports'][5],$header_num);
-		echo displaySearchHeaderItem($output_type,$LANG['plugin_addressing']['reports'][8],$header_num);
-		echo displaySearchHeaderItem($output_type,$LANG['plugin_addressing']['reports'][23],$header_num);
+		echo Search::showHeaderItem($output_type,$LANG['plugin_addressing']['reports'][2],$header_num);
+		echo Search::showHeaderItem($output_type,$LANG['plugin_addressing']['reports'][9],$header_num);
+		echo Search::showHeaderItem($output_type,$LANG['plugin_addressing']['reports'][14],$header_num);
+		echo Search::showHeaderItem($output_type,$LANG['plugin_addressing']['reports'][5],$header_num);
+		echo Search::showHeaderItem($output_type,$LANG['plugin_addressing']['reports'][8],$header_num);
+		echo Search::showHeaderItem($output_type,$LANG['plugin_addressing']['reports'][23],$header_num);
 		// End Line for column headers
-		echo displaySearchEndLine($output_type);
+		echo Search::showEndLine($output_type);
 		$row_num=1;
 
 		$user = new User();
@@ -132,7 +132,7 @@ class PluginAddressingReport extends CommonDBTM {
 					$namep=$line["pname"];
 					// IP
 					echo $this->displaySearchNewLine($output_type,(count($lines)>1 ? "double" : $row_num%2));
-					echo displaySearchItem($output_type,$ip,$item_num,$row_num);
+					echo Search::showItem($output_type,$ip,$item_num,$row_num);
 
 					// Device
 					$item = new $line["itemtype"]();
@@ -153,7 +153,7 @@ class PluginAddressingReport extends CommonDBTM {
 							$output_iddev = $namep." - ".$name.(empty($name) || $_SESSION["glpiis_ids_visible"]?" (".$line["on_device"].")":"");
 						}
 					}
-					echo displaySearchItem($output_type,$output_iddev,$item_num,$row_num);
+					echo Search::showItem($output_type,$output_iddev,$item_num,$row_num);
 
 					// User
 					if ($line["users_id"] && $user->getFromDB($line["users_id"])) {
@@ -164,9 +164,9 @@ class PluginAddressingReport extends CommonDBTM {
 						} else {
 							$output_iduser=$username;
 						}
-						echo displaySearchItem($output_type,$output_iduser,$item_num,$row_num);
+						echo Search::showItem($output_type,$output_iduser,$item_num,$row_num);
 					} else {
-						echo displaySearchItem($output_type," ",$item_num,$row_num);
+						echo Search::showItem($output_type," ",$item_num,$row_num);
 					}
 
 					// Mac
@@ -176,22 +176,22 @@ class PluginAddressingReport extends CommonDBTM {
 						} else {
 							$output_mac = $line["mac"];
 						}
-						echo displaySearchItem($output_type,$output_mac,$item_num,$row_num);
+						echo Search::showItem($output_type,$output_mac,$item_num,$row_num);
 					} else {
-						echo displaySearchItem($output_type," ",$item_num,$row_num);
+						echo Search::showItem($output_type," ",$item_num,$row_num);
 					}
 					// Type
-					echo displaySearchItem($output_type,$item->getTypeName(),$item_num,$row_num);
+					echo Search::showItem($output_type,$item->getTypeName(),$item_num,$row_num);
 
 					// Reserved
 					if ($PluginAddressingAddressing->fields["reserved_ip"] && strstr($line["pname"],"reserv")) {
-						echo displaySearchItem($output_type,$LANG['plugin_addressing']['reports'][13],$item_num,$row_num);
+						echo Search::showItem($output_type,$LANG['plugin_addressing']['reports'][13],$item_num,$row_num);
 					} else {
-						echo displaySearchItem($output_type," ",$item_num,$row_num);
+						echo Search::showItem($output_type," ",$item_num,$row_num);
 					}
 
 					// End
-					echo displaySearchEndLine($output_type);
+					echo Search::showEndLine($output_type);
 				}
 
 			} else if ($PluginAddressingAddressing->fields["free_ip"]) {
@@ -199,32 +199,32 @@ class PluginAddressingReport extends CommonDBTM {
 				$item_num=1;
 				if (!$ping) {
 					echo $this->displaySearchNewLine($output_type,"free");
-					echo displaySearchItem($output_type,$ip,$item_num,$row_num);
-					echo displaySearchItem($output_type," ",$item_num,$row_num);
+					echo Search::showItem($output_type,$ip,$item_num,$row_num);
+					echo Search::showItem($output_type," ",$item_num,$row_num);
 				} else {
 					if ($output_type==HTML_OUTPUT) glpi_flush();
 
 					if ($this->ping($system,$ip)) {
 						$ping_response++;
 						echo $this->displaySearchNewLine($output_type,"ping_off");
-						echo displaySearchItem($output_type,$ip,$item_num,$row_num);
-						echo displaySearchItem($output_type,$LANG['plugin_addressing']['reports'][31],$item_num,$row_num);
+						echo Search::showItem($output_type,$ip,$item_num,$row_num);
+						echo Search::showItem($output_type,$LANG['plugin_addressing']['reports'][31],$item_num,$row_num);
 					} else {
 						echo $this->displaySearchNewLine($output_type,"ping_on");
-						echo displaySearchItem($output_type,$ip,$item_num,$row_num);
-						echo displaySearchItem($output_type,$LANG['plugin_addressing']['reports'][32],$item_num,$row_num);
+						echo Search::showItem($output_type,$ip,$item_num,$row_num);
+						echo Search::showItem($output_type,$LANG['plugin_addressing']['reports'][32],$item_num,$row_num);
 					}
 				}
-				echo displaySearchItem($output_type," ",$item_num,$row_num);
-				echo displaySearchItem($output_type," ",$item_num,$row_num);
-				echo displaySearchItem($output_type," ",$item_num,$row_num);
-				echo displaySearchItem($output_type," ",$item_num,$row_num);
-				echo displaySearchEndLine($output_type);
+				echo Search::showItem($output_type," ",$item_num,$row_num);
+				echo Search::showItem($output_type," ",$item_num,$row_num);
+				echo Search::showItem($output_type," ",$item_num,$row_num);
+				echo Search::showItem($output_type," ",$item_num,$row_num);
+				echo Search::showEndLine($output_type);
 			}
 		}
 
 		// Display footer
-		echo displaySearchFooter($output_type,$PluginAddressingAddressing->getTitle());
+		echo Search::showFooter($output_type,$PluginAddressingAddressing->getTitle());
 
 		return $ping_response;
 	}

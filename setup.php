@@ -39,7 +39,11 @@ function plugin_init_addressing() {
 	global $PLUGIN_HOOKS;
 
 	$PLUGIN_HOOKS['change_profile']['addressing'] = array('PluginAddressingProfile','changeProfile');
-
+   
+   if (class_exists('PluginAddressingProfile')) { // only if plugin activated
+      $PLUGIN_HOOKS['pre_item_purge']['addressing'] = array('Profile'=>array('PluginAddressingProfile', 'cleanProfiles'));
+   }
+   
 	if (isset($_SESSION["glpiID"])) {
 
 		if (plugin_addressing_haveRight("addressing","r")) {
@@ -52,7 +56,6 @@ function plugin_init_addressing() {
 		if (plugin_addressing_haveRight("addressing","w")) {
 			$PLUGIN_HOOKS['submenu_entry']['addressing']['add'] = 'front/addressing.form.php?new=1';
 			$PLUGIN_HOOKS['use_massive_action']['addressing']=1;
-			$PLUGIN_HOOKS['pre_item_purge']['addressing'] = 'plugin_pre_item_purge_addressing';
 		}
 		// Config page
 		if (haveRight("config","w")) {
