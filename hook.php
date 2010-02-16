@@ -302,7 +302,7 @@ function plugin_addressing_dynamicReport($parm) {
 	$PluginAddressingAddressing=new PluginAddressingAddressing;
    $PluginAddressingReport=new PluginAddressingReport;
    
-	if ($parm["item_type"]=='PluginAddressingAddressingReport'
+	if ($parm["item_type"]=='PluginAddressingReport'
        && isset($parm["id"])
        && isset($parm["display_type"])
        && $PluginAddressingAddressing->getFromDB($parm["id"])) {

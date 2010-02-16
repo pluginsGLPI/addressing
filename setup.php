@@ -39,10 +39,7 @@ function plugin_init_addressing() {
 	global $PLUGIN_HOOKS;
 
 	$PLUGIN_HOOKS['change_profile']['addressing'] = array('PluginAddressingProfile','changeProfile');
-   
-   if (class_exists('PluginAddressingProfile')) { // only if plugin activated
-      $PLUGIN_HOOKS['pre_item_purge']['addressing'] = array('Profile'=>array('PluginAddressingProfile', 'cleanProfiles'));
-   }
+   $PLUGIN_HOOKS['pre_item_purge']['addressing'] = array('Profile'=>array('PluginAddressingProfile', 'cleanProfiles'));
    
 	if (isset($_SESSION["glpiID"])) {
 
