@@ -40,7 +40,7 @@ $DBCONNECTION_REQUIRED=0;
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT."/inc/includes.php");
 
-commonHeader($LANG['plugin_addressing']['title'][1],$_SERVER['PHP_SELF'],"plugins","addressing");
+commonHeader($LANG['plugin_addressing']['title'][1],'',"plugins","addressing");
 
 if (!isset($_GET["start"])) $_GET["start"] = 0;
 if (!isset($_GET["export"])) $_GET["export"] = false;

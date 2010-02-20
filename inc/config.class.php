@@ -39,21 +39,16 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginAddressingConfig extends CommonDBTM {
 	
-	function showForm($target) {
+	function showForm() {
       global $LANG;
 
       $this->getFromDB('1');
 
-      $ip_alloted=$this->fields["alloted_ip"];
-      $ip_free=$this->fields["free_ip"];
-      $ip_reserved=$this->fields["reserved_ip"];
-      $ip_double=$this->fields["double_ip"];
       $system=$this->fields["used_system"];
-      $ping=$this->fields["use_ping"];
       
       echo "<div align='center'>";
       
-      echo "<form method='post' action=\"$target\">";
+      echo "<form method='post' action='".$this->getFormURL()."'>";
 
       echo "<table class='tab_cadre_fixe' cellpadding='5'>";
       echo "<tr><th colspan='4'>".$LANG['plugin_addressing']['setup'][19]."</th></tr>";
@@ -71,45 +66,30 @@ class PluginAddressingConfig extends CommonDBTM {
 
       echo "<tr class='tab_bg_1'><td>".$LANG['plugin_addressing']['setup'][11]."</td>";
       echo "<td>";
-      echo "<select name=\"alloted_ip\">";
-      echo "<option value='1' ".($ip_alloted==1?" selected ":"").">".$LANG['plugin_addressing']['setup'][15]."</option>";
-      echo "<option value='0' ".($ip_alloted==0?" selected ":"").">".$LANG['plugin_addressing']['setup'][16]."</option>";
-      echo "</select>";
+      echo Dropdown::showYesNo("alloted_ip",$this->fields["alloted_ip"]);
       echo "</td>";
 
       echo "<td>".$LANG['plugin_addressing']['setup'][12]."</td>";
       echo "<td>";
-      echo "<select name=\"free_ip\">";
-      echo "<option value='1' ".($ip_free==1?" selected ":"").">".$LANG['plugin_addressing']['setup'][15]."</option>";
-      echo "<option value='0' ".($ip_free==0?" selected ":"").">".$LANG['plugin_addressing']['setup'][16]."</option>";
-      echo "</select>";
+      echo Dropdown::showYesNo("free_ip",$this->fields["free_ip"]);
       echo "</td>";
       echo "</tr>";
 
       echo "<tr class='tab_bg_1'><td>".$LANG['plugin_addressing']['setup'][13]."</td>";
       echo "<td>";
-      echo "<select name=\"double_ip\">";
-      echo "<option value='1' ".($ip_double==1?" selected ":"").">".$LANG['plugin_addressing']['setup'][15]."</option>";
-      echo "<option value='0' ".($ip_double==0?" selected ":"").">".$LANG['plugin_addressing']['setup'][16]."</option>";
-      echo "</select>";
+      echo Dropdown::showYesNo("double_ip",$this->fields["double_ip"]);
       echo "</td>";
 
       echo "<td>".$LANG['plugin_addressing']['setup'][14]."</td>";
       echo "<td>";
-      echo "<select name=\"reserved_ip\">";
-      echo "<option value='1' ".($ip_reserved==1?" selected ":"").">".$LANG['plugin_addressing']['setup'][15]."</option>";
-      echo "<option value='0' ".($ip_reserved==0?" selected ":"").">".$LANG['plugin_addressing']['setup'][16]."</option>";
-      echo "</select>";
+      echo Dropdown::showYesNo("reserved_ip",$this->fields["reserved_ip"]);
       echo "</td>";
 
       echo "</tr>";
 
       echo "<tr class='tab_bg_1'><td colspan='2'>".$LANG['plugin_addressing']['setup'][22]."</td>";
       echo "<td  colspan='2'>";
-      echo "<select name=\"use_ping\">";
-      echo "<option value='1' ".($ping==1?" selected ":"").">".$LANG['plugin_addressing']['setup'][15]."</option>";
-      echo "<option value='0' ".($ping==0?" selected ":"").">".$LANG['plugin_addressing']['setup'][16]."</option>";
-      echo "</select>";
+      echo Dropdown::showYesNo("use_ping",$this->fields["use_ping"]);
       echo "</td>";
 
       echo "<tr><th colspan='4'>";

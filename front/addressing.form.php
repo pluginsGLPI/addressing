@@ -86,7 +86,7 @@ if (isset($_POST["add"])) {
 		$_SESSION['glpi_tab']=$_GET['onglet'];
 		//		glpi_header($_SERVER['HTTP_REFERER']);
 	}
-	commonHeader($LANG['plugin_addressing']['title'][1],$_SERVER["PHP_SELF"],"plugins","addressing");
+	commonHeader($LANG['plugin_addressing']['title'][1],'',"plugins","addressing");
 
 	$PluginAddressingAddressing->showForm($_GET["id"]);
 
