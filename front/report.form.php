@@ -26,10 +26,10 @@
  along with GLPI; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  --------------------------------------------------------------------------
- 
+
 // ----------------------------------------------------------------------
 // Original Author of file: CAILLAUD Xavier & COLLET Remi
-// Purpose of file: plugin addressing v1.8.0 - GLPI 0.80
+// Purpose of file: plugin addressing v1.8.0 - GLPI 0.78
 // ----------------------------------------------------------------------
  */
 

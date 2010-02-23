@@ -1,9 +1,9 @@
 <?php
 /*
- * @version $Id: HEADER 1 2009-09-21 14:58 Tsmr $
+ * @version $Id: H2009EADER 1 2009-09-21 14:58 Tsmr $
  -------------------------------------------------------------------------
  GLPI - Gestionnaire Libre de Parc Informatique
- Copyright (C) 2003-2009 by the INDEPNET Development Team.
+ Copyright (C) 2003-2010 by the INDEPNET Development Team.
 
  http://indepnet.net/   http://glpi-project.org
  -------------------------------------------------------------------------
@@ -29,7 +29,7 @@
 
 // ----------------------------------------------------------------------
 // Original Author of file: CAILLAUD Xavier & COLLET Remi
-// Purpose of file: plugin addressing v1.8.0 - GLPI 0.80
+// Purpose of file: plugin addressing v1.8.0 - GLPI 0.78
 // ----------------------------------------------------------------------
  */
 
@@ -38,13 +38,13 @@ if (!defined('GLPI_ROOT')) {
 }
 
 class PluginAddressingAddressing extends CommonDBTM {
-   
+
    static function getTypeName() {
       global $LANG;
 
       return $LANG['plugin_addressing']['title'][1];
    }
-   
+
    function canCreate() {
       return plugin_addressing_haveRight('addressing', 'w');
    }
@@ -52,7 +52,7 @@ class PluginAddressingAddressing extends CommonDBTM {
    function canView() {
       return plugin_addressing_haveRight('addressing', 'r');
    }
-   
+
    function getSearchOptions() {
       global $LANG;
 
@@ -108,7 +108,7 @@ class PluginAddressingAddressing extends CommonDBTM {
 
 	function defineTabs($options=array()) {
 		global $LANG;
-		
+
 		$ong[1]=$LANG['title'][26];
 		return $ong;
 	}
@@ -162,17 +162,17 @@ class PluginAddressingAddressing extends CommonDBTM {
       $this->showTabs($options);
       $options['formoptions'] = "onSubmit='return plugaddr_Check(\"".$LANG['plugin_addressing']['reports'][37]."\")'";
       $this->showFormHeader($options);
-      
+
       $PluginAddressingConfig=new PluginAddressingConfig();
       $PluginAddressingConfig->getFromDB('1');
-      
+
       echo "<tr class='tab_bg_1'>";
 
       echo "<td>".$LANG['common'][16].": </td>";
       echo "<td>";
       autocompletionTextField($this,"name");
       echo "</td>";
-      
+
       if ($PluginAddressingConfig->fields["alloted_ip"]) {
          echo "<td>".$LANG['plugin_addressing']['setup'][11]."</td><td>";
          Dropdown::showYesNo('alloted_ip',$this->fields["alloted_ip"]);
@@ -180,16 +180,16 @@ class PluginAddressingAddressing extends CommonDBTM {
       } else {
          echo "<td><input type='hidden' name='alloted_ip' value='0''></td><td></td>";
       }
-      
+
       echo "</tr>";
-      
+
       echo "<tr class='tab_bg_1'>";
-      
+
       echo "<td>".$LANG['plugin_addressing']['reports'][3]."</td>";
       echo "<td>";
       Dropdown::show('Network', array('name' => "networks_id",'value' => $this->fields["networks_id"]));
       echo "</td>";
-      
+
       if ($PluginAddressingConfig->fields["free_ip"]) {
          echo "<td>".$LANG['plugin_addressing']['setup'][12]."</td><td>";
          Dropdown::showYesNo('free_ip',$this->fields["free_ip"]);
@@ -197,16 +197,16 @@ class PluginAddressingAddressing extends CommonDBTM {
       } else {
          echo "<td><input type='hidden' name='free_ip' value='0''></td><td></td>";
       }
-      
+
       echo "</tr>";
-      
+
       echo "<tr class='tab_bg_1'>";
-      
+
       echo "<td>".$LANG['plugin_addressing']['reports'][36]."</td>";
       echo "<td>";
       $this->dropdownSubnet($ID>0 ? $this->fields["entities_id"] : $_SESSION["glpiactive_entity"]);
       echo "</td>";
-      
+
       if ($PluginAddressingConfig->fields["double_ip"]) {
          echo "<td>".$LANG['plugin_addressing']['setup'][13]."</td><td>";
          Dropdown::showYesNo('double_ip',$this->fields["double_ip"]);
@@ -214,11 +214,11 @@ class PluginAddressingAddressing extends CommonDBTM {
       } else {
          echo "<td><input type='hidden' name='double_ip' value='0''></td><td></td>";
       }
-      
+
       echo "</tr>";
-      
+
       echo "<tr class='tab_bg_1'>";
-      
+
       echo "<td>".$LANG['plugin_addressing']['reports'][38]." : </td>"; // Subnet
       echo "<td>";
       echo "<input type='text' id='plugaddr_ipdeb0' value='' name='_ipdeb0' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>.";
@@ -226,7 +226,7 @@ class PluginAddressingAddressing extends CommonDBTM {
       echo "<input type='text' id='plugaddr_ipdeb2' value='' name='_ipdeb2' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>.";
       echo "<input type='text' id='plugaddr_ipdeb3' value='' name='_ipdeb3' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>";
       echo "</td>";
-      
+
       if ($PluginAddressingConfig->fields["reserved_ip"]) {
          echo "<td>".$LANG['plugin_addressing']['setup'][14]."</td><td>";
          Dropdown::showYesNo('reserved_ip',$this->fields["reserved_ip"]);
@@ -234,11 +234,11 @@ class PluginAddressingAddressing extends CommonDBTM {
       } else {
          echo "<td><input type='hidden' name='reserved_ip' value='0''></td><td></td>";
       }
-      
+
       echo "</tr>";
-      
+
       echo "<tr class='tab_bg_1'>";
-      
+
       echo "<td>".$LANG['plugin_addressing']['reports'][39]." : </td>"; // Mask
       echo "<td>";
       echo "<input type='text' id='plugaddr_ipfin0' value='' name='_ipfin0' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>.";
@@ -246,7 +246,7 @@ class PluginAddressingAddressing extends CommonDBTM {
       echo "<input type='text' id='plugaddr_ipfin2' value='' name='_ipfin2' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>.";
       echo "<input type='text' id='plugaddr_ipfin3' value='' name='_ipfin3' size='3' onChange='plugaddr_ChangeNumber(\"".$LANG['plugin_addressing']['reports'][37]."\");'>";
       echo "</td>";
-      
+
       if ($PluginAddressingConfig->fields["use_ping"]) {
          echo "<td>".$LANG['plugin_addressing']['reports'][30].": </td><td>";
          Dropdown::showYesNo('use_ping',$this->fields["use_ping"]);
@@ -254,11 +254,11 @@ class PluginAddressingAddressing extends CommonDBTM {
       } else {
          echo "<td><input type='hidden' name='use_ping' value='0''></td><td></td>";
       }
-      
+
       echo "</tr>";
-      
+
       echo "<tr class='tab_bg_1'>";
-      
+
       echo "<td>".$LANG['plugin_addressing']['reports'][1]." : </td>"; // Mask
       echo "<td>";
       echo "<input type='hidden' id='plugaddr_ipdeb' value='".$this->fields["begin_ip"]."' name='begin_ip'>";
@@ -270,11 +270,11 @@ class PluginAddressingAddressing extends CommonDBTM {
       echo "</td>";
       echo "<td></td>";
       echo "<td></td>";
-      
+
       echo "</tr>";
-      
+
       echo "<tr class='tab_bg_1'>";
-      
+
       echo "<td colspan = '4'>";
       echo "<table cellpadding='2' cellspacing='2' border='0'><tr><td>";
       echo $LANG['common'][25].": </td></tr>";
@@ -288,18 +288,18 @@ class PluginAddressingAddressing extends CommonDBTM {
 
 		return true;
 	}
-	
+
 	function linkToExport($ID) {
       global $LANG;
-      
+
       echo "<div align='center'>";
       echo "<a href='./report.form.php?id=".$ID."&export=true'>".$LANG['buttons'][31]."</a>";
       echo "</div>";
    }
-   
+
 	function compute($start) {
 		global $DB, $CFG_GLPI;
-         
+
 		// sprintf to solve 32/64 bits issue
 		$ipdeb=sprintf("%u", ip2long($this->fields["begin_ip"]));
 		$ipfin=sprintf("%u", ip2long($this->fields["end_ip"]));
@@ -343,17 +343,17 @@ class PluginAddressingAddressing extends CommonDBTM {
 
 		return $result;
 	}
-	
+
 	function showReport($params) {
       global $CFG_GLPI,$LANG;
-      
+
       $PluginAddressingReport=new PluginAddressingReport;
-      
+
       // Default values of parameters
       $default_values["start"]=0;
       $default_values["id"]=0;
       $default_values["export"]=false;
-      
+
       foreach ($default_values as $key => $val) {
          if (isset($params[$key])) {
             $$key=$params[$key];
@@ -361,15 +361,15 @@ class PluginAddressingAddressing extends CommonDBTM {
             $$key=$default_values[$key];
          }
       }
-      
+
       if ($this->getFromDB($id)) {
 
          $result=$this->compute($start);
          //echo "<pre>"; print_r($result);	echo "</pre>";
 
          $nbipf=0;	// ip libres
-         $nbipr=0;	// ip réservées
-         $nbipt=0;	// ip trouvées
+         $nbipr=0;	// ip rï¿½servï¿½es
+         $nbipt=0;	// ip trouvï¿½es
          $nbipd=0;	// doublons
 
          foreach ($result as $ip => $lines) {

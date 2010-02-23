@@ -3,7 +3,7 @@
  * @version $Id: HEADER 1 2009-09-21 14:58 Tsmr $
  -------------------------------------------------------------------------
  GLPI - Gestionnaire Libre de Parc Informatique
- Copyright (C) 2003-2009 by the INDEPNET Development Team.
+ Copyright (C) 2003-2010 by the INDEPNET Development Team.
 
  http://indepnet.net/   http://glpi-project.org
  -------------------------------------------------------------------------
@@ -26,10 +26,10 @@
  along with GLPI; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  --------------------------------------------------------------------------
- 
+
 // ----------------------------------------------------------------------
 // Original Author of file: CAILLAUD Xavier & COLLET Remi
-// Purpose of file: plugin addressing v1.8.0 - GLPI 0.80
+// Purpose of file: plugin addressing v1.8.0 - GLPI 0.78
 // ----------------------------------------------------------------------
  */
 
@@ -50,33 +50,33 @@ if (isset($_POST["add"])) {
    else
       addMessageAfterRedirect($LANG['plugin_addressing']['setup'][27],false,ERROR);
 	glpi_header($_SERVER['HTTP_REFERER']);
-	
+
 } else if (isset($_POST["delete"])) {
 
 	$PluginAddressingAddressing->check($_POST['id'],'w');
 	$PluginAddressingAddressing->delete($_POST);
 	glpi_header($CFG_GLPI["root_doc"]."/plugins/addressing/front/addressing.php");
-	
+
 } else if (isset($_POST["restore"])) {
 
 	$PluginAddressingAddressing->check($_POST['id'],'w');
 	$PluginAddressingAddressing->restore($_POST);
 	glpi_header($CFG_GLPI["root_doc"]."/plugins/addressing/front/addressing.php");
-	
+
 } else if (isset($_POST["purge"])) {
 	$PluginAddressingAddressing->check($_POST['id'],'w');
 	$PluginAddressingAddressing->delete($_POST,1);
 	glpi_header($CFG_GLPI["root_doc"]."/plugins/addressing/front/addressing.php");
-	
+
 } else if (isset($_POST["update"])) {
-	
+
 	$PluginAddressingAddressing->check($_POST['id'],'w');
    if (!empty($_POST["name"]) && !empty($_POST["begin_ip"]) && !empty($_POST["end_ip"]))
       $PluginAddressingAddressing->update($_POST);
    else
       addMessageAfterRedirect($LANG['plugin_addressing']['setup'][27],false,ERROR);
 	glpi_header($_SERVER['HTTP_REFERER']);
-	
+
 } else {
 
 	$PluginAddressingAddressing->checkGlobal("r");

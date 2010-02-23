@@ -3,7 +3,7 @@
  * @version $Id: HEADER 1 2009-09-21 14:58 Tsmr $
  -------------------------------------------------------------------------
  GLPI - Gestionnaire Libre de Parc Informatique
- Copyright (C) 2003-2009 by the INDEPNET Development Team.
+ Copyright (C) 2003-2010 by the INDEPNET Development Team.
 
  http://indepnet.net/   http://glpi-project.org
  -------------------------------------------------------------------------
@@ -26,10 +26,10 @@
  along with GLPI; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  --------------------------------------------------------------------------
- 
+
 // ----------------------------------------------------------------------
 // Original Author of file: CAILLAUD Xavier & COLLET Remi
-// Purpose of file: plugin addressing v1.8.0 - GLPI 0.80
+// Purpose of file: plugin addressing v1.8.0 - GLPI 0.78
 // ----------------------------------------------------------------------
  */
 
@@ -40,7 +40,7 @@ if (!defined('GLPI_ROOT')) {
 
 $plugin = new Plugin();
 if ($plugin->isActivated("addressing")) {
-	
+
    $PluginAddressingConfig=new PluginAddressingConfig();
 
    checkRight("config","w");

@@ -3,7 +3,7 @@
  * @version $Id: HEADER 1 2009-09-21 14:58 Tsmr $
  -------------------------------------------------------------------------
  GLPI - Gestionnaire Libre de Parc Informatique
- Copyright (C) 2003-2009 by the INDEPNET Development Team.
+ Copyright (C) 2003-2010 by the INDEPNET Development Team.
 
  http://indepnet.net/   http://glpi-project.org
  -------------------------------------------------------------------------
@@ -26,10 +26,10 @@
  along with GLPI; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  --------------------------------------------------------------------------
- 
+
 // ----------------------------------------------------------------------
 // Original Author of file: CAILLAUD Xavier & COLLET Remi
-// Purpose of file: plugin addressing v1.8.0 - GLPI 0.80
+// Purpose of file: plugin addressing v1.8.0 - GLPI 0.78
 // ----------------------------------------------------------------------
  */
 
@@ -40,7 +40,7 @@ function plugin_init_addressing() {
 
 	$PLUGIN_HOOKS['change_profile']['addressing'] = array('PluginAddressingProfile','changeProfile');
    $PLUGIN_HOOKS['pre_item_purge']['addressing'] = array('Profile'=>array('PluginAddressingProfile', 'cleanProfiles'));
-   
+
 	if (isset($_SESSION["glpiID"])) {
 
 		if (plugin_addressing_haveRight("addressing","r")) {
@@ -78,16 +78,16 @@ function plugin_version_addressing() {
 		'version' => '1.8.0',
 		'author'=>'Gilles Portheault, Xavier Caillaud, Remi Collet',
 		'homepage'=>'https://forge.indepnet.net/projects/show/addressing',
-		'minGlpiVersion' => '0.80',// For compatibility / no install in version < 0.72
+		'minGlpiVersion' => '0.78',// For compatibility / no install in version < 0.72
 	);
 }
 
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_addressing_check_prerequisites() {
-	if (GLPI_VERSION>=0.80) {
+	if (GLPI_VERSION >= 0.78) {
 		return true;
 	} else {
-		echo "GLPI version not compatible need 0.80";
+		echo "GLPI version not compatible need 0.78";
 	}
 }
 

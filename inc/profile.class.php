@@ -3,7 +3,7 @@
  * @version $Id: HEADER 1 2009-09-21 14:58 Tsmr $
  -------------------------------------------------------------------------
  GLPI - Gestionnaire Libre de Parc Informatique
- Copyright (C) 2003-2009 by the INDEPNET Development Team.
+ Copyright (C) 2003-2010 by the INDEPNET Development Team.
 
  http://indepnet.net/   http://glpi-project.org
  -------------------------------------------------------------------------
@@ -26,10 +26,10 @@
  along with GLPI; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  --------------------------------------------------------------------------
- 
+
 // ----------------------------------------------------------------------
 // Original Author of file: CAILLAUD Xavier & COLLET Remi
-// Purpose of file: plugin addressing v1.8.0 - GLPI 0.80
+// Purpose of file: plugin addressing v1.8.0 - GLPI 0.78
 // ----------------------------------------------------------------------
  */
 
@@ -38,13 +38,13 @@ if (!defined('GLPI_ROOT')) {
 }
 
 class PluginAddressingProfile extends CommonDBTM {
-	
+
 	static function getTypeName() {
       global $LANG;
 
       return $LANG['plugin_addressing']['profile'][0];
    }
-   
+
    function canCreate() {
       return haveRight('profile', 'w');
    }
@@ -52,25 +52,25 @@ class PluginAddressingProfile extends CommonDBTM {
    function canView() {
       return haveRight('profile', 'r');
    }
-   
+
    //if profile deleted
 	static function purgeProfiles(Profile $prof) {
       $plugprof = new self();
       $plugprof->cleanProfiles($prof->getField("id"));
    }
-   
+
 	function cleanProfiles($ID) {
 
-		$query = "DELETE 
+		$query = "DELETE
 				FROM `".$this->getTable()."`
 				WHERE `profiles_id` = '$ID' ";
-		
+
 		$DB->query($query);
 	}
-	
+
 	function getFromDBByProfile($profiles_id) {
 		global $DB;
-		
+
 		$query = "SELECT * FROM `".$this->getTable()."`
 					WHERE `profiles_id` = '" . $profiles_id . "' ";
 		if ($result = $DB->query($query)) {
@@ -86,27 +86,27 @@ class PluginAddressingProfile extends CommonDBTM {
 		}
 		return false;
 	}
-	
+
 	static function createFirstAccess($ID) {
-      
+
       $myProf = new self();
       if (!$myProf->getFromDBByProfile($ID)) {
 
          $myProf->add(array(
             'profiles_id' => $ID,
             'addressing' => 'w'));
-            
+
       }
    }
-	
+
 	function createAccess($ID) {
 
       $this->add(array(
       'profiles_id' => $ID));
    }
-	
+
 	static function changeProfile() {
-      
+
       $prof = new self();
       if ($prof->getFromDBByProfile($_SESSION['glpiactiveprofile']['id']))
          $_SESSION["glpi_plugin_addressing_profile"]=$prof->fields;
@@ -129,17 +129,17 @@ class PluginAddressingProfile extends CommonDBTM {
       $this->showFormHeader($options);
 
 		echo "<tr class='tab_bg_2'>";
-		
+
 		echo "<th colspan='2'>".$LANG['plugin_addressing']['profile'][0]." ".$prof->fields["name"]."</th>";
-		
+
 		echo "<td>".$LANG['plugin_addressing']['profile'][3].":</td><td>";
 		Profile::dropdownNoneReadWrite("addressing",$this->fields["addressing"],1,1,1);
 		echo "</td>";
-		
+
 		echo "</tr>";
-      
+
       echo "<input type='hidden' name='id' value=".$this->fields["id"].">";
-      
+
 		$options['candel'] = false;
       $this->showFormButtons($options);
 	}

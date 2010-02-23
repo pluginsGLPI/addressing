@@ -3,7 +3,7 @@
  * @version $Id: HEADER 1 2009-09-21 14:58 Tsmr $
  -------------------------------------------------------------------------
  GLPI - Gestionnaire Libre de Parc Informatique
- Copyright (C) 2003-2009 by the INDEPNET Development Team.
+ Copyright (C) 2003-2010 by the INDEPNET Development Team.
 
  http://indepnet.net/   http://glpi-project.org
  -------------------------------------------------------------------------
@@ -29,7 +29,7 @@
 
 // ----------------------------------------------------------------------
 // Original Author of file: CAILLAUD Xavier & COLLET Remi
-// Purpose of file: plugin addressing v1.8.0 - GLPI 0.80
+// Purpose of file: plugin addressing v1.8.0 - GLPI 0.78
 // ----------------------------------------------------------------------
  */
 
@@ -38,16 +38,16 @@ if (!defined('GLPI_ROOT')) {
 }
 
 class PluginAddressingConfig extends CommonDBTM {
-	
+
 	function showForm() {
       global $LANG;
 
       $this->getFromDB('1');
 
       $system=$this->fields["used_system"];
-      
+
       echo "<div align='center'>";
-      
+
       echo "<form method='post' action='".$this->getFormURL()."'>";
 
       echo "<table class='tab_cadre_fixe' cellpadding='5'>";
@@ -98,7 +98,7 @@ class PluginAddressingConfig extends CommonDBTM {
       echo "</table>";
       echo "</form>";
       echo "</div>";
-	
+
 	}
 }
 

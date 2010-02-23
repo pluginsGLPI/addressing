@@ -3,7 +3,7 @@
  * @version $Id: HEADER 1 2009-09-21 14:58 Tsmr $
  -------------------------------------------------------------------------
  GLPI - Gestionnaire Libre de Parc Informatique
- Copyright (C) 2003-2009 by the INDEPNET Development Team.
+ Copyright (C) 2003-2010 by the INDEPNET Development Team.
 
  http://indepnet.net/   http://glpi-project.org
  -------------------------------------------------------------------------
@@ -29,22 +29,22 @@
 
 // ----------------------------------------------------------------------
 // Original Author of file: CAILLAUD Xavier & COLLET Remi
-// Purpose of file: plugin addressing v1.8.0 - GLPI 0.80
+// Purpose of file: plugin addressing v1.8.0 - GLPI 0.78
 // ----------------------------------------------------------------------
  */
 
 function plugin_addressing_install() {
    global $DB;
-   
+
 	include_once (GLPI_ROOT."/plugins/addressing/inc/profile.class.php");
-   
+
    $update=false;
 	if (!TableExists("glpi_plugin_addressing_display") &&!TableExists("glpi_plugin_addressing") && !TableExists("glpi_plugin_addressing_configs")) {
 
 		$DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/empty-1.8.0.sql");
 
 	} else if (!TableExists("glpi_plugin_addressing_profiles") && !FieldExists("glpi_plugin_addressing_display","ipconf1")) {//1.4
-      
+
       $update=true;
 		$DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.4.sql");
 		$DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.5.sql");
@@ -53,7 +53,7 @@ function plugin_addressing_install() {
 		$DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.8.0.sql");
 
 	} else if (!TableExists("glpi_plugin_addressing") && TableExists("glpi_plugin_addressing_display") && FieldExists("glpi_plugin_addressing_display","ipconf1")) {
-      
+
       $update=true;
 		$DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.5.sql");
 		$DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.6.sql");
@@ -61,25 +61,25 @@ function plugin_addressing_install() {
 		$DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.8.0.sql");
 
 	} else if (TableExists("glpi_plugin_addressing_display") && !FieldExists("glpi_plugin_addressing","ipdeb")) {
-      
+
       $update=true;
 		$DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.6.sql");
 		$DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.7.0.sql");
 		$DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.8.0.sql");
 
 	} else if (TableExists("glpi_plugin_addressing_profiles") && FieldExists("glpi_plugin_addressing_profiles","interface")) {
-      
+
       $update=true;
 		$DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.7.0.sql");
 		$DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.8.0.sql");
 
 	} else if (!TableExists("glpi_plugin_addressing_configs")) {
-      
+
       $update=true;
 		$DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.8.0.sql");
 
 	}
-	
+
 	if ($update) {
       $query_="SELECT *
             FROM `glpi_plugin_addressing_profiles` ";
@@ -94,7 +94,7 @@ function plugin_addressing_install() {
 
          }
       }
-      
+
       $query="ALTER TABLE `glpi_plugin_addressing_profiles`
                DROP `name` ;";
       $result=$DB->query($query);
@@ -118,8 +118,8 @@ function plugin_addressing_uninstall() {
 
 	foreach($tables as $table)
 		$DB->query("DROP TABLE IF EXISTS `$table`;");
-		
-	//old versions	
+
+	//old versions
    $tables = array("glpi_plugin_addressing_display",
 					"glpi_plugin_addressing");
 
@@ -301,7 +301,7 @@ function plugin_addressing_dynamicReport($parm) {
 
 	$PluginAddressingAddressing=new PluginAddressingAddressing;
    $PluginAddressingReport=new PluginAddressingReport;
-   
+
 	if ($parm["item_type"]=='PluginAddressingReport'
        && isset($parm["id"])
        && isset($parm["display_type"])
