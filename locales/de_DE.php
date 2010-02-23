@@ -1,6 +1,6 @@
 <?php
 /*
- * @version $Id: HEADER 1 2009-09-21 14:58 Tsmr $
+ * @version $Id: HEADER 1 2010-02-24 00:12 Tsmr $
  -------------------------------------------------------------------------
  GLPI - Gestionnaire Libre de Parc Informatique
  Copyright (C) 2003-2010 by the INDEPNET Development Team.
@@ -24,9 +24,8 @@
 
  You should have received a copy of the GNU General Public License
  along with GLPI; if not, write to the Free Software
- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA80  02111-1307  USA
+ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  --------------------------------------------------------------------------
-
 // ----------------------------------------------------------------------
 // Original Author of file: CAILLAUD Xavier & COLLET Remi
 // Purpose of file: plugin addressing v1.8.0 - GLPI 0.78
