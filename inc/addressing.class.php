@@ -349,15 +349,13 @@ class PluginAddressingAddressing extends CommonDBTM {
       $PluginAddressingReport=new PluginAddressingReport;
 
       // Default values of parameters
-      $default_values["start"]=0;
-      $default_values["id"]=0;
-      $default_values["export"]=false;
+      $default_values["start"]  = $start  = 0;
+      $default_values["id"]     = $id     = 0;
+      $default_values["export"] = $export = false;
 
       foreach ($default_values as $key => $val) {
          if (isset($params[$key])) {
             $$key=$params[$key];
-         } else {
-            $$key=$default_values[$key];
          }
       }
 
