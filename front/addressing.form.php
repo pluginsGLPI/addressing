@@ -54,18 +54,18 @@ if (isset($_POST["add"])) {
 
 	$PluginAddressingAddressing->check($_POST['id'],'w');
 	$PluginAddressingAddressing->delete($_POST);
-	glpi_header($CFG_GLPI["root_doc"]."/plugins/addressing/front/addressing.php");
+	glpi_header(getItemTypeSearchURL('PluginAddressingAddressing'));
 
 } else if (isset($_POST["restore"])) {
 
 	$PluginAddressingAddressing->check($_POST['id'],'w');
 	$PluginAddressingAddressing->restore($_POST);
-	glpi_header($CFG_GLPI["root_doc"]."/plugins/addressing/front/addressing.php");
+	glpi_header(getItemTypeSearchURL('PluginAddressingAddressing'));
 
 } else if (isset($_POST["purge"])) {
 	$PluginAddressingAddressing->check($_POST['id'],'w');
 	$PluginAddressingAddressing->delete($_POST,1);
-	glpi_header($CFG_GLPI["root_doc"]."/plugins/addressing/front/addressing.php");
+	glpi_header(getItemTypeSearchURL('PluginAddressingAddressing'));
 
 } else if (isset($_POST["update"])) {
 
