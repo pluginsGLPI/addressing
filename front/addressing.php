@@ -37,7 +37,9 @@ include (GLPI_ROOT . "/inc/includes.php");
 
 commonHeader($LANG['plugin_addressing']['title'][1],'',"plugins","addressing");
 
-if (plugin_addressing_haveRight("addressing","r") || haveRight("config","w")) {
+$PluginAddressingAddressing = new PluginAddressingAddressing();
+
+if ($PluginAddressingAddressing->canView() || haveRight("config","w")) {
 
 	Search::show("PluginAddressingAddressing");
 

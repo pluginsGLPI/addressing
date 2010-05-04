@@ -64,7 +64,8 @@ class PluginAddressingAddressing extends CommonDBTM {
       $tab[1]['linkfield']='name';
       $tab[1]['name']=$LANG['common'][16];
       $tab[1]['datatype']='itemlink';
-
+      $tab[1]['itemlink_type'] = $this->getType();
+      
       $tab[2]['table']='glpi_networks';
       $tab[2]['field']='name';
       $tab[2]['linkfield']='networks_id';
@@ -148,7 +149,7 @@ class PluginAddressingAddressing extends CommonDBTM {
 	function showForm ($ID, $options=array()) {
 		global $CFG_GLPI,$LANG;
 
-		if (!plugin_addressing_haveRight("addressing","r")) return false;
+		if (!$this->canView()) return false;
 
       if ($ID > 0) {
          $this->check($ID,'r');
@@ -282,8 +283,7 @@ class PluginAddressingAddressing extends CommonDBTM {
       echo "</td>";
 
       $this->showFormButtons($options);
-      echo "<div id='tabcontent'></div>";
-      echo "<script type='text/javascript'>loadDefaultTab();</script>";
+      $this->addDivForTabs();
 
 		return true;
 	}
