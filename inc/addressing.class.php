@@ -131,7 +131,7 @@ class PluginAddressingAddressing extends CommonDBTM {
             FROM `glpi_networkports` " .
             "LEFT JOIN `glpi_computers` ON (`glpi_computers`.`id` = `glpi_networkports`.`items_id`) " .
             "WHERE `itemtype` = 'Computer'
-            AND `entities_id` = '".$entity."'
+            AND `glpi_computers`.`entities_id` = '".$entity."'
             AND `subnet` NOT IN ('','0.0.0.0','127.0.0.0')
             AND `netmask` NOT IN ('','0.0.0.0','255.255.255.255')" .
             getEntitiesRestrictRequest(" AND ","glpi_computers","entities_id",$entity) .
