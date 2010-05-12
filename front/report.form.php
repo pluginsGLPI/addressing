@@ -44,7 +44,7 @@ commonHeader($LANG['plugin_addressing']['title'][1],'',"plugins","addressing");
 if (!isset($_GET["start"])) $_GET["start"] = 0;
 if (!isset($_GET["export"])) $_GET["export"] = false;
 
-$PluginAddressingAddressing=new PluginAddressingAddressing;
+$PluginAddressingAddressing=new PluginAddressingAddressing();
 $PluginAddressingAddressing->showReport($_GET);
 
 commonFooter();

@@ -346,7 +346,7 @@ class PluginAddressingAddressing extends CommonDBTM {
 	function showReport($params) {
       global $CFG_GLPI,$LANG;
 
-      $PluginAddressingReport=new PluginAddressingReport;
+      $PluginAddressingReport=new PluginAddressingReport();
 
       // Default values of parameters
       $default_values["start"]  = $start  = 0;

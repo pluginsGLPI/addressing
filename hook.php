@@ -257,7 +257,7 @@ function plugin_addressing_MassiveActionsProcess($data) {
 			if ($data['itemtype']=='PluginAddressingAddressing') {
 				foreach ($data["item"] as $key => $val) {
 					if ($val==1) {
-						$PluginAddressingAddressing=new PluginAddressingAddressing;
+						$PluginAddressingAddressing=new PluginAddressingAddressing();
 						$PluginAddressingAddressing->getFromDB($key);
 
 						$query="UPDATE `glpi_plugin_addressing_addressings`
@@ -298,8 +298,8 @@ function plugin_addressing_MassiveActionsProcess($data) {
 // Do special actions for dynamic report
 function plugin_addressing_dynamicReport($parm) {
 
-	$PluginAddressingAddressing=new PluginAddressingAddressing;
-   $PluginAddressingReport=new PluginAddressingReport;
+	$PluginAddressingAddressing=new PluginAddressingAddressing();
+   $PluginAddressingReport=new PluginAddressingReport();
 
 	if ($parm["item_type"]=='PluginAddressingReport'
        && isset($parm["id"])
