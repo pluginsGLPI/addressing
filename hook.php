@@ -326,10 +326,6 @@ function plugin_get_headings_addressing($item,$withtemplate) {
 				1 => $LANG['plugin_addressing']['title'][1],
 				);
 		}
-	} else if (get_class($item)=='Config') {
-      return array(
-         1 => $LANG['plugin_addressing']['title'][1],
-         );
 	}
 	return false;
 }
@@ -337,7 +333,7 @@ function plugin_get_headings_addressing($item,$withtemplate) {
 // Define headings actions added by the plugin
 function plugin_headings_actions_addressing($item) {
 
-	if (in_array(get_class($item),array('Profile','Config')) && $item->getField('interface')!='helpdesk') {
+	if (get_class($item)=='Profile' && $item->getField('interface')!='helpdesk') {
 		return array(
          1 => "plugin_headings_addressing",
          );
@@ -355,10 +351,6 @@ function plugin_headings_addressing($item,$withtemplate=0) {
 			if (!$prof->getFromDBByProfile($item->getField('id')))
 				$prof->createAccess($item->getField('id'));
 			$prof->showForm($item->getField('id'), array('target' => $CFG_GLPI["root_doc"]."/plugins/addressing/front/profile.form.php"));
-         break;
-      case 'Config' :
-			$PluginAddressingConfig=new PluginAddressingConfig();
-			$PluginAddressingConfig->showForm($CFG_GLPI["root_doc"]."/plugins/addressing/front/config.form.php");
          break;
 	}
 }
