@@ -125,7 +125,7 @@ class PluginAddressingAddressing extends CommonDBTM {
 
       $rand=mt_rand();
       echo "<select name='_subnet' id='plugaddr_subnet' onChange='plugaddr_ChangeList();'>";
-      echo "<option value=''>-----</option>";
+      echo "<option value=''>".DROPDOWN_EMPTY_VALUE."</option>";
 
       $sql="SELECT DISTINCT `subnet`, `netmask`
             FROM `glpi_networkports` " .
