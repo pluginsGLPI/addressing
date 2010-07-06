@@ -59,6 +59,7 @@ class PluginAddressingProfile extends CommonDBTM {
    }
 
 	function cleanProfiles($ID) {
+      global $DB;
 
 		$query = "DELETE
 				FROM `".$this->getTable()."`

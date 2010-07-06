@@ -38,7 +38,7 @@ function plugin_init_addressing() {
 	global $PLUGIN_HOOKS;
 
 	$PLUGIN_HOOKS['change_profile']['addressing'] = array('PluginAddressingProfile','changeProfile');
-   $PLUGIN_HOOKS['pre_item_purge']['addressing'] = array('Profile'=>array('PluginAddressingProfile', 'cleanProfiles'));
+   $PLUGIN_HOOKS['pre_item_purge']['addressing'] = array('Profile'=>array('PluginAddressingProfile', 'purgeProfiles'));
 
 	if (getLoginUserID()) {
 
