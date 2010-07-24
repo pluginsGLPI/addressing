@@ -36,9 +36,6 @@ $title="Adresacja IP";
 
 $LANG['plugin_addressing']['title'][1] = "".$title."";
 
-$LANG['plugin_addressing'][1] = "Nie znaleziono raportu";
-$LANG['plugin_addressing'][3] = "Raport połączeń";
-
 $LANG['plugin_addressing']['reports'][1] = "Raport dla zakresu IP";
 $LANG['plugin_addressing']['reports'][2] = "IP";
 $LANG['plugin_addressing']['reports'][3] = "Wybierz sieć : ";
@@ -75,8 +72,6 @@ $LANG['plugin_addressing']['setup'][11] = "Przydzielone IP";
 $LANG['plugin_addressing']['setup'][12] = "Niezajęte Ip";
 $LANG['plugin_addressing']['setup'][13] = "Identyczne IP";
 $LANG['plugin_addressing']['setup'][14] = "Zarezerwowane IP";
-$LANG['plugin_addressing']['setup'][15] = "Tak";
-$LANG['plugin_addressing']['setup'][16] = "Nie";
 $LANG['plugin_addressing']['setup'][19] = "Rodzaj ping-a";
 $LANG['plugin_addressing']['setup'][20] = "Linux ping";
 $LANG['plugin_addressing']['setup'][21] = "Windows";

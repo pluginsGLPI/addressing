@@ -36,9 +36,6 @@ $title="Direccionamiento IP";
 
 $LANG['plugin_addressing']['title'][1] = "".$title."";
 
-$LANG['plugin_addressing'][1] = "Ningún informe encontrado";
-$LANG['plugin_addressing'][3] = "Enlace";
-
 $LANG['plugin_addressing']['reports'][1] = "Informe para el rango IP";
 $LANG['plugin_addressing']['reports'][2] = "IP";
 $LANG['plugin_addressing']['reports'][3] = "Selecciona la Red : ";
@@ -75,8 +72,6 @@ $LANG['plugin_addressing']['setup'][11] = "IP Asignada";
 $LANG['plugin_addressing']['setup'][12] = "Ip Libre";
 $LANG['plugin_addressing']['setup'][13] = "Misma IP";
 $LANG['plugin_addressing']['setup'][14] = "IP Reservada";
-$LANG['plugin_addressing']['setup'][15] = "Si";
-$LANG['plugin_addressing']['setup'][16] = "No";
 $LANG['plugin_addressing']['setup'][19] = "Sistema para el ping";
 $LANG['plugin_addressing']['setup'][20] = "Ping Linux";
 $LANG['plugin_addressing']['setup'][21] = "Windows";

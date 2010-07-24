@@ -36,9 +36,6 @@ $title="IP Adressing";
 
 $LANG['plugin_addressing']['title'][1] = "".$title."";
 
-$LANG['plugin_addressing'][1] = "No report found";
-$LANG['plugin_addressing'][3] = "Link";
-
 $LANG['plugin_addressing']['reports'][1] = "Report for the IP Range";
 $LANG['plugin_addressing']['reports'][2] = "IP";
 $LANG['plugin_addressing']['reports'][3] = "Select the network : ";
@@ -75,8 +72,6 @@ $LANG['plugin_addressing']['setup'][11] = "Assigned IP";
 $LANG['plugin_addressing']['setup'][12] = "Free Ip";
 $LANG['plugin_addressing']['setup'][13] = "Same IP";
 $LANG['plugin_addressing']['setup'][14] = "Reserved IP";
-$LANG['plugin_addressing']['setup'][15] = "Yes";
-$LANG['plugin_addressing']['setup'][16] = "No";
 $LANG['plugin_addressing']['setup'][19] = "System for ping";
 $LANG['plugin_addressing']['setup'][20] = "Linux ping";
 $LANG['plugin_addressing']['setup'][21] = "Windows";
