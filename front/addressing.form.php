@@ -80,11 +80,6 @@ if (isset($_POST["add"])) {
 
 	$PluginAddressingAddressing->checkGlobal("r");
 
-	if (!isset($_SESSION['glpi_tab'])) $_SESSION['glpi_tab']=1;
-	if (isset($_GET['onglet'])) {
-		$_SESSION['glpi_tab']=$_GET['onglet'];
-		//		glpi_header($_SERVER['HTTP_REFERER']);
-	}
 	commonHeader($LANG['plugin_addressing']['title'][1],'',"plugins","addressing");
 
 	$PluginAddressingAddressing->showForm($_GET["id"]);

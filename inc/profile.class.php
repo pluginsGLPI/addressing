@@ -55,18 +55,8 @@ class PluginAddressingProfile extends CommonDBTM {
    //if profile deleted
 	static function purgeProfiles(Profile $prof) {
       $plugprof = new self();
-      $plugprof->cleanProfiles($prof->getField("id"));
+      $plugprof->deleteByCriteria(array('profiles_id' => $prof->getField("id")));
    }
-
-	function cleanProfiles($ID) {
-      global $DB;
-
-		$query = "DELETE
-				FROM `".$this->getTable()."`
-				WHERE `profiles_id` = '$ID' ";
-
-		$DB->query($query);
-	}
 
 	function getFromDBByProfile($profiles_id) {
 		global $DB;
