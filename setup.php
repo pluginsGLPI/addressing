@@ -46,13 +46,16 @@ function plugin_init_addressing() {
 
 			$PLUGIN_HOOKS['menu_entry']['addressing'] = 'front/addressing.php';
 			$PLUGIN_HOOKS['submenu_entry']['addressing']['search'] = 'front/addressing.php';
-			$PLUGIN_HOOKS['headings']['addressing'] = 'plugin_get_headings_addressing';
-			$PLUGIN_HOOKS['headings_action']['addressing'] = 'plugin_headings_actions_addressing';
+			
 		}
 		if (plugin_addressing_haveRight("addressing","w")) {
 			$PLUGIN_HOOKS['submenu_entry']['addressing']['add'] = 'front/addressing.form.php?new=1';
 			$PLUGIN_HOOKS['use_massive_action']['addressing']=1;
 		}
+		if (plugin_addressing_haveRight("addressing","r") || haveRight("config","w")) {
+         $PLUGIN_HOOKS['headings']['addressing'] = 'plugin_get_headings_addressing';
+			$PLUGIN_HOOKS['headings_action']['addressing'] = 'plugin_headings_actions_addressing';
+		}	
 		// Config page
 		if (haveRight("config","w")) {
 			$PLUGIN_HOOKS['submenu_entry']['addressing']['config'] = 'front/config.form.php';
