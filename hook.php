@@ -165,7 +165,6 @@ function plugin_addressing_getAddSearchOptions($itemtype) {
          // Use a plugin type reservation to avoid conflict
          $sopt[5000]['table']='glpi_plugin_addressing_profiles';
          $sopt[5000]['field']='addressing';
-         $sopt[5000]['linkfield']='id';
          $sopt[5000]['name']=$LANG['plugin_addressing']['title'][1];
          //$sopt[5000]['datatype']='bool';
       }
@@ -258,12 +257,9 @@ function plugin_addressing_MassiveActionsProcess($data) {
 				foreach ($data["item"] as $key => $val) {
 					if ($val==1) {
 						$PluginAddressingAddressing=new PluginAddressingAddressing();
-						$PluginAddressingAddressing->getFromDB($key);
-
-						$query="UPDATE `glpi_plugin_addressing_addressings`
-									SET `entities_id` = '".$data['entities_id']."'
-									WHERE `glpi_plugin_addressing_addressings`.`id` ='$key'";
-						$DB->query($query);
+						$values["id"] = $key;
+                  $values["entities_id"] = $data['entities_id'];
+                  $PluginAddressingAddressing->update($values);
 					}
 				}
 			}
