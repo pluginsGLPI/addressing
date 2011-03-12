@@ -1,6 +1,6 @@
 <?php
 /*
- * @version $Id: HEADER 1 2010-02-24 00:12 Tsmr $
+ * @version $Id: HEADER 2011-03-12 18:01:26 tsmr $
  -------------------------------------------------------------------------
  GLPI - Gestionnaire Libre de Parc Informatique
  Copyright (C) 2003-2010 by the INDEPNET Development Team.
@@ -28,7 +28,7 @@
  --------------------------------------------------------------------------
 // ----------------------------------------------------------------------
 // Original Author of file: CAILLAUD Xavier & COLLET Remi
-// Purpose of file: plugin addressing v1.8.0 - GLPI 0.78
+// Purpose of file: plugin addressing v1.9.0 - GLPI 0.80
 // ----------------------------------------------------------------------
  */
 
@@ -77,19 +77,19 @@ function plugin_version_addressing() {
 
 	return array (
 		'name' => $LANG['plugin_addressing']['title'][1],
-		'version' => '1.8.0',
+		'version' => '1.9.0',
 		'author'=>'Gilles Portheault, Xavier Caillaud, Remi Collet',
 		'homepage'=>'https://forge.indepnet.net/projects/show/addressing',
-		'minGlpiVersion' => '0.78',// For compatibility / no install in version < 0.72
+		'minGlpiVersion' => '0.80',// For compatibility / no install in version < 0.80
 	);
 }
 
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_addressing_check_prerequisites() {
-	if (GLPI_VERSION >= 0.78) {
+	if (GLPI_VERSION >= 0.80) {
 		return true;
 	} else {
-		echo "GLPI version not compatible need 0.78";
+		echo "GLPI version not compatible need 0.80";
 	}
 }
 
