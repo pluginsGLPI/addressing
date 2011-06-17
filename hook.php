@@ -82,7 +82,7 @@ function plugin_addressing_install() {
       $DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.8.0.sql");
       $DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.9.0.sql");
 
-   } elseif (fieldExists("glpi_plugin_addressing_configs","use_ping_in_equipment")) {
+   } elseif (!fieldExists("glpi_plugin_addressing_configs","use_ping_in_equipment")) {
       $update=true;
       $DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.9.0.sql");
    }
