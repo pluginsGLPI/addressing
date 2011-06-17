@@ -29,10 +29,11 @@ CREATE TABLE `glpi_plugin_addressing_configs` (
    `reserved_ip` tinyint(1) NOT NULL default '0',
    `use_ping` tinyint(1) NOT NULL default '0',
    `used_system` tinyint(1) NOT NULL default '0',
+   `use_ping_in_equipment` tinyint(1) NOT NULL default '0',
    PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `glpi_plugin_addressing_configs` VALUES ('1','1','1','1','1','0','0');
+INSERT INTO `glpi_plugin_addressing_configs` VALUES ('1','1','1','1','1','0','0','0');
 
 DROP TABLE IF EXISTS `glpi_plugin_addressing_profiles`;
 CREATE TABLE `glpi_plugin_addressing_profiles` (

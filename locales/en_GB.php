@@ -81,5 +81,12 @@ $LANG['plugin_addressing']['setup'][25] = "Linux fping";
 $LANG['plugin_addressing']['setup'][27] = "Problem when adding, required fields are not here";
 $LANG['plugin_addressing']['setup'][28] = "BSD ping";
 $LANG['plugin_addressing']['setup'][29] = "MacOSX ping";
+$LANG['plugin_addressing']['setup'][30] = "Use ping on equipment form";
+
+$LANG['plugin_addressing']['equipment'][0] = "Ping";
+$LANG['plugin_addressing']['equipment'][1] = "Result";
+$LANG['plugin_addressing']['equipment'][2] = "Ping: got a response";
+$LANG['plugin_addressing']['equipment'][3] = "Ping: no response";
+$LANG['plugin_addressing']['equipment'][4] = "IP ping";
 
 ?>
