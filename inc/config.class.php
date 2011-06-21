@@ -86,13 +86,9 @@ class PluginAddressingConfig extends CommonDBTM {
 
       echo "</tr>";
 
-      echo "<tr class='tab_bg_1'><td>".$LANG['plugin_addressing']['setup'][22]."</td>";
-      echo "<td>";
+      echo "<tr class='tab_bg_1'><td colspan='2'>".$LANG['plugin_addressing']['setup'][22]."</td>";
+      echo "<td colspan='2'>";
       echo Dropdown::showYesNo("use_ping",$this->fields["use_ping"]);
-      echo "</td>";
-      echo "<td>".$LANG['plugin_addressing']['setup'][30]."</td>";
-      echo "<td>";
-      echo Dropdown::showYesNo("use_ping_in_equipment",$this->fields["use_ping_in_equipment"]);
       echo "</td>";
       echo "</tr>";
 

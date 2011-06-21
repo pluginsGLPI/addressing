@@ -82,7 +82,7 @@ function plugin_addressing_install() {
       $DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.8.0.sql");
       $DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.9.0.sql");
 
-   } elseif (!fieldExists("glpi_plugin_addressing_configs","use_ping_in_equipment")) {
+   } elseif (!fieldExists("glpi_plugin_addressing_profiles","use_ping_in_equipment")) {
       $update=true;
       $DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.9.0.sql");
    }
@@ -332,9 +332,7 @@ function plugin_get_headings_addressing($item,$withtemplate) {
       }
    }
 
-   $config=new PluginAddressingConfig();
-   $config->getFromDB('1');
-   $ping=$config->fields["use_ping_in_equipment"];
+   $ping = plugin_addressing_haveRight("use_ping_in_equipment", '1');
 
    if ($ping && in_array(get_class($item), $CFG_GLPI["networkport_types"])) {
       if ($item->getField('id')) {

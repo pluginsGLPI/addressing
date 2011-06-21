@@ -65,6 +65,7 @@ $LANG['plugin_addressing']['reports'][39] = "Dernière IP";
 
 $LANG['plugin_addressing']['profile'][0] = "Gestion des droits";
 $LANG['plugin_addressing']['profile'][3] = "Générer des rapports";
+$LANG['plugin_addressing']['profile'][4] = "Utiliser le Ping sur la fiche des equipements";
 
 $LANG['plugin_addressing']['setup'][8] = "Problème dans le choix de la plage IP";
 $LANG['plugin_addressing']['setup'][10] = "Affichage";
@@ -81,7 +82,7 @@ $LANG['plugin_addressing']['setup'][25] = "Linux fping";
 $LANG['plugin_addressing']['setup'][27] = "Problème lors de l'ajout, des champs requis sont manquant";
 $LANG['plugin_addressing']['setup'][28] = "BSD ping";
 $LANG['plugin_addressing']['setup'][29] = "MacOSX ping";
-$LANG['plugin_addressing']['setup'][30] = "Utiliser le Ping sur la fiche des equipements";
+
 
 
 $LANG['plugin_addressing']['equipment'][0] = "Ping";
