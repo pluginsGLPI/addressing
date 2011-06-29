@@ -83,7 +83,7 @@ class PluginAddressingPing_Equipment {
                   params : { ip : ip },
                   method: 'POST',
                   success: function ( result, request ) {
-                     ping_response.insertHtml('afterBegin', result.responseText);
+                     ping_response.insertHtml('afterBegin', '<hr>'+result.responseText);
                   }
                });
             }
@@ -91,5 +91,36 @@ class PluginAddressingPing_Equipment {
       ";
 
 
+   }
+
+   function ping($system,$ip) {
+
+      $list ='';
+      switch ($system) {
+
+      case 0:
+         // linux ping
+          exec("ping -c 1 -w 1 ".$ip, $list);
+         break;
+      case 1:
+         //windows
+         exec("ping.exe -n 1 -w 1 -i 4 ".$ip, $list);
+         break;
+      case 2:
+         //linux fping
+         exec("fping -r1 -c1 -t100 ".$ip, $list);
+         break;
+      case 3:
+         // *BSD ping
+         exec("ping -c 1 -W 1 ".$ip, $list);
+         break;
+      case 4:
+         // MacOSX ping
+         exec("ping -c 1 -t 1 ".$ip, $list);
+         break;
+      }
+      $list_str = implode('<br />', $list);
+
+      return $list_str;
    }
 }

@@ -50,11 +50,6 @@ $config=new PluginAddressingConfig();
 $config->getFromDB('1');
 $system=$config->fields["used_system"];
 
-$report=new PluginAddressingReport();
-$ping_response = $report->ping($system, $ip);
-
-if ($ping_response === true)
-   echo date("d/m/Y H:i:s")." - $ip : ".$LANG['plugin_addressing']['equipment'][2]."<br />";
-else
-   echo date("d/m/Y H:i:s")." - $ip : ".$LANG['plugin_addressing']['equipment'][3]."<br />";
+$ping_equip=new PluginAddressingPing_Equipment();
+echo $ping_response = $ping_equip->ping($system, $ip);
 ?>

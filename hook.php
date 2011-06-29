@@ -102,7 +102,7 @@ function plugin_addressing_install() {
          }
       }
 
-      if (FieldExists("glpi_plugin_addressing_profiles","name"))
+      if (FieldExists("glpi_plugin_addressing_profiles","name")) {
          $query="ALTER TABLE `glpi_plugin_addressing_profiles`
                DROP `name` ;";
          $result=$DB->query($query);
