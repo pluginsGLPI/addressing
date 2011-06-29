@@ -102,9 +102,11 @@ function plugin_addressing_install() {
          }
       }
 
-      $query="ALTER TABLE `glpi_plugin_addressing_profiles`
+      if (FieldExists("glpi_plugin_addressing_profiles","name"))
+         $query="ALTER TABLE `glpi_plugin_addressing_profiles`
                DROP `name` ;";
-      $result=$DB->query($query);
+         $result=$DB->query($query);
+      }
 
       Plugin::migrateItemType(
          array(5000=>'PluginAddressingAddressing',5001=>'PluginAddressingReport'),
