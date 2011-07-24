@@ -355,7 +355,9 @@ function plugin_headings_actions_addressing($item) {
          1 => "plugin_headings_addressing",
          );
    }
-   if (in_array(get_class($item), $CFG_GLPI["networkport_types"])) {
+   $ping = plugin_addressing_haveRight("use_ping_in_equipment", '1');
+   
+   if ($ping && in_array(get_class($item), $CFG_GLPI["networkport_types"])) {
       if ($item->getField('id')) {
          return array(
             1 => "plugin_headings_addressing",
