@@ -73,10 +73,11 @@ class PluginAddressingPing_Equipment {
          }
       }
 
-
       echo "<table class='tab_cadre_fixe'><tr class='tab_bg_2 left'>";
       echo "<tr><th colspan='4'>".$LANG['plugin_addressing']['equipment'][4]."</th></tr>";
+
       if (count($list_ip) > 0) {
+
          echo "<tr>";
          echo "<td>".$LANG['plugin_addressing']['reports'][2]." : </td>";
          echo "<td colspan='3'>";
@@ -91,12 +92,13 @@ class PluginAddressingPing_Equipment {
             "onclick='pingIp();'>";
          echo "</td>";
          echo "</tr>";
+
+         echo "<tr>";
+         echo "<td>".$LANG['plugin_addressing']['equipment'][1]." : </td>";
+         echo "<td colspan='3'>";
+         echo "<div id='ping_response' class='plugin_addressing_ping_equipment'></div>";
+         echo "</td></tr>";
       }
-      echo "<tr>";
-      echo "<td>".$LANG['plugin_addressing']['equipment'][1]." : </td>";
-      echo "<td colspan='3'>";
-      echo "<div id='ping_response' class='plugin_addressing_ping_equipment'></div>";
-      echo "</td></tr>";
       echo "</table>";
 
       echo "
@@ -117,6 +119,8 @@ class PluginAddressingPing_Equipment {
             }
          </script>
       ";
+
+      if (count($list_ip) == 0) echo $LANG['plugin_addressing']['equipment'][5];
 
 
    }

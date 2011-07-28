@@ -90,5 +90,6 @@ $LANG['plugin_addressing']['equipment'][1] = "Résultat";
 $LANG['plugin_addressing']['equipment'][2] = "Réponse au ping";
 $LANG['plugin_addressing']['equipment'][3] = "Pas de réponse au ping";
 $LANG['plugin_addressing']['equipment'][4] = "Ping IP";
+$LANG['plugin_addressing']['equipment'][5] = "Aucune ip pour cet epuipement";
 
 ?>

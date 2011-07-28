@@ -88,5 +88,6 @@ $LANG['plugin_addressing']['equipment'][1] = "Result";
 $LANG['plugin_addressing']['equipment'][2] = "Ping: got a response";
 $LANG['plugin_addressing']['equipment'][3] = "Ping: no response";
 $LANG['plugin_addressing']['equipment'][4] = "IP ping";
+$LANG['plugin_addressing']['equipment'][5] = "no ip for this epuipment";
 
 ?>
