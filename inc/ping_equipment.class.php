@@ -42,28 +42,56 @@ class PluginAddressingPing_Equipment {
       $obj = $options['obj'];
       //printCleanArray($obj);
 
+      $itemtype = getItemTypeForTable($obj->getTable());
+
+      $list_ip = array();
+      $total_ip = 0;
+
+      if ($itemtype == 'NetworkEquipment') {
+         $query = "SELECT ip FROM glpi_networkequipments
+         WHERE id = '".$obj->fields['id']."'";
+         $res = $DB->query($query);
+         while ($row = $DB->fetch_array($res)) {
+            if ($row['ip'] != '') $list_ip[$row['ip']] = $row['ip'];
+         }
+      }
+      $tmp = array_values($list_ip);
+      if (count($tmp) > 0 && $tmp[0] == '') {
+         array_pop($list_ip);
+      }
+
+
       $query = "SELECT name, ip FROM glpi_networkports
-         WHERE itemtype = '".getItemTypeForTable($obj->getTable())."'
+         WHERE itemtype = '".$itemtype."'
          AND items_id = '".$obj->fields['id']."'";
       $res = $DB->query($query);
+      while ($row = $DB->fetch_array($res)) {
+         if ($row['ip'] != '') {
+            $port = $row['ip'];
+            if ($row['name'] != '') $port = $row['name']." ($port)";
+            $list_ip[$row['ip']] = $port;
+         }
+      }
+
 
       echo "<table class='tab_cadre_fixe'><tr class='tab_bg_2 left'>";
       echo "<tr><th colspan='4'>".$LANG['plugin_addressing']['equipment'][4]."</th></tr>";
-      echo "<td>".$LANG['plugin_addressing']['reports'][2]." : </td>";
-      echo "<td colspan='3'>";
-      echo "<select id='ip'>";
-      echo "<option></option>";
-      while ($row = $DB->fetch_array($res)) {
-         $port = $row['ip'];
-         if ($row['name'] != '') $port = $row['name']." ($port)";
-         echo "<option value='".$row['ip']."'>$port</option>";
+      if (count($list_ip) > 0) {
+         echo "<tr>";
+         echo "<td>".$LANG['plugin_addressing']['reports'][2]." : </td>";
+         echo "<td colspan='3'>";
+         echo "<select id='ip'>";
+         echo "<option></option>";
+         foreach($list_ip as $ip => $name) {
+            echo "<option value='$ip'>$name</option>";
+         }
+         echo "</select>";
+         echo "&nbsp;<input class='submit' type='button'".
+            "value='".$LANG['plugin_addressing']['equipment'][0]."'".
+            "onclick='pingIp();'>";
+         echo "</td>";
+         echo "</tr>";
       }
-      echo "</select>";
-      echo "&nbsp;<input class='submit' type='button'".
-         "value='".$LANG['plugin_addressing']['equipment'][0]."'".
-         "onclick='pingIp();'>";
-      echo "</td>";
-      echo "</tr>";
       echo "<tr>";
       echo "<td>".$LANG['plugin_addressing']['equipment'][1]." : </td>";
       echo "<td colspan='3'>";
