@@ -77,7 +77,7 @@ function plugin_version_addressing() {
 
 	return array (
 		'name' => $LANG['plugin_addressing']['title'][1],
-		'version' => '1.9.0',
+		'version' => '1.9.1',
 		'author'=>'Gilles Portheault, Xavier Caillaud, Remi Collet',
 		'homepage'=>'https://forge.indepnet.net/projects/show/addressing',
 		'minGlpiVersion' => '0.80',// For compatibility / no install in version < 0.80
