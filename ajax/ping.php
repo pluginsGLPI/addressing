@@ -1,8 +1,8 @@
+<?php
 /*
- * @version $Id: HEADER 2011-03-12 18:01:26 tsmr $
  -------------------------------------------------------------------------
  GLPI - Gestionnaire Libre de Parc Informatique
- Copyright (C) 2003-2010 by the INDEPNET Development Team.
+ Copyright (C) 2003-2011 by the INDEPNET Development Team.
 
  http://indepnet.net/   http://glpi-project.org
  -------------------------------------------------------------------------
@@ -25,38 +25,31 @@
  along with GLPI; if not, write to the Free Software
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  --------------------------------------------------------------------------
+ */
+
 // ----------------------------------------------------------------------
-// Original Author of file: CAILLAUD Xavier & COLLET Remi
-// Purpose of file: plugin addressing v1.9.0 - GLPI 0.80
+// Original Author of file: Alexandre DELAUNAY
+// Purpose of file:
 // ----------------------------------------------------------------------
-*/
 
 
-.plugin_addressing_ip_double {
-   background-color: #CF9B9B;
+define('GLPI_ROOT','../../..');
+include (GLPI_ROOT."/inc/includes.php");
+header("Content-Type: text/html; charset=UTF-8");
+header_nocache();
+
+checkLoginUser();
+
+if (!isset($_POST['ip'])) {
+   exit();
 }
-
-.plugin_addressing_ip_free {
-   background-color: #C0CAD4;
-}
-
-.plugin_addressing_ping_on {
-   background-color: #A2BB8D;
-}
-
-.plugin_addressing_ping_off {
-   background-color: #CF9B9B;
-}
+$ip = $_POST['ip'];
 
 
-.plugin_addressing_ping_equipment {
-   border:2px solid #E1CC7B;
-   color:white;
-   background-color:black;
-   font-weight:bold;
-   height:150px;
-   width:100%;
-   overflow:auto;
-   border-radius: 4px 4px 4px 4px;
-   padding: 2px;
-}
+$config=new PluginAddressingConfig();
+$config->getFromDB('1');
+$system=$config->fields["used_system"];
+
+$ping_equip=new PluginAddressingPing_Equipment();
+echo $ping_response = $ping_equip->ping($system, $ip);
+?>

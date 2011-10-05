@@ -33,12 +33,12 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-	die("Sorry. You can't access directly to this file");
+   die("Sorry. You can't access directly to this file");
 }
 
 class PluginAddressingConfig extends CommonDBTM {
 
-	function showForm() {
+   function showForm() {
       global $LANG;
 
       $this->getFromDB('1');
@@ -87,9 +87,10 @@ class PluginAddressingConfig extends CommonDBTM {
       echo "</tr>";
 
       echo "<tr class='tab_bg_1'><td colspan='2'>".$LANG['plugin_addressing']['setup'][22]."</td>";
-      echo "<td  colspan='2'>";
+      echo "<td colspan='2'>";
       echo Dropdown::showYesNo("use_ping",$this->fields["use_ping"]);
       echo "</td>";
+      echo "</tr>";
 
       echo "<tr><th colspan='4'>";
       echo "<input type='hidden' name='id' value=\"1\">";
@@ -98,7 +99,7 @@ class PluginAddressingConfig extends CommonDBTM {
       echo "</form>";
       echo "</div>";
 
-	}
+   }
 }
 
 ?>
