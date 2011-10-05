@@ -33,20 +33,24 @@
  */
 
 //Options for GLPI 0.71 and newer : need slave db to access the report
-$USEDBREPLICATE=1;
-$DBCONNECTION_REQUIRED=0;
+$USEDBREPLICATE         = 1;
+$DBCONNECTION_REQUIRED  = 0;
 
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT."/inc/includes.php");
 
-commonHeader($LANG['plugin_addressing']['title'][1],'',"plugins","addressing");
+Html::eader($LANG['plugin_addressing']['title'][1], '', "plugins", "addressing");
 
-if (!isset($_GET["start"])) $_GET["start"] = 0;
-if (!isset($_GET["export"])) $_GET["export"] = false;
+if (!isset($_GET["start"])) {
+   $_GET["start"] = 0;
+}
 
-$PluginAddressingAddressing=new PluginAddressingAddressing();
+if (!isset($_GET["export"])) {
+   $_GET["export"] = false;
+}
+
+$PluginAddressingAddressing = new PluginAddressingAddressing();
 $PluginAddressingAddressing->showReport($_GET);
 
-commonFooter();
-
+Html::footer();
 ?>

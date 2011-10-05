@@ -33,35 +33,31 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-	define('GLPI_ROOT', '../../..');
-	include (GLPI_ROOT . "/inc/includes.php");
+   define('GLPI_ROOT', '../../..');
+   include (GLPI_ROOT . "/inc/includes.php");
 }
 
 $plugin = new Plugin();
 if ($plugin->isActivated("addressing")) {
+   $PluginAddressingConfig = new PluginAddressingConfig();
 
-   $PluginAddressingConfig=new PluginAddressingConfig();
-
-   checkRight("config","w");
+   Session::checkRight("config", "w");
 
    if (isset($_POST["update"])) {
-
       $PluginAddressingConfig->update($_POST);
-      glpi_header($_SERVER['HTTP_REFERER']);
+      Html::back();
 
    } else {
-
-      commonHeader($LANG['plugin_addressing']['title'][1],'',"plugins","addressing");
-
+      Html::header($LANG['plugin_addressing']['title'][1], '', "plugins", "addressing");
       $PluginAddressingConfig->showForm();
-
-      commonFooter();
+      Html::footer();
    }
-} else {
-   commonHeader($LANG["common"][12],'',"config","plugins");
-   echo "<div align='center'><br><br><img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt=\"warning\"><br><br>";
-   echo "<b>Please activate the plugin</b></div>";
-   commonFooter();
-}
 
+} else {
+   Html::header($LANG["common"][12], '', "config", "plugins");
+   echo "<div class='center'><br><br>".
+         "<img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt='warning'><br><br>";
+   echo "<b>Please activate the plugin</b></div>";
+   Html::footer();
+}
 ?>

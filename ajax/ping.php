@@ -36,9 +36,9 @@
 define('GLPI_ROOT','../../..');
 include (GLPI_ROOT."/inc/includes.php");
 header("Content-Type: text/html; charset=UTF-8");
-header_nocache();
+Html::header_nocache();
 
-checkLoginUser();
+Session::checkLoginUser();
 
 if (!isset($_POST['ip'])) {
    exit();
@@ -46,10 +46,10 @@ if (!isset($_POST['ip'])) {
 $ip = $_POST['ip'];
 
 
-$config=new PluginAddressingConfig();
+$config = new PluginAddressingConfig();
 $config->getFromDB('1');
-$system=$config->fields["used_system"];
+$system = $config->fields["used_system"];
 
-$ping_equip=new PluginAddressingPing_Equipment();
+$ping_equip = new PluginAddressingPing_Equipment();
 echo $ping_response = $ping_equip->ping($system, $ip);
 ?>

@@ -35,80 +35,85 @@
 // Init the hooks of the plugins -Needed
 function plugin_init_addressing() {
 
-	global $PLUGIN_HOOKS;
+   global $PLUGIN_HOOKS;
 
-	$PLUGIN_HOOKS['change_profile']['addressing'] = array('PluginAddressingProfile','changeProfile');
-   $PLUGIN_HOOKS['pre_item_purge']['addressing'] = array('Profile'=>array('PluginAddressingProfile', 'purgeProfiles'));
+   $PLUGIN_HOOKS['change_profile']['addressing'] = array('PluginAddressingProfile', 'changeProfile');
+   $PLUGIN_HOOKS['pre_item_purge']['addressing'] = array('Profile' => array('PluginAddressingProfile',
+                                                                            'purgeProfiles'));
+   Plugin::registerClass('PluginAddressingProfile',
+                         array('addtabon' => array('Profile')));
 
-	if (getLoginUserID()) {
+   if (Session::getLoginUserID()) {
+      if (plugin_addressing_haveRight("addressing","r")) {
+         $PLUGIN_HOOKS['menu_entry']['addressing']              = 'front/addressing.php';
+         $PLUGIN_HOOKS['submenu_entry']['addressing']['search'] = 'front/addressing.php';
+      }
 
-		if (plugin_addressing_haveRight("addressing","r")) {
+      if (plugin_addressing_haveRight("addressing","w")) {
+         $PLUGIN_HOOKS['submenu_entry']['addressing']['add'] = 'front/addressing.form.php?new=1';
+         $PLUGIN_HOOKS['use_massive_action']['addressing']   = 1;
+      }
 
-			$PLUGIN_HOOKS['menu_entry']['addressing'] = 'front/addressing.php';
-			$PLUGIN_HOOKS['submenu_entry']['addressing']['search'] = 'front/addressing.php';
-			
-		}
-		if (plugin_addressing_haveRight("addressing","w")) {
-			$PLUGIN_HOOKS['submenu_entry']['addressing']['add'] = 'front/addressing.form.php?new=1';
-			$PLUGIN_HOOKS['use_massive_action']['addressing']=1;
-		}
-		if (plugin_addressing_haveRight("addressing","r") || haveRight("config","w")) {
-         $PLUGIN_HOOKS['headings']['addressing'] = 'plugin_get_headings_addressing';
-			$PLUGIN_HOOKS['headings_action']['addressing'] = 'plugin_headings_actions_addressing';
-		}	
-		// Config page
-		if (haveRight("config","w")) {
-			$PLUGIN_HOOKS['submenu_entry']['addressing']['config'] = 'front/config.form.php';
-			$PLUGIN_HOOKS['config_page']['addressing'] = 'front/config.form.php';
-		}
+      if (plugin_addressing_haveRight("addressing","r") || Session::haveRight("config","w")) {
+         $PLUGIN_HOOKS['headings']['addressing']        = 'plugin_get_headings_addressing';
+         $PLUGIN_HOOKS['headings_action']['addressing'] = 'plugin_headings_actions_addressing';
+      }
 
-		// Add specific files to add to the header : javascript or css
-		//$PLUGIN_HOOKS['add_javascript']['example']="example.js";
-		$PLUGIN_HOOKS['add_css']['addressing']="addressing.css";
-		$PLUGIN_HOOKS['add_javascript']['addressing']='addressing.js';
+      // Config page
+      if (Session::haveRight("config","w")) {
+         $PLUGIN_HOOKS['submenu_entry']['addressing']['config'] = 'front/config.form.php';
+         $PLUGIN_HOOKS['config_page']['addressing']             = 'front/config.form.php';
+      }
 
-	}
-
-
+      // Add specific files to add to the header : javascript or css
+      //$PLUGIN_HOOKS['add_javascript']['example']="example.js";
+      $PLUGIN_HOOKS['add_css']['addressing']        = "addressing.css";
+      $PLUGIN_HOOKS['add_javascript']['addressing'] = 'addressing.js';
+   }
 }
+
+
 // Get the name and the version of the plugin - Needed
 function plugin_version_addressing() {
-	global $LANG;
+   global $LANG;
 
-	return array (
-		'name' => $LANG['plugin_addressing']['title'][1],
-		'version' => '1.9.1',
-		'author'=>'Gilles Portheault, Xavier Caillaud, Remi Collet',
-		'homepage'=>'https://forge.indepnet.net/projects/show/addressing',
-		'minGlpiVersion' => '0.80',// For compatibility / no install in version < 0.80
-	);
+   return array('name'           => $LANG['plugin_addressing']['title'][1],
+                'version'        => '2.0.0',
+                'author'         =>'Gilles Portheault, Xavier Caillaud, Remi Collet, Nelly Mahu-Lasson',
+                'homepage'       =>'https://forge.indepnet.net/projects/show/addressing',
+                'minGlpiVersion' => '0.83');// For compatibility / no install in version < 0.80
 }
+
 
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_addressing_check_prerequisites() {
-	if (GLPI_VERSION >= 0.80) {
-		return true;
-	} else {
-		echo "GLPI version not compatible need 0.80";
-	}
+
+   if (version_compare(GLPI_VERSION,'0.83','lt') || version_compare(GLPI_VERSION,'0.84','ge')) {
+      echo "This plugin requires GLPI >= 0.83 and GLPI < 0.84";
+      return false;
+   }
+   return true;
 }
+
 
 // Uninstall process for plugin : need to return true if succeeded : may display messages or add to message after redirect
 function plugin_addressing_check_config() {
-	return true;
+   return true;
 }
+
 
 function plugin_addressing_haveRight($module,$right) {
-	$matches=array(
-			""  => array("","r","w"), // ne doit pas arriver normalement
-			"r" => array("r","w"),
-			"w" => array("w"),
-			"1" => array("1"),
-			"0" => array("0","1"), // ne doit pas arriver non plus
-		      );
-	if (isset($_SESSION["glpi_plugin_addressing_profile"][$module])&&in_array($_SESSION["glpi_plugin_addressing_profile"][$module],$matches[$right]))
-		return true;
-	else return false;
-}
 
+   $matches = array(""  => array("","r","w"), // ne doit pas arriver normalement
+                    "r" => array("r","w"),
+                    "w" => array("w"),
+                    "1" => array("1"),
+                    "0" => array("0","1")); // ne doit pas arriver non plus
+
+   if (isset($_SESSION["glpi_plugin_addressing_profile"][$module])
+       && in_array($_SESSION["glpi_plugin_addressing_profile"][$module],$matches[$right])) {
+      return true;
+   }
+   return false;
+}
 ?>

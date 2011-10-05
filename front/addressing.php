@@ -35,19 +35,18 @@
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT . "/inc/includes.php");
 
-commonHeader($LANG['plugin_addressing']['title'][1],'',"plugins","addressing");
+Html::header($LANG['plugin_addressing']['title'][1], '', "plugins", "addressing");
 
 $PluginAddressingAddressing = new PluginAddressingAddressing();
 
-if ($PluginAddressingAddressing->canView() || haveRight("config","w")) {
-
-	Search::show("PluginAddressingAddressing");
+if ($PluginAddressingAddressing->canView() || SessionhaveRight("config","w")) {
+   Search::show("PluginAddressingAddressing");
 
 } else {
-	echo "<div align='center'><br><br><img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt=\"warning\"><br><br>";
-	echo "<b>".$LANG['login'][5]."</b></div>";
+   echo "<div class='center'><br><br>".
+         "<img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt='warning'><br><br>";
+   echo "<b>".$LANG['login'][5]."</b></div>";
 }
 
-commonFooter();
-
+Html::footer();
 ?>

@@ -35,56 +35,55 @@
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT."/inc/includes.php");
 
-if (!isset($_GET["id"])) $_GET["id"] = "";
-if (isset($_GET["start"])) $start=$_GET["start"];
-else $start=0;
+if (!isset($_GET["id"])) {
+   $_GET["id"] = "";
+}
+
+if (isset($_GET["start"])) {
+   $start = $_GET["start"];
+} else {
+   $start = 0;
+}
 
 $PluginAddressingAddressing = new PluginAddressingAddressing();
 
 if (isset($_POST["add"])) {
-
-	$PluginAddressingAddressing->check(-1,'w',$_POST);
-   if (!empty($_POST["name"]) && !empty($_POST["begin_ip"]) && !empty($_POST["end_ip"]))
-      $newID=$PluginAddressingAddressing->add($_POST);
-   else
-      addMessageAfterRedirect($LANG['plugin_addressing']['setup'][27],false,ERROR);
-	glpi_header($_SERVER['HTTP_REFERER']);
+   $PluginAddressingAddressing->check(-1, 'w', $_POST);
+   if (!empty($_POST["name"]) && !empty($_POST["begin_ip"]) && !empty($_POST["end_ip"])) {
+      $newID = $PluginAddressingAddressing->add($_POST);
+   } else {
+      Session::addMessageAfterRedirect($LANG['plugin_addressing']['setup'][27], false, ERROR);
+   }
+   Html::back();
 
 } else if (isset($_POST["delete"])) {
-
-	$PluginAddressingAddressing->check($_POST['id'],'w');
-	$PluginAddressingAddressing->delete($_POST);
-	glpi_header(getItemTypeSearchURL('PluginAddressingAddressing'));
+   $PluginAddressingAddressing->check($_POST['id'], 'w');
+   $PluginAddressingAddressing->delete($_POST);
+   Html::redirect(Toolbox::getItemTypeSearchURL('PluginAddressingAddressing'));
 
 } else if (isset($_POST["restore"])) {
-
-	$PluginAddressingAddressing->check($_POST['id'],'w');
-	$PluginAddressingAddressing->restore($_POST);
-	glpi_header(getItemTypeSearchURL('PluginAddressingAddressing'));
+   $PluginAddressingAddressing->check($_POST['id'], 'w');
+   $PluginAddressingAddressing->restore($_POST);
+   Html::redirect(Toolbox::getItemTypeSearchURL('PluginAddressingAddressing'));
 
 } else if (isset($_POST["purge"])) {
-	$PluginAddressingAddressing->check($_POST['id'],'w');
-	$PluginAddressingAddressing->delete($_POST,1);
-	glpi_header(getItemTypeSearchURL('PluginAddressingAddressing'));
+   $PluginAddressingAddressing->check($_POST['id'],'w');
+   $PluginAddressingAddressing->delete($_POST,1);
+   Html::redirect(Toolbox::getItemTypeSearchURL('PluginAddressingAddressing'));
 
 } else if (isset($_POST["update"])) {
-
-	$PluginAddressingAddressing->check($_POST['id'],'w');
-   if (!empty($_POST["name"]) && !empty($_POST["begin_ip"]) && !empty($_POST["end_ip"]))
+   $PluginAddressingAddressing->check($_POST['id'], 'w');
+   if (!empty($_POST["name"]) && !empty($_POST["begin_ip"]) && !empty($_POST["end_ip"])) {
       $PluginAddressingAddressing->update($_POST);
-   else
-      addMessageAfterRedirect($LANG['plugin_addressing']['setup'][27],false,ERROR);
-	glpi_header($_SERVER['HTTP_REFERER']);
+   } else {
+      Session::addMessageAfterRedirect($LANG['plugin_addressing']['setup'][27], false, ERROR);
+   }
+   Html::back();
 
 } else {
-
-	$PluginAddressingAddressing->checkGlobal("r");
-
-	commonHeader($LANG['plugin_addressing']['title'][1],'',"plugins","addressing");
-
-	$PluginAddressingAddressing->showForm($_GET["id"]);
-
-	commonFooter();
+   $PluginAddressingAddressing->checkGlobal("r");
+   Html::header($LANG['plugin_addressing']['title'][1], '', "plugins", "addressing");
+   $PluginAddressingAddressing->showForm($_GET["id"]);
+   Html::footer();
 }
-
 ?>

@@ -36,6 +36,7 @@ if (!defined('GLPI_ROOT')) {
 }
 
 class PluginAddressingPing_Equipment {
+
    function showForm($ID, $options = array())  {
       global $LANG, $DB, $CFG_GLPI;
 
@@ -44,15 +45,18 @@ class PluginAddressingPing_Equipment {
 
       $itemtype = getItemTypeForTable($obj->getTable());
 
-      $list_ip = array();
+      $list_ip  = array();
       $total_ip = 0;
 
       if ($itemtype == 'NetworkEquipment') {
-         $query = "SELECT ip FROM glpi_networkequipments
-         WHERE id = '".$obj->fields['id']."'";
+         $query = "SELECT `ip`
+                   FROM `glpi_networkequipments`
+                   WHERE `id` = '".$obj->fields['id']."'";
          $res = $DB->query($query);
          while ($row = $DB->fetch_array($res)) {
-            if ($row['ip'] != '') $list_ip[$row['ip']] = $row['ip'];
+            if ($row['ip'] != '') {
+               $list_ip[$row['ip']] = $row['ip'];
+            }
          }
       }
       $tmp = array_values($list_ip);
@@ -60,15 +64,17 @@ class PluginAddressingPing_Equipment {
          array_pop($list_ip);
       }
 
-
-      $query = "SELECT name, ip FROM glpi_networkports
-         WHERE itemtype = '".$itemtype."'
-         AND items_id = '".$obj->fields['id']."'";
+      $query = "SELECT `name`, `ip`
+                FROM `glpi_networkports`
+                WHERE `itemtype` = '".$itemtype."'
+                      AND `items_id` = '".$obj->fields['id']."'";
       $res = $DB->query($query);
       while ($row = $DB->fetch_array($res)) {
          if ($row['ip'] != '') {
             $port = $row['ip'];
-            if ($row['name'] != '') $port = $row['name']." ($port)";
+            if ($row['name'] != '') {
+               $port = $row['name']." ($port)";
+            }
             $list_ip[$row['ip']] = $port;
          }
       }
@@ -77,19 +83,17 @@ class PluginAddressingPing_Equipment {
       echo "<tr><th colspan='4'>".$LANG['plugin_addressing']['equipment'][4]."</th></tr>";
 
       if (count($list_ip) > 0) {
-
          echo "<tr>";
          echo "<td>".$LANG['plugin_addressing']['reports'][2]." : </td>";
          echo "<td colspan='3'>";
          echo "<select id='ip'>";
-         echo "<option></option>";
+         echo "<option>".Dropdown::EMPTYVALUE."</option>";
          foreach($list_ip as $ip => $name) {
             echo "<option value='$ip'>$name</option>";
          }
          echo "</select>";
-         echo "&nbsp;<input class='submit' type='button'".
-            "value='".$LANG['plugin_addressing']['equipment'][0]."'".
-            "onclick='pingIp();'>";
+         echo "&nbsp;<input class='submit' type='button' value='".
+               $LANG['plugin_addressing']['equipment'][0]."' onclick='pingIp();'>";
          echo "</td>";
          echo "</tr>";
 
@@ -107,7 +111,6 @@ class PluginAddressingPing_Equipment {
                var ip = Ext.get('ip').dom.options[Ext.get('ip').dom.selectedIndex].value;
                var ping_response = Ext.get('ping_response');
 
-
                Ext.Ajax.request({
                   url : '".$CFG_GLPI["root_doc"]."/plugins/addressing/ajax/ping.php' ,
                   params : { ip : ip },
@@ -120,36 +123,40 @@ class PluginAddressingPing_Equipment {
          </script>
       ";
 
-      if (count($list_ip) == 0) echo $LANG['plugin_addressing']['equipment'][5];
-
-
+      if (count($list_ip) == 0) {
+         echo $LANG['plugin_addressing']['equipment'][5];
+      }
    }
+
 
    function ping($system,$ip) {
 
       $list ='';
       switch ($system) {
+         case 0 :
+            // linux ping
+            exec("ping -c 1 -w 1 ".$ip, $list);
+            break;
 
-      case 0:
-         // linux ping
-          exec("ping -c 1 -w 1 ".$ip, $list);
-         break;
-      case 1:
-         //windows
-         exec("ping.exe -n 1 -w 1 -i 4 ".$ip, $list);
-         break;
-      case 2:
-         //linux fping
-         exec("fping -r1 -c1 -t100 ".$ip, $list);
-         break;
-      case 3:
-         // *BSD ping
-         exec("ping -c 1 -W 1 ".$ip, $list);
-         break;
-      case 4:
-         // MacOSX ping
-         exec("ping -c 1 -t 1 ".$ip, $list);
-         break;
+         case 1 :
+            //windows
+            exec("ping.exe -n 1 -w 1 -i 4 ".$ip, $list);
+            break;
+
+         case 2 :
+            //linux fping
+            exec("fping -r1 -c1 -t100 ".$ip, $list);
+            break;
+
+         case 3 :
+            // *BSD ping
+            exec("ping -c 1 -W 1 ".$ip, $list);
+            break;
+
+         case 4 :
+            // MacOSX ping
+            exec("ping -c 1 -t 1 ".$ip, $list);
+            break;
       }
       $list_str = implode('<br />', $list);
 
