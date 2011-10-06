@@ -42,7 +42,7 @@ class PluginAddressingPing_Equipment {
 
 
       $obj = $options['obj'];
-      //printCleanArray($obj);
+      //Html::printCleanArray($obj);
 
       $itemtype = getItemTypeForTable($obj->getTable());
 
