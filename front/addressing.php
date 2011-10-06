@@ -39,7 +39,7 @@ Html::header($LANG['plugin_addressing']['title'][1], '', "plugins", "addressing"
 
 $PluginAddressingAddressing = new PluginAddressingAddressing();
 
-if ($PluginAddressingAddressing->canView() || SessionhaveRight("config","w")) {
+if ($PluginAddressingAddressing->canView() || Session::haveRight("config","w")) {
    Search::show("PluginAddressingAddressing");
 
 } else {
