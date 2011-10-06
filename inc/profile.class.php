@@ -114,7 +114,14 @@ class PluginAddressingProfile extends CommonDBTM {
    function showForm ($ID, $options=array()) {
       global $LANG;
 
-      if (!Session::haveRight("profile","r")) return false;
+      $target = $this->getFormURL();
+      if (isset($options['target'])) {
+        $target = $options['target'];
+      }
+
+      if (!Session::haveRight("profile","r")) {
+         return false;
+      }
 
       $prof = new Profile();
       if ($ID) {
@@ -122,7 +129,8 @@ class PluginAddressingProfile extends CommonDBTM {
          $prof->getFromDB($ID);
       }
 
-      $this->showFormHeader($options);
+      echo "<form action='".$target."' method='post'>";
+      echo "<table class='tab_cadre_fixe'>";
 
       echo "<tr class='tab_bg_2'>";
       echo "<th colspan='4'>".$LANG['plugin_addressing']['profile'][0]." ".$prof->fields["name"].

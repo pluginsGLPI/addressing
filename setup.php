@@ -54,11 +54,6 @@ function plugin_init_addressing() {
          $PLUGIN_HOOKS['use_massive_action']['addressing']   = 1;
       }
 
-      if (plugin_addressing_haveRight("addressing","r") || Session::haveRight("config","w")) {
-         $PLUGIN_HOOKS['headings']['addressing']        = 'plugin_get_headings_addressing';
-         $PLUGIN_HOOKS['headings_action']['addressing'] = 'plugin_headings_actions_addressing';
-      }
-
       // Config page
       if (Session::haveRight("config","w")) {
          $PLUGIN_HOOKS['submenu_entry']['addressing']['config'] = 'front/config.form.php';
@@ -69,6 +64,8 @@ function plugin_init_addressing() {
       //$PLUGIN_HOOKS['add_javascript']['example']="example.js";
       $PLUGIN_HOOKS['add_css']['addressing']        = "addressing.css";
       $PLUGIN_HOOKS['add_javascript']['addressing'] = 'addressing.js';
+
+      $PLUGIN_HOOKS['post_init']['addressing'] = array('PluginAddressingPing_Equipment', 'postinit');
    }
 }
 

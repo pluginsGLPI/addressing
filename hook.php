@@ -300,7 +300,7 @@ function plugin_addressing_dynamicReport($parm) {
        && isset($parm["display_type"])
        && $PluginAddressingAddressing->getFromDB($parm["id"])) {
 
-      $result=$PluginAddressingAddressing->compute($parm["start"]);
+      $result = $PluginAddressingAddressing->compute($parm["start"]);
       $PluginAddressingReport->display($result, $PluginAddressingAddressing);
 
       return true;
@@ -309,75 +309,4 @@ function plugin_addressing_dynamicReport($parm) {
    // Return false if no specific display is done, then use standard display
    return false;
 }
-
-
-// Define headings added by the plugin
-function plugin_get_headings_addressing($item, $withtemplate) {
-   global $LANG, $CFG_GLPI;
-/*
-   if (get_class($item)=='Profile') {
-      if ($item->getField('id') && $item->getField('interface')!='helpdesk') {
-         return array(
-            1 => $LANG['plugin_addressing']['title'][1]
-            );
-      }
-   }
-*/
-   $ping = plugin_addressing_haveRight("use_ping_in_equipment", '1');
-
-   if ($ping && in_array(get_class($item), $CFG_GLPI["networkport_types"])) {
-      if ($item->getField('id')) {
-         return array(
-            1 => $LANG['plugin_addressing']['equipment'][4]
-         );
-      }
-   }
-   return false;
-}
-
-// Define headings actions added by the plugin
-function plugin_headings_actions_addressing($item) {
-   global $CFG_GLPI;
-/*
-   if (get_class($item)=='Profile' && $item->getField('interface')!='helpdesk') {
-      return array(
-         1 => "plugin_headings_addressing",
-         );
-   }
-   */
-   $ping = plugin_addressing_haveRight("use_ping_in_equipment", '1');
-
-   if ($ping && in_array(get_class($item), $CFG_GLPI["networkport_types"])) {
-      if ($item->getField('id')) {
-         return array(
-            1 => "plugin_headings_addressing",
-         );
-      }
-   }
-   return false;
-}
-
-// action heading
-function plugin_headings_addressing($item,$withtemplate=0) {
-   global $CFG_GLPI;
-/*
-   switch (get_class($item)) {
-      case 'Profile' :
-         $prof=new PluginAddressingProfile();
-         if (!$prof->getFromDBByProfile($item->getField('id')))
-            $prof->createAccess($item->getField('id'));
-         $prof->showForm($item->getField('id'), array('target' => $CFG_GLPI["root_doc"]."/plugins/addressing/front/profile.form.php"));
-         break;
-   }
-*/
-   if (in_array(get_class($item), $CFG_GLPI["networkport_types"])) {
-      $options = array(
-         'obj' => $item
-      );
-
-      $pingE = new PluginAddressingPing_Equipment;
-      $pingE->showForm($item->getField('id'), $options);
-   }
-}
-
 ?>

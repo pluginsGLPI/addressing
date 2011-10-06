@@ -40,6 +40,7 @@ class PluginAddressingPing_Equipment {
    function showForm($ID, $options = array())  {
       global $LANG, $DB, $CFG_GLPI;
 
+
       $obj = $options['obj'];
       //printCleanArray($obj);
 
@@ -52,6 +53,7 @@ class PluginAddressingPing_Equipment {
          $query = "SELECT `ip`
                    FROM `glpi_networkequipments`
                    WHERE `id` = '".$obj->fields['id']."'";
+
          $res = $DB->query($query);
          while ($row = $DB->fetch_array($res)) {
             if ($row['ip'] != '') {
@@ -68,6 +70,7 @@ class PluginAddressingPing_Equipment {
                 FROM `glpi_networkports`
                 WHERE `itemtype` = '".$itemtype."'
                       AND `items_id` = '".$obj->fields['id']."'";
+
       $res = $DB->query($query);
       while ($row = $DB->fetch_array($res)) {
          if ($row['ip'] != '') {
@@ -78,7 +81,6 @@ class PluginAddressingPing_Equipment {
             $list_ip[$row['ip']] = $port;
          }
       }
-
       echo "<table class='tab_cadre_fixe'><tr class='tab_bg_2 left'>";
       echo "<tr><th colspan='4'>".$LANG['plugin_addressing']['equipment'][4]."</th></tr>";
 
@@ -87,8 +89,8 @@ class PluginAddressingPing_Equipment {
          echo "<td>".$LANG['plugin_addressing']['reports'][2]." : </td>";
          echo "<td colspan='3'>";
          echo "<select id='ip'>";
-         echo "<option>".Dropdown::EMPTYVALUE."</option>";
-         foreach($list_ip as $ip => $name) {
+         echo "<option>".Dropdown::EMPTY_VALUE."</option>";
+         foreach ($list_ip as $ip => $name) {
             echo "<option value='$ip'>$name</option>";
          }
          echo "</select>";
@@ -162,4 +164,44 @@ class PluginAddressingPing_Equipment {
 
       return $list_str;
    }
+
+
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+      global $CFG_GLPI;
+
+      $ping = plugin_addressing_haveRight("use_ping_in_equipment", '1');
+
+      if ($ping && in_array($item->getType(), $CFG_GLPI["networkport_types"])) {
+         if ($item->getField('id')) {
+            $options = array('obj' => $item);
+
+            $pingE = new self();
+            $pingE->showForm($item->getField('id'), $options);
+         }
+      }
+      return true;
+   }
+
+
+   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+      global $LANG, $CFG_GLPI;
+
+      $ping = plugin_addressing_haveRight("use_ping_in_equipment", '1');
+      if ($ping && in_array($item->getType(), $CFG_GLPI["networkport_types"])) {
+         if ($item->getField('id')) {
+            return array('1' => $LANG['plugin_addressing']['equipment'][4]);
+         }
+      }
+      return '';
+   }
+
+
+   static function postinit() {
+      global $CFG_GLPI;
+
+      foreach ($CFG_GLPI["networkport_types"] as $type) {
+         CommonGLPI::registerStandardTab($type, __CLASS__);
+      }
+   }
+
 }
