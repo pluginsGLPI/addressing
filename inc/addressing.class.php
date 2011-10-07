@@ -489,7 +489,7 @@ class PluginAddressingAddressing extends CommonDBTM {
 
       if ($item->getType() == __CLASS__) {
          $item->linkToExport($item->getField('id'));
-         $item->showReport($item->getField('id'));
+         $item->showReport($_POST);
       }
       return true;
    }
