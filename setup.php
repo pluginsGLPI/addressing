@@ -71,8 +71,9 @@ function plugin_version_addressing() {
 
    return array('name'           => $LANG['plugin_addressing']['title'][1],
                 'version'        => '2.0.0',
-                'author'         =>'Gilles Portheault, Xavier Caillaud, Remi Collet, Nelly Mahu-Lasson',
-                'homepage'       =>'https://forge.indepnet.net/projects/show/addressing',
+                'author'         => 'Gilles Portheault, Xavier Caillaud, Remi Collet, Nelly Mahu-Lasson',
+                'license'        => 'GPLv2+',
+                'homepage'       => 'https://forge.indepnet.net/projects/addressing',
                 'minGlpiVersion' => '0.83');// For compatibility / no install in version < 0.80
 }
 
