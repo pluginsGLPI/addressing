@@ -97,7 +97,7 @@ class PluginAddressingConfig extends CommonDBTM {
             "<input type='submit' name='update' value=\"".$LANG['buttons'][2]."\" class='submit'>".
            "</div></th></tr>";
       echo "</table>";
-      echo "</form>";
+      Html::closeForm();;
       echo "</div>";
    }
 }
