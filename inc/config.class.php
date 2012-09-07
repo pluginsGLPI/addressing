@@ -63,30 +63,30 @@ class PluginAddressingConfig extends CommonDBTM {
 
       echo "<tr class='tab_bg_1'><td>".__('Assigned IP')."</td>";
       echo "<td>";
-      echo Dropdown::showYesNo("alloted_ip",$this->fields["alloted_ip"]);
+      Dropdown::showYesNo("alloted_ip",$this->fields["alloted_ip"]);
       echo "</td>";
 
       echo "<td>".__('Free IP')."</td>";
       echo "<td>";
-      echo Dropdown::showYesNo("free_ip",$this->fields["free_ip"]);
+      Dropdown::showYesNo("free_ip",$this->fields["free_ip"]);
       echo "</td>";
       echo "</tr>";
 
       echo "<tr class='tab_bg_1'><td>".__('Same IP')."</td>";
       echo "<td>";
-      echo Dropdown::showYesNo("double_ip",$this->fields["double_ip"]);
+      Dropdown::showYesNo("double_ip",$this->fields["double_ip"]);
       echo "</td>";
 
       echo "<td>".__('Reserved IP')."</td>";
       echo "<td>";
-      echo Dropdown::showYesNo("reserved_ip",$this->fields["reserved_ip"]);
+      Dropdown::showYesNo("reserved_ip",$this->fields["reserved_ip"]);
       echo "</td>";
 
       echo "</tr>";
 
       echo "<tr class='tab_bg_1'><td colspan='2'>".__('Use Ping')."</td>";
       echo "<td colspan='2'>";
-      echo Dropdown::showYesNo("use_ping",$this->fields["use_ping"]);
+      Dropdown::showYesNo("use_ping",$this->fields["use_ping"]);
       echo "</td>";
       echo "</tr>";
 

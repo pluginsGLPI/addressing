@@ -122,21 +122,15 @@ class PluginAddressingAddressing extends CommonDBTM {
       $rand = mt_rand();
       echo "<select name='_subnet' id='plugaddr_subnet' onChange='plugaddr_ChangeList();'>";
 
-      $sql = "SELECT DISTINCT `subnet`, `netmask`
-              FROM `glpi_networkports`
-              LEFT JOIN `glpi_computers` ON (`glpi_computers`.`id` = `glpi_networkports`.`items_id`)
-              WHERE `itemtype` = 'Computer'
-                    AND `glpi_computers`.`entities_id` = '".$entity."'
-                    AND `subnet` NOT IN ('','0.0.0.0','127.0.0.0')
-                    AND `netmask` NOT IN ('','0.0.0.0','255.255.255.255')" .
-                    getEntitiesRestrictRequest(" AND ","glpi_computers","entities_id",$entity) ."
-              ORDER BY INET_ATON(`subnet`)";
+      $sql = "SELECT DISTINCT `completename`
+              FROM `glpi_ipnetworks`" .
+              getEntitiesRestrictRequest(" WHERE ","glpi_ipnetworks","entities_id",$entity) ."";
 
       $result     = array();
       $result[0]  = Dropdown::EMPTY_VALUE;
       $res        = $DB->query($sql);
       if ($res) while ($row=$DB->fetch_assoc($res)) {
-         $val = $row["subnet"]."/".$row["netmask"];
+         $val = $row["completename"];
          echo "<option value='$val'>$val</option>";
       }
       echo "</select>\n";
@@ -321,42 +315,54 @@ class PluginAddressingAddressing extends CommonDBTM {
          $result["IP".$ip] = array();
       }
 
-      $sql = "SELECT 0 AS id,
+      $sql = "SELECT `port`.`id`,
                      'NetworkEquipment' AS itemtype,
-                     `id` AS on_device,
+                     `dev`.`id` AS on_device,
                      `dev`.`name` AS dname,
                      '' AS pname,
-                     `ip`, `mac`, `users_id`,
-                     INET_ATON(`ip`) AS ipnum
-              FROM `glpi_networkequipments` dev
-              WHERE INET_ATON(`ip`) >= '$ipdeb'
-                    AND INET_ATON(`ip`) <= '$ipfin'
-                    AND `is_deleted` = 0
-                    AND `is_template` = 0 " .
-                    getEntitiesRestrictRequest(" AND ","dev");
+                     `glpi_ipaddresses`.`name` as ip,
+                     `port`.`mac`,
+                     `dev`.`users_id`,
+                     INET_ATON(`glpi_ipaddresses`.`name`) AS ipnum
+               FROM `glpi_networkports` port
+               LEFT JOIN `glpi_networkequipments` dev ON (`port`.`items_id` = `dev`.`id`
+                     AND `port`.`itemtype` = 'NetworkEquipment')
+               LEFT JOIN `glpi_networknames` ON (`port`.`id` =  `glpi_networknames`.`items_id`)
+               LEFT JOIN `glpi_ipaddresses` ON (`glpi_ipaddresses`.`items_id` = `glpi_networknames`.`id`)
+               WHERE INET_ATON(`glpi_ipaddresses`.`name`) >= '$ipdeb'
+                     AND INET_ATON(`glpi_ipaddresses`.`name`) <= '$ipfin'
+                     AND `is_deleted` = 0
+                     AND `is_template` = 0 " .
+                     getEntitiesRestrictRequest(" AND ","dev");
 
       if ($this->fields["networks_id"]) {
-         $sql .= " AND `networks_id` = ".$this->fields["networks_id"];
+         $sql .= " AND `glpi_networkequipments`.`networks_id` = ".$this->fields["networks_id"];
       }
 
       foreach ($CFG_GLPI["networkport_types"] as $type) {
          $itemtable = getTableForItemType($type);
-         $sql .= " UNION SELECT `port`.`id`, `itemtype`, `items_id`,
+         $sql .= " UNION SELECT `port`.`id`, 
+                                 '" . $type . "' AS `itemtype`,
+                                 `port`.`items_id`,
                                 `dev`.`name` AS dname,
                                 `port`.`name` AS pname,
-                                `port`.`ip`, `port`.`mac`, `users_id`,
-                                INET_ATON(`port`.`ip`) AS ipnum
-                         FROM `glpi_networkports` port, `" . $itemtable . "` dev
-                         WHERE `itemtype` = '$type'
-                               AND `port`.`items_id` = `dev`.`id`
-                               AND INET_ATON(`port`.`ip`) >= '$ipdeb'
-                               AND INET_ATON(`port`.`ip`) <= '$ipfin'
-                               AND `is_deleted` = 0
-                               AND `is_template` = 0 " .
-                               getEntitiesRestrictRequest(" AND ", "dev");
+                                `glpi_ipaddresses`.`name` as ip,
+                                `port`.`mac`,
+                                 `dev`.`users_id`,
+                                INET_ATON(`glpi_ipaddresses`.`name`) AS ipnum
+                        FROM `glpi_networkports` port
+                        LEFT JOIN `" . $itemtable . "` dev ON (`port`.`items_id` = `dev`.`id`
+                              AND `port`.`itemtype` = '" . $type . "')
+                        LEFT JOIN `glpi_networknames` ON (`port`.`id` =  `glpi_networknames`.`items_id`)
+                        LEFT JOIN `glpi_ipaddresses` ON (`glpi_ipaddresses`.`items_id` = `glpi_networknames`.`id`)
+                        WHERE INET_ATON(`glpi_ipaddresses`.`name`) >= '$ipdeb'
+                              AND INET_ATON(`glpi_ipaddresses`.`name`) <= '$ipfin'
+                              AND `is_deleted` = 0
+                              AND `is_template` = 0 " .
+                              getEntitiesRestrictRequest(" AND ", "dev");
 
          if ($this->fields["networks_id"] && $type!='Peripheral' && $type!='Phone') {
-            $sql .= " AND `networks_id`= ".$this->fields["networks_id"];
+            $sql .= " AND `" . $itemtable . "`.`networks_id`= ".$this->fields["networks_id"];
          }
       }
       $res = $DB->query($sql);
@@ -388,11 +394,9 @@ class PluginAddressingAddressing extends CommonDBTM {
 
       if ($this->getFromDB($id)) {
          $result = $this->compute($start);
-         //echo "<pre>"; print_r($result);	echo "</pre>";
-
          $nbipf = 0; // ip libres
-         $nbipr = 0; // ip r�serv�es
-         $nbipt = 0; // ip trouv�es
+         $nbipr = 0; // ip reservees
+         $nbipt = 0; // ip trouvees
          $nbipd = 0; // doublons
 
          foreach ($result as $ip => $lines) {
