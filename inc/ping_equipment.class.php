@@ -34,7 +34,7 @@ if (!defined('GLPI_ROOT')) {
 class PluginAddressingPing_Equipment {
 
    function showForm($ID, $options = array())  {
-      global $LANG, $DB, $CFG_GLPI;
+      global $DB, $CFG_GLPI;
 
 
       $obj = $options['obj'];
@@ -78,11 +78,11 @@ class PluginAddressingPing_Equipment {
          }
       }
       echo "<table class='tab_cadre_fixe'><tr class='tab_bg_2 left'>";
-      echo "<tr><th colspan='4'>".$LANG['plugin_addressing']['equipment'][4]."</th></tr>";
+      echo "<tr><th colspan='4'>".__('IP ping')."</th></tr>";
 
       if (count($list_ip) > 0) {
          echo "<tr>";
-         echo "<td>".$LANG['plugin_addressing']['reports'][2]." : </td>";
+         echo "<td>".__('IP')." : </td>";
          echo "<td colspan='3'>";
          echo "<select id='ip'>";
          echo "<option>".Dropdown::EMPTY_VALUE."</option>";
@@ -91,12 +91,12 @@ class PluginAddressingPing_Equipment {
          }
          echo "</select>";
          echo "&nbsp;<input class='submit' type='button' value='".
-               $LANG['plugin_addressing']['equipment'][0]."' onclick='pingIp();'>";
+               __s('Ping')."' onclick='pingIp();'>";
          echo "</td>";
          echo "</tr>";
 
          echo "<tr>";
-         echo "<td>".$LANG['plugin_addressing']['equipment'][1]." : </td>";
+         echo "<td>".__('Result')." : </td>";
          echo "<td colspan='3'>";
          echo "<div id='ping_response' class='plugin_addressing_ping_equipment'></div>";
          echo "</td></tr>";
@@ -122,7 +122,7 @@ class PluginAddressingPing_Equipment {
       ";
 
       if (count($list_ip) == 0) {
-         echo $LANG['plugin_addressing']['equipment'][5];
+         echo __('No IP for this equipment');
       }
    }
 
@@ -180,12 +180,12 @@ class PluginAddressingPing_Equipment {
 
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
-      global $LANG, $CFG_GLPI;
+      global $CFG_GLPI;
 
       $ping = plugin_addressing_haveRight("use_ping_in_equipment", '1');
       if ($ping && in_array($item->getType(), $CFG_GLPI["networkport_types"])) {
          if ($item->getField('id')) {
-            return array('1' => $LANG['plugin_addressing']['equipment'][4]);
+            return array('1' => __('IP ping'));
          }
       }
       return '';

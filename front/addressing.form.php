@@ -54,17 +54,17 @@ if (isset($_POST["add"])) {
 } else if (isset($_POST["delete"])) {
    $PluginAddressingAddressing->check($_POST['id'], 'w');
    $PluginAddressingAddressing->delete($_POST);
-   Html::redirect(Toolbox::getItemTypeSearchURL('PluginAddressingAddressing'));
+   $PluginAddressingAddressing->redirectToList();
 
 } else if (isset($_POST["restore"])) {
    $PluginAddressingAddressing->check($_POST['id'], 'w');
    $PluginAddressingAddressing->restore($_POST);
-   Html::redirect(Toolbox::getItemTypeSearchURL('PluginAddressingAddressing'));
+   $PluginAddressingAddressing->redirectToList();
 
 } else if (isset($_POST["purge"])) {
    $PluginAddressingAddressing->check($_POST['id'],'w');
    $PluginAddressingAddressing->delete($_POST,1);
-   Html::redirect(Toolbox::getItemTypeSearchURL('PluginAddressingAddressing'));
+   $PluginAddressingAddressing->redirectToList();
 
 } else if (isset($_POST["update"])) {
    $PluginAddressingAddressing->check($_POST['id'], 'w');

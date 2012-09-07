@@ -48,4 +48,5 @@ $PluginAddressingAddressing = new PluginAddressingAddressing();
 $PluginAddressingAddressing->showReport($_GET);
 
 Html::footer();
+
 ?>

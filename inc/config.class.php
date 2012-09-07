@@ -34,7 +34,6 @@ if (!defined('GLPI_ROOT')) {
 class PluginAddressingConfig extends CommonDBTM {
 
    function showForm() {
-      global $LANG;
 
       $this->getFromDB('1');
 
@@ -44,48 +43,48 @@ class PluginAddressingConfig extends CommonDBTM {
       echo "<form method='post' action='".$this->getFormURL()."'>";
 
       echo "<table class='tab_cadre_fixe' cellpadding='5'>";
-      echo "<tr><th colspan='4'>".$LANG['plugin_addressing']['setup'][19]."</th></tr>";
+      echo "<tr><th colspan='4'>".__('System for ping')."</th></tr>";
 
       echo "<tr class='tab_bg_1'><td colspan='4'><div class='center'><select name='used_system'>";
       echo "<option value='0' ".($system==0?" selected ":"").">".
-             $LANG['plugin_addressing']['setup'][20]."</option>";
+            __('Linux ping')."</option>";
       echo "<option value='2' ".($system==2?" selected ":"").">".
-             $LANG['plugin_addressing']['setup'][25]."</option>";
+            __('Linux fping')."</option>";
       echo "<option value='1' ".($system==1?" selected ":"").">".
-             $LANG['plugin_addressing']['setup'][21]."</option>";
+            __('Windows')."</option>";
       echo "<option value='3' ".($system==3?" selected ":"").">".
-             $LANG['plugin_addressing']['setup'][28]."</option>";
+            __('BSD ping')."</option>";
       echo "<option value='4' ".($system==4?" selected ":"").">".
-             $LANG['plugin_addressing']['setup'][29]."</option>";
+            __('MacOSX ping')."</option>";
       echo "</select>";
       echo "</div></td></tr>";
 
-      echo "<tr><th colspan='4'>".$LANG['plugin_addressing']['setup'][10]."</th></tr>";
+      echo "<tr><th colspan='4'>".__('Display')."</th></tr>";
 
-      echo "<tr class='tab_bg_1'><td>".$LANG['plugin_addressing']['setup'][11]."</td>";
+      echo "<tr class='tab_bg_1'><td>".__('Assigned IP')."</td>";
       echo "<td>";
       echo Dropdown::showYesNo("alloted_ip",$this->fields["alloted_ip"]);
       echo "</td>";
 
-      echo "<td>".$LANG['plugin_addressing']['setup'][12]."</td>";
+      echo "<td>".__('Free IP')."</td>";
       echo "<td>";
       echo Dropdown::showYesNo("free_ip",$this->fields["free_ip"]);
       echo "</td>";
       echo "</tr>";
 
-      echo "<tr class='tab_bg_1'><td>".$LANG['plugin_addressing']['setup'][13]."</td>";
+      echo "<tr class='tab_bg_1'><td>".__('Same IP')."</td>";
       echo "<td>";
       echo Dropdown::showYesNo("double_ip",$this->fields["double_ip"]);
       echo "</td>";
 
-      echo "<td>".$LANG['plugin_addressing']['setup'][14]."</td>";
+      echo "<td>".__('Reserved IP')."</td>";
       echo "<td>";
       echo Dropdown::showYesNo("reserved_ip",$this->fields["reserved_ip"]);
       echo "</td>";
 
       echo "</tr>";
 
-      echo "<tr class='tab_bg_1'><td colspan='2'>".$LANG['plugin_addressing']['setup'][22]."</td>";
+      echo "<tr class='tab_bg_1'><td colspan='2'>".__('Use Ping')."</td>";
       echo "<td colspan='2'>";
       echo Dropdown::showYesNo("use_ping",$this->fields["use_ping"]);
       echo "</td>";
@@ -94,11 +93,12 @@ class PluginAddressingConfig extends CommonDBTM {
       echo "<tr><th colspan='4'>";
       echo "<input type='hidden' name='id' value='1'>";
       echo "<div class='center'>".
-            "<input type='submit' name='update' value=\"".$LANG['buttons'][2]."\" class='submit'>".
+            "<input type='submit' name='update' value='".__s('Post')."' class='submit'>".
            "</div></th></tr>";
       echo "</table>";
-      Html::closeForm();;
+      Html::closeForm();
       echo "</div>";
    }
 }
+
 ?>

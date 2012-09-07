@@ -52,4 +52,5 @@ $system = $config->fields["used_system"];
 
 $ping_equip = new PluginAddressingPing_Equipment();
 echo $ping_response = $ping_equip->ping($system, $ip);
+
 ?>

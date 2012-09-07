@@ -35,7 +35,7 @@ $LANG['plugin_addressing']['reports'][1] = "Report for the IP Range";
 $LANG['plugin_addressing']['reports'][2] = "IP";
 $LANG['plugin_addressing']['reports'][3] = "Select the network";
 $LANG['plugin_addressing']['reports'][5] = "Mac Address";
-$LANG['plugin_addressing']['reports'][8] = "Item type(s)";
+$LANG['plugin_addressing']['reports'][8] = "Item type";
 $LANG['plugin_addressing']['reports'][9] = "Connected devices";
 $LANG['plugin_addressing']['reports'][13] = "Reserved Address";
 $LANG['plugin_addressing']['reports'][14] = "User";
@@ -83,6 +83,6 @@ $LANG['plugin_addressing']['equipment'][1] = "Result";
 $LANG['plugin_addressing']['equipment'][2] = "Ping: got a response";
 $LANG['plugin_addressing']['equipment'][3] = "Ping: no response";
 $LANG['plugin_addressing']['equipment'][4] = "IP ping";
-$LANG['plugin_addressing']['equipment'][5] = "no IP for this equipment";
+$LANG['plugin_addressing']['equipment'][5] = "No IP for this equipment";
 
 ?>

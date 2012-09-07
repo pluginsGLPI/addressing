@@ -37,15 +37,15 @@ class PluginAddressingReport extends CommonDBTM {
 
       $out = "";
       switch ($type) {
-         case PDF_OUTPUT_LANDSCAPE : //pdf
-         case PDF_OUTPUT_PORTRAIT :
+         case Search::PDF_OUTPUT_LANDSCAPE : //pdf
+         case Search::PDF_OUTPUT_PORTRAIT :
             break;
 
-         case SYLK_OUTPUT : //sylk
+         case Search::SYLK_OUTPUT : //sylk
    //       $out="\n";
             break;
 
-         case CSV_OUTPUT : //csv
+         case Search::CSV_OUTPUT : //csv
             //$out="\n";
             break;
 
@@ -81,7 +81,7 @@ class PluginAddressingReport extends CommonDBTM {
 
 
    function display(&$result, $PluginAddressingAddressing) {
-      global $DB,$LANG,$CFG_GLPI;
+      global $DB,$CFG_GLPI;
 
       $network = $PluginAddressingAddressing->fields["networks_id"];
       $ping    = $PluginAddressingAddressing->fields["use_ping"];
@@ -92,7 +92,7 @@ class PluginAddressingReport extends CommonDBTM {
       $system                 = $PluginAddressingConfig->fields["used_system"];
 
       // Set display type for export if define
-      $output_type = HTML_OUTPUT;
+      $output_type = Search::HTML_OUTPUT;
 
       if (isset($_GET["display_type"])) {
          $output_type = $_GET["display_type"];
@@ -106,17 +106,17 @@ class PluginAddressingReport extends CommonDBTM {
       echo $this->displaySearchNewLine($output_type);
       $header_num = 1;
 
-      echo Search::showHeaderItem($output_type, $LANG['plugin_addressing']['reports'][2],
+      echo Search::showHeaderItem($output_type, __('IP'),
                                   $header_num);
-      echo Search::showHeaderItem($output_type, $LANG['plugin_addressing']['reports'][9],
+      echo Search::showHeaderItem($output_type, __('Connected to'),
                                   $header_num);
-      echo Search::showHeaderItem($output_type, $LANG['plugin_addressing']['reports'][14],
+      echo Search::showHeaderItem($output_type, _n('User', 'Users', 1),
                                   $header_num);
-      echo Search::showHeaderItem($output_type, $LANG['plugin_addressing']['reports'][5],
+      echo Search::showHeaderItem($output_type, __('Mac Address'),
                                   $header_num);
-      echo Search::showHeaderItem($output_type, $LANG['plugin_addressing']['reports'][8],
+      echo Search::showHeaderItem($output_type, __('Item type'),
                                   $header_num);
-      echo Search::showHeaderItem($output_type, $LANG['plugin_addressing']['reports'][23],
+      echo Search::showHeaderItem($output_type, __('Free Ip'),
                                   $header_num);
       // End Line for column headers
       echo Search::showEndLine($output_type);
@@ -207,7 +207,7 @@ class PluginAddressingReport extends CommonDBTM {
                // Reserved
                if ($PluginAddressingAddressing->fields["reserved_ip"]
                    && strstr($line["pname"],"reserv")) {
-                  echo Search::showItem($output_type, $LANG['plugin_addressing']['reports'][13],
+                  echo Search::showItem($output_type, __('Reserved Address'),
                                         $item_num, $row_num);
                } else {
                   echo Search::showItem($output_type, " ", $item_num,$row_num);
@@ -225,7 +225,7 @@ class PluginAddressingReport extends CommonDBTM {
                echo Search::showItem($output_type, $ip, $item_num, $row_num);
                echo Search::showItem($output_type, " ", $item_num, $row_num);
             } else {
-               if ($output_type==HTML_OUTPUT) {
+               if ($output_type==Search::HTML_OUTPUT) {
                   Html::glpi_flush();
                }
 
@@ -233,12 +233,12 @@ class PluginAddressingReport extends CommonDBTM {
                   $ping_response++;
                   echo $this->displaySearchNewLine($output_type, "ping_off");
                   echo Search::showItem($output_type, $ip, $item_num, $row_num);
-                  echo Search::showItem($output_type, $LANG['plugin_addressing']['reports'][31],
+                  echo Search::showItem($output_type, __('Ping: got a response - used Ip'),
                                         $item_num, $row_num);
                } else {
                   echo $this->displaySearchNewLine($output_type, "ping_on");
                   echo Search::showItem($output_type, $ip, $item_num, $row_num);
-                  echo Search::showItem($output_type, $LANG['plugin_addressing']['reports'][32],
+                  echo Search::showItem($output_type, __('Ping: got a response - free Ip'),
                                         $item_num, $row_num);
                }
             }
