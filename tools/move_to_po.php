@@ -55,15 +55,15 @@ if (!isset($_GET['lang'])) {
 define('GLPI_ROOT', '../../..');
 //include (GLPI_ROOT . "/inc/includes.php");
 
-if (!is_readable(GLPI_ROOT . "/plugins/adddressing/locales/".$_GET['lang'].".php")) {
+if (!is_readable(GLPI_ROOT . "/plugins/addressing/locales/".$_GET['lang'].".php")) {
    print "Unable to read dictionnary file\n";
    exit();
 }
-include (GLPI_ROOT . "/plugins/adddressing/locales/en_GB.php");
+include (GLPI_ROOT . "/plugins/addressing/locales/en_GB.php");
 $REFLANG = $LANG;
 
-$lf     = fopen(GLPI_ROOT . "/plugins/adddressing/locales/".$_GET['lang'].".php", "r");
-$lf_new = fopen(GLPI_ROOT . "/plugins/adddressing/locales/temp.php", "w+");
+$lf     = fopen(GLPI_ROOT . "/plugins/addressing/locales/".$_GET['lang'].".php", "r");
+$lf_new = fopen(GLPI_ROOT . "/plugins/addressing/locales/temp.php", "w+");
 
 while (($content = fgets($lf, 4096)) !== false) {
    if (!preg_match('/string to be translated/',$content,$reg)) {
@@ -78,16 +78,16 @@ fclose($lf);
 fclose($lf_new);
 
 
-include (GLPI_ROOT . "/plugins/adddressing/locales/temp.php");
+include (GLPI_ROOT . "/plugins/addressing/locales/temp.php");
 
-if (!is_readable(GLPI_ROOT . "/plugins/adddressing/locales/glpi.pot")) {
+if (!is_readable(GLPI_ROOT . "/plugins/addressing/locales/glpi.pot")) {
    print "Unable to read glpi.pot file\n";
    exit();
 }
 $current_string_plural = '';
 
-$pot = fopen(GLPI_ROOT . "/plugins/adddressing/locales/glpi.pot", "r");
-$po  = fopen(GLPI_ROOT . "/plugins/adddressing/locales/".$_GET['lang'].".po", "w+");
+$pot = fopen(GLPI_ROOT . "/plugins/addressing/locales/glpi.pot", "r");
+$po  = fopen(GLPI_ROOT . "/plugins/addressing/locales/".$_GET['lang'].".po", "w+");
 
 $in_plural = false;
 
