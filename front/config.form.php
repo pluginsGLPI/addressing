@@ -43,16 +43,16 @@ if ($plugin->isActivated("addressing")) {
       Html::back();
 
    } else {
-      Html::header($LANG['plugin_addressing']['title'][1], '', "plugins", "addressing");
+      Html::header(PluginAddressingAddressing::getTypeName(2), '', "plugins", "addressing");
       $PluginAddressingConfig->showForm();
       Html::footer();
    }
 
 } else {
-   Html::header($LANG["common"][12], '', "config", "plugins");
+   Html::header(__('Setup'), '', "config", "plugins");
    echo "<div class='center'><br><br>".
          "<img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt='warning'><br><br>";
-   echo "<b>Please activate the plugin</b></div>";
+   echo "<b>".__('Please activate the plugin')."</b></div>";
    Html::footer();
 }
 ?>

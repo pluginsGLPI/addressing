@@ -33,7 +33,7 @@ $LANG['plugin_addressing']['title'][1] = "".$title."";
 
 $LANG['plugin_addressing']['reports'][1] = "Bericht für den IP Bereich";
 $LANG['plugin_addressing']['reports'][2] = "IP";
-$LANG['plugin_addressing']['reports'][3] = "Netzwerk auswählen : ";
+$LANG['plugin_addressing']['reports'][3] = "Netzwerk auswählen";
 $LANG['plugin_addressing']['reports'][5] = "Mac Adresse";
 $LANG['plugin_addressing']['reports'][8] = "Objekt Typ(en)";
 $LANG['plugin_addressing']['reports'][9] = "Angeschlossene Geräte";
@@ -53,12 +53,12 @@ $LANG['plugin_addressing']['reports'][30] = "Freie IP pingen";
 $LANG['plugin_addressing']['reports'][31] = "Ping: bekam Antwort - benutzte IP";
 $LANG['plugin_addressing']['reports'][32] = "Ping: keine Antwort - freie IP";
 $LANG['plugin_addressing']['reports'][34] = "Effektiv freie IPs                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        (Ping=KO)";
-$LANG['plugin_addressing']['reports'][36] = "Erkannte Subnetze : ";
+$LANG['plugin_addressing']['reports'][36] = "Erkannte Subnetze";
 $LANG['plugin_addressing']['reports'][37] = "Ungültiger Adressbereich !!";
 $LANG['plugin_addressing']['reports'][38] = "Erste IP";
 $LANG['plugin_addressing']['reports'][39] = "Letzte IP";
 
-$LANG['plugin_addressing']['profile'][0] = "Rechteverwaltung: ";
+$LANG['plugin_addressing']['profile'][0] = "Rechteverwaltung";
 $LANG['plugin_addressing']['profile'][3] = "IP Berichte";
 
 $LANG['plugin_addressing']['setup'][8] = "Problem mit dem IP Bereich festgestellt";

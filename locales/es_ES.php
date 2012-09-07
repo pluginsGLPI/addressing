@@ -33,7 +33,7 @@ $LANG['plugin_addressing']['title'][1] = "".$title."";
 
 $LANG['plugin_addressing']['reports'][1] = "Informe para el rango IP";
 $LANG['plugin_addressing']['reports'][2] = "IP";
-$LANG['plugin_addressing']['reports'][3] = "Selecciona la Red : ";
+$LANG['plugin_addressing']['reports'][3] = "Selecciona la Red";
 $LANG['plugin_addressing']['reports'][5] = "Dirección Mac";
 $LANG['plugin_addressing']['reports'][8] = "Tipo(s) de material";
 $LANG['plugin_addressing']['reports'][9] = "Equipos conectados";
@@ -53,7 +53,7 @@ $LANG['plugin_addressing']['reports'][30] = "Ping Ip libre";
 $LANG['plugin_addressing']['reports'][31] = "Ping: responde - Ip usada";
 $LANG['plugin_addressing']['reports'][32] = "Ping: no response - Ip libre";
 $LANG['plugin_addressing']['reports'][34] = "Ip libre real (Ping=KO)";
-$LANG['plugin_addressing']['reports'][36] = "Lista de subred detectada : ";
+$LANG['plugin_addressing']['reports'][36] = "Lista de subred detectada";
 $LANG['plugin_addressing']['reports'][37] = "dato inválido!!";
 $LANG['plugin_addressing']['reports'][38] = "Primera IP";
 $LANG['plugin_addressing']['reports'][39] = "Última IP";

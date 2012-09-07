@@ -33,7 +33,7 @@ $LANG['plugin_addressing']['title'][1] = "".$title."";
 
 $LANG['plugin_addressing']['reports'][1] = "Raport dla zakresu IP";
 $LANG['plugin_addressing']['reports'][2] = "IP";
-$LANG['plugin_addressing']['reports'][3] = "Wybierz sieć : ";
+$LANG['plugin_addressing']['reports'][3] = "Wybierz sieć";
 $LANG['plugin_addressing']['reports'][5] = "Adres MAC";
 $LANG['plugin_addressing']['reports'][8] = "Pozycja typu(ów)";
 $LANG['plugin_addressing']['reports'][9] = "Przyłączone urządzenia";
@@ -53,7 +53,7 @@ $LANG['plugin_addressing']['reports'][30] = "Pinguj niezajęte Ip";
 $LANG['plugin_addressing']['reports'][31] = "Ping: otrzymano odpowiedź - używane Ip";
 $LANG['plugin_addressing']['reports'][32] = "Ping: brak odpowiedzi - niezajęte Îp";
 $LANG['plugin_addressing']['reports'][34] = "Napewno niezajęte Ip (Ping=KO)";
-$LANG['plugin_addressing']['reports'][36] = "Wykryta lista podsieci : ";
+$LANG['plugin_addressing']['reports'][36] = "Wykryta lista podsieci";
 $LANG['plugin_addressing']['reports'][37] = "Nieprawidłowe dane !!";
 $LANG['plugin_addressing']['reports'][38] = "Pierwsze IP";
 $LANG['plugin_addressing']['reports'][39] = "Ostatnie IP";

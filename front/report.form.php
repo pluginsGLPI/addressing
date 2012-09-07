@@ -34,7 +34,7 @@ $DBCONNECTION_REQUIRED  = 0;
 define('GLPI_ROOT', '../../..');
 include (GLPI_ROOT."/inc/includes.php");
 
-Html::header($LANG['plugin_addressing']['title'][1], '', "plugins", "addressing");
+Html::header(PluginAddressingAddressing::getTypeName(2), '', "plugins", "addressing");
 
 if (!isset($_GET["start"])) {
    $_GET["start"] = 0;

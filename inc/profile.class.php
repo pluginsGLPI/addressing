@@ -33,19 +33,17 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginAddressingProfile extends CommonDBTM {
 
-   static function getTypeName() {
-      global $LANG;
-
-      return $LANG['plugin_addressing']['profile'][0];
+   static function getTypeName($nb=0) {
+      return __('Rights management');
    }
 
 
-   function canCreate() {
+   static function canCreate() {
       return Session::haveRight('profile', 'w');
    }
 
 
-   function canView() {
+   static function canView() {
       return Session::haveRight('profile', 'r');
    }
 
@@ -72,6 +70,8 @@ class PluginAddressingProfile extends CommonDBTM {
          $this->fields = $DB->fetch_assoc($result);
          if (is_array($this->fields) && count($this->fields)) {
             return true;
+         } else {
+            return false;
          }
       }
       return false;
@@ -107,16 +107,15 @@ class PluginAddressingProfile extends CommonDBTM {
 
    //profiles modification
    function showForm ($ID, $options=array()) {
-      global $LANG;
-
-      $target = $this->getFormURL();
-      if (isset($options['target'])) {
-        $target = $options['target'];
-      }
 
       if (!Session::haveRight("profile","r")) {
          return false;
       }
+
+//      $target = $this->getFormURL();
+//      if (isset($options['target'])) {
+//        $target = $options['target'];
+//      }
 
       $prof = new Profile();
       if ($ID) {
@@ -124,21 +123,24 @@ class PluginAddressingProfile extends CommonDBTM {
          $prof->getFromDB($ID);
       }
 
-      echo "<form action='".$target."' method='post'>";
-      echo "<table class='tab_cadre_fixe'>";
+      $this->showFormHeader($options);
+
+//      echo "<form action='".$target."' method='post'>";
+//      echo "<table class='tab_cadre_fixe'>";
 
       echo "<tr class='tab_bg_2'>";
-      echo "<th colspan='4'>".$LANG['plugin_addressing']['profile'][0]." ".$prof->fields["name"].
-           "</th>";
+      echo "<th colspan='4'>".sprintf(__('%1$s - %2$s'), __('Rights management'),
+         $prof->fields["name"])."</th>";
       echo "</tr>";
+
       echo "<tr class='tab_bg_2'>";
 
-      echo "<td>".$LANG['plugin_addressing']['profile'][3].":</td><td>";
+      echo "<td>".__('Generate reports')."</td><td>";
       Profile::dropdownNoneReadWrite("addressing",$this->fields["addressing"],1,1,1);
       echo "</td>";
 
 
-      echo "<td>".$LANG['plugin_addressing']['profile'][4].":</td><td>";
+      echo "<td>".__('Use ping on equipment form')."</td><td>";
       Dropdown::showYesNo("use_ping_in_equipment", $this->fields["use_ping_in_equipment"]);
       echo "</td>";
 
@@ -152,11 +154,10 @@ class PluginAddressingProfile extends CommonDBTM {
 
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
-      global $LANG;
 
       if ($item->getType() == 'Profile') {
          if ($item->getField('id') && $item->getField('interface')!='helpdesk') {
-            return array(1 => $LANG['plugin_addressing']['title'][1]);
+            return array(1 => PluginAddressingAddressing::getTypeName(2));
          }
       }
       return '';

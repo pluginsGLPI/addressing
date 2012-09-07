@@ -155,7 +155,6 @@ function plugin_addressing_getDatabaseRelations() {
 
 
 function plugin_addressing_getAddSearchOptions($itemtype) {
-   global $LANG;
 
    $sopt = array();
 
@@ -164,7 +163,7 @@ function plugin_addressing_getAddSearchOptions($itemtype) {
          // Use a plugin type reservation to avoid conflict
          $sopt[5000]['table'] = 'glpi_plugin_addressing_profiles';
          $sopt[5000]['field'] = 'addressing';
-         $sopt[5000]['name']  = $LANG['plugin_addressing']['title'][1];
+         $sopt[5000]['name']  = PluginAddressingAddressing::getTypeName(2);
          //$sopt[5000]['datatype']='bool';
       }
    }
@@ -173,7 +172,6 @@ function plugin_addressing_getAddSearchOptions($itemtype) {
 
 
 function plugin_addressing_giveItem($type,$ID,$data,$num) {
-   global $LANG;
 
   $searchopt = &Search::getOptions($type);
 
@@ -184,13 +182,13 @@ function plugin_addressing_giveItem($type,$ID,$data,$num) {
       case "glpi_plugin_addressing_profiles.addressing":
          switch($data["ITEM_$num"]) {
             case 'w':
-               return $LANG['profiles'][11];
+               return __('Writing ability');
 
             case 'r':
-               return $LANG['profiles'][10];
+               return __('Read');
 
             default:
-               return $LANG['profiles'][12];
+               return __('No access');
          }
          break;
    }
@@ -201,22 +199,20 @@ function plugin_addressing_giveItem($type,$ID,$data,$num) {
 ////// SPECIFIC MODIF MASSIVE FUNCTIONS ///////
 
 function plugin_addressing_MassiveActions($type) {
-   global $LANG;
 
    switch ($type) {
       case 'PluginAddressingAddressing' :
-         return array("plugin_addressing_transfert" => $LANG['buttons'][48]);
+         return array("plugin_addressing_transfert" => __('Transfer'));
 
       case 'Profile' :
-         return array("plugin_addressing_allow" => $LANG['plugin_addressing']['title'][1] . " - " .
-                                                   $LANG['plugin_addressing']['profile'][3]);
+         return array("plugin_addressing_allow" => PluginAddressingAddressing::getTypeName(2) . " - " .
+                                                   __('Generate reports'));
    }
    return array();
 }
 
 
 function plugin_addressing_MassiveActionsDisplay($options=array()) {
-   global $LANG;
 
    switch ($options['itemtype']) {
 
@@ -225,7 +221,7 @@ function plugin_addressing_MassiveActionsDisplay($options=array()) {
             case "plugin_addressing_transfert" :
                Dropdown::show('Entity');
                echo "&nbsp;<input type='submit' name='massiveaction' class='submit' value=\"".
-                     $LANG['buttons'][2]."\" >";
+                  __s('Post')."\" >";
                break;
          }
          break;
@@ -235,7 +231,7 @@ function plugin_addressing_MassiveActionsDisplay($options=array()) {
             case "plugin_addressing_allow" :
                Profile::dropdownNoneReadWrite('use','');
                echo "&nbsp;<input type='submit' name='massiveaction' class='submit' value=\"".
-                     $LANG['buttons'][2]."\" >";
+                  __s('Post')."\" >";
                break;
          }
          break;
@@ -245,7 +241,6 @@ function plugin_addressing_MassiveActionsDisplay($options=array()) {
 
 
 function plugin_addressing_MassiveActionsProcess($data) {
-   global $DB;
 
    switch ($data['action']) {
       case 'plugin_addressing_transfert' :

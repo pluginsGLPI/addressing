@@ -33,7 +33,7 @@ $LANG['plugin_addressing']['title'][1] = "".$title."";
 
 $LANG['plugin_addressing']['reports'][1] = "Report for the IP Range";
 $LANG['plugin_addressing']['reports'][2] = "IP";
-$LANG['plugin_addressing']['reports'][3] = "Select the network : ";
+$LANG['plugin_addressing']['reports'][3] = "Select the network";
 $LANG['plugin_addressing']['reports'][5] = "Mac Address";
 $LANG['plugin_addressing']['reports'][8] = "Item type(s)";
 $LANG['plugin_addressing']['reports'][9] = "Connected devices";
@@ -51,9 +51,9 @@ $LANG['plugin_addressing']['reports'][28] = "Number of assigned ip (no doubles)"
 $LANG['plugin_addressing']['reports'][29] = "Doubles";
 $LANG['plugin_addressing']['reports'][30] = "Ping free Ip";
 $LANG['plugin_addressing']['reports'][31] = "Ping: got a response - used Ip";
-$LANG['plugin_addressing']['reports'][32] = "Ping: no response - free Îp";
+$LANG['plugin_addressing']['reports'][32] = "Ping: no response - free Ip";
 $LANG['plugin_addressing']['reports'][34] = "Real free Ip (Ping=KO)";
-$LANG['plugin_addressing']['reports'][36] = "Detected subnet list : ";
+$LANG['plugin_addressing']['reports'][36] = "Detected subnet list";
 $LANG['plugin_addressing']['reports'][37] = "Invalid data !!";
 $LANG['plugin_addressing']['reports'][38] = "First IP";
 $LANG['plugin_addressing']['reports'][39] = "Last IP";

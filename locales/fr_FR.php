@@ -33,7 +33,7 @@ $LANG['plugin_addressing']['title'][1] = "".$title."";
 
 $LANG['plugin_addressing']['reports'][1] = "Rapport pour la plage IP";
 $LANG['plugin_addressing']['reports'][2] = "IP";
-$LANG['plugin_addressing']['reports'][3] = "Sélectionnez le réseau : ";
+$LANG['plugin_addressing']['reports'][3] = "Sélectionnez le réseau";
 $LANG['plugin_addressing']['reports'][5] = "Adresse Mac";
 $LANG['plugin_addressing']['reports'][8] = "Type(s) de matériel";
 $LANG['plugin_addressing']['reports'][9] = "Périphériques connectés";
@@ -53,7 +53,7 @@ $LANG['plugin_addressing']['reports'][30] = "Pinger les Ip libres";
 $LANG['plugin_addressing']['reports'][31] = "Réponse au ping - adresse utilisée";
 $LANG['plugin_addressing']['reports'][32] = "Pas de réponse au ping - adresse libre";
 $LANG['plugin_addressing']['reports'][34] = "ip libres réelles (Ping=KO)";
-$LANG['plugin_addressing']['reports'][36] = "Liste des sous-réseaux détectés : ";
+$LANG['plugin_addressing']['reports'][36] = "Liste des sous-réseaux détectés";
 $LANG['plugin_addressing']['reports'][37] = "Données saisies incorrectes !!";
 $LANG['plugin_addressing']['reports'][38] = "Première IP";
 $LANG['plugin_addressing']['reports'][39] = "Dernière IP";

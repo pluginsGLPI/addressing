@@ -33,7 +33,7 @@ $LANG['plugin_addressing']['title'][1] = "".$title."";
 
 $LANG['plugin_addressing']['reports'][1] = "Relatório de Range e IPs";
 $LANG['plugin_addressing']['reports'][2] = "IP";
-$LANG['plugin_addressing']['reports'][3] = "Selecione o Range de IP e a Rede: ";
+$LANG['plugin_addressing']['reports'][3] = "Selecione o Range de IP e a Rede";
 $LANG['plugin_addressing']['reports'][5] = "Mac Address";
 $LANG['plugin_addressing']['reports'][8] = "Tipo(s) de Item(s)";
 $LANG['plugin_addressing']['reports'][9] = "Dispositivos Conectados";
@@ -53,7 +53,7 @@ $LANG['plugin_addressing']['reports'][30] = "Ping IP Liberado";
 $LANG['plugin_addressing']['reports'][31] = "Ping OK";
 $LANG['plugin_addressing']['reports'][32] = "Ping KO";
 $LANG['plugin_addressing']['reports'][34] = "IP Real Liberado (Ping=OK)";
-$LANG['plugin_addressing']['reports'][36] = "Detected subnet list : ";
+$LANG['plugin_addressing']['reports'][36] = "Detected subnet list";
 $LANG['plugin_addressing']['reports'][37] = "Invalid data !!";
 $LANG['plugin_addressing']['reports'][38] = "First IP";
 $LANG['plugin_addressing']['reports'][39] = "Last IP";

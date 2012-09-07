@@ -68,22 +68,22 @@ function plugin_init_addressing() {
 
 // Get the name and the version of the plugin - Needed
 function plugin_version_addressing() {
-   global $LANG;
 
-   return array('name'           => $LANG['plugin_addressing']['title'][1],
-                'version'        => '2.0.1',
-                'author'         => 'Gilles Portheault, Xavier Caillaud, Remi Collet, Nelly Mahu-Lasson',
-                'license'        => 'GPLv2+',
-                'homepage'       => 'https://forge.indepnet.net/projects/addressing',
-                'minGlpiVersion' => '0.83.3');// For compatibility / no install in version < 0.80
+   return array(
+      'name'           => _n('IP Adressing', 'IP Adressing', 2),
+      'version'        => '2.1.0',
+      'author'         => 'Gilles Portheault, Xavier Caillaud, Remi Collet, Nelly Mahu-Lasson',
+      'license'        => 'GPLv2+',
+      'homepage'       => 'https://forge.indepnet.net/projects/addressing',
+      'minGlpiVersion' => '0.84');// For compatibility / no install in version < 0.80
 }
 
 
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_addressing_check_prerequisites() {
 
-   if (version_compare(GLPI_VERSION,'0.83.3','lt') || version_compare(GLPI_VERSION,'0.84','ge')) {
-      echo "This plugin requires GLPI >= 0.83.3 and GLPI < 0.84";
+   if (version_compare(GLPI_VERSION,'0.84','lt') || version_compare(GLPI_VERSION,'0.84.1','ge')) {
+      _e('This plugin requires GLPI >= 0.84');
       return false;
    }
    return true;
