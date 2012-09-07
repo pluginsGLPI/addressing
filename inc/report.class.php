@@ -238,7 +238,7 @@ class PluginAddressingReport extends CommonDBTM {
                } else {
                   echo $this->displaySearchNewLine($output_type, "ping_on");
                   echo Search::showItem($output_type, $ip, $item_num, $row_num);
-                  echo Search::showItem($output_type, __('Ping: got a response - free Ip'),
+                  echo Search::showItem($output_type, __('Ping: no response - free Ip'),
                                         $item_num, $row_num);
                }
             }
