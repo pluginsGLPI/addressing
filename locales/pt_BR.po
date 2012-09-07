@@ -1,0 +1,203 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Addressing Development Team
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# Xavier CAILLAUD <tsmr@thetsmr.fr>, 2012.
+msgid ""
+msgstr ""
+"Project-Id-Version: GLPI Project - addressing plugin\n"
+"Report-Msgid-Bugs-To: glpi-translation@gna.org\n"
+"POT-Creation-Date: 2012-09-07 13:23+0200\n"
+"PO-Revision-Date: 2012-09-07 11:30+0000\n"
+"Last-Translator: Xavier CAILLAUD <tsmr@thetsmr.fr>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: pt_BR\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: hook.php:209 inc/profile.class.php:138
+msgid "Generate reports"
+msgstr "Gerar Tabela"
+
+#: setup.php:73 inc/addressing.class.php:38
+msgid "IP Adressing"
+msgid_plural "IP Adressing"
+msgstr[0] ""
+msgstr[1] ""
+
+#: setup.php:86
+msgid "This plugin requires GLPI >= 0.84"
+msgstr ""
+
+#: front/addressing.form.php:50 front/addressing.form.php:74
+msgid "Problem when adding, required fields are not here"
+msgstr ""
+
+#: front/config.form.php:55
+msgid "Please activate the plugin"
+msgstr ""
+
+#: inc/addressing.class.php:75 inc/addressing.class.php:253
+#: inc/addressing.class.php:433
+msgid "Ping free Ip"
+msgstr "Ping IP Liberado"
+
+#: inc/addressing.class.php:90 inc/addressing.class.php:218
+msgid "First IP"
+msgstr ""
+
+#: inc/addressing.class.php:96 inc/addressing.class.php:240
+msgid "Last IP"
+msgstr ""
+
+#: inc/addressing.class.php:114 inc/addressing.class.php:262
+msgid "Report for the IP Range"
+msgstr "Relatório de Range e IPs"
+
+#: inc/addressing.class.php:163 inc/addressing.class.php:221
+#: inc/addressing.class.php:223 inc/addressing.class.php:225
+#: inc/addressing.class.php:227 inc/addressing.class.php:243
+#: inc/addressing.class.php:245 inc/addressing.class.php:247
+#: inc/addressing.class.php:249 inc/addressing.class.php:269
+msgid "Invalid data !!"
+msgstr ""
+
+#: inc/addressing.class.php:177 inc/config.class.php:64
+msgid "Assigned IP"
+msgstr "Atribuir IP"
+
+#: inc/addressing.class.php:187
+msgid "Select the network"
+msgstr "Selecione o Range de IP e a Rede"
+
+#: inc/addressing.class.php:194 inc/addressing.class.php:439
+#: inc/report.class.php:119
+msgid "Free Ip"
+msgstr "IP(s) Liberado"
+
+#: inc/addressing.class.php:203
+msgid "Detected subnet list"
+msgstr ""
+
+#: inc/addressing.class.php:209 inc/config.class.php:75
+msgid "Same IP"
+msgstr "Mesmo IP"
+
+#: inc/addressing.class.php:231 inc/config.class.php:80
+msgid "Reserved IP"
+msgstr "IP Reservado"
+
+#: inc/addressing.class.php:416
+msgid "Number of free ip"
+msgstr "Numero de IP(s) Livre(s)"
+
+#: inc/addressing.class.php:419
+msgid "Number of reserved ip"
+msgstr "Numero de IP(s) Reservado(s)"
+
+#: inc/addressing.class.php:422
+msgid "Number of assigned ip (no doubles)"
+msgstr "Número de endereços IP atribuídos (Não duplicados)"
+
+#: inc/addressing.class.php:425
+msgid "Doubles"
+msgstr "Duplicados"
+
+#: inc/addressing.class.php:430
+msgid "Red row"
+msgstr "Fila Vermelha"
+
+#: inc/addressing.class.php:430
+msgid "Same Ip"
+msgstr "Mesmo IP"
+
+#: inc/addressing.class.php:434 inc/report.class.php:236
+msgid "Ping: got a response - used Ip"
+msgstr ""
+
+#: inc/addressing.class.php:436 inc/report.class.php:241
+msgid "Ping: no response - free Ip"
+msgstr ""
+
+#: inc/addressing.class.php:439
+msgid "Blue row"
+msgstr "Fila Azul"
+
+#: inc/addressing.class.php:461
+msgid "Real free Ip (Ping=KO)"
+msgstr "IP Real Liberado (Ping=OK)"
+
+#: inc/addressing.class.php:470
+msgid "Problem detected with the IP Range"
+msgstr "Detectado um problema com a Range de IP"
+
+#: inc/config.class.php:46
+msgid "System for ping"
+msgstr "Sistem"
+
+#: inc/config.class.php:50
+msgid "Linux ping"
+msgstr "Linux ping"
+
+#: inc/config.class.php:52
+msgid "Linux fping"
+msgstr "Linux fping"
+
+#: inc/config.class.php:54
+msgid "Windows"
+msgstr "Windows"
+
+#: inc/config.class.php:56
+msgid "BSD ping"
+msgstr "BSD ping"
+
+#: inc/config.class.php:58
+msgid "MacOSX ping"
+msgstr "MacOSX ping"
+
+#: inc/config.class.php:62
+msgid "Display"
+msgstr "Mostrar"
+
+#: inc/config.class.php:69
+msgid "Free IP"
+msgstr "IP(s) Liberado"
+
+#: inc/config.class.php:87
+msgid "Use Ping"
+msgstr "Usar Ping"
+
+#: inc/ping_equipment.class.php:81 inc/ping_equipment.class.php:188
+msgid "IP ping"
+msgstr "IP ping"
+
+#: inc/ping_equipment.class.php:94
+msgid "Ping"
+msgstr "Ping"
+
+#: inc/ping_equipment.class.php:99
+msgid "Result"
+msgstr ""
+
+#: inc/ping_equipment.class.php:125
+msgid "No IP for this equipment"
+msgstr ""
+
+#: inc/profile.class.php:37 inc/profile.class.php:132
+msgid "Rights management"
+msgstr "Gerenciar Permissões"
+
+#: inc/profile.class.php:143
+msgid "Use ping on equipment form"
+msgstr ""
+
+#: inc/report.class.php:115
+msgid "Mac Address"
+msgstr ""
+
+#: inc/report.class.php:210
+msgid "Reserved Address"
+msgstr "Endereço Reservado"
