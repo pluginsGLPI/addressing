@@ -202,7 +202,7 @@ class PluginAddressingReport extends CommonDBTM {
                   echo Search::showItem($output_type, " ", $item_num, $row_num);
                }
                // Type
-               echo Search::showItem($output_type,$item->getTypeName(),$item_num,$row_num);
+               echo Search::showItem($output_type,$item::getTypeName(),$item_num,$row_num);
 
                // Reserved
                if ($PluginAddressingAddressing->fields["reserved_ip"]

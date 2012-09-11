@@ -62,10 +62,13 @@ class PluginAddressingPing_Equipment {
          array_pop($list_ip);
       }
 
-      $query = "SELECT `name`, `ip`
-                FROM `glpi_networkports`
-                WHERE `itemtype` = '".$itemtype."'
-                      AND `items_id` = '".$obj->fields['id']."'";
+      $query = "SELECT `glpi_networknames`.`name`, `glpi_ipaddresses`.`name` as ip, `glpi_networkports`.`items_id`
+               FROM `glpi_networkports` 
+               LEFT JOIN `" . $obj->getTable() . "` ON (`glpi_networkports`.`items_id` = `" . $obj->getTable() . "`.`id`
+                              AND `glpi_networkports`.`itemtype` = '" . $itemtype . "')
+               LEFT JOIN `glpi_networknames` ON (`glpi_networkports`.`id` =  `glpi_networknames`.`items_id`)
+               LEFT JOIN `glpi_ipaddresses` ON (`glpi_ipaddresses`.`items_id` = `glpi_networknames`.`id`)
+                WHERE `" . $obj->getTable() . "`.`id` = '".$obj->fields['id']."'";
 
       $res = $DB->query($query);
       while ($row = $DB->fetch_array($res)) {

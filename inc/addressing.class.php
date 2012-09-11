@@ -489,7 +489,7 @@ class PluginAddressingAddressing extends CommonDBTM {
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
 
       if ($item->getType() == __CLASS__) {
-         return array('1' => $item->getTypeName());
+         return array('1' => $item::getTypeName());
       }
       return '';
    }
