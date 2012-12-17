@@ -154,7 +154,7 @@ class PluginAddressingAddressing extends CommonDBTM {
       $this->initForm($ID, $options);
       $this->showTabs($options);
       $options['formoptions']
-            = "onSubmit='return plugaddr_Check(\"".__('Invalid data !!')."\")'";
+            = "onSubmit='return plugaddr_Check(\"".__('Invalid data !!', 'addressing')."\")'";
       $this->showFormHeader($options);
 
       $PluginAddressingConfig = new PluginAddressingConfig();
@@ -212,13 +212,13 @@ class PluginAddressingAddressing extends CommonDBTM {
       echo "<td>".__('First IP', 'addressing')."</td>"; // Subnet
       echo "<td>";
       echo "<input type='text' id='plugaddr_ipdeb0' value='' name='_ipdeb0' size='3' ".
-             "onChange='plugaddr_ChangeNumber(\"".__('Invalid data !!')."\");'>.";
+             "onChange='plugaddr_ChangeNumber(\"".__('Invalid data !!', 'addressing')."\");'>.";
       echo "<input type='text' id='plugaddr_ipdeb1' value='' name='_ipdeb1' size='3' ".
-             "onChange='plugaddr_ChangeNumber(\"".__('Invalid data !!')."\");'>.";
+             "onChange='plugaddr_ChangeNumber(\"".__('Invalid data !!', 'addressing')."\");'>.";
       echo "<input type='text' id='plugaddr_ipdeb2' value='' name='_ipdeb2' size='3' ".
-             "onChange='plugaddr_ChangeNumber(\"".__('Invalid data !!')."\");'>.";
+             "onChange='plugaddr_ChangeNumber(\"".__('Invalid data !!', 'addressing')."\");'>.";
       echo "<input type='text' id='plugaddr_ipdeb3' value='' name='_ipdeb3' size='3' ".
-             "onChange='plugaddr_ChangeNumber(\"".__('Invalid data !!')."\");'>";
+             "onChange='plugaddr_ChangeNumber(\"".__('Invalid data !!', 'addressing')."\");'>";
       echo "</td>";
 
       if ($PluginAddressingConfig->fields["reserved_ip"]) {
@@ -234,17 +234,17 @@ class PluginAddressingAddressing extends CommonDBTM {
       echo "<td>".__('Last IP', 'addressing')."</td>"; // Mask
       echo "<td>";
       echo "<input type='text' id='plugaddr_ipfin0' value='' name='_ipfin0' size='3' ".
-             "onChange='plugaddr_ChangeNumber(\"".__('Invalid data !!')."\");'>.";
+             "onChange='plugaddr_ChangeNumber(\"".__('Invalid data !!', 'addressing')."\");'>.";
       echo "<input type='text' id='plugaddr_ipfin1' value='' name='_ipfin1' size='3' ".
-             "onChange='plugaddr_ChangeNumber(\"".__('Invalid data !!')."\");'>.";
+             "onChange='plugaddr_ChangeNumber(\"".__('Invalid data !!', 'addressing')."\");'>.";
       echo "<input type='text' id='plugaddr_ipfin2' value='' name='_ipfin2' size='3' ".
-             "onChange='plugaddr_ChangeNumber(\"".__('Invalid data !!')."\");'>.";
+             "onChange='plugaddr_ChangeNumber(\"".__('Invalid data !!', 'addressing')."\");'>.";
       echo "<input type='text' id='plugaddr_ipfin3' value='' name='_ipfin3' size='3' ".
-             "onChange='plugaddr_ChangeNumber(\"".__('Invalid data !!')."\");'>";
+             "onChange='plugaddr_ChangeNumber(\"".__('Invalid data !!', 'addressing')."\");'>";
       echo "</td>";
 
       if ($PluginAddressingConfig->fields["use_ping"]) {
-         echo "<td>".__('Ping free Ip')."</td><td>";
+         echo "<td>".__('Ping free Ip', 'addressing')."</td><td>";
          Dropdown::showYesNo('use_ping', $this->fields["use_ping"]);
          echo "</td>";
       } else {

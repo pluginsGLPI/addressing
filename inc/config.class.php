@@ -43,7 +43,7 @@ class PluginAddressingConfig extends CommonDBTM {
       echo "<form method='post' action='".$this->getFormURL()."'>";
 
       echo "<table class='tab_cadre_fixe' cellpadding='5'>";
-      echo "<tr><th colspan='4'>".__('System for ping')."</th></tr>";
+      echo "<tr><th colspan='4'>".__('System for ping', 'addressing')."</th></tr>";
 
       echo "<tr class='tab_bg_1'><td colspan='4'><div class='center'><select name='used_system'>";
       echo "<option value='0' ".($system==0?" selected ":"").">".
@@ -59,7 +59,7 @@ class PluginAddressingConfig extends CommonDBTM {
       echo "</select>";
       echo "</div></td></tr>";
 
-      echo "<tr><th colspan='4'>".__('Display')."</th></tr>";
+      echo "<tr><th colspan='4'>".__('Display', 'addressing')."</th></tr>";
 
       echo "<tr class='tab_bg_1'><td>".__('Assigned IP', 'addressing')."</td>";
       echo "<td>";
@@ -77,7 +77,7 @@ class PluginAddressingConfig extends CommonDBTM {
       Dropdown::showYesNo("double_ip",$this->fields["double_ip"]);
       echo "</td>";
 
-      echo "<td>".__('Reserved IP')."</td>";
+      echo "<td>".__('Reserved IP', 'addressing')."</td>";
       echo "<td>";
       Dropdown::showYesNo("reserved_ip",$this->fields["reserved_ip"]);
       echo "</td>";
