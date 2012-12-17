@@ -81,7 +81,7 @@ class PluginAddressingPing_Equipment {
          }
       }
       echo "<table class='tab_cadre_fixe'><tr class='tab_bg_2 left'>";
-      echo "<tr><th colspan='4'>".__('IP ping')."</th></tr>";
+      echo "<tr><th colspan='4'>".__('IP ping', 'addressing')."</th></tr>";
 
       if (count($list_ip) > 0) {
          echo "<tr>";
@@ -94,12 +94,12 @@ class PluginAddressingPing_Equipment {
          }
          echo "</select>";
          echo "&nbsp;<input class='submit' type='button' value='".
-               __s('Ping')."' onclick='pingIp();'>";
+               __s('Ping', 'addressing')."' onclick='pingIp();'>";
          echo "</td>";
          echo "</tr>";
 
          echo "<tr>";
-         echo "<td>".__('Result')." : </td>";
+         echo "<td>".__('Result', 'addressing')." : </td>";
          echo "<td colspan='3'>";
          echo "<div id='ping_response' class='plugin_addressing_ping_equipment'></div>";
          echo "</td></tr>";
@@ -125,7 +125,7 @@ class PluginAddressingPing_Equipment {
       ";
 
       if (count($list_ip) == 0) {
-         echo __('No IP for this equipment');
+         echo __('No IP for this equipment', 'addressing');
       }
    }
 
@@ -188,7 +188,7 @@ class PluginAddressingPing_Equipment {
       $ping = plugin_addressing_haveRight("use_ping_in_equipment", '1');
       if ($ping && in_array($item->getType(), $CFG_GLPI["networkport_types"])) {
          if ($item->getField('id')) {
-            return array('1' => __('IP ping'));
+            return array('1' => __('IP ping', 'addressing'));
          }
       }
       return '';

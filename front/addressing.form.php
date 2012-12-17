@@ -47,7 +47,7 @@ if (isset($_POST["add"])) {
    if (!empty($_POST["name"]) && !empty($_POST["begin_ip"]) && !empty($_POST["end_ip"])) {
       $newID = $PluginAddressingAddressing->add($_POST);
    } else {
-      Session::addMessageAfterRedirect(__('Problem when adding, required fields are not here'), false, ERROR);
+      Session::addMessageAfterRedirect(__('Problem when adding, required fields are not here','addressing'), false, ERROR);
    }
    Html::back();
 
@@ -71,7 +71,7 @@ if (isset($_POST["add"])) {
    if (!empty($_POST["name"]) && !empty($_POST["begin_ip"]) && !empty($_POST["end_ip"])) {
       $PluginAddressingAddressing->update($_POST);
    } else {
-      Session::addMessageAfterRedirect(__('Problem when adding, required fields are not here'), false, ERROR);
+      Session::addMessageAfterRedirect(__('Problem when adding, required fields are not here','addressing'), false, ERROR);
    }
    Html::back();
 

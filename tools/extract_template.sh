@@ -1,14 +1,10 @@
 #!/bin/bash
 
-#soft='GLPI - Addressing plugin'
-#version='2.1.0'
-#email='glpi-translation@gna.org'
-#copyright='Addressing Development Team'
+# Only strings with domain specified are extracted (use Xt args of keyword param to set number of args needed)
 
-#xgettext *.php */*.php -copyright-holder='$copyright' --package-name=$soft --package-version=$version --msgid-bugs-address=$email -o locales/en_GB.po -L PHP --from-code=UTF-8 --force-po  -i --keyword=_n:1,2 --keyword=__ --keyword=_e
+xgettext *.php */*.php --copyright-holder='Addressing Development Team' --package-name='GLPI - Addressing plugin' --package-version='2.1.0' -o locales/glpi.pot -L PHP --add-comments=TRANS --from-code=UTF-8 --force-po  \
+	--keyword=_n:1,2,4t --keyword=__s:1,2t --keyword=__:1,2t --keyword=_e:1,2t --keyword=_x:1c,2,3t \
+	--keyword=_ex:1c,2,3t --keyword=_nx:1c,2,3,5t --keyword=_sx:1c,2,3t
 
-xgettext *.php */*.php --copyright-holder='Addressing Development Team' --package-name='GLPI - Addressing plugin' --package-version='2.1.0' --msgid-bugs-address='glpi-translation@gna.org' -o locales/glpi.pot -L PHP --add-comments=TRANS \
---exclude-file=../../locales/glpi.pot --from-code=UTF-8 --force-po  \
-	--keyword=_n:1,2 --keyword=__s --keyword=__ --keyword=_e --keyword=_x:1c,2 --keyword=_ex:1c,2 --keyword=_nx:1c,2,3
 
 

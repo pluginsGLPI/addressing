@@ -206,7 +206,7 @@ function plugin_addressing_MassiveActions($type) {
 
       case 'Profile' :
          return array("plugin_addressing_allow" => PluginAddressingAddressing::getTypeName(2) . " - " .
-                                                   __('Generate reports'));
+                                                   __('Generate reports', 'addressing'));
    }
    return array();
 }

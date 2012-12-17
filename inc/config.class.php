@@ -47,32 +47,32 @@ class PluginAddressingConfig extends CommonDBTM {
 
       echo "<tr class='tab_bg_1'><td colspan='4'><div class='center'><select name='used_system'>";
       echo "<option value='0' ".($system==0?" selected ":"").">".
-            __('Linux ping')."</option>";
+            __('Linux ping', 'addressing')."</option>";
       echo "<option value='2' ".($system==2?" selected ":"").">".
-            __('Linux fping')."</option>";
+            __('Linux fping', 'addressing')."</option>";
       echo "<option value='1' ".($system==1?" selected ":"").">".
-            __('Windows')."</option>";
+            __('Windows', 'addressing')."</option>";
       echo "<option value='3' ".($system==3?" selected ":"").">".
-            __('BSD ping')."</option>";
+            __('BSD ping', 'addressing')."</option>";
       echo "<option value='4' ".($system==4?" selected ":"").">".
-            __('MacOSX ping')."</option>";
+            __('MacOSX ping', 'addressing')."</option>";
       echo "</select>";
       echo "</div></td></tr>";
 
       echo "<tr><th colspan='4'>".__('Display')."</th></tr>";
 
-      echo "<tr class='tab_bg_1'><td>".__('Assigned IP')."</td>";
+      echo "<tr class='tab_bg_1'><td>".__('Assigned IP', 'addressing')."</td>";
       echo "<td>";
       Dropdown::showYesNo("alloted_ip",$this->fields["alloted_ip"]);
       echo "</td>";
 
-      echo "<td>".__('Free IP')."</td>";
+      echo "<td>".__('Free IP', 'addressing')."</td>";
       echo "<td>";
       Dropdown::showYesNo("free_ip",$this->fields["free_ip"]);
       echo "</td>";
       echo "</tr>";
 
-      echo "<tr class='tab_bg_1'><td>".__('Same IP')."</td>";
+      echo "<tr class='tab_bg_1'><td>".__('Same IP', 'addressing')."</td>";
       echo "<td>";
       Dropdown::showYesNo("double_ip",$this->fields["double_ip"]);
       echo "</td>";
@@ -84,7 +84,7 @@ class PluginAddressingConfig extends CommonDBTM {
 
       echo "</tr>";
 
-      echo "<tr class='tab_bg_1'><td colspan='2'>".__('Use Ping')."</td>";
+      echo "<tr class='tab_bg_1'><td colspan='2'>".__('Use Ping', 'addressing')."</td>";
       echo "<td colspan='2'>";
       Dropdown::showYesNo("use_ping",$this->fields["use_ping"]);
       echo "</td>";

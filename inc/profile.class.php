@@ -34,7 +34,7 @@ if (!defined('GLPI_ROOT')) {
 class PluginAddressingProfile extends CommonDBTM {
 
    static function getTypeName($nb=0) {
-      return __('Rights management');
+      return __('Rights management', 'addressing');
    }
 
 
@@ -129,18 +129,18 @@ class PluginAddressingProfile extends CommonDBTM {
 //      echo "<table class='tab_cadre_fixe'>";
 
       echo "<tr class='tab_bg_2'>";
-      echo "<th colspan='4'>".sprintf(__('%1$s - %2$s'), __('Rights management'),
+      echo "<th colspan='4'>".sprintf(__('%1$s - %2$s'), __('Rights management', 'addressing'),
          $prof->fields["name"])."</th>";
       echo "</tr>";
 
       echo "<tr class='tab_bg_2'>";
 
-      echo "<td>".__('Generate reports')."</td><td>";
+      echo "<td>".__('Generate reports', 'addressing')."</td><td>";
       Profile::dropdownNoneReadWrite("addressing",$this->fields["addressing"],1,1,1);
       echo "</td>";
 
 
-      echo "<td>".__('Use ping on equipment form')."</td><td>";
+      echo "<td>".__('Use ping on equipment form', 'addressing')."</td><td>";
       Dropdown::showYesNo("use_ping_in_equipment", $this->fields["use_ping_in_equipment"]);
       echo "</td>";
 

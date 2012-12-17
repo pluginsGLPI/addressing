@@ -70,7 +70,7 @@ function plugin_init_addressing() {
 function plugin_version_addressing() {
 
    return array(
-      'name'           => _n('IP Adressing', 'IP Adressing', 2),
+      'name'           => _n('IP Adressing', 'IP Adressing', 2, 'addressing'),
       'version'        => '2.1.0',
       'author'         => 'Gilles Portheault, Xavier Caillaud, Remi Collet, Nelly Mahu-Lasson',
       'license'        => 'GPLv2+',
@@ -83,7 +83,7 @@ function plugin_version_addressing() {
 function plugin_addressing_check_prerequisites() {
 
    if (version_compare(GLPI_VERSION,'0.84','lt') || version_compare(GLPI_VERSION,'0.84.1','ge')) {
-      _e('This plugin requires GLPI >= 0.84');
+      _e('This plugin requires GLPI >= 0.84', 'addressing');
       return false;
    }
    return true;

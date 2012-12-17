@@ -116,7 +116,7 @@ class PluginAddressingReport extends CommonDBTM {
                                   $header_num);
       echo Search::showHeaderItem($output_type, __('Item type'),
                                   $header_num);
-      echo Search::showHeaderItem($output_type, __('Free Ip'),
+      echo Search::showHeaderItem($output_type, __('Free Ip', 'addressing'),
                                   $header_num);
       // End Line for column headers
       echo Search::showEndLine($output_type);
@@ -207,7 +207,7 @@ class PluginAddressingReport extends CommonDBTM {
                // Reserved
                if ($PluginAddressingAddressing->fields["reserved_ip"]
                    && strstr($line["pname"],"reserv")) {
-                  echo Search::showItem($output_type, __('Reserved Address'),
+                  echo Search::showItem($output_type, __('Reserved Address', 'addressing'),
                                         $item_num, $row_num);
                } else {
                   echo Search::showItem($output_type, " ", $item_num,$row_num);
@@ -233,12 +233,12 @@ class PluginAddressingReport extends CommonDBTM {
                   $ping_response++;
                   echo $this->displaySearchNewLine($output_type, "ping_off");
                   echo Search::showItem($output_type, $ip, $item_num, $row_num);
-                  echo Search::showItem($output_type, __('Ping: got a response - used Ip'),
+                  echo Search::showItem($output_type, __('Ping: got a response - used Ip', 'addressing'),
                                         $item_num, $row_num);
                } else {
                   echo $this->displaySearchNewLine($output_type, "ping_on");
                   echo Search::showItem($output_type, $ip, $item_num, $row_num);
-                  echo Search::showItem($output_type, __('Ping: no response - free Ip'),
+                  echo Search::showItem($output_type, __('Ping: no response - free Ip', 'addressing'),
                                         $item_num, $row_num);
                }
             }
