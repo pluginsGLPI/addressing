@@ -431,7 +431,7 @@ class PluginAddressingAddressing extends CommonDBTM {
          echo "</td>";
          echo "<td>";
          if ($this->fields['double_ip']) {
-            echo "<span class='plugin_addressing_ip_double'>".__('Red row', 'addressing')."</span>".__('Same Ip', 'addressing')."<br>";
+            echo "<span class='plugin_addressing_ip_double'>".__('Red row', 'addressing')."</span> - ".__('Same Ip', 'addressing')."<br>";
          }
          if (isset($this->fields['use_ping']) && $this->fields['use_ping']) {
             echo __('Ping free Ip', 'addressing')."<br>";
@@ -440,7 +440,7 @@ class PluginAddressingAddressing extends CommonDBTM {
             echo "<span class='plugin_addressing_ping_on'>".__('Ping: no response - free Ip', 'addressing').
                  "</span>";
          } else {
-            echo "<span class='plugin_addressing_ip_free'>".__('Blue row', 'addressing')."</span>".__('Free Ip', 'addressing')."<br>";
+            echo "<span class='plugin_addressing_ip_free'>".__('Blue row', 'addressing')."</span> - ".__('Free Ip', 'addressing')."<br>";
          }
 
          echo "</td></tr>";

@@ -112,7 +112,7 @@ class PluginAddressingReport extends CommonDBTM {
                                   $header_num);
       echo Search::showHeaderItem($output_type, _n('User', 'Users', 1),
                                   $header_num);
-      echo Search::showHeaderItem($output_type, __('Mac Address'),
+      echo Search::showHeaderItem($output_type, __('MAC address'),
                                   $header_num);
       echo Search::showHeaderItem($output_type, __('Item type'),
                                   $header_num);
