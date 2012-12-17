@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Addressing plugin 2.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-17 15:27+0100\n"
+"POT-Creation-Date: 2012-12-17 15:31+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -40,7 +40,8 @@ msgstr ""
 msgid "Please activate the plugin"
 msgstr ""
 
-#: inc/addressing.class.php:75 inc/addressing.class.php:437
+#: inc/addressing.class.php:75 inc/addressing.class.php:247
+#: inc/addressing.class.php:437
 msgid "Ping free Ip"
 msgstr ""
 
@@ -54,6 +55,14 @@ msgstr ""
 
 #: inc/addressing.class.php:114 inc/addressing.class.php:256
 msgid "Report for the IP Range"
+msgstr ""
+
+#: inc/addressing.class.php:157 inc/addressing.class.php:215
+#: inc/addressing.class.php:217 inc/addressing.class.php:219
+#: inc/addressing.class.php:221 inc/addressing.class.php:237
+#: inc/addressing.class.php:239 inc/addressing.class.php:241
+#: inc/addressing.class.php:243 inc/addressing.class.php:263
+msgid "Invalid data !!"
 msgstr ""
 
 #: inc/addressing.class.php:171 inc/config.class.php:64
@@ -77,12 +86,8 @@ msgstr ""
 msgid "Same IP"
 msgstr ""
 
-#: inc/addressing.class.php:225
+#: inc/addressing.class.php:225 inc/config.class.php:80
 msgid "Reserved IP"
-msgstr ""
-
-#: inc/addressing.class.php:263
-msgid "Invalid data !!"
 msgstr ""
 
 #: inc/addressing.class.php:420
@@ -129,6 +134,10 @@ msgstr ""
 msgid "Problem detected with the IP Range"
 msgstr ""
 
+#: inc/config.class.php:46
+msgid "System for ping"
+msgstr ""
+
 #: inc/config.class.php:50
 msgid "Linux ping"
 msgstr ""
@@ -147,6 +156,10 @@ msgstr ""
 
 #: inc/config.class.php:58
 msgid "MacOSX ping"
+msgstr ""
+
+#: inc/config.class.php:62
+msgid "Display"
 msgstr ""
 
 #: inc/config.class.php:69
