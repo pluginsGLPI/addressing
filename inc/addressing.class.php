@@ -331,8 +331,8 @@ class PluginAddressingAddressing extends CommonDBTM {
                LEFT JOIN `glpi_ipaddresses` ON (`glpi_ipaddresses`.`items_id` = `glpi_networknames`.`id`)
                WHERE INET_ATON(`glpi_ipaddresses`.`name`) >= '$ipdeb'
                      AND INET_ATON(`glpi_ipaddresses`.`name`) <= '$ipfin'
-                     AND `is_deleted` = 0
-                     AND `is_template` = 0 " .
+                     AND `dev`.`is_deleted` = 0
+                     AND `dev`.`is_template` = 0 " .
                      getEntitiesRestrictRequest(" AND ","dev");
 
       if ($this->fields["networks_id"]) {
@@ -357,8 +357,8 @@ class PluginAddressingAddressing extends CommonDBTM {
                         LEFT JOIN `glpi_ipaddresses` ON (`glpi_ipaddresses`.`items_id` = `glpi_networknames`.`id`)
                         WHERE INET_ATON(`glpi_ipaddresses`.`name`) >= '$ipdeb'
                               AND INET_ATON(`glpi_ipaddresses`.`name`) <= '$ipfin'
-                              AND `is_deleted` = 0
-                              AND `is_template` = 0 " .
+                              AND `dev`.`is_deleted` = 0
+                              AND `dev`.`is_template` = 0 " .
                               getEntitiesRestrictRequest(" AND ", "dev");
 
          if ($this->fields["networks_id"] && $type!='Peripheral' && $type!='Phone') {
