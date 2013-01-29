@@ -27,8 +27,7 @@
  --------------------------------------------------------------------------
  */
 
-define('GLPI_ROOT', '../../..');
-include (GLPI_ROOT . "/inc/includes.php");
+include ('../../../inc/includes.php');
 
 Html::header(PluginAddressingAddressing::getTypeName(2), '', "plugins", "addressing");
 

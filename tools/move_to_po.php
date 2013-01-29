@@ -52,8 +52,7 @@ if (!isset($_GET['lang'])) {
    echo "Usage move_to_po.php lang=xx_YY\n Will take the pot file and try to complete it to create initial po for the lang\n";
 }
 
-define('GLPI_ROOT', '../../..');
-//include (GLPI_ROOT . "/inc/includes.php");
+define('GLPI_ROOT', realpath('../../..'));
 
 if (!is_readable(GLPI_ROOT . "/plugins/addressing/locales/".$_GET['lang'].".php")) {
    print "Unable to read dictionnary file\n";

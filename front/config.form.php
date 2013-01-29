@@ -27,10 +27,7 @@
  --------------------------------------------------------------------------
  */
 
-if (!defined('GLPI_ROOT')) {
-   define('GLPI_ROOT', '../../..');
-   include (GLPI_ROOT . "/inc/includes.php");
-}
+include ('../../../inc/includes.php');
 
 $plugin = new Plugin();
 if ($plugin->isActivated("addressing")) {

@@ -27,8 +27,7 @@
  --------------------------------------------------------------------------
  */
 
-define('GLPI_ROOT', '../../..');
-include (GLPI_ROOT."/inc/includes.php");
+include ('../../../inc/includes.php');
 
 if (!isset($_GET["id"])) {
    $_GET["id"] = "";
