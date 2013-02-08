@@ -84,7 +84,7 @@ class PluginAddressingPing_Equipment {
       echo "<tr><th colspan='4'>".__('IP ping', 'addressing')."</th></tr>";
 
       if (count($list_ip) > 0) {
-         echo "<tr>";
+         echo "<tr class='tab_bg_1'>";
          echo "<td>".__('IP')." : </td>";
          echo "<td colspan='3'>";
          echo "<select id='ip'>";
@@ -98,7 +98,7 @@ class PluginAddressingPing_Equipment {
          echo "</td>";
          echo "</tr>";
 
-         echo "<tr>";
+         echo "<tr class='tab_bg_1'>";
          echo "<td>".__('Result', 'addressing')." : </td>";
          echo "<td colspan='3'>";
          echo "<div id='ping_response' class='plugin_addressing_ping_equipment'></div>";
