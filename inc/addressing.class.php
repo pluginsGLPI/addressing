@@ -64,7 +64,8 @@ class PluginAddressingAddressing extends CommonDBTM {
       $tab[2]['table']           = 'glpi_networks';
       $tab[2]['field']           = 'name';
       $tab[2]['name']            = _n('Network', 'Networks', 2);
-
+      $tab[2]['datatype']        = 'dropdown';
+      
       $tab[3]['table']           = $this->getTable();
       $tab[3]['field']           = 'comment';
       $tab[3]['name']            = __('Comments');
