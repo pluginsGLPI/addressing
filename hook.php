@@ -201,9 +201,6 @@ function plugin_addressing_giveItem($type,$ID,$data,$num) {
 function plugin_addressing_MassiveActions($type) {
 
    switch ($type) {
-      case 'PluginAddressingAddressing' :
-         return array("plugin_addressing_transfert" => __('Transfer'));
-
       case 'Profile' :
          return array("plugin_addressing_allow" => PluginAddressingAddressing::getTypeName(2) . " - " .
                                                    __('Generate reports', 'addressing'));
@@ -215,17 +212,6 @@ function plugin_addressing_MassiveActions($type) {
 function plugin_addressing_MassiveActionsDisplay($options=array()) {
 
    switch ($options['itemtype']) {
-
-      case 'PluginAddressingAddressing' :
-         switch ($options['action']) {
-            case "plugin_addressing_transfert" :
-               Dropdown::show('Entity');
-               echo "&nbsp;<input type='submit' name='massiveaction' class='submit' value=\"".
-                  __s('Post')."\" >";
-               break;
-         }
-         break;
-
       case 'Profile' :
          switch ($options['action']) {
             case "plugin_addressing_allow" :
@@ -241,41 +227,44 @@ function plugin_addressing_MassiveActionsDisplay($options=array()) {
 
 
 function plugin_addressing_MassiveActionsProcess($data) {
-
+   
+   $res = array('ok' => 0,
+            'ko' => 0,
+            'noright' => 0);
+            
    switch ($data['action']) {
-      case 'plugin_addressing_transfert' :
-         if ($data['itemtype'] == 'PluginAddressingAddressing') {
-            foreach ($data["item"] as $key => $val) {
-               if ($val == 1) {
-                  $PluginAddressingAddressing = new PluginAddressingAddressing();
-                  $values["id"]               = $key;
-                  $values["entities_id"]      = $data['entities_id'];
-                  $PluginAddressingAddressing->update($values);
-               }
-            }
-         }
-         break;
-
       case 'plugin_addressing_allow' :
          if ($data['itemtype'] == 'Profile') {
             $profglpi = new Profile();
             $prof     = new PluginAddressingProfile();
             foreach ($data["item"] as $key => $val) {
-               if ($profglpi->getFromDB($key) && $profglpi->fields['interface']!='helpdesk') {
+               if ($profglpi->getFromDB($key) 
+                     && $profglpi->fields['interface']!='helpdesk') {
                   if ($prof->getFromDBByProfile($key)) {
-                     $prof->update(array('id'          => $prof->fields['id'],
+                     if ($prof->update(array('id'          => $prof->fields['id'],
                                          'profiles_id' => $key,
-                                         'addressing'  => $data['use']));
+                                         'addressing'  => $data['use']))) {
+                        $res['ok']++;
+                     } else {
+                        $res['ko']++;
+                     }
                   } else {
-                     $prof->add(array('id'             => $prof->fields['id'],
+                     if ($prof->add(array('id'             => $prof->fields['id'],
                                       'profiles_id'    => $key,
-                                      'addressing'     => $data['use']));
+                                      'addressing'     => $data['use']))) {
+                        $res['ok']++;
+                     } else {
+                        $res['ko']++;
+                     }
                   }
+               } else {
+                  $res['ko']++;
                }
             }
          }
          break;
    }
+   return $res;
 }
 
 

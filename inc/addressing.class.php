@@ -494,6 +494,92 @@ class PluginAddressingAddressing extends CommonDBTM {
       }
       return '';
    }
+   
+   /**
+    * Get the specific massive actions
+    * 
+    * @since version 0.84
+    * @param $checkitem link item to check right   (default NULL)
+    * 
+    * @return an array of massive actions
+    **/
+   public function getSpecificMassiveActions($checkitem = NULL) {
+      $isadmin = static::canUpdate();
+      $actions = parent::getSpecificMassiveActions($checkitem);
+
+      if ($isadmin) {
+         if (Session::haveRight('transfer', 'r')
+                  && Session::isMultiEntitiesMode()
+         ) {
+            $actions['Transfert'] = __('Transfer');
+         }
+      }
+      return $actions;
+   }
+
+   /**
+    * Display specific options add action button for massive actions
+    *
+    * Parameters must not be : itemtype, action, is_deleted, check_itemtype or check_items_id
+    * @param $input array of input datas
+    * @since version 0.84
+    * 
+    * @return boolean if parameters displayed ?
+    **/
+   public function showSpecificMassiveActionsParameters($input = array()) {
+
+      switch ($input['action']) {
+         case "Transfert" :
+            Dropdown::show('Entity');
+            echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value='" . __s('Post') . "'>";
+            return true;
+            break;
+
+         default :
+            return parent::showSpecificMassiveActionsParameters($input);
+            break;
+      }
+      return false;
+   }
+
+   /**
+    * Do the specific massive actions
+    *
+    * @since version 0.84
+    * 
+    * @param $input array of input datas
+    * 
+    * @return an array of results (nbok, nbko, nbnoright counts)
+    **/
+   public function doSpecificMassiveActions($input = array()) {
+
+      $res = array('ok' => 0,
+               'ko' => 0,
+               'noright' => 0);
+
+      switch ($input['action']) {
+         case "Transfert" :
+            
+            if ($input['itemtype'] == 'PluginAddressingAddressing') {
+               foreach ($input["item"] as $key => $val) {
+                  if ($val == 1) {
+                     $values["id"]               = $key;
+                     $values["entities_id"]      = $input['entities_id'];
+                     if ($this->update($values)) {
+                        $res['ok']++;
+                     } else {
+                        $res['ko']++;
+                     }
+                  }
+               }
+            }
+            break;
+         default :
+            return parent::doSpecificMassiveActions($input);
+            break;
+      }
+      return $res;
+   }
 
 }
 
