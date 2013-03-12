@@ -53,7 +53,7 @@ class PluginAddressingAddressing extends CommonDBTM {
 
       $tab = array();
 
-      $tab['common'] = PluginAddressingAddressing::getTypeName(2);
+      $tab['common']             = self::getTypeName(2);
 
       $tab[1]['table']           = $this->getTable();
       $tab[1]['field']           = 'name';
@@ -139,18 +139,6 @@ class PluginAddressingAddressing extends CommonDBTM {
 
 
    function showForm ($ID, $options=array()) {
-
-      if (!$this->canView()) {
-         return false;
-      }
-
-      if ($ID > 0) {
-         $this->check($ID,'r');
-      } else {
-      // Create item
-         $this->check(-1,'r');
-         $this->getEmpty();
-      }
 
       $this->initForm($ID, $options);
       $this->showTabs($options);
