@@ -93,7 +93,7 @@ class PluginAddressingConfig extends CommonDBTM {
       echo "<tr><th colspan='4'>";
       echo "<input type='hidden' name='id' value='1'>";
       echo "<div class='center'>".
-            "<input type='submit' name='update' value='".__s('Post')."' class='submit'>".
+            "<input type='submit' name='update' value='"._sx('button','Post')."' class='submit'>".
            "</div></th></tr>";
       echo "</table>";
       Html::closeForm();

@@ -65,7 +65,7 @@ class PluginAddressingAddressing extends CommonDBTM {
       $tab[2]['field']           = 'name';
       $tab[2]['name']            = _n('Network', 'Networks', 2);
       $tab[2]['datatype']        = 'dropdown';
-      
+
       $tab[3]['table']           = $this->getTable();
       $tab[3]['field']           = 'comment';
       $tab[3]['name']            = __('Comments');
@@ -330,7 +330,7 @@ class PluginAddressingAddressing extends CommonDBTM {
 
       foreach ($CFG_GLPI["networkport_types"] as $type) {
          $itemtable = getTableForItemType($type);
-         $sql .= " UNION SELECT `port`.`id`, 
+         $sql .= " UNION SELECT `port`.`id`,
                                  '" . $type . "' AS `itemtype`,
                                  `port`.`items_id`,
                                 `dev`.`name` AS dname,
@@ -482,13 +482,13 @@ class PluginAddressingAddressing extends CommonDBTM {
       }
       return '';
    }
-   
+
    /**
     * Get the specific massive actions
-    * 
+    *
     * @since version 0.84
     * @param $checkitem link item to check right   (default NULL)
-    * 
+    *
     * @return an array of massive actions
     **/
    public function getSpecificMassiveActions($checkitem = NULL) {
@@ -511,7 +511,7 @@ class PluginAddressingAddressing extends CommonDBTM {
     * Parameters must not be : itemtype, action, is_deleted, check_itemtype or check_items_id
     * @param $input array of input datas
     * @since version 0.84
-    * 
+    *
     * @return boolean if parameters displayed ?
     **/
    public function showSpecificMassiveActionsParameters($input = array()) {
@@ -519,13 +519,12 @@ class PluginAddressingAddressing extends CommonDBTM {
       switch ($input['action']) {
          case "Transfert" :
             Dropdown::show('Entity');
-            echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value='" . __s('Post') . "'>";
+            echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value='".
+                         _sx('button','Post'). "'>";
             return true;
-            break;
 
          default :
             return parent::showSpecificMassiveActionsParameters($input);
-            break;
       }
       return false;
    }
@@ -534,9 +533,9 @@ class PluginAddressingAddressing extends CommonDBTM {
     * Do the specific massive actions
     *
     * @since version 0.84
-    * 
+    *
     * @param $input array of input datas
-    * 
+    *
     * @return an array of results (nbok, nbko, nbnoright counts)
     **/
    public function doSpecificMassiveActions($input = array()) {
@@ -547,7 +546,7 @@ class PluginAddressingAddressing extends CommonDBTM {
 
       switch ($input['action']) {
          case "Transfert" :
-            
+
             if ($input['itemtype'] == 'PluginAddressingAddressing') {
                foreach ($input["item"] as $key => $val) {
                   if ($val == 1) {
