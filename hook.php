@@ -217,7 +217,7 @@ function plugin_addressing_MassiveActionsDisplay($options=array()) {
             case "plugin_addressing_allow" :
                Profile::dropdownNoneReadWrite('use','');
                echo "&nbsp;<input type='submit' name='massiveaction' class='submit' value=\"".
-                  __s('Post')."\" >";
+                            _sx('button','Post')."\" >";
                break;
          }
          break;
@@ -227,18 +227,18 @@ function plugin_addressing_MassiveActionsDisplay($options=array()) {
 
 
 function plugin_addressing_MassiveActionsProcess($data) {
-   
+
    $res = array('ok' => 0,
             'ko' => 0,
             'noright' => 0);
-            
+
    switch ($data['action']) {
       case 'plugin_addressing_allow' :
          if ($data['itemtype'] == 'Profile') {
             $profglpi = new Profile();
             $prof     = new PluginAddressingProfile();
             foreach ($data["item"] as $key => $val) {
-               if ($profglpi->getFromDB($key) 
+               if ($profglpi->getFromDB($key)
                      && $profglpi->fields['interface']!='helpdesk') {
                   if ($prof->getFromDBByProfile($key)) {
                      if ($prof->update(array('id'          => $prof->fields['id'],
