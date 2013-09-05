@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Xavier CAILLAUD <tsmr@thetsmr.fr>, 2012.
+# The tsmr <tsmr@thetsmr.fr>, 2012
 msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - addressing plugin\n"
