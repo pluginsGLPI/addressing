@@ -323,35 +323,60 @@ class PluginAddressingAddressing extends CommonDBTM {
                      AND `dev`.`is_deleted` = 0
                      AND `dev`.`is_template` = 0 " .
                      getEntitiesRestrictRequest(" AND ","dev");
+      
 
       if ($this->fields["networks_id"]) {
-         $sql .= " AND `glpi_networkequipments`.`networks_id` = ".$this->fields["networks_id"];
+         $sql .= " AND `dev`.`networks_id` = ".$this->fields["networks_id"];
       }
-
+      
+      //$ntypes = $CFG_GLPI["networkport_types"];
+      //foreach ($ntypes as $k => $v) {
+      //   if ($v == 'PluginFusioninventoryUnknownDevice') {
+      //      unset($ntypes[$k]);
+      //   }
+      //}
+      
       foreach ($CFG_GLPI["networkport_types"] as $type) {
          $itemtable = getTableForItemType($type);
+         if (!($item = getItemForItemtype($type))) {
+            continue;
+         }
          $sql .= " UNION SELECT `port`.`id`,
                                  '" . $type . "' AS `itemtype`,
                                  `port`.`items_id`,
                                 `dev`.`name` AS dname,
                                 `port`.`name` AS pname,
                                 `glpi_ipaddresses`.`name` as ip,
-                                `port`.`mac`,
-                                 `dev`.`users_id`,
-                                INET_ATON(`glpi_ipaddresses`.`name`) AS ipnum
-                        FROM `glpi_networkports` port
+                                `port`.`mac`";
+         
+         if ($type == 'PluginFusioninventoryUnknownDevice') {
+            $sql .= " ,0 AS `users_id` ";
+         } else {
+            $sql .= " ,`dev`.`users_id` ";
+         }
+         $sql .= " , INET_ATON(`glpi_ipaddresses`.`name`) AS ipnum ";
+         $sql .= " FROM `glpi_networkports` port
                         LEFT JOIN `" . $itemtable . "` dev ON (`port`.`items_id` = `dev`.`id`
                               AND `port`.`itemtype` = '" . $type . "')
                         LEFT JOIN `glpi_networknames` ON (`port`.`id` =  `glpi_networknames`.`items_id`)
                         LEFT JOIN `glpi_ipaddresses` ON (`glpi_ipaddresses`.`items_id` = `glpi_networknames`.`id`)
                         WHERE INET_ATON(`glpi_ipaddresses`.`name`) >= '$ipdeb'
-                              AND INET_ATON(`glpi_ipaddresses`.`name`) <= '$ipfin'
-                              AND `dev`.`is_deleted` = 0
-                              AND `dev`.`is_template` = 0 " .
+                              AND INET_ATON(`glpi_ipaddresses`.`name`) <= '$ipfin'" .
                               getEntitiesRestrictRequest(" AND ", "dev");
-
-         if ($this->fields["networks_id"] && $type!='Peripheral' && $type!='Phone') {
-            $sql .= " AND `" . $itemtable . "`.`networks_id`= ".$this->fields["networks_id"];
+         
+         if ($item->maybeDeleted()) {
+            $sql.=" AND `dev`.`is_deleted` = '0'";
+         }
+         
+         if ($item->maybeTemplate()) {
+            $sql.=" AND `dev`.`is_template` = '0'";
+         }
+      
+         if ($this->fields["networks_id"] 
+               && $type != 'Peripheral' 
+                  && $type != 'Phone' 
+                     && $type != 'PluginFusioninventoryUnknownDevice') {
+            $sql .= " AND `dev`.`networks_id`= ".$this->fields["networks_id"];
          }
       }
       $res = $DB->query($sql);
