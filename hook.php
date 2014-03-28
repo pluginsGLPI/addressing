@@ -77,6 +77,9 @@ function plugin_addressing_install() {
       if (!fieldExists("glpi_plugin_addressing_profiles","use_ping_in_equipment")) {
          $DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.9.0.sql");
       }
+      
+      //Add all rights for current user profile
+      PluginAddressingProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
    }
 
    if ($update) {
@@ -106,10 +109,9 @@ function plugin_addressing_install() {
                                     "glpi_infocoms", "glpi_logs", "glpi_tickets"));
                                     
       //0.85 : new profile system
-      
+      PluginAddressingProfile::migrateProfiles();
    }
 
-   PluginAddressingProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
    return true;
 }
 

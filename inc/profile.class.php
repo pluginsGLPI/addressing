@@ -161,7 +161,6 @@ class PluginAddressingProfile extends CommonDBTM {
 
 
    static function migrateProfiles() {
-      global $DB;
       $profiles = getAllDatasFromTable('glpi_plugin_addressing_profiles');
       foreach ($profiles as $id => $profile) {
          switch ($profile['addressing']) {
@@ -176,10 +175,10 @@ class PluginAddressingProfile extends CommonDBTM {
                $value = 0;
                break;
          }
-         self::addDefaultProfileInfos($id, array('plugin_addressing' => $value));
-         self::addDefaultProfileInfos($id, 
+         self::addDefaultProfileInfos($profile['profiles_id'], array('plugin_addressing' => $value));
+         self::addDefaultProfileInfos($profile['profiles_id'], 
                                       array('plugin_addressing_use_ping_in_equipment' 
-                                             => $profile['plugin_addressing_use_ping_in_equipment']));
+                                             => $profile['use_ping_in_equipment']));
       }
    }
 
