@@ -33,132 +33,82 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginAddressingProfile extends CommonDBTM {
 
+   static $rightname = "profile";
+   
+   static function getAllRights() {
+      $rights = array(
+          array('itemtype'  => 'PluginAddressingAddressing',
+                'label'     => __('Generate reports', 'addressing'),
+                'field'     => 'plugin_addressing'),
+          array('itemtype'  => 'PluginAddressingAddressing', 
+                'label'     => __('Use ping on equipment form', 'addressing'),
+                'field'     => 'plugin_addressing_use_ping_in_equipment'));
+      return $rights;
+   }
+
    static function getTypeName($nb=0) {
       return __('Rights management', 'addressing');
    }
 
+    /**
+    * Show profile form
+    *
+    * @param $items_id integer id of the profile
+    * @param $target value url of target
+    *
+    * @return nothing
+    **/
+   function showForm($profiles_id=0, $openform=TRUE, $closeform=TRUE) {
 
-   static function canCreate() {
-      return Session::haveRight('profile', 'w');
-   }
-
-
-   static function canView() {
-      return Session::haveRight('profile', 'r');
-   }
-
-
-   //if profile deleted
-   static function purgeProfiles(Profile $prof) {
-
-      $plugprof = new self();
-      $plugprof->deleteByCriteria(array('profiles_id' => $prof->getField("id")));
-   }
-
-
-   function getFromDBByProfile($profiles_id) {
-      global $DB;
-
-      $query = "SELECT *
-                FROM `".$this->getTable()."`
-                WHERE `profiles_id` = '" . $profiles_id . "' ";
-
-      if ($result = $DB->query($query)) {
-         if ($DB->numrows($result) != 1) {
-            return false;
-         }
-         $this->fields = $DB->fetch_assoc($result);
-         if (is_array($this->fields) && count($this->fields)) {
-            return true;
-         } else {
-            return false;
-         }
-      }
-      return false;
-   }
-
-
-   static function createFirstAccess($ID) {
-
-      $myProf = new self();
-      if (!$myProf->getFromDBByProfile($ID)) {
-         $myProf->add(array('profiles_id'           => $ID,
-                            'addressing'            => 'w',
-                            'use_ping_in_equipment' => 1));
-      }
-   }
-
-
-   function createAccess($profile) {
-      return $this->add(array('profiles_id' => $profile->getField('id')));
-   }
-
-
-   static function changeProfile() {
-
-      $prof = new self();
-      if ($prof->getFromDBByProfile($_SESSION['glpiactiveprofile']['id'])) {
-         $_SESSION["glpi_plugin_addressing_profile"] = $prof->fields;
-      } else {
-         unset($_SESSION["glpi_plugin_addressing_profile"]);
-      }
-   }
-
-
-   //profiles modification
-   function showForm ($ID, $options=array()) {
-
-      if (!Session::haveRight("profile","r")) {
-         return false;
+      echo "<div class='firstbloc'>";
+      if (($canedit = Session::haveRightsOr(self::$rightname, array(CREATE, UPDATE, PURGE)))
+          && $openform) {
+         $profile = new Profile();
+         echo "<form method='post' action='".$profile->getFormURL()."'>";
       }
 
-//      $target = $this->getFormURL();
-//      if (isset($options['target'])) {
-//        $target = $options['target'];
-//      }
+      $profile = new Profile();
+      $profile->getFromDB($profiles_id);
 
-      $prof = new Profile();
-      if ($ID) {
-         $this->getFromDBByProfile($ID);
-         $prof->getFromDB($ID);
-      }
+      $rights = array(
+          array('itemtype'  => 'PluginAddressingAddressing',
+                'label'     => __('Generate reports', 'addressing'),
+                'field'     => 'plugin_addressing'));
+      
+      $profile->displayRightsChoiceMatrix($rights, array('canedit'       => $canedit,
+                                                      'default_class' => 'tab_bg_2',
+                                                      'title'         => __('General')));
 
-      $this->showFormHeader($options);
+      echo "<table class='tab_cadre_fixehov'>";
 
-//      echo "<form action='".$target."' method='post'>";
-//      echo "<table class='tab_cadre_fixe'>";
-
+      $effective_rights = ProfileRight::getProfileRights($profiles_id, 
+                                                         array('plugin_addressing_use_ping_in_equipment'));
       echo "<tr class='tab_bg_2'>";
-      echo "<th colspan='4'>".sprintf(__('%1$s - %2$s'), __('Rights management', 'addressing'),
-         $prof->fields["name"])."</th>";
-      echo "</tr>";
-
-      echo "<tr class='tab_bg_2'>";
-
-      echo "<td>".__('Generate reports', 'addressing')."</td><td>";
-      Profile::dropdownNoneReadWrite("addressing",$this->fields["addressing"],1,1,1);
-      echo "</td>";
-
-
-      echo "<td>".__('Use ping on equipment form', 'addressing')."</td><td>";
-      Dropdown::showYesNo("use_ping_in_equipment", $this->fields["use_ping_in_equipment"]);
-      echo "</td>";
-
-      echo "</tr>";
-
-      echo "<input type='hidden' name='id' value=".$this->fields["id"].">";
-
-      $options['candel'] = false;
-      $this->showFormButtons($options);
+      echo "<td width='20%'>".__('Use ping on equipment form', 'addressing')."</td>";
+      echo "<td colspan='5'>";
+      Html::showCheckbox(array('name'    => '_plugin_addressing_use_ping_in_equipment',
+                               'checked' => $effective_rights['plugin_addressing_use_ping_in_equipment']));
+      echo "</td></tr>\n";
+      echo "</table>";
+      
+      if ($canedit
+          && $closeform) {
+         echo "<div class='center'>";
+         echo Html::hidden('id', array('value' => $profiles_id));
+         echo Html::submit(_sx('button', 'Save'), array('name' => 'update'));
+         echo "</div>\n";
+         Html::closeForm();
+      }
+      echo "</div>";
    }
-
-
+   
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
 
       if ($item->getType() == 'Profile') {
-         if ($item->getField('id') && $item->getField('interface')!='helpdesk') {
-            return array(1 => PluginAddressingAddressing::getTypeName(2));
+         if ($item->getField('interface') == 'central') {
+            return _n('IP Adressing', 'IP Adressing', 2, 'addressing');
          }
+         return '';
       }
       return '';
    }
@@ -167,14 +117,71 @@ class PluginAddressingProfile extends CommonDBTM {
    static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
 
       if ($item->getType() == 'Profile') {
-         $prof = new self();
-         $ID = $item->getField('id');
-         if (!$prof->getFromDBByProfile($ID)) {
-            $prof->createAccess($item);
-         }
-         $prof->showForm($ID);
+         $profile = new self();
+         $ID      = $item->getField('id');
+         //In case there's no right for this profile, create it
+         self::addDefaultProfileInfos($item->getID(), 
+                                      array('plugin_addressing' => 0, 
+                                            'use_ping_in_equipment' => 0));
+         $profile->showForm($ID);
       }
       return true;
    }
+
+
+   /**
+    * @param $profile
+   **/
+   static function addDefaultProfileInfos($profiles_id, $rights) {
+      $profileRight = new ProfileRight();
+      foreach ($rights as $right => $value) {
+         if (!countElementsInTable('glpi_profilerights',
+                                   "`profiles_id`='$profiles_id' AND `name`='$right'")) {
+            $myright['profiles_id'] = $profiles_id;
+            $myright['name']        = $right;
+            $myright['rights']      = $value;
+            $profileRight->add($myright);
+
+            //Add right to the current session
+            $_SESSION['glpiactiveprofile'][$right] = $value;
+         }
+      }
+   }
+
+   /**
+    * @param $ID  integer
+    */
+   static function createFirstAccess($profiles_id) {
+      foreach (self::getAllRights() as $right) {
+         self::addDefaultProfileInfos($profiles_id, 
+                                    array('plugin_addressing' => ALLSTANDARDRIGHT, 
+                                          'plugin_addressing_use_ping_in_equipment' => '1'));
+      }
+   }
+
+
+   static function migrateProfiles() {
+      global $DB;
+      $profiles = getAllDatasFromTable('glpi_plugin_addressing_profiles');
+      foreach ($profiles as $id => $profile) {
+         switch ($profile['addressing']) {
+            case 'r' :
+               $value = READ;
+               break;
+            case 'w':
+               $value = ALLSTANDARDRIGHT;
+               break;
+            case 0:
+            default:
+               $value = 0;
+               break;
+         }
+         self::addDefaultProfileInfos($id, array('plugin_addressing' => $value));
+         self::addDefaultProfileInfos($id, 
+                                      array('plugin_addressing_use_ping_in_equipment' 
+                                             => $profile['plugin_addressing_use_ping_in_equipment']));
+      }
+   }
+
 }
 ?>

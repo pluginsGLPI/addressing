@@ -106,8 +106,7 @@ class PluginAddressingPing_Equipment {
       }
       echo "</table>";
 
-      echo "
-         <script type='text/javascript'>
+      $js = "
             function pingIp() {
                var ip = Ext.get('ip').dom.options[Ext.get('ip').dom.selectedIndex].value;
                var ping_response = Ext.get('ping_response');
@@ -121,8 +120,8 @@ class PluginAddressingPing_Equipment {
                   }
                });
             }
-         </script>
       ";
+      echo Html::scriptBlock($js);
 
       if (count($list_ip) == 0) {
          echo __('No IP for this equipment', 'addressing');
@@ -168,7 +167,7 @@ class PluginAddressingPing_Equipment {
    static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
       global $CFG_GLPI;
 
-      $ping = plugin_addressing_haveRight("use_ping_in_equipment", '1');
+      $ping = Session::haveRight('plugin_addressing_use_ping_in_equipment', '1');
 
       if ($ping && in_array($item->getType(), $CFG_GLPI["networkport_types"])) {
          if ($item->getField('id')) {
@@ -185,7 +184,8 @@ class PluginAddressingPing_Equipment {
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
       global $CFG_GLPI;
 
-      $ping = plugin_addressing_haveRight("use_ping_in_equipment", '1');
+      $ping = Session::haveRight('plugin_addressing_use_ping_in_equipment', '1');
+
       if ($ping && in_array($item->getType(), $CFG_GLPI["networkport_types"])) {
          if ($item->getField('id')) {
             return array('1' => __('IP ping', 'addressing'));

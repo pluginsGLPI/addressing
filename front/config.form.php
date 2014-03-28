@@ -33,14 +33,14 @@ $plugin = new Plugin();
 if ($plugin->isActivated("addressing")) {
    $PluginAddressingConfig = new PluginAddressingConfig();
 
-   Session::checkRight("config", "w");
+   Session::checkRight("config", UPDATE);
 
    if (isset($_POST["update"])) {
       $PluginAddressingConfig->update($_POST);
       Html::back();
 
    } else {
-      Html::header(PluginAddressingAddressing::getTypeName(2), '', "plugins", "addressing");
+      Html::header(PluginAddressingAddressing::getTypeName(2), '', "tools", "pluginaddressingmenu", "addressing");
       $PluginAddressingConfig->showForm();
       Html::footer();
    }

@@ -39,45 +39,52 @@ if (isset($_GET["start"])) {
    $start = 0;
 }
 
-$PluginAddressingAddressing = new PluginAddressingAddressing();
+$addressing = new PluginAddressingAddressing();
 
 if (isset($_POST["add"])) {
-   $PluginAddressingAddressing->check(-1, 'w', $_POST);
-   if (!empty($_POST["name"]) && !empty($_POST["begin_ip"]) && !empty($_POST["end_ip"])) {
-      $newID = $PluginAddressingAddressing->add($_POST);
+   $addressing->check(-1, UPDATE, $_POST);
+   if (!empty($_POST["name"]) 
+      && !empty($_POST["begin_ip"]) 
+         && !empty($_POST["end_ip"])) {
+      $newID = $addressing->add($_POST);
    } else {
-      Session::addMessageAfterRedirect(__('Problem when adding, required fields are not here','addressing'), false, ERROR);
+      Session::addMessageAfterRedirect(__('Problem when adding, required fields are not here','addressing'), 
+                                       false, ERROR);
    }
    Html::back();
 
 } else if (isset($_POST["delete"])) {
-   $PluginAddressingAddressing->check($_POST['id'], 'w');
-   $PluginAddressingAddressing->delete($_POST);
-   $PluginAddressingAddressing->redirectToList();
+   $addressing->check($_POST['id'], UPDATE);
+   $addressing->delete($_POST);
+   $addressing->redirectToList();
 
 } else if (isset($_POST["restore"])) {
-   $PluginAddressingAddressing->check($_POST['id'], 'w');
-   $PluginAddressingAddressing->restore($_POST);
-   $PluginAddressingAddressing->redirectToList();
+   $addressing->check($_POST['id'], UPDATE);
+   $addressing->restore($_POST);
+   $addressing->redirectToList();
 
 } else if (isset($_POST["purge"])) {
-   $PluginAddressingAddressing->check($_POST['id'],'w');
-   $PluginAddressingAddressing->delete($_POST,1);
-   $PluginAddressingAddressing->redirectToList();
+   $addressing->check($_POST['id'], UPDATE);
+   $addressing->delete($_POST,1);
+   $addressing->redirectToList();
 
 } else if (isset($_POST["update"])) {
-   $PluginAddressingAddressing->check($_POST['id'], 'w');
-   if (!empty($_POST["name"]) && !empty($_POST["begin_ip"]) && !empty($_POST["end_ip"])) {
-      $PluginAddressingAddressing->update($_POST);
+   $addressing->check($_POST['id'], UPDATE);
+   if (!empty($_POST["name"]) 
+      && !empty($_POST["begin_ip"]) 
+         && !empty($_POST["end_ip"])) {
+      $addressing->update($_POST);
    } else {
-      Session::addMessageAfterRedirect(__('Problem when adding, required fields are not here','addressing'), false, ERROR);
+      Session::addMessageAfterRedirect(__('Problem when adding, required fields are not here','addressing'), 
+                                       false, ERROR);
    }
    Html::back();
 
 } else {
-   $PluginAddressingAddressing->checkGlobal("r");
-   Html::header(PluginAddressingAddressing::getTypeName(2), '', "plugins", "addressing");
-   $PluginAddressingAddressing->showForm($_GET["id"]);
+   $addressing->checkGlobal(READ);
+   Html::header(PluginAddressingAddressing::getTypeName(2), '', 
+                "tools", "pluginaddressingmenu", "addressing");
+   $addressing->display($_GET);
    Html::footer();
 }
 ?>

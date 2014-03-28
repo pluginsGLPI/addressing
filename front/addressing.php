@@ -29,11 +29,11 @@
 
 include ('../../../inc/includes.php');
 
-Html::header(PluginAddressingAddressing::getTypeName(2), '', "plugins", "addressing");
+Html::header(PluginAddressingAddressing::getTypeName(2), '', "tools", "pluginaddressingmenu", "addressing");
 
 $PluginAddressingAddressing = new PluginAddressingAddressing();
 
-if ($PluginAddressingAddressing->canView() || Session::haveRight("config","w")) {
+if ($PluginAddressingAddressing->canView() || Session::haveRight("config", UPDATE)) {
    Search::show("PluginAddressingAddressing");
 
 } else {

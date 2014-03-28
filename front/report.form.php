@@ -43,8 +43,8 @@ if (!isset($_GET["export"])) {
    $_GET["export"] = false;
 }
 
-$PluginAddressingAddressing = new PluginAddressingAddressing();
-$PluginAddressingAddressing->showReport($_GET);
+$addressing = new PluginAddressingAddressing();
+$addressing->showReport($_GET);
 
 Html::footer();
 

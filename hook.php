@@ -93,7 +93,7 @@ function plugin_addressing_install() {
          }
       }
 
-      if (FieldExists("glpi_plugin_addressing_profiles","name")) {
+      if (FieldExists("glpi_plugin_addressing_profiles", "name")) {
          $query  = "ALTER TABLE `glpi_plugin_addressing_profiles`
                     DROP `name` ";
          $result = $DB->query($query);
@@ -104,6 +104,9 @@ function plugin_addressing_install() {
                               array("glpi_bookmarks", "glpi_bookmarks_users",
                                     "glpi_displaypreferences", "glpi_documents_items",
                                     "glpi_infocoms", "glpi_logs", "glpi_tickets"));
+                                    
+      //0.85 : new profile system
+      
    }
 
    PluginAddressingProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
@@ -113,7 +116,38 @@ function plugin_addressing_install() {
 
 function plugin_addressing_uninstall() {
    global $DB;
+   
+   include_once (GLPI_ROOT."/plugins/addressing/inc/profile.class.php");
+   
+   $migration = new Migration("2.2.0");
+   $tables = array("glpi_plugin_addressing_addressings",
+                   "glpi_plugin_addressing_configs",
+                   "glpi_plugin_addressing_profiles",
+                   "glpi_plugin_addressing_addressings",
+                   "glpi_plugin_addressing_configs",
+                   "glpi_plugin_addressing_profiles", 
+                   "glpi_plugin_addressing_display",
+                   "glpi_plugin_addressing");
 
+   foreach($tables as $table) {
+      $migration->dropTable($table);
+   }
+   
+   $itemtypes = array('DisplayPreference', 'Bookmark');
+   foreach ($itemtypes as $itemtype) {
+      $item = new $itemtype;
+      $item->deleteByCriteria(array('itemtype' => 'PluginAddressingAddressing'));
+   }
+
+   //Delete rights associated with the plugin
+   $profileRight = new ProfileRight();
+
+   foreach (PluginAddressingProfile::getAllRights() as $right) {
+      $profileRight->deleteByCriteria(array('name' => $right['field']));
+   }
+
+
+/*
    $tables = array("glpi_plugin_addressing_addressings",
                    "glpi_plugin_addressing_configs",
                    "glpi_plugin_addressing_profiles");
@@ -125,16 +159,18 @@ function plugin_addressing_uninstall() {
    $tables = array("glpi_plugin_addressing_display",
                    "glpi_plugin_addressing");
 
-   foreach($tables as $table)
+   foreach($tables as $table) {
       $DB->query("DROP TABLE IF EXISTS `$table`;");
+   }
 
    $tables_glpi = array("glpi_displaypreferences",
                         "glpi_bookmarks");
-
-   foreach($tables_glpi as $table_glpi)
+   
+   foreach($tables_glpi as $table_glpi) 
       $DB->query("DELETE
                   FROM `$table_glpi`
                   WHERE `itemtype` = '".'PluginAddressingAddressing'."';");
+*/
 
    return true;
 }
@@ -159,7 +195,7 @@ function plugin_addressing_getAddSearchOptions($itemtype) {
    $sopt = array();
 
    if ($itemtype == 'Profile') {
-      if (plugin_addressing_haveRight("addressing","r")) {
+      if (Session::haveRight('plugin_addressing', READ)) {
          // Use a plugin type reservation to avoid conflict
          $sopt[5000]['table'] = 'glpi_plugin_addressing_profiles';
          $sopt[5000]['field'] = 'addressing';
@@ -198,6 +234,7 @@ function plugin_addressing_giveItem($type,$ID,$data,$num) {
 
 ////// SPECIFIC MODIF MASSIVE FUNCTIONS ///////
 
+/*
 function plugin_addressing_MassiveActions($type) {
 
    switch ($type) {
@@ -266,21 +303,21 @@ function plugin_addressing_MassiveActionsProcess($data) {
    }
    return $res;
 }
-
+*/
 
 // Do special actions for dynamic report
-function plugin_addressing_dynamicReport($parm) {
+function plugin_addressing_dynamicReport($params) {
 
    $PluginAddressingAddressing = new PluginAddressingAddressing();
    $PluginAddressingReport     = new PluginAddressingReport();
 
-   if ($parm["item_type"]=='PluginAddressingReport'
-       && isset($parm["id"])
-       && isset($parm["display_type"])
+   if ($params["item_type"]=='PluginAddressingReport'
+       && isset($params["id"])
+       && isset($params["display_type"])
        && $PluginAddressingAddressing->getFromDB($parm["id"])) {
 
       $result = $PluginAddressingAddressing->compute($parm["start"]);
-      $PluginAddressingReport->display($result, $PluginAddressingAddressing);
+      $PluginAddressingReport->displayReport($result, $PluginAddressingAddressing);
 
       return true;
    }

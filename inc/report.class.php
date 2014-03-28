@@ -80,7 +80,7 @@ class PluginAddressingReport extends CommonDBTM {
    }
 
 
-   function display(&$result, $PluginAddressingAddressing) {
+   function displayReport(&$result, $PluginAddressingAddressing) {
       global $DB,$CFG_GLPI;
 
       $network = $PluginAddressingAddressing->fields["networks_id"];
