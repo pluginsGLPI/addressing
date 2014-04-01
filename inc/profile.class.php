@@ -122,7 +122,7 @@ class PluginAddressingProfile extends CommonDBTM {
          //In case there's no right for this profile, create it
          self::addDefaultProfileInfos($item->getID(), 
                                       array('plugin_addressing' => 0, 
-                                            'use_ping_in_equipment' => 0));
+                                            'plugin_addressing_use_ping_in_equipment' => 0));
          $profile->showForm($ID);
       }
       return true;
