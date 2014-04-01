@@ -39,6 +39,13 @@ class PluginAddressingReport extends CommonDBTM {
       switch ($type) {
          case Search::PDF_OUTPUT_LANDSCAPE : //pdf
          case Search::PDF_OUTPUT_PORTRAIT :
+            global $PDF_TABLE;
+            $style = "";
+            if ($odd) {
+               $style = " style=\"background-color:#DDDDDD;\" ";
+            }
+            $PDF_TABLE .= "<tr nobr=\"true\" $style>";
+            break;
             break;
 
          case Search::SYLK_OUTPUT : //sylk
@@ -98,13 +105,14 @@ class PluginAddressingReport extends CommonDBTM {
          $output_type = $_GET["display_type"];
       }
 
-      $ping_response = 0;
+      $header_num = 1;
       $nbcols        = 6;
+      $ping_response = 0;
       $parameters    = "id=";
+      $row_num = 1;
 
       echo Search::showHeader($output_type,1,$nbcols,1);
       echo $this->displaySearchNewLine($output_type);
-      $header_num = 1;
 
       echo Search::showHeaderItem($output_type, __('IP'),
                                   $header_num);
@@ -120,7 +128,6 @@ class PluginAddressingReport extends CommonDBTM {
                                   $header_num);
       // End Line for column headers
       echo Search::showEndLine($output_type);
-      $row_num = 1;
 
       $user = new User();
 
