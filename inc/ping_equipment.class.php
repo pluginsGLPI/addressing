@@ -94,7 +94,7 @@ class PluginAddressingPing_Equipment {
          }
          echo "</select>";
          echo "&nbsp;<input class='submit' type='button' value='".
-               __s('Ping', 'addressing')."' onclick='pingIp();'>";
+               __s('Ping', 'addressing')."' id='ping_ip'>";
          echo "</td>";
          echo "</tr>";
 
@@ -106,22 +106,11 @@ class PluginAddressingPing_Equipment {
       }
       echo "</table>";
 
-      $js = "
-            function pingIp() {
-               var ip = Ext.get('ip').dom.options[Ext.get('ip').dom.selectedIndex].value;
-               var ping_response = Ext.get('ping_response');
-
-               Ext.Ajax.request({
-                  url : '".$CFG_GLPI["root_doc"]."/plugins/addressing/ajax/ping.php' ,
-                  params : { ip : ip },
-                  method: 'POST',
-                  success: function ( result, request ) {
-                     ping_response.insertHtml('afterBegin', '<hr>'+result.responseText);
-                  }
-               });
-            }
-      ";
-      echo Html::scriptBlock($js);
+      echo Html::scriptBlock("$(document).on('click', '#ping_ip', function(event) {
+         $('#ping_response').load('".$CFG_GLPI["root_doc"]."/plugins/addressing/ajax/ping.php', {
+            'ip': $('#ip').val()
+         })
+      });");
 
       if (count($list_ip) == 0) {
          echo __('No IP for this equipment', 'addressing');
