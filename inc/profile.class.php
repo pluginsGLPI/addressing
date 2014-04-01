@@ -86,7 +86,7 @@ class PluginAddressingProfile extends CommonDBTM {
       echo "<tr class='tab_bg_2'>";
       echo "<td width='20%'>".__('Use ping on equipment form', 'addressing')."</td>";
       echo "<td colspan='5'>";
-      Html::showCheckbox(array('name'    => '_plugin_addressing_use_ping_in_equipment',
+      Html::showCheckbox(array('name'    => '_plugin_addressing_use_ping_in_equipment[1_0]',
                                'checked' => $effective_rights['plugin_addressing_use_ping_in_equipment']));
       echo "</td></tr>\n";
       echo "</table>";
