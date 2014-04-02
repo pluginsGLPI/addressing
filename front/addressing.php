@@ -29,7 +29,7 @@
 
 include ('../../../inc/includes.php');
 
-Html::header(PluginAddressingAddressing::getTypeName(2), '', "tools", "pluginaddressingmenu", "addressing");
+Html::header(PluginAddressingAddressing::getTypeName(2), '', "tools", "pluginaddressingmenu");
 
 $PluginAddressingAddressing = new PluginAddressingAddressing();
 

@@ -40,12 +40,12 @@ class PluginAddressingMenu extends CommonGLPI {
       $menu['title'] = self::getMenuName();
       $menu['page']  = "/plugins/addressing/front/addressing.php";
 
-      $menu['options']['addressing']['title']           = PluginAddressingAddressing::getTypeName(2);
-      $menu['options']['addressing']['page']            = PluginAddressingAddressing::getSearchURL(false);
-      $menu['options']['addressing']['links']['search'] = PluginAddressingAddressing::getSearchURL(false);
+      $menu['title']           = PluginAddressingAddressing::getTypeName(2);
+      $menu['page']            = PluginAddressingAddressing::getSearchURL(false);
+      $menu['links']['search'] = PluginAddressingAddressing::getSearchURL(false);
 
       if (Session::haveRight('plugin_addressing', UPDATE)) {
-         $menu['options']['addressing']['links']['add'] = PluginAddressingAddressing::getFormURL(false);
+         $menu['links']['add'] = PluginAddressingAddressing::getFormURL(false);
       }
       return $menu;
    }

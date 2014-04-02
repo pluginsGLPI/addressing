@@ -82,8 +82,7 @@ if (isset($_POST["add"])) {
 
 } else {
    $addressing->checkGlobal(READ);
-   Html::header(PluginAddressingAddressing::getTypeName(2), '', 
-                "tools", "pluginaddressingmenu", "addressing");
+   Html::header(PluginAddressingAddressing::getTypeName(2), '', "tools", "pluginaddressingmenu");
    $addressing->display($_GET);
    Html::footer();
 }
