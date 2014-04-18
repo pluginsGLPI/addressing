@@ -31,7 +31,7 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
-class PluginAddressingProfile extends CommonDBTM {
+class PluginAddressingProfile extends Profile {
 
    static $rightname = "profile";
    
