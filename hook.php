@@ -37,7 +37,7 @@ function plugin_addressing_install() {
        &&!TableExists("glpi_plugin_addressing")
        && !TableExists("glpi_plugin_addressing_configs")) {
 
-      $DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/empty-1.9.0.sql");
+      $DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/empty-2.0.0.sql");
 
    } else {
       $update = true;
@@ -77,9 +77,7 @@ function plugin_addressing_install() {
       if (!fieldExists("glpi_plugin_addressing_profiles","use_ping_in_equipment")) {
          $DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.9.0.sql");
       }
-      
-      //Add all rights for current user profile
-      PluginAddressingProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
+
    }
 
    if ($update) {
@@ -110,6 +108,8 @@ function plugin_addressing_install() {
                                     
       //0.85 : new profile system
       PluginAddressingProfile::migrateProfiles();
+      //Add all rights for current user profile
+      PluginAddressingProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
    }
 
    return true;
@@ -127,7 +127,6 @@ function plugin_addressing_uninstall() {
                    "glpi_plugin_addressing_profiles",
                    "glpi_plugin_addressing_addressings",
                    "glpi_plugin_addressing_configs",
-                   "glpi_plugin_addressing_profiles", 
                    "glpi_plugin_addressing_display",
                    "glpi_plugin_addressing");
 
@@ -185,8 +184,7 @@ function plugin_addressing_getDatabaseRelations() {
 
    if ($plugin->isActivated("addressing")) {
       return array("glpi_networks" => array("glpi_plugin_addressing_addressings" => "networks_id"),
-                   "glpi_entities" => array("glpi_plugin_addressing_addressings" => "entities_id"),
-                   "glpi_profiles" => array("glpi_plugin_addressing_profiles"    => "profiles_id"));
+                   "glpi_entities" => array("glpi_plugin_addressing_addressings" => "entities_id"));
    }
    return array ();
 }
@@ -206,31 +204,6 @@ function plugin_addressing_getAddSearchOptions($itemtype) {
       }
    }
    return $sopt;
-}
-
-
-function plugin_addressing_giveItem($type,$ID,$data,$num) {
-
-  $searchopt = &Search::getOptions($type);
-
-   $table = $searchopt[$ID]["table"];
-   $field = $searchopt[$ID]["field"];
-
-   switch ($table.'.'.$field) {
-      case "glpi_plugin_addressing_profiles.addressing":
-         switch($data["ITEM_$num"]) {
-            case 'w':
-               return __('Writing ability');
-
-            case 'r':
-               return __('Read');
-
-            default:
-               return __('No access');
-         }
-         break;
-   }
-   return "";
 }
 
 
