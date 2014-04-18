@@ -54,8 +54,8 @@ class PluginAddressingMenu extends CommonGLPI {
       if (isset($_SESSION['glpimenu']['tools']['types']['PluginAddressingMenu'])) {
          unset($_SESSION['glpimenu']['tools']['types']['PluginAddressingMenu']); 
       }
-      if (isset($_SESSION['glpimenu']['tools']['content']['PluginAddressingMenu'])) {
-         unset($_SESSION['glpimenu']['tools']['content']['PluginAddressingMenu']); 
+      if (isset($_SESSION['glpimenu']['tools']['content']['pluginaddressingmenu'])) {
+         unset($_SESSION['glpimenu']['tools']['content']['pluginaddressingmenu']); 
       }
    }
 }
