@@ -181,6 +181,15 @@ class PluginAddressingProfile extends CommonDBTM {
                                              => $profile['use_ping_in_equipment']));
       }
    }
+   
+   
+   static function removeRightsFromSession() {
+      foreach (self::getAllRights(true) as $right) {
+         if (isset($_SESSION['glpiactiveprofile'][$right['field']])) {
+            unset($_SESSION['glpiactiveprofile'][$right['field']]);
+         }
+      }
+   }
 
 }
 ?>

@@ -28,7 +28,7 @@
  */
  
 class PluginAddressingMenu extends CommonGLPI {
-   static $rightname = 'config';
+   static $rightname = 'plugin_addressing';
 
    static function getMenuName() {
       return _n('IP Adressing', 'IP Adressing', 2, 'addressing');
@@ -48,5 +48,14 @@ class PluginAddressingMenu extends CommonGLPI {
          $menu['links']['add'] = PluginAddressingAddressing::getFormURL(false);
       }
       return $menu;
+   }
+   
+   static function removeRightsFromSession() {
+      if (isset($_SESSION['glpimenu']['tools']['types']['PluginAddressingMenu'])) {
+         unset($_SESSION['glpimenu']['tools']['types']['PluginAddressingMenu']); 
+      }
+      if (isset($_SESSION['glpimenu']['tools']['content']['PluginAddressingMenu'])) {
+         unset($_SESSION['glpimenu']['tools']['content']['PluginAddressingMenu']); 
+      }
    }
 }

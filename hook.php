@@ -110,6 +110,9 @@ function plugin_addressing_install() {
       PluginAddressingProfile::migrateProfiles();
       //Add all rights for current user profile
       PluginAddressingProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
+      //Drop old profile table : not used anymore
+      $migration = new Migration("2.2.0");
+      $migration->dropTable('glpi_plugin_addressing_profiles');
    }
 
    return true;
@@ -123,12 +126,7 @@ function plugin_addressing_uninstall() {
    
    $migration = new Migration("2.2.0");
    $tables = array("glpi_plugin_addressing_addressings",
-                   "glpi_plugin_addressing_configs",
-                   "glpi_plugin_addressing_profiles",
-                   "glpi_plugin_addressing_addressings",
-                   "glpi_plugin_addressing_configs",
-                   "glpi_plugin_addressing_display",
-                   "glpi_plugin_addressing");
+                   "glpi_plugin_addressing_configs");
 
    foreach($tables as $table) {
       $migration->dropTable($table);
@@ -146,32 +144,11 @@ function plugin_addressing_uninstall() {
    foreach (PluginAddressingProfile::getAllRights() as $right) {
       $profileRight->deleteByCriteria(array('name' => $right['field']));
    }
-
-
-/*
-   $tables = array("glpi_plugin_addressing_addressings",
-                   "glpi_plugin_addressing_configs",
-                   "glpi_plugin_addressing_profiles");
-
-   foreach($tables as $table)
-      $DB->query("DROP TABLE IF EXISTS `$table`;");
-
-   //old versions
-   $tables = array("glpi_plugin_addressing_display",
-                   "glpi_plugin_addressing");
-
-   foreach($tables as $table) {
-      $DB->query("DROP TABLE IF EXISTS `$table`;");
-   }
-
-   $tables_glpi = array("glpi_displaypreferences",
-                        "glpi_bookmarks");
    
-   foreach($tables_glpi as $table_glpi) 
-      $DB->query("DELETE
-                  FROM `$table_glpi`
-                  WHERE `itemtype` = '".'PluginAddressingAddressing'."';");
-*/
+   //Remove rigth from $_SESSION['glpiactiveprofile'] if exists
+   PluginAddressingProfile::removeRightsFromSession();
+   
+   PluginAddressingMenu::removeRightsFromSession();
 
    return true;
 }
@@ -187,23 +164,6 @@ function plugin_addressing_getDatabaseRelations() {
                    "glpi_entities" => array("glpi_plugin_addressing_addressings" => "entities_id"));
    }
    return array ();
-}
-
-
-function plugin_addressing_getAddSearchOptions($itemtype) {
-
-   $sopt = array();
-
-   if ($itemtype == 'Profile') {
-      if (Session::haveRight('plugin_addressing', READ)) {
-         // Use a plugin type reservation to avoid conflict
-         $sopt[5000]['table'] = 'glpi_plugin_addressing_profiles';
-         $sopt[5000]['field'] = 'addressing';
-         $sopt[5000]['name']  = PluginAddressingAddressing::getTypeName(2);
-         //$sopt[5000]['datatype']='bool';
-      }
-   }
-   return $sopt;
 }
 
 
