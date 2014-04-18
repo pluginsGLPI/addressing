@@ -42,7 +42,7 @@ if (isset($_GET["start"])) {
 $addressing = new PluginAddressingAddressing();
 
 if (isset($_POST["add"])) {
-   $addressing->check(-1, UPDATE, $_POST);
+   $addressing->check(-1, CREATE, $_POST);
    if (!empty($_POST["name"]) 
       && !empty($_POST["begin_ip"]) 
          && !empty($_POST["end_ip"])) {
@@ -54,17 +54,17 @@ if (isset($_POST["add"])) {
    Html::back();
 
 } else if (isset($_POST["delete"])) {
-   $addressing->check($_POST['id'], UPDATE);
+   $addressing->check($_POST['id'], DELETE);
    $addressing->delete($_POST);
    $addressing->redirectToList();
 
 } else if (isset($_POST["restore"])) {
-   $addressing->check($_POST['id'], UPDATE);
+   $addressing->check($_POST['id'], PURGE);
    $addressing->restore($_POST);
    $addressing->redirectToList();
 
 } else if (isset($_POST["purge"])) {
-   $addressing->check($_POST['id'], UPDATE);
+   $addressing->check($_POST['id'], PURGE);
    $addressing->delete($_POST,1);
    $addressing->redirectToList();
 
