@@ -105,15 +105,16 @@ function plugin_addressing_install() {
                               array("glpi_bookmarks", "glpi_bookmarks_users",
                                     "glpi_displaypreferences", "glpi_documents_items",
                                     "glpi_infocoms", "glpi_logs", "glpi_tickets"));
-                                    
-      //0.85 : new profile system
-      PluginAddressingProfile::migrateProfiles();
-      //Add all rights for current user profile
-      PluginAddressingProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
-      //Drop old profile table : not used anymore
-      $migration = new Migration("2.2.0");
-      $migration->dropTable('glpi_plugin_addressing_profiles');
+
    }
+   
+   //0.85 : new profile system
+   PluginAddressingProfile::migrateProfiles();
+   //Add all rights for current user profile
+   PluginAddressingProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
+   //Drop old profile table : not used anymore
+   $migration = new Migration("2.2.0");
+   $migration->dropTable('glpi_plugin_addressing_profiles');
 
    return true;
 }
