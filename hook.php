@@ -31,7 +31,7 @@ function plugin_addressing_install() {
    global $DB;
 
    include_once (GLPI_ROOT."/plugins/addressing/inc/profile.class.php");
-
+   
    $update = false;
    if (!TableExists("glpi_plugin_addressing_display")
        &&!TableExists("glpi_plugin_addressing")
@@ -124,6 +124,7 @@ function plugin_addressing_uninstall() {
    global $DB;
    
    include_once (GLPI_ROOT."/plugins/addressing/inc/profile.class.php");
+   include_once (GLPI_ROOT."/plugins/addressing/inc/menu.class.php");
    
    $migration = new Migration("2.2.0");
    $tables = array("glpi_plugin_addressing_addressings",

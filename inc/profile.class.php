@@ -161,6 +161,11 @@ class PluginAddressingProfile extends Profile {
 
 
    static function migrateProfiles() {
+      
+      if (!TableExists('glpi_plugin_addressing_profiles')) {
+      return true;
+      }
+      
       $profiles = getAllDatasFromTable('glpi_plugin_addressing_profiles');
       foreach ($profiles as $id => $profile) {
          switch ($profile['addressing']) {
