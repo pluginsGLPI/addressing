@@ -45,11 +45,7 @@ class PluginAddressingProfile extends Profile {
                 'field'     => 'plugin_addressing_use_ping_in_equipment'));
       return $rights;
    }
-
-   static function getTypeName($nb=0) {
-      return __('Rights management', 'addressing');
-   }
-
+   
     /**
     * Show profile form
     *
