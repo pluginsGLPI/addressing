@@ -1,0 +1,200 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Addressing Development Team
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# ddeacon <dumitrudeaconu@yahoo.com>, 2012
+msgid ""
+msgstr ""
+"Project-Id-Version: GLPI Project - addressing plugin\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-12-17 15:31+0100\n"
+"PO-Revision-Date: 2012-12-18 13:22+0000\n"
+"Last-Translator: ddeacon <dumitrudeaconu@yahoo.com>\n"
+"Language-Team: Romanian (Romania) (http://www.transifex.com/projects/p/GLPI_addressing/language/ro_RO/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ro_RO\n"
+"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
+
+#: hook.php:209 inc/profile.class.php:138
+msgid "Generate reports"
+msgstr "Generare rapoarte"
+
+#: setup.php:73 inc/addressing.class.php:38
+msgid "IP Adressing"
+msgid_plural "IP Adressing"
+msgstr[0] "Adresare IP"
+msgstr[1] "Adresare IP"
+msgstr[2] "Adresare IP"
+
+#: setup.php:86
+msgid "This plugin requires GLPI >= 0.84"
+msgstr "Acest plugin necesită GLPI >= 0.84"
+
+#: front/addressing.form.php:50 front/addressing.form.php:74
+msgid "Problem when adding, required fields are not here"
+msgstr "Probleme la adăugare, câmpurile cerute sunt lipsă"
+
+#: front/config.form.php:55
+msgid "Please activate the plugin"
+msgstr "Vă rog activaţi plugin-ul"
+
+#: inc/addressing.class.php:75 inc/addressing.class.php:247
+#: inc/addressing.class.php:437
+msgid "Ping free Ip"
+msgstr "Ping IP-urile libere"
+
+#: inc/addressing.class.php:90 inc/addressing.class.php:212
+msgid "First IP"
+msgstr "Primul IP"
+
+#: inc/addressing.class.php:96 inc/addressing.class.php:234
+msgid "Last IP"
+msgstr "Ultimul IP"
+
+#: inc/addressing.class.php:114 inc/addressing.class.php:256
+msgid "Report for the IP Range"
+msgstr "Raport pentru plaja de IP -uri"
+
+#: inc/addressing.class.php:157 inc/addressing.class.php:215
+#: inc/addressing.class.php:217 inc/addressing.class.php:219
+#: inc/addressing.class.php:221 inc/addressing.class.php:237
+#: inc/addressing.class.php:239 inc/addressing.class.php:241
+#: inc/addressing.class.php:243 inc/addressing.class.php:263
+msgid "Invalid data !!"
+msgstr "Date introduse incorecte !"
+
+#: inc/addressing.class.php:171 inc/config.class.php:64
+msgid "Assigned IP"
+msgstr "IP -uri atribuite"
+
+#: inc/addressing.class.php:181
+msgid "Select the network"
+msgstr "Selectaţi reţeaua"
+
+#: inc/addressing.class.php:188 inc/addressing.class.php:443
+#: inc/report.class.php:119
+msgid "Free Ip"
+msgstr "IP -uri libere"
+
+#: inc/addressing.class.php:197
+msgid "Detected subnet list"
+msgstr "Lista de subreţele detectate"
+
+#: inc/addressing.class.php:203 inc/config.class.php:75
+msgid "Same IP"
+msgstr "Acelaşi IP"
+
+#: inc/addressing.class.php:225 inc/config.class.php:80
+msgid "Reserved IP"
+msgstr "IP rezervat"
+
+#: inc/addressing.class.php:420
+msgid "Number of free ip"
+msgstr "Numar IP -uri libere"
+
+#: inc/addressing.class.php:423
+msgid "Number of reserved ip"
+msgstr "Numar IP -uri rezervate"
+
+#: inc/addressing.class.php:426
+msgid "Number of assigned ip (no doubles)"
+msgstr "Numar IP -uri   atribuite ( fără dubluri )"
+
+#: inc/addressing.class.php:429
+msgid "Doubles"
+msgstr "Dubluri"
+
+#: inc/addressing.class.php:434
+msgid "Red row"
+msgstr "Linie roşie"
+
+#: inc/addressing.class.php:434
+msgid "Same Ip"
+msgstr "Acelaşi IP"
+
+#: inc/addressing.class.php:438 inc/report.class.php:236
+msgid "Ping: got a response - used Ip"
+msgstr "Ping : răspuns - Ip utilizat"
+
+#: inc/addressing.class.php:440 inc/report.class.php:241
+msgid "Ping: no response - free Ip"
+msgstr "Ping:  fără răspuns - adresă liberă"
+
+#: inc/addressing.class.php:443
+msgid "Blue row"
+msgstr "Linie albastră"
+
+#: inc/addressing.class.php:465
+msgid "Real free Ip (Ping=KO)"
+msgstr "IP - uri libere reale ( Ping = OK)"
+
+#: inc/addressing.class.php:474
+msgid "Problem detected with the IP Range"
+msgstr "Probleme in alegerea plajei IP"
+
+#: inc/config.class.php:46
+msgid "System for ping"
+msgstr "Sistem pentru ping"
+
+#: inc/config.class.php:50
+msgid "Linux ping"
+msgstr "Linux ping"
+
+#: inc/config.class.php:52
+msgid "Linux fping"
+msgstr "Linux fping"
+
+#: inc/config.class.php:54
+msgid "Windows"
+msgstr "Windows"
+
+#: inc/config.class.php:56
+msgid "BSD ping"
+msgstr "BSD ping"
+
+#: inc/config.class.php:58
+msgid "MacOSX ping"
+msgstr "MacOSX ping"
+
+#: inc/config.class.php:62
+msgid "Display"
+msgstr "Afişează"
+
+#: inc/config.class.php:69
+msgid "Free IP"
+msgstr "IP -uri libere"
+
+#: inc/config.class.php:87
+msgid "Use Ping"
+msgstr "Utilizaţi ping - ul"
+
+#: inc/ping_equipment.class.php:84 inc/ping_equipment.class.php:191
+msgid "IP ping"
+msgstr "Ping IP"
+
+#: inc/ping_equipment.class.php:97
+msgid "Ping"
+msgstr "Ping"
+
+#: inc/ping_equipment.class.php:102
+msgid "Result"
+msgstr "Rezultat"
+
+#: inc/ping_equipment.class.php:128
+msgid "No IP for this equipment"
+msgstr "Niciun IP pentru acest echipament"
+
+#: inc/profile.class.php:37 inc/profile.class.php:132
+msgid "Rights management"
+msgstr "Managementul drepturilor"
+
+#: inc/profile.class.php:143
+msgid "Use ping on equipment form"
+msgstr "Utilizaţi ping pe fişa de echipamente"
+
+#: inc/report.class.php:210
+msgid "Reserved Address"
+msgstr "Adrese rezervate"
