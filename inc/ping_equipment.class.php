@@ -45,7 +45,7 @@ class PluginAddressingPing_Equipment {
       $list_ip  = array();
       $total_ip = 0;
 
-      if ($itemtype == 'NetworkEquipment') {
+      /*if ($itemtype == 'NetworkEquipment') {
          $query = "SELECT `ip`
                    FROM `glpi_networkequipments`
                    WHERE `id` = '".$obj->fields['id']."'";
@@ -60,7 +60,7 @@ class PluginAddressingPing_Equipment {
       $tmp = array_values($list_ip);
       if (count($tmp) > 0 && $tmp[0] == '') {
          array_pop($list_ip);
-      }
+      }*/
 
       $query = "SELECT `glpi_networknames`.`name`, `glpi_ipaddresses`.`name` as ip, `glpi_networkports`.`items_id`
                FROM `glpi_networkports` 
