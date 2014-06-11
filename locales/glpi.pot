@@ -1,0 +1,199 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Addressing Development Team
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: GLPI - Addressing plugin 2.1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-12-17 15:31+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: hook.php:209 inc/profile.class.php:138
+msgid "Generate reports"
+msgstr ""
+
+#: setup.php:73 inc/addressing.class.php:38
+msgid "IP Adressing"
+msgid_plural "IP Adressing"
+msgstr[0] ""
+msgstr[1] ""
+
+#: setup.php:86
+msgid "This plugin requires GLPI >= 0.84"
+msgstr ""
+
+#: front/addressing.form.php:50 front/addressing.form.php:74
+msgid "Problem when adding, required fields are not here"
+msgstr ""
+
+#: front/config.form.php:55
+msgid "Please activate the plugin"
+msgstr ""
+
+#: inc/addressing.class.php:75 inc/addressing.class.php:247
+#: inc/addressing.class.php:437
+msgid "Ping free Ip"
+msgstr ""
+
+#: inc/addressing.class.php:90 inc/addressing.class.php:212
+msgid "First IP"
+msgstr ""
+
+#: inc/addressing.class.php:96 inc/addressing.class.php:234
+msgid "Last IP"
+msgstr ""
+
+#: inc/addressing.class.php:114 inc/addressing.class.php:256
+msgid "Report for the IP Range"
+msgstr ""
+
+#: inc/addressing.class.php:157 inc/addressing.class.php:215
+#: inc/addressing.class.php:217 inc/addressing.class.php:219
+#: inc/addressing.class.php:221 inc/addressing.class.php:237
+#: inc/addressing.class.php:239 inc/addressing.class.php:241
+#: inc/addressing.class.php:243 inc/addressing.class.php:263
+msgid "Invalid data !!"
+msgstr ""
+
+#: inc/addressing.class.php:171 inc/config.class.php:64
+msgid "Assigned IP"
+msgstr ""
+
+#: inc/addressing.class.php:181
+msgid "Select the network"
+msgstr ""
+
+#: inc/addressing.class.php:188 inc/addressing.class.php:443
+#: inc/report.class.php:119
+msgid "Free Ip"
+msgstr ""
+
+#: inc/addressing.class.php:197
+msgid "Detected subnet list"
+msgstr ""
+
+#: inc/addressing.class.php:203 inc/config.class.php:75
+msgid "Same IP"
+msgstr ""
+
+#: inc/addressing.class.php:225 inc/config.class.php:80
+msgid "Reserved IP"
+msgstr ""
+
+#: inc/addressing.class.php:420
+msgid "Number of free ip"
+msgstr ""
+
+#: inc/addressing.class.php:423
+msgid "Number of reserved ip"
+msgstr ""
+
+#: inc/addressing.class.php:426
+msgid "Number of assigned ip (no doubles)"
+msgstr ""
+
+#: inc/addressing.class.php:429
+msgid "Doubles"
+msgstr ""
+
+#: inc/addressing.class.php:434
+msgid "Red row"
+msgstr ""
+
+#: inc/addressing.class.php:434
+msgid "Same Ip"
+msgstr ""
+
+#: inc/addressing.class.php:438 inc/report.class.php:236
+msgid "Ping: got a response - used Ip"
+msgstr ""
+
+#: inc/addressing.class.php:440 inc/report.class.php:241
+msgid "Ping: no response - free Ip"
+msgstr ""
+
+#: inc/addressing.class.php:443
+msgid "Blue row"
+msgstr ""
+
+#: inc/addressing.class.php:465
+msgid "Real free Ip (Ping=KO)"
+msgstr ""
+
+#: inc/addressing.class.php:474
+msgid "Problem detected with the IP Range"
+msgstr ""
+
+#: inc/config.class.php:46
+msgid "System for ping"
+msgstr ""
+
+#: inc/config.class.php:50
+msgid "Linux ping"
+msgstr ""
+
+#: inc/config.class.php:52
+msgid "Linux fping"
+msgstr ""
+
+#: inc/config.class.php:54
+msgid "Windows"
+msgstr ""
+
+#: inc/config.class.php:56
+msgid "BSD ping"
+msgstr ""
+
+#: inc/config.class.php:58
+msgid "MacOSX ping"
+msgstr ""
+
+#: inc/config.class.php:62
+msgid "Display"
+msgstr ""
+
+#: inc/config.class.php:69
+msgid "Free IP"
+msgstr ""
+
+#: inc/config.class.php:87
+msgid "Use Ping"
+msgstr ""
+
+#: inc/ping_equipment.class.php:84 inc/ping_equipment.class.php:191
+msgid "IP ping"
+msgstr ""
+
+#: inc/ping_equipment.class.php:97
+msgid "Ping"
+msgstr ""
+
+#: inc/ping_equipment.class.php:102
+msgid "Result"
+msgstr ""
+
+#: inc/ping_equipment.class.php:128
+msgid "No IP for this equipment"
+msgstr ""
+
+#: inc/profile.class.php:37 inc/profile.class.php:132
+msgid "Rights management"
+msgstr ""
+
+#: inc/profile.class.php:143
+msgid "Use ping on equipment form"
+msgstr ""
+
+#: inc/report.class.php:210
+msgid "Reserved Address"
+msgstr ""

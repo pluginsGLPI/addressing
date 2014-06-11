@@ -1,0 +1,200 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Addressing Development Team
+# This file is distributed under the same license as the PACKAGE package.
+# 
+# Translators:
+# The tsmr <tsmr@thetsmr.fr>, 2012
+msgid ""
+msgstr ""
+"Project-Id-Version: GLPI Project - addressing plugin\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-12-17 15:31+0100\n"
+"PO-Revision-Date: 2012-12-17 14:40+0000\n"
+"Last-Translator: The tsmr <tsmr@thetsmr.fr>\n"
+"Language-Team: Polish (Poland) (http://www.transifex.com/projects/p/GLPI_addressing/language/pl_PL/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: pl_PL\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: hook.php:209 inc/profile.class.php:138
+msgid "Generate reports"
+msgstr "Generowanie raportów"
+
+#: setup.php:73 inc/addressing.class.php:38
+msgid "IP Adressing"
+msgid_plural "IP Adressing"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+
+#: setup.php:86
+msgid "This plugin requires GLPI >= 0.84"
+msgstr ""
+
+#: front/addressing.form.php:50 front/addressing.form.php:74
+msgid "Problem when adding, required fields are not here"
+msgstr "Problem z dodaniem, brak wymaganego pola"
+
+#: front/config.form.php:55
+msgid "Please activate the plugin"
+msgstr ""
+
+#: inc/addressing.class.php:75 inc/addressing.class.php:247
+#: inc/addressing.class.php:437
+msgid "Ping free Ip"
+msgstr "Pinguj niezajęte Ip"
+
+#: inc/addressing.class.php:90 inc/addressing.class.php:212
+msgid "First IP"
+msgstr "Pierwsze IP"
+
+#: inc/addressing.class.php:96 inc/addressing.class.php:234
+msgid "Last IP"
+msgstr "Ostatnie IP"
+
+#: inc/addressing.class.php:114 inc/addressing.class.php:256
+msgid "Report for the IP Range"
+msgstr "Raport dla zakresu IP"
+
+#: inc/addressing.class.php:157 inc/addressing.class.php:215
+#: inc/addressing.class.php:217 inc/addressing.class.php:219
+#: inc/addressing.class.php:221 inc/addressing.class.php:237
+#: inc/addressing.class.php:239 inc/addressing.class.php:241
+#: inc/addressing.class.php:243 inc/addressing.class.php:263
+msgid "Invalid data !!"
+msgstr "Nieprawidłowe dane !!"
+
+#: inc/addressing.class.php:171 inc/config.class.php:64
+msgid "Assigned IP"
+msgstr "Przydzielone IP"
+
+#: inc/addressing.class.php:181
+msgid "Select the network"
+msgstr "Wybierz sieć"
+
+#: inc/addressing.class.php:188 inc/addressing.class.php:443
+#: inc/report.class.php:119
+msgid "Free Ip"
+msgstr "Niezajęte Ip"
+
+#: inc/addressing.class.php:197
+msgid "Detected subnet list"
+msgstr "Wykryta lista podsieci"
+
+#: inc/addressing.class.php:203 inc/config.class.php:75
+msgid "Same IP"
+msgstr "Identyczne Ip"
+
+#: inc/addressing.class.php:225 inc/config.class.php:80
+msgid "Reserved IP"
+msgstr "Zarezerwowane IP"
+
+#: inc/addressing.class.php:420
+msgid "Number of free ip"
+msgstr "Liczba niezajętych ip"
+
+#: inc/addressing.class.php:423
+msgid "Number of reserved ip"
+msgstr "Liczba zarezerwowanych ip"
+
+#: inc/addressing.class.php:426
+msgid "Number of assigned ip (no doubles)"
+msgstr "Liczba przypisanych numerów IP (bez podwójnych)"
+
+#: inc/addressing.class.php:429
+msgid "Doubles"
+msgstr "Podwójne"
+
+#: inc/addressing.class.php:434
+msgid "Red row"
+msgstr "Czerwony wiersz"
+
+#: inc/addressing.class.php:434
+msgid "Same Ip"
+msgstr "Identyczne Ip"
+
+#: inc/addressing.class.php:438 inc/report.class.php:236
+msgid "Ping: got a response - used Ip"
+msgstr "Ping: otrzymano odpowiedź - używane Ip"
+
+#: inc/addressing.class.php:440 inc/report.class.php:241
+msgid "Ping: no response - free Ip"
+msgstr "Ping: brak odpowiedzi - niezajęte Îp"
+
+#: inc/addressing.class.php:443
+msgid "Blue row"
+msgstr "Niebieski wiersz"
+
+#: inc/addressing.class.php:465
+msgid "Real free Ip (Ping=KO)"
+msgstr "Napewno niezajęte Ip (Ping=KO)"
+
+#: inc/addressing.class.php:474
+msgid "Problem detected with the IP Range"
+msgstr "Wykryto problem w zakresie IP"
+
+#: inc/config.class.php:46
+msgid "System for ping"
+msgstr "Rodzaj ping-a"
+
+#: inc/config.class.php:50
+msgid "Linux ping"
+msgstr "Linux ping"
+
+#: inc/config.class.php:52
+msgid "Linux fping"
+msgstr "Linux fping"
+
+#: inc/config.class.php:54
+msgid "Windows"
+msgstr "Windows"
+
+#: inc/config.class.php:56
+msgid "BSD ping"
+msgstr "BSD ping"
+
+#: inc/config.class.php:58
+msgid "MacOSX ping"
+msgstr "MacOSX ping"
+
+#: inc/config.class.php:62
+msgid "Display"
+msgstr ""
+
+#: inc/config.class.php:69
+msgid "Free IP"
+msgstr "Niezajęte Ip"
+
+#: inc/config.class.php:87
+msgid "Use Ping"
+msgstr "Użyj Ping"
+
+#: inc/ping_equipment.class.php:84 inc/ping_equipment.class.php:191
+msgid "IP ping"
+msgstr "IP ping"
+
+#: inc/ping_equipment.class.php:97
+msgid "Ping"
+msgstr "Ping"
+
+#: inc/ping_equipment.class.php:102
+msgid "Result"
+msgstr ""
+
+#: inc/ping_equipment.class.php:128
+msgid "No IP for this equipment"
+msgstr ""
+
+#: inc/profile.class.php:37 inc/profile.class.php:132
+msgid "Rights management"
+msgstr "Zarządzanie uprawnieniami"
+
+#: inc/profile.class.php:143
+msgid "Use ping on equipment form"
+msgstr ""
+
+#: inc/report.class.php:210
+msgid "Reserved Address"
+msgstr "Zarezerwowany adress"
