@@ -518,91 +518,59 @@ class PluginAddressingAddressing extends CommonDBTM {
       return array(Report::getTypeName(1));
    }
 
-   /**
-    * Get the specific massive actions
-    *
-    * @since version 0.84
-    * @param $checkitem link item to check right   (default NULL)
-    *
-    * @return an array of massive actions
-    **/
-   public function getSpecificMassiveActions($checkitem = NULL) {
+   //Massive Action
+   function getSpecificMassiveActions($checkitem=NULL) {
       $isadmin = static::canUpdate();
       $actions = parent::getSpecificMassiveActions($checkitem);
-
-      if ($isadmin) {
-         if (Session::haveRight('transfer', READ)
-                  && Session::isMultiEntitiesMode()
-         ) {
-            $actions['Transfert'] = __('Transfer');
-         }
+      
+      if (Session::haveRight('transfer', READ)
+            && Session::isMultiEntitiesMode()
+            && $isadmin) {
+         $actions['PluginAddressingAddressing'.MassiveAction::CLASS_ACTION_SEPARATOR.'transfer'] = __('Transfer');
       }
       return $actions;
-   }
+   }  
 
-   /**
-    * Display specific options add action button for massive actions
-    *
-    * Parameters must not be : itemtype, action, is_deleted, check_itemtype or check_items_id
-    * @param $input array of input datas
-    * @since version 0.84
-    *
-    * @return boolean if parameters displayed ?
-    **/
-   public function showSpecificMassiveActionsParameters($input = array()) {
 
-      switch ($input['action']) {
-         case "Transfert" :
+   static function showMassiveActionsSubForm(MassiveAction $ma) {
+
+      switch ($ma->getAction()) {
+         case "transfer" :
             Dropdown::show('Entity');
-            echo "&nbsp;<input type=\"submit\" name=\"massiveaction\" class=\"submit\" value='".
-                         _sx('button','Post'). "'>";
+            echo Html::submit(_x('button','Post'), array('name' => 'massiveaction'));
             return true;
-
-         default :
-            return parent::showSpecificMassiveActionsParameters($input);
+            break;
       }
-      return false;
+      return parent::showMassiveActionsSubForm($ma);
    }
-
+   
    /**
-    * Do the specific massive actions
+    * @since version 0.85
     *
-    * @since version 0.84
-    *
-    * @param $input array of input datas
-    *
-    * @return an array of results (nbok, nbko, nbnoright counts)
-    **/
-   public function doSpecificMassiveActions($input = array()) {
+    * @see CommonDBTM::processMassiveActionsForOneItemtype()
+   **/
+   static function processMassiveActionsForOneItemtype(MassiveAction $ma, CommonDBTM $item,
+                                                       array $ids) {
 
-      $res = array('ok' => 0,
-               'ko' => 0,
-               'noright' => 0);
+      switch ($ma->getAction()) {
+          case "transfer" :
+            $input = $ma->getInput();
 
-      switch ($input['action']) {
-         case "Transfert" :
+            if ($item->getType() == 'PluginAddressingAddressing') {
+            foreach ($ids as $key) {
+                  $values["id"] = $key;
+                  $values["entities_id"] = $input['entities_id'];
 
-            if ($input['itemtype'] == 'PluginAddressingAddressing') {
-               foreach ($input["item"] as $key => $val) {
-                  if ($val == 1) {
-                     $values["id"]               = $key;
-                     $values["entities_id"]      = $input['entities_id'];
-                     if ($this->update($values)) {
-                        $res['ok']++;
-                     } else {
-                        $res['ko']++;
-                     }
+                  if ($item->update($values)) {
+                     $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_OK);
+                  } else {
+                      $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_KO);
                   }
                }
             }
             break;
-         default :
-            return parent::doSpecificMassiveActions($input);
-            break;
       }
-      return $res;
    }
-
 }
 
 ?>
