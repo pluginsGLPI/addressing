@@ -148,11 +148,10 @@ class PluginAddressingProfile extends Profile {
     * @param $ID  integer
     */
    static function createFirstAccess($profiles_id) {
-      foreach (self::getAllRights() as $right) {
+
          self::addDefaultProfileInfos($profiles_id, 
                                     array('plugin_addressing' => ALLSTANDARDRIGHT, 
-                                          'plugin_addressing_use_ping_in_equipment' => '1'));
-      }
+                                          'plugin_addressing_use_ping_in_equipment' => '1'), true);
    }
 
 
