@@ -557,7 +557,7 @@ class PluginAddressingAddressing extends CommonDBTM {
             $input = $ma->getInput();
 
             if ($item->getType() == 'PluginAddressingAddressing') {
-            foreach ($ids as $key) {
+               foreach ($ids as $key) {
                   $values["id"] = $key;
                   $values["entities_id"] = $input['entities_id'];
 
