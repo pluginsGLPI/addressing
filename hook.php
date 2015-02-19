@@ -42,6 +42,7 @@ function plugin_addressing_install() {
    } else {
       
       if (!TableExists("glpi_plugin_addressing_profiles")
+          && TableExists("glpi_plugin_addressing_display")
           && !FieldExists("glpi_plugin_addressing_display","ipconf1")) {//1.4
          $update = true;
          $DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.4.sql");
@@ -74,7 +75,8 @@ function plugin_addressing_install() {
          $update = true;
       }
 
-      if (!fieldExists("glpi_plugin_addressing_profiles","use_ping_in_equipment")) {
+      if (TableExists("glpi_plugin_addressing_profiles")
+          && !FieldExists("glpi_plugin_addressing_profiles","use_ping_in_equipment")) {
          $DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.9.0.sql");
          $update = true;
       }
