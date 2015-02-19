@@ -107,7 +107,7 @@ function plugin_addressing_install() {
                                     5001 => 'PluginAddressingReport'),
                               array("glpi_bookmarks", "glpi_bookmarks_users",
                                     "glpi_displaypreferences", "glpi_documents_items",
-                                    "glpi_infocoms", "glpi_logs", "glpi_tickets"));
+                                    "glpi_infocoms", "glpi_logs", "glpi_items_tickets"));
 
    }
    
