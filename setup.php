@@ -39,10 +39,11 @@ function plugin_init_addressing() {
    Plugin::registerClass('PluginAddressingProfile',
                          array('addtabon' => array('Profile')));
 
-   $PLUGIN_HOOKS["menu_toadd"]['addressing'] = array('tools'  => 'PluginAddressingMenu');
+   
    
    if (Session::getLoginUserID()) {
       if (Session::haveRight('plugin_addressing', READ)) {
+         $PLUGIN_HOOKS["menu_toadd"]['addressing'] = array('tools'  => 'PluginAddressingMenu');
       }
 
       if (Session::haveRight('plugin_addressing', UPDATE)) {
