@@ -74,7 +74,7 @@ function plugaddr_ChangeList(msg) {
 	var lst=document.getElementById("plugaddr_subnet");
 	var champ=lst.value.split("/");
 	var subnet=champ[0].split(".");
-	var netmask=champ[1].split(".");
+	var netmask=champ[1].split(" - ")[0].split(".");
 	var ipdeb = new Array();
 	var ipfin = new Array();
 	
