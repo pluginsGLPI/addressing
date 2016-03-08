@@ -33,9 +33,8 @@ function plugin_init_addressing() {
 
    $PLUGIN_HOOKS['csrf_compliant']['addressing'] = true;
 
-//   $PLUGIN_HOOKS['change_profile']['addressing'] = array('PluginAddressingProfile', 'changeProfile');
-//   $PLUGIN_HOOKS['pre_item_purge']['addressing'] = array('Profile' => array('PluginAddressingProfile',
-//                                                                            'purgeProfiles'));
+   $PLUGIN_HOOKS['change_profile']['addressing'] = array('PluginAddressingProfile', 'initProfile');
+
    Plugin::registerClass('PluginAddressingProfile',
                          array('addtabon' => array('Profile')));
 
@@ -69,18 +68,18 @@ function plugin_version_addressing() {
 
    return array(
       'name'           => _n('IP Adressing', 'IP Adressing', 2, 'addressing'),
-      'version'        => '2.2.0',
+      'version'        => '2.3.0',
       'author'         => 'Gilles Portheault, Xavier Caillaud, Remi Collet, Nelly Mahu-Lasson',
       'license'        => 'GPLv2+',
-      'homepage'       => 'https://forge.indepnet.net/projects/addressing',
-      'minGlpiVersion' => '0.85');// For compatibility / no install in version < 0.80
+      'homepage'       => 'https://forge.glpi-project.org/projects/addressing',
+      'minGlpiVersion' => '0.85');// For compatibility / no install in version < 0.85
 }
 
 
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_addressing_check_prerequisites() {
 
-   if (version_compare(GLPI_VERSION,'0.85.3','lt') || version_compare(GLPI_VERSION,'0.86','ge')) {
+   if (version_compare(GLPI_VERSION,'0.85.3','lt') || version_compare(GLPI_VERSION,'0.91','ge')) {
       _e('This plugin requires GLPI >= 0.85.3', 'addressing');
       return false;
    }

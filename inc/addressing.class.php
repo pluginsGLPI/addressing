@@ -463,6 +463,10 @@ class PluginAddressingAddressing extends CommonDBTM {
             echo "<span class='plugin_addressing_ip_free'>".
                __('Blue row', 'addressing')."</span> - ".__('Free Ip', 'addressing')."<br>";
          }
+         if ($this->fields['reserved_ip']) {
+            echo "<span class='plugin_addressing_ip_reserved'>".
+               __('Green row', 'addressing')."</span> - ".__('Reserved Ip', 'addressing')."<br>";
+         }
 
          echo "</td></tr>";
          

@@ -129,7 +129,7 @@ function plugin_addressing_uninstall() {
    include_once (GLPI_ROOT."/plugins/addressing/inc/profile.class.php");
    include_once (GLPI_ROOT."/plugins/addressing/inc/menu.class.php");
    
-   $migration = new Migration("2.2.0");
+   $migration = new Migration("2.3.0");
    $tables = array("glpi_plugin_addressing_addressings",
                    "glpi_plugin_addressing_configs");
 
@@ -168,7 +168,7 @@ function plugin_addressing_getDatabaseRelations() {
       return array("glpi_networks" => array("glpi_plugin_addressing_addressings" => "networks_id"),
                    "glpi_entities" => array("glpi_plugin_addressing_addressings" => "entities_id"));
    }
-   return array ();
+   return array();
 }
 
 
@@ -249,13 +249,13 @@ function plugin_addressing_MassiveActionsProcess($data) {
 function plugin_addressing_dynamicReport($params) {
 
    $PluginAddressingAddressing = new PluginAddressingAddressing();
-   $PluginAddressingReport     = new PluginAddressingReport();
 
-   if ($params["item_type"]=='PluginAddressingReport'
+   if ($params["item_type"] == 'PluginAddressingReport'
        && isset($params["id"])
        && isset($params["display_type"])
        && $PluginAddressingAddressing->getFromDB($params["id"])) {
-
+      
+      $PluginAddressingReport     = new PluginAddressingReport();
       $result = $PluginAddressingAddressing->compute($params["start"]);
       $PluginAddressingReport->displayReport($result, $PluginAddressingAddressing);
 

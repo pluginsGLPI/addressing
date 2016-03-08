@@ -32,7 +32,11 @@
 }
 
 .plugin_addressing_ip_free {
-   background-color: #C0CAD4;
+   background-color: #8CB8D8;
+}
+
+.plugin_addressing_ip_reserved {
+   background-color: #8DA372;
 }
 
 .plugin_addressing_ping_on {

@@ -154,7 +154,21 @@ class PluginAddressingProfile extends Profile {
                                           'plugin_addressing_use_ping_in_equipment' => '1'), true);
    }
 
+   
+   /**
+   * Initialize profiles
+   */
+   static function initProfile() {
+      global $DB;
 
+      foreach ($DB->request("SELECT *
+                           FROM `glpi_profilerights` 
+                           WHERE `profiles_id`='".$_SESSION['glpiactiveprofile']['id']."' 
+                              AND `name` LIKE '%plugin_addressing%'") as $prof) {
+         $_SESSION['glpiactiveprofile'][$prof['name']] = $prof['rights']; 
+      }
+   }
+   
    static function migrateProfiles() {
       
       if (!TableExists('glpi_plugin_addressing_profiles')) {
