@@ -132,7 +132,8 @@ class PluginAddressingReserveip extends CommonDBTM {
 
       $this->forceTable(PluginAddressingAddressing::getTable());
       $this->initForm(-1);
-      $this->showFormHeader();
+      $options['colspan']= 1;
+      $this->showFormHeader($options);
 
       echo "<input type='hidden' name='ip' value='".$ip."' />";
       echo "<input type='hidden' name='id_addressing' value='".$id_addressing."' />";

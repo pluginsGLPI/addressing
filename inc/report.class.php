@@ -221,14 +221,23 @@ class PluginAddressingReport extends CommonDBTM {
             $content  = "";
 
             // Create modal to reserve IP
-            $rand = mt_rand();
-            Ajax::createIframeModalWindow('reserveip'.$rand, "reserveip.form.php?ip=".trim($ip)."&id_addressing=".$PluginAddressingAddressing->getID(), array('height' => 350, 'reloadonclose' => true));
-
+            if ($output_type == Search::HTML_OUTPUT) {
+               $rand = mt_rand();
+            
+               Ajax::createIframeModalWindow('reserveip'.$rand, "reserveip.form.php?ip=".trim($ip)."&id_addressing=".$PluginAddressingAddressing->getID(), array('height' => 350, 'reloadonclose' => true));
+            }
             if (!$ping) {
                echo $this->displaySearchNewLine($output_type, "free");
                echo Search::showItem($output_type, $ip, $item_num, $row_num);
                echo Search::showItem($output_type, " ", $item_num, $row_num);
-               $content = "<a href=\"#\" onclick=\"".Html::jsGetElementbyID("reserveip".$rand).".dialog('open');return false;\">".__("Reserve")."</a>";
+               
+               if ($output_type == Search::HTML_OUTPUT) {
+               
+                  $content = "<a href=\"#\" onclick=\"".Html::jsGetElementbyID("reserveip".$rand).".dialog('open');return false;\">".__("Reserve")."</a>";
+                  
+               } else {
+                  $content = "";
+               }
             } else {
                if ($output_type == Search::HTML_OUTPUT) {
                   Html::glpi_flush();
@@ -242,7 +251,12 @@ class PluginAddressingReport extends CommonDBTM {
                   echo $this->displaySearchNewLine($output_type, "ping_on");
                   echo Search::showItem($output_type, $ip, $item_num, $row_num);
                   echo Search::showItem($output_type, __('Ping: no response - free Ip', 'addressing'), $item_num, $row_num);
-                  $content = "<a href=\"#\" onclick=\"".Html::jsGetElementbyID("reserveip".$rand).".dialog('open');return false;\">".__("Reserve")."</a>";
+                  if ($output_type == Search::HTML_OUTPUT) {
+                     $content = "<a href=\"#\" onclick=\"".Html::jsGetElementbyID("reserveip".$rand).".dialog('open');return false;\">".__("Reserve")."</a>";
+                  
+                  } else {
+                     $content = "";
+                  }
                }
             }
             echo Search::showItem($output_type, " ", $item_num, $row_num);
