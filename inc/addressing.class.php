@@ -458,7 +458,7 @@ class PluginAddressingAddressing extends CommonDBTM {
                  "</span><br>";
             echo "<span class='plugin_addressing_ping_on'>".
                __('Ping: no response - free Ip', 'addressing').
-                 "</span>";
+                 "</span><br>";
          } else {
             echo "<span class='plugin_addressing_ip_free'>".
                __('Blue row', 'addressing')."</span> - ".__('Free Ip', 'addressing')."<br>";
