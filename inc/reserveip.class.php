@@ -156,7 +156,7 @@ class PluginAddressingReserveip extends CommonDBTM {
             </tr>
             <tr class='tab_bg_1'>
                <td colspan='4' class='center'>
-                  <input type='submit' name='add' class='submit' value='".__("Validate the reservation", 'adressing')."' />
+                  <input type='submit' name='add' class='submit' value='".__("Validate the reservation", 'addressing')."' />
                </td>
             </tr>
             </table>";
