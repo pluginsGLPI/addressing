@@ -73,12 +73,14 @@ function plugaddr_ChangeList(msg) {
 
    var i;
    var lst=document.getElementById("plugaddr_subnet");
+   if (lst.value == "0") return;
    var champ=lst.value.split("/");
    var subnet=champ[0].split(".");
-   var netmask=champ[1].split(".");
+   var netmask=champ[1].split(".", 4);
    var ipdeb = new Array();
    var ipfin = new Array();
    
+   netmask[3] = parseInt(netmask[3]).toString();
    if (lst.selectedIndex>0) {
       for (var i=0;i<4;i++) {
          ipdeb[i]=subnet[i]&netmask[i];
