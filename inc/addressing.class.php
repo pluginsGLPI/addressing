@@ -376,9 +376,7 @@ class PluginAddressingAddressing extends CommonDBTM {
          }
       
          if ($this->fields["networks_id"] 
-               && $type != 'Peripheral' 
-                  && $type != 'Phone' 
-                     && $type != 'PluginFusioninventoryUnknownDevice') {
+               && FieldExists($type::getTable(), 'networks_id')) {
             $sql .= " AND `dev`.`networks_id`= ".$this->fields["networks_id"];
          }
       }
