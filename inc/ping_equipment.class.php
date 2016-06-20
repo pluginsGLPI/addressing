@@ -119,39 +119,39 @@ class PluginAddressingPing_Equipment {
 
 
    function ping($system,$ip) {
-
-      $list ='';
+      $error = 1;
+      $list  ='';
       switch ($system) {
          case 0 :
             // linux ping
-            exec("ping -c 1 -w 1 ".$ip, $list);
+            exec("ping -c 1 -w 1 ".$ip, $list, $error);
             break;
 
          case 1 :
             //windows
-            exec("ping.exe -n 1 -w 1 -i 4 ".$ip, $list);
+            exec("ping.exe -n 1 -w 1 -i 4 ".$ip, $list, $error);
             break;
 
          case 2 :
             //linux fping
-            exec("fping -r1 -c1 -t100 ".$ip, $list);
+            exec("fping -r1 -c1 -t100 ".$ip, $list, $error);
             break;
 
          case 3 :
             // *BSD ping
-            exec("ping -c 1 -W 1 ".$ip, $list);
+            exec("ping -c 1 -W 1 ".$ip, $list, $error);
             break;
 
          case 4 :
             // MacOSX ping
-            exec("ping -c 1 -t 1 ".$ip, $list);
+            exec("ping -c 1 -t 1 ".$ip, $list, $error);
             break;
       }
       $list_str = implode('<br />', $list);
 
-      return $list_str;
+      return array($list_str, $error);
    }
-
+   
 
    static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
       global $CFG_GLPI;

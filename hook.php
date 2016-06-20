@@ -37,7 +37,7 @@ function plugin_addressing_install() {
        &&!TableExists("glpi_plugin_addressing")
        && !TableExists("glpi_plugin_addressing_configs")) {
 
-      $DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/empty-2.0.0.sql");
+      $DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/empty-2.4.0.sql");
 
    } else {
       
@@ -80,6 +80,10 @@ function plugin_addressing_install() {
          $DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.9.0.sql");
          $update = true;
       }
+      //Version 2.4.0
+      if (!TableExists("glpi_plugin_addressing_filters")) {
+         $DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-2.4.0.sql");
+      }
 
    }
 
@@ -116,7 +120,7 @@ function plugin_addressing_install() {
    //Add all rights for current user profile
    PluginAddressingProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
    //Drop old profile table : not used anymore
-   $migration = new Migration("2.2.0");
+   $migration = new Migration("2.4.0");
    $migration->dropTable('glpi_plugin_addressing_profiles');
 
    return true;

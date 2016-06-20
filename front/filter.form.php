@@ -1,6 +1,6 @@
 <?php
 /*
- * @version $Id$
+ * @version $Id: report.form.php 179 2014-04-02 08:11:29Z tsmr $
  -------------------------------------------------------------------------
  Addressing plugin for GLPI
  Copyright (C) 2003-2011 by the addressing Development Team.
@@ -26,32 +26,24 @@
  along with Addressing. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
  */
-
-// ----------------------------------------------------------------------
-// Original Author of file: Alexandre DELAUNAY
-// Purpose of file:
-// ----------------------------------------------------------------------
-
-
+ 
 include ('../../../inc/includes.php');
 
-header("Content-Type: text/html; charset=UTF-8");
-Html::header_nocache();
 
-Session::checkLoginUser();
 
-if (!isset($_POST['ip'])) {
-   exit();
+$filter = new PluginAddressingFilter();
+
+if (isset($_POST['add'])) {
+   $filter->check(-1, CREATE, $_POST);
+   unset($_POST['id']);
+   $filter->add($_POST);
+   Html::back();
+} elseif(isset($_POST['update'])) {
+   $filter->check($_POST['id'], UPDATE);
+   $filter->update($_POST);
+   Html::back();
+} else if (isset($_POST["purge"])) {
+   $filter->check($_POST['id'], PURGE);
+   $filter->delete($_POST,1);
+   Html::back();
 }
-$ip = $_POST['ip'];
-
-
-$config = new PluginAddressingConfig();
-$config->getFromDB('1');
-$system = $config->fields["used_system"];
-
-$ping_equip = new PluginAddressingPing_Equipment();
-list($message, $error) = $ping_equip->ping($system, $ip);
-echo $ping_response = $message;
-
-?>

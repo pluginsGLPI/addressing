@@ -224,7 +224,7 @@ class PluginAddressingReport extends CommonDBTM {
             if ($output_type == Search::HTML_OUTPUT) {
                $rand = mt_rand();
             
-               Ajax::createIframeModalWindow('reserveip'.$rand, "reserveip.form.php?ip=".trim($ip)."&id_addressing=".$PluginAddressingAddressing->getID(), array('height' => 350, 'reloadonclose' => true));
+               Ajax::createIframeModalWindow('reserveip'.$rand, "reserveip.form.php?ip=".trim($ip)."&id_addressing=".$PluginAddressingAddressing->getID(), array('height' => 450, 'reloadonclose' => true));
             }
             if (!$ping) {
                echo $this->displaySearchNewLine($output_type, "free");

@@ -114,3 +114,90 @@ function plugaddr_Init(msg) {
       document.getElementById("plugaddr_ipfin"+i).value=ipfin[i];		
    }
 }
+
+// Display initial values
+function plugaddr_CheckFilter(msg) {
+    if (plugaddr_IsFilter(msg)) {
+      return true;
+   }
+   alert(msg);
+   return false;
+}
+
+// Display initial values
+function plugaddr_IsFilter(msg) {
+
+   var ipdeb = new Array();
+   var ipfin = new Array();
+   var subnet = new Array();
+   var netmask = new Array();
+   var i;
+   var val;
+   
+   document.getElementById("plugaddr_range").innerHTML = "";
+   document.getElementById("plugaddr_ipdeb").value = "";
+   document.getElementById("plugaddr_ipfin").value = "";
+   
+   for (var i = 0; i < 4 ; i++) {
+      val=document.getElementById("plugaddr_ipdeb"+i).value
+      if (val=='' || isNaN(val) || parseInt(val)<0 || parseInt(val)>255) {
+         document.getElementById("plugaddr_range").innerHTML=msg+" ("+val+")"
+         return false;
+      }
+      ipdeb[i]=parseInt(val);
+
+      val=document.getElementById("plugaddr_ipfin"+i).value
+      if (val=='' || isNaN(val) || parseInt(val)<0 || parseInt(val)>255) {
+         document.getElementById("plugaddr_range").innerHTML=msg+" ("+val+")"
+         return false;
+      }
+      ipfin[i]=parseInt(val);
+   }
+
+   if (ipdeb[0]>ipfin[0]) {
+      document.getElementById("plugaddr_range").innerHTML=msg+" ("+ipdeb[0]+">"+ipfin[0]+")";
+      return false;	
+   }
+   if (ipdeb[0]==ipfin[0] && ipdeb[1]>ipfin[1]) {
+      document.getElementById("plugaddr_range").innerHTML=msg+" ("+ipdeb[1]+">"+ipfin[1]+")";
+      return false;	
+   }
+   if (ipdeb[0]==ipfin[0] && ipdeb[1]==ipfin[1] && ipdeb[2]>ipfin[2]) {
+      document.getElementById("plugaddr_range").innerHTML=msg+" ("+ipdeb[2]+">"+ipfin[2]+")";
+      return false;		
+   }
+   if (ipdeb[0]==ipfin[0] && ipdeb[1]==ipfin[1] && ipdeb[2]==ipfin[2] && ipdeb[3]>ipfin[3]) {
+      document.getElementById("plugaddr_range").innerHTML=msg+" ("+ipdeb[3]+">"+ipfin[3]+")";
+      return false;	
+   }
+
+   document.getElementById("plugaddr_range").innerHTML=""+ipdeb[0]+"."+ipdeb[1]+"."+ipdeb[2]+"."+ipdeb[3]+" - "+ipfin[0]+"."+ipfin[1]+"."+ipfin[2]+"."+ipfin[3];
+   document.getElementById("plugaddr_ipdeb").value=""+ipdeb[0]+"."+ipdeb[1]+"."+ipdeb[2]+"."+ipdeb[3];
+   document.getElementById("plugaddr_ipfin").value=""+ipfin[0]+"."+ipfin[1]+"."+ipfin[2]+"."+ipfin[3];
+   return true;
+}
+
+function nameIsThere(params) {
+    var root_doc = params;
+    var nameElm = $('input[name="name"]');
+    var typeElm = $('select[name="type"]');
+    var divNameItemElm = $('div[id="nameItem"]');
+    $.ajax({
+        url: root_doc + '/plugins/addressing/ajax/addressing.php',
+        type: "POST",
+        dataType: "json",
+        data: {
+            action: 'isName',
+            name: (nameElm.length != 0) ? nameElm.val() : '0',
+            type: (typeElm.length != 0) ? typeElm.val() : '0',
+        },
+        success: function (json) {
+            if (json) {
+                divNameItemElm.show();
+            } else {
+                divNameItemElm.hide();
+            }
+
+        }
+    });
+}

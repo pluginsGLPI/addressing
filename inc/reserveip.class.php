@@ -33,6 +33,9 @@ if (!defined('GLPI_ROOT')) {
 }
 
 class PluginAddressingReserveip extends CommonDBTM {
+   const COMPUTER = 'Computer';
+   const NETWORK  = 'NetworkEquipment';
+   const PRINTER  = 'Printer';
 
    static $rightname = 'plugin_addressing';
 
@@ -57,22 +60,24 @@ class PluginAddressingReserveip extends CommonDBTM {
       }
 
       // Find computer
-      $computer    = new Computer();
-      $id_computer = 0;
-      if (!$computer->getFromDBByQuery("WHERE `name`='".$input["computername"]."' AND `entities_id`=".$_SESSION["glpiactive_entity"]. " LIMIT 1")) {
+      $item    = new $input['type']();
+      $id = 0;
+      if (!$item->getFromDBByQuery("WHERE `name`='".$input["name"]."' AND `entities_id`=".$input['entities_id']. " LIMIT 1")) {
          // Add computer
-         $id_computer = $computer->add(array("name"        => $input["computername"],
-                                             "entities_id" => $_SESSION["glpiactive_entity"],
-                                             'states_id'   => $input["states_id"]));
+         $id = $item->add(array("name"        => $input["name"],
+                                "entities_id" => $input['entities_id'],
+                                'states_id'   => $input["states_id"],
+                                "comment"     => $input['comment']));
       } else {
-         $id_computer = $computer->getID();
+         $id = $item->getID();
+         //update item
       }
-
+      
       // Add a new port
-      if ($id_computer) {
+      if ($id) {
          $newinput = array(
-            "itemtype"                 => "Computer",
-            "items_id"                 => $id_computer,
+            "itemtype"                 => $input['type'],
+            "items_id"                 => $id,
             "entities_id"              => $_SESSION["glpiactive_entity"],
             "name"                     => self::getPortName($input["ip"]),
             "instantiation_type"       => "NetworkPortEthernet",
@@ -87,6 +92,17 @@ class PluginAddressingReserveip extends CommonDBTM {
          $np->splitInputForElements($newinput);
          $newID = $np->add($newinput);
          $np->updateDependencies(1);
+         //search id_networkname 
+
+         $networkname= new NetworkName();
+         $networkname->getFromDBByQuery("WHERE `itemtype` = 'NetworkPort' AND `items_id` = ".$newID);
+         
+         $ipadresses = new IPAddress();
+         //search id of ipaddresses
+         if($ipadresses->getFromDBByQuery("WHERE `items_id` = ".$networkname->fields['id']." AND `itemtype` = 'NetworkName' AND `mainitems_id` = ". $id." AND `mainitemtype` = '".$input['type']."'")){
+            $ipaddresses_ipnetwork = new IPAddress_IPNetwork();
+            $ipaddresses_ipnetwork->add(array('ipaddresses_id' => $ipadresses->fields['id'], 'ipnetworks_id' => $input['ipnetworks_id']));
+         }
          Event::log($newID, "networkport", 5, "inventory",
                //TRANS: %s is the user login
                sprintf(__('%s adds an item'), $_SESSION["glpiname"]));
@@ -103,8 +119,8 @@ class PluginAddressingReserveip extends CommonDBTM {
       $msg     = array();
       $checkKo = false;
 
-      $mandatory_fields = array('computername' => __("Computer's name"),
-                                'ip'           => _n("IP address", "IP addresses", 1));
+      $mandatory_fields = array('name' => __("Object's name", 'addressing'),
+                                'ip'   => _n("IP address", "IP addresses", 1));
 
       foreach ($input as $key => $value) {
          if (isset($mandatory_fields[$key])) {
@@ -129,10 +145,11 @@ class PluginAddressingReserveip extends CommonDBTM {
     * @param type $id_addressing
     */
    function showForm($ip, $id_addressing) {
-
+      global $CFG_GLPI;
+      
       $this->forceTable(PluginAddressingAddressing::getTable());
       $this->initForm(-1);
-      $options['colspan']= 1;
+      $options['colspan']= 2;
       $this->showFormHeader($options);
 
       echo "<input type='hidden' name='ip' value='".$ip."' />";
@@ -140,21 +157,74 @@ class PluginAddressingReserveip extends CommonDBTM {
       echo "<tr class='tab_bg_1'>
                <td>"._n("IP address", "IP addresses", 1)."</td>
                <td>".$ip."</td>
-            <tr class='tab_bg_1'>
-               <td>".__("Computer's name")." : </td>
-               <td><input type='text' name='computername' value='' size='40'></td>
-            </tr>
-            <tr class='tab_bg_1'>
+               <td>";
+      $config = new PluginAddressingConfig();
+      $config->getFromDB('1');
+      $system = $config->fields["used_system"];
+
+      $ping_equip    = new PluginAddressingPing_Equipment();
+      list($error, $message) = $ping_equip->ping($system, $ip);
+      if ($error) {
+         echo "<img src=\"".$CFG_GLPI["root_doc"]."/pics/ok.png\" alt=\"ok\">&nbsp;";
+         _e('Ping: ip address free', 'addressing');
+      }else{
+         echo "<img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt=\"warning\">&nbsp;";
+         _e('Ping: not available IP address', 'addressing');
+      }
+
+      echo "</td></tr>";
+      echo "<tr class='tab_bg_1'>
+               <td>".__("Entity")."</td>
+               <td>";
+      
+      $rand = Entity::dropdown(array('name' => 'entities_id', 'entity' => $_SESSION["glpiactiveentities"]));
+      
+      $params = array('action' => 'networkip', 'entities_id' => '__VALUE__');
+      Ajax::updateItemOnEvent("dropdown_entities_id".$rand, 'networkip', $CFG_GLPI["root_doc"]."/plugins/addressing/ajax/addressing.php", $params);
+      echo "</td><td></td>";
+      echo "</tr>";
+      
+      echo "</tr>";
+      echo "<tr class='tab_bg_1'>
+               <td>".__("Type")."</td>
+               <td>";
+      Dropdown::showFromArray('type',array(PluginAddressingReserveip::COMPUTER => Computer::getTypeName(), 
+                                           PluginAddressingReserveip::NETWORK => NetworkEquipment::getTypeName(), 
+                                           PluginAddressingReserveip::PRINTER => Printer::getTypeName()), array('on_change' => "nameIsThere(\"".$CFG_GLPI['root_doc']."\");"));
+      echo "</td><td></td>";
+      echo "</tr>";
+      echo "<tr class='tab_bg_1'>
+               <td>".__("Name")." : </td><td>";
+      $option = array('option' => "onChange=\"javascript:nameIsThere('".$CFG_GLPI['root_doc']."');\"");
+      Html::autocompletionTextField($this,"name",$option);
+      echo "</td><td><div style=\"display: none;\" id='nameItem'>";
+      echo "<img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt=\"warning\">&nbsp;";
+      _e('Name already in use', 'addressing');
+      echo "</div></td>
+            </tr>";
+      
+      echo "<tr class='tab_bg_1'>
                <td>".__("Status")." : </td>
                <td>";
          Dropdown::show("State");
          echo "</td>
-            </tr>
-            <tr class='tab_bg_1'>
+             <td></td> </tr>";
+           
+      echo "<tr class='tab_bg_1'>
                <td>".__("MAC address")." :</td>
                <td><input type='text' name='mac' value='' size='40' /></td>
-            </tr>
-            <tr class='tab_bg_1'>
+            <td></td></tr>";
+      echo "<tr class='tab_bg_1'>
+               <td>".__("Network")." :</td>
+               <td><div id='networkip'>";
+      IPNetwork::showIPNetworkProperties($_SESSION["glpiactive_entity"]);
+      echo "</div></td>
+            <td></td></tr>";
+      echo "<tr class='tab_bg_1'>
+               <td>".__("Comments")." :</td>
+               <td colspan='2'><textarea cols='75' rows='5' name='comment' ></textarea></td>
+            </tr>";
+       echo "<tr class='tab_bg_1'>
                <td colspan='4' class='center'>
                   <input type='submit' name='add' class='submit' value='".__("Validate the reservation", 'addressing')."' />
                </td>
@@ -162,5 +232,5 @@ class PluginAddressingReserveip extends CommonDBTM {
             </table>";
       Html::closeForm();
    }
-
+   
 }

@@ -1,6 +1,6 @@
 <?php
 /*
- * @version $Id$
+ * @version $Id: addressing.php 155 2013-01-29 10:20:31Z  $
  -------------------------------------------------------------------------
  Addressing plugin for GLPI
  Copyright (C) 2003-2011 by the addressing Development Team.
@@ -27,31 +27,27 @@
  --------------------------------------------------------------------------
  */
 
-// ----------------------------------------------------------------------
-// Original Author of file: Alexandre DELAUNAY
-// Purpose of file:
-// ----------------------------------------------------------------------
-
-
 include ('../../../inc/includes.php');
-
-header("Content-Type: text/html; charset=UTF-8");
-Html::header_nocache();
 
 Session::checkLoginUser();
 
-if (!isset($_POST['ip'])) {
-   exit();
+Html::header_nocache();
+if(isset($_POST['action']) && $_POST['action'] == 'isName'){
+   $item = new $_POST['type']();
+   $datas = $item->find("`name` = '".$_POST['name']."'");
+   if(count($datas) > 0){
+      echo json_encode(true);
+   }else{
+      echo json_encode(false);
+   }
+}elseif(isset($_POST['action']) && $_POST['action'] == 'viewFilter'){
+   if (isset($_POST['items_id'])
+       && isset($_POST["id"])) {
+      $filter = new PluginAddressingFilter();
+      $filter->showForm($_POST["id"], array('items_id' => $_POST['items_id']));
+   } else {
+      _e('Access denied');
+   }
+}elseif(isset($_POST['action']) && $_POST['action'] == 'networkip'){
+   IPNetwork::showIPNetworkProperties($_POST['entities_id']);
 }
-$ip = $_POST['ip'];
-
-
-$config = new PluginAddressingConfig();
-$config->getFromDB('1');
-$system = $config->fields["used_system"];
-
-$ping_equip = new PluginAddressingPing_Equipment();
-list($message, $error) = $ping_equip->ping($system, $ip);
-echo $ping_response = $message;
-
-?>

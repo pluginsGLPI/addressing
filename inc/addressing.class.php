@@ -98,6 +98,7 @@ class PluginAddressingAddressing extends CommonDBTM {
       $ong = array();
       $this->addDefaultFormTab($ong);
       $this->addStandardTab(__CLASS__, $ong, $options);
+      $this->addStandardTab('PluginAddressingFilter', $ong, $options);
       return $ong;
    }
 
@@ -283,12 +284,14 @@ class PluginAddressingAddressing extends CommonDBTM {
    }*/
 
 
-   function compute($start) {
+   function compute($start, $params = array()) {
       global $DB, $CFG_GLPI;
 
-      // sprintf to solve 32/64 bits issue
-      $ipdeb = sprintf("%u", ip2long($this->fields["begin_ip"]));
-      $ipfin = sprintf("%u", ip2long($this->fields["end_ip"]));
+      foreach ($params as $key => $val) {
+         if (isset($params[$key])) {
+            $$key = $params[$key];
+         }
+      }
 
       if (!isset($_GET["export_all"])) {
          if (isset($start)) {
@@ -324,9 +327,16 @@ class PluginAddressingAddressing extends CommonDBTM {
                WHERE INET_ATON(`glpi_ipaddresses`.`name`) >= '$ipdeb'
                      AND INET_ATON(`glpi_ipaddresses`.`name`) <= '$ipfin'
                      AND `dev`.`is_deleted` = 0
-                     AND `dev`.`is_template` = 0 " .
-                     getEntitiesRestrictRequest(" AND ","dev");
-      
+                     AND `dev`.`is_template` = 0 ";
+      if(isset($entities)){
+         $sql .= getSonsAndAncestorsOf('glpi_entities', $entities);
+      }else{
+         $sql .= getEntitiesRestrictRequest(" AND ","dev");
+      }
+      if (isset($type_filter)) {
+         $sql .= " AND `glpi_ipaddresses`.`mainitemtype` = '" . $type_filter . "'";
+      }
+
 
       if ($this->fields["networks_id"]) {
          $sql .= " AND `dev`.`networks_id` = ".$this->fields["networks_id"];
@@ -338,8 +348,12 @@ class PluginAddressingAddressing extends CommonDBTM {
       //      unset($ntypes[$k]);
       //   }
       //}
-      
-      foreach ($CFG_GLPI["networkport_types"] as $type) {
+      if(isset($type_filter)){
+         $types = array($type_filter);
+      }else{
+         $types = $CFG_GLPI["networkport_types"];
+      }
+      foreach ($types as $type) {
          $itemtable = getTableForItemType($type);
          if (!($item = getItemForItemtype($type))) {
             continue;
@@ -364,9 +378,16 @@ class PluginAddressingAddressing extends CommonDBTM {
                         LEFT JOIN `glpi_networknames` ON (`port`.`id` =  `glpi_networknames`.`items_id`)
                         LEFT JOIN `glpi_ipaddresses` ON (`glpi_ipaddresses`.`items_id` = `glpi_networknames`.`id`)
                         WHERE INET_ATON(`glpi_ipaddresses`.`name`) >= '$ipdeb'
-                              AND INET_ATON(`glpi_ipaddresses`.`name`) <= '$ipfin'" .
-                              getEntitiesRestrictRequest(" AND ", "dev");
-         
+                              AND INET_ATON(`glpi_ipaddresses`.`name`) <= '$ipfin'";
+         if (isset($entities)) {
+            $sql .= getSonsAndAncestorsOf('glpi_entities', $entities);
+         } else {
+            $sql .= getEntitiesRestrictRequest(" AND ", "dev");
+         }
+         if (isset($type_filter)) {
+            $sql .= " AND `glpi_ipaddresses`.`mainitemtype` = '" . $type_filter . "'";
+         }
+
          if ($item->maybeDeleted()) {
             $sql.=" AND `dev`.`is_deleted` = '0'";
          }
@@ -386,7 +407,13 @@ class PluginAddressingAddressing extends CommonDBTM {
             $result["IP".$row["ipnum"]][]=$row;
          }
       }
-
+      if (isset($type_filter)) {
+         foreach ($result as $key => $data){
+            if(empty($data)){
+               unset($result[$key]);
+            }
+         }
+      }
       return $result;
    }
 
@@ -400,7 +427,8 @@ class PluginAddressingAddressing extends CommonDBTM {
       $default_values["start"]  = $start  = 0;
       $default_values["id"]     = $id     = 0;
       $default_values["export"] = $export = false;
-
+      $default_values['filter'] = $filter = 0;
+      
       foreach ($default_values as $key => $val) {
          if (isset($params[$key])) {
             $$key=$params[$key];
@@ -408,7 +436,24 @@ class PluginAddressingAddressing extends CommonDBTM {
       }
 
       if ($this->getFromDB($id)) {
-         $result = $this->compute($start);
+         $addressingFilter = new PluginAddressingFilter();
+         if($filter > 0){
+            if ($addressingFilter->getFromDB($filter)) {
+               $ipdeb  = sprintf("%u", ip2long($addressingFilter->fields['begin_ip']));
+               $ipfin  = sprintf("%u", ip2long($addressingFilter->fields['end_ip']));
+               $result = $this->compute($start, array('ipdeb'       => $ipdeb,
+                                                      'ipfin'       => $ipfin,
+                                                      'entities_id' => $addressingFilter->fields['entities_id'],
+                                                      'type_filter'        => $addressingFilter->fields['type']));
+            }
+         }else{
+            $ipdeb = sprintf("%u", ip2long($this->fields["begin_ip"]));
+            $ipfin = sprintf("%u", ip2long($this->fields["end_ip"]));
+            $result = $this->compute($start, array('ipdeb' => $ipdeb,
+                                                   'ipfin' => $ipfin));
+         }
+         
+         
          $nbipf = 0; // ip libres
          $nbipr = 0; // ip reservees
          $nbipt = 0; // ip trouvees
@@ -475,6 +520,25 @@ class PluginAddressingAddressing extends CommonDBTM {
          echo "</table>";
          echo "</div>";
 
+         ////////////////////////// research ////////////////////////////////////////////////////////////
+          echo "<form method='post' name='filtering_form' id='filtering_form' action='".Toolbox::getItemTypeFormURL("PluginAddressingAddressing")."?id=$id'>";
+         echo "<table class='tab_cadre_fixe'><tr class='tab_bg_2 center'>";
+         echo "<input type='hidden' name='id' value='$id'>";
+         echo "<tr class='tab_bg_2 center'>";
+         echo "<th colspan='2'>";
+         _e('Search');
+         echo "</th></tr>";
+         echo "<tr class='tab_bg_1 center'><td>";
+         PluginAddressingFilter::dropdownFilters($params['id'], $filter);
+         echo "</td>";
+         echo "<td>";
+         echo "<input type='submit' name='search' value=\""._sx('button','Search')."\"
+                            class='submit'></td>";
+         echo "</td></tr>";
+         echo "</table>";
+         Html::closeForm();
+         
+         
          $numrows = 1+ip2long($this->fields['end_ip'])-ip2long($this->fields['begin_ip']);
          if (strpos($_SERVER['PHP_SELF'],"report.form.php")) {
             Html::printPager($start, $numrows, $_SERVER['PHP_SELF'], "start=$start&amp;id=".$id,
@@ -482,7 +546,7 @@ class PluginAddressingAddressing extends CommonDBTM {
          } else {
             Html::printAjaxPager("", $start, $numrows);
          }
-
+         
          //////////////////////////liste ips////////////////////////////////////////////////////////////
 
          $ping_response = $PluginAddressingReport->displayReport($result, $this);
