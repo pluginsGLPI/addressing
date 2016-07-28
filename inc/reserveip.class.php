@@ -71,6 +71,10 @@ class PluginAddressingReserveip extends CommonDBTM {
       } else {
          $id = $item->getID();
          //update item
+         $item->update(array("id"        => $id,
+                        "entities_id" => $input['entities_id'],
+                        'states_id'   => $input["states_id"],
+                        "comment"     => $input['comment']));
       }
       
       // Add a new port
@@ -144,7 +148,7 @@ class PluginAddressingReserveip extends CommonDBTM {
     * @param type $ip
     * @param type $id_addressing
     */
-   function showForm($ip, $id_addressing) {
+   function showForm($ip, $id_addressing, $randmodal) {
       global $CFG_GLPI;
       
       $this->forceTable(PluginAddressingAddressing::getTable());
@@ -163,7 +167,7 @@ class PluginAddressingReserveip extends CommonDBTM {
       $system = $config->fields["used_system"];
 
       $ping_equip    = new PluginAddressingPing_Equipment();
-      list($error, $message) = $ping_equip->ping($system, $ip);
+      list($message, $error) = $ping_equip->ping($system, $ip);
       if ($error) {
          echo "<img src=\"".$CFG_GLPI["root_doc"]."/pics/ok.png\" alt=\"ok\">&nbsp;";
          _e('Ping: ip address free', 'addressing');
@@ -226,7 +230,8 @@ class PluginAddressingReserveip extends CommonDBTM {
             </tr>";
        echo "<tr class='tab_bg_1'>
                <td colspan='4' class='center'>
-                  <input type='submit' name='add' class='submit' value='".__("Validate the reservation", 'addressing')."' />
+                  <input type='submit' name='add' class='submit' value='".__("Validate the reservation", 'addressing')."' "
+                  . "onclick=\"".Html::jsGetElementbyID("reserveip".$randmodal).".dialog('close');window.location.reload();return true;\"/>
                </td>
             </tr>
             </table>";

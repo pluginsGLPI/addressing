@@ -358,53 +358,63 @@ class PluginAddressingAddressing extends CommonDBTM {
          if (!($item = getItemForItemtype($type))) {
             continue;
          }
-         $sql .= " UNION SELECT `port`.`id`,
-                                 '" . $type . "' AS `itemtype`,
-                                 `port`.`items_id`,
-                                `dev`.`name` AS dname,
-                                `port`.`name` AS pname,
-                                `glpi_ipaddresses`.`name` as ip,
-                                `port`.`mac`";
-         
-         if ($type == 'PluginFusioninventoryUnknownDevice') {
-            $sql .= " ,0 AS `users_id` ";
-         } else {
-            $sql .= " ,`dev`.`users_id` ";
-         }
-         $sql .= " , INET_ATON(`glpi_ipaddresses`.`name`) AS ipnum ";
-         $sql .= " FROM `glpi_networkports` port
-                        LEFT JOIN `" . $itemtable . "` dev ON (`port`.`items_id` = `dev`.`id`
-                              AND `port`.`itemtype` = '" . $type . "')
-                        LEFT JOIN `glpi_networknames` ON (`port`.`id` =  `glpi_networknames`.`items_id`)
-                        LEFT JOIN `glpi_ipaddresses` ON (`glpi_ipaddresses`.`items_id` = `glpi_networknames`.`id`)
-                        WHERE INET_ATON(`glpi_ipaddresses`.`name`) >= '$ipdeb'
-                              AND INET_ATON(`glpi_ipaddresses`.`name`) <= '$ipfin'";
-         if (isset($entities)) {
-            $sql .= getSonsAndAncestorsOf('glpi_entities', $entities);
-         } else {
-            $sql .= getEntitiesRestrictRequest(" AND ", "dev");
-         }
-         if (isset($type_filter)) {
-            $sql .= " AND `glpi_ipaddresses`.`mainitemtype` = '" . $type_filter . "'";
-         }
+            $sql .= " UNION SELECT `port`.`id`,
+                                    '" . $type . "' AS `itemtype`,
+                                    `port`.`items_id`,
+                                   `dev`.`name` AS dname,
+                                   `port`.`name` AS pname,
+                                   `glpi_ipaddresses`.`name` as ip,
+                                   `port`.`mac`";
 
-         if ($item->maybeDeleted()) {
-            $sql.=" AND `dev`.`is_deleted` = '0'";
+            if ($type == 'PluginFusioninventoryUnknownDevice') {
+               $sql .= " ,0 AS `users_id` ";
+            } else {
+               $sql .= " ,`dev`.`users_id` ";
+            }
+            $sql .= " , INET_ATON(`glpi_ipaddresses`.`name`) AS ipnum ";
+            $sql .= " FROM `glpi_networkports` port
+                           LEFT JOIN `" . $itemtable . "` dev ON (`port`.`items_id` = `dev`.`id`
+                                 AND `port`.`itemtype` = '" . $type . "')
+                           LEFT JOIN `glpi_networknames` ON (`port`.`id` =  `glpi_networknames`.`items_id`)
+                           LEFT JOIN `glpi_ipaddresses` ON (`glpi_ipaddresses`.`items_id` = `glpi_networknames`.`id`)
+                           WHERE INET_ATON(`glpi_ipaddresses`.`name`) >= '$ipdeb'
+                                 AND INET_ATON(`glpi_ipaddresses`.`name`) <= '$ipfin'";
+            if (isset($entities)) {
+               $sql .= getSonsAndAncestorsOf('glpi_entities', $entities);
+            } else {
+               $sql .= getEntitiesRestrictRequest(" AND ", "dev");
+            }
+            if (isset($type_filter)) {
+               $sql .= " AND `glpi_ipaddresses`.`mainitemtype` = '" . $type_filter . "'";
+            }
+
+            if ($item->maybeDeleted()) {
+               $sql.=" AND `dev`.`is_deleted` = '0'";
+            }
+
+            if ($item->maybeTemplate()) {
+               $sql.=" AND `dev`.`is_template` = '0'";
+            }
+
+            if ($this->fields["networks_id"] 
+                  && FieldExists($type::getTable(), 'networks_id')) {
+               $sql .= " AND `dev`.`networks_id`= ".$this->fields["networks_id"];
+            }
          }
-         
-         if ($item->maybeTemplate()) {
-            $sql.=" AND `dev`.`is_template` = '0'";
-         }
-      
-         if ($this->fields["networks_id"] 
-               && FieldExists($type::getTable(), 'networks_id')) {
-            $sql .= " AND `dev`.`networks_id`= ".$this->fields["networks_id"];
-         }
-      }
       $res = $DB->query($sql);
       if ($res) {
          while ($row=$DB->fetch_assoc($res)) {
             $result["IP".$row["ipnum"]][]=$row;
+         }
+      }
+      foreach ($result as $key => $data){
+         if(count($data) > 1){
+            foreach ($data as $keyip => $ip){
+               if(empty($ip['pname'])){
+                  unset($result[$key][$keyip]);
+               }
+               
+            }
          }
       }
       if (isset($type_filter)) {

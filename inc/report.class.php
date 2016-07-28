@@ -220,21 +220,20 @@ class PluginAddressingReport extends CommonDBTM {
             $item_num = 1;
             $content  = "";
 
-            // Create modal to reserve IP
-            if ($output_type == Search::HTML_OUTPUT) {
-               $rand = mt_rand();
-            
-               Ajax::createIframeModalWindow('reserveip'.$rand, "reserveip.form.php?ip=".trim($ip)."&id_addressing=".$PluginAddressingAddressing->getID(), array('height' => 450, 'reloadonclose' => true));
-            }
             if (!$ping) {
                echo $this->displaySearchNewLine($output_type, "free");
                echo Search::showItem($output_type, $ip, $item_num, $row_num);
                echo Search::showItem($output_type, " ", $item_num, $row_num);
                
                if ($output_type == Search::HTML_OUTPUT) {
-               
-                  $content = "<a href=\"#\" onclick=\"".Html::jsGetElementbyID("reserveip".$rand).".dialog('open');return false;\">".__("Reserve")."</a>";
-                  
+                  $rand    = mt_rand();
+                  $params  = array('id_addressing' => $PluginAddressingAddressing->getID(),
+                     'ip'            => trim($ip),
+                     'root_doc'      => $CFG_GLPI['root_doc'],
+                     'rand'          => $rand,
+                     'width'         => 1000,
+                     'height'        => 550);
+                  $content = "<a href=\"#\" onClick='plugaddr_loadForm(\"showForm\", \"plugaddr_form\", " . json_encode($params) . ");'> " . __("Reserve") . "</a>";
                } else {
                   $content = "";
                }
@@ -266,7 +265,8 @@ class PluginAddressingReport extends CommonDBTM {
             echo Search::showEndLine($output_type);
          }
       }
-
+      //div for the modal
+      echo "<div id=\"plugaddr_form\"  style=\"display:none;text-align:center\"></div>";
       // Display footer
       echo Search::showFooter($output_type, $PluginAddressingAddressing->getTitle());
 

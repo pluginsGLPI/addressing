@@ -50,4 +50,9 @@ if(isset($_POST['action']) && $_POST['action'] == 'isName'){
    }
 }elseif(isset($_POST['action']) && $_POST['action'] == 'networkip'){
    IPNetwork::showIPNetworkProperties($_POST['entities_id']);
+   
+}elseif(isset($_POST['action']) && $_POST['action'] == 'showForm') {
+      $PluginAddressingReserveip = new PluginAddressingReserveip();
+      $params = $_POST["params"];
+      $PluginAddressingReserveip->showForm($params["ip"], $params['id_addressing'], $params['rand']);
 }

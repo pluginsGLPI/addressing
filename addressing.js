@@ -179,7 +179,7 @@ function plugaddr_IsFilter(msg) {
 
 function nameIsThere(params) {
     var root_doc = params;
-    var nameElm = $('input[name="name"]');
+    var nameElm = $('input[id*="textfield_name"]');
     var typeElm = $('select[name="type"]');
     var divNameItemElm = $('div[id="nameItem"]');
     $.ajax({
@@ -198,6 +198,51 @@ function nameIsThere(params) {
                 divNameItemElm.hide();
             }
 
+        }
+    });
+}
+
+function getAddressingFormData(form) {
+    var unindexed_array = form.serializeArray();
+    var indexed_array = {};
+
+    $.map(unindexed_array, function (n, i) {
+        indexed_array[n['name']] = n['value'];
+    });
+
+    return JSON.stringify(indexed_array);
+}
+
+function plugaddr_loadForm(action, modal, params) {
+    var formInput;
+    if (params.form != undefined) {
+        formInput = getAddressingFormData($('form[name="' + params.form + '"]'));
+    }
+
+    $.ajax({
+        url: params.root_doc + '/plugins/addressing/ajax/addressing.php',
+        type: "POST",
+        dataType: "html",
+        data: {
+            'action': action,
+            'params': params,
+            'pdf_action': params.pdf_action,
+            'formInput': formInput,
+            'modal': modal,
+        },
+        success: function (response, opts) {
+            $('#' + modal).html(response);
+
+            switch (action) {
+                case 'showForm':
+                    $('#' + modal).dialog({
+                        autoOpen: true,
+                        height: params.height,
+                        width: params.width,
+                        overflow: "none"
+                    });
+                    break;
+            }
         }
     });
 }
