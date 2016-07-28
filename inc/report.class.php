@@ -251,6 +251,7 @@ class PluginAddressingReport extends CommonDBTM {
                   echo Search::showItem($output_type, $ip, $item_num, $row_num);
                   echo Search::showItem($output_type, __('Ping: no response - free Ip', 'addressing'), $item_num, $row_num);
                   if ($output_type == Search::HTML_OUTPUT) {
+                     $rand = mt_rand();
                      $content = "<a href=\"#\" onclick=\"".Html::jsGetElementbyID("reserveip".$rand).".dialog('open');return false;\">".__("Reserve")."</a>";
                   
                   } else {
