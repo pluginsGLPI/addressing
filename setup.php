@@ -2,28 +2,28 @@
 /*
  * @version $Id$
  -------------------------------------------------------------------------
- Addressing plugin for GLPI
- Copyright (C) 2003-2011 by the addressing Development Team.
+ addressing plugin for GLPI
+ Copyright (C) 2009-2016 by the addressing Development Team.
 
- https://forge.indepnet.net/projects/addressing
+ https://github.com/InfotelGLPI/addressing
  -------------------------------------------------------------------------
 
  LICENSE
-
+      
  This file is part of addressing.
 
- Addressing is free software; you can redistribute it and/or modify
+ addressing is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 2 of the License, or
  (at your option) any later version.
 
- Addressing is distributed in the hope that it will be useful,
+ addressing is distributed in the hope that it will be useful,
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
 
  You should have received a copy of the GNU General Public License
- along with Addressing. If not, see <http://www.gnu.org/licenses/>.
+ along with addressing. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
  */
 
@@ -68,7 +68,7 @@ function plugin_version_addressing() {
 
    return array(
       'name'           => _n('IP Adressing', 'IP Adressing', 2, 'addressing'),
-      'version'        => '2.3.1',
+      'version'        => '2.4.0',
       'author'         => 'Gilles Portheault, Xavier Caillaud, Remi Collet, Nelly Mahu-Lasson',
       'license'        => 'GPLv2+',
       'homepage'       => 'https://forge.glpi-project.org/projects/addressing',
@@ -79,7 +79,7 @@ function plugin_version_addressing() {
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_addressing_check_prerequisites() {
 
-   if (version_compare(GLPI_VERSION,'0.85.3','lt') || version_compare(GLPI_VERSION,'0.91','ge')) {
+   if (version_compare(GLPI_VERSION,'0.85.3','lt') || version_compare(GLPI_VERSION,'9.1','ge')) {
       _e('This plugin requires GLPI >= 0.85.3', 'addressing');
       return false;
    }
