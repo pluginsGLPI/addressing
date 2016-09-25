@@ -5,7 +5,7 @@
  addressing plugin for GLPI
  Copyright (C) 2009-2016 by the addressing Development Team.
 
- https://github.com/InfotelGLPI/addressing
+ https://github.com/pluginsGLPI/addressing
  -------------------------------------------------------------------------
 
  LICENSE
@@ -71,7 +71,7 @@ function plugin_version_addressing() {
       'version'        => '2.4.0',
       'author'         => 'Gilles Portheault, Xavier Caillaud, Remi Collet, Nelly Mahu-Lasson',
       'license'        => 'GPLv2+',
-      'homepage'       => 'https://forge.glpi-project.org/projects/addressing',
+      'homepage'       => 'https://github.com/pluginsGLPI/addressing',
       'minGlpiVersion' => '0.85');// For compatibility / no install in version < 0.85
 }
 

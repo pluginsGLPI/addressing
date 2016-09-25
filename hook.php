@@ -5,7 +5,7 @@
  addressing plugin for GLPI
  Copyright (C) 2009-2016 by the addressing Development Team.
 
- https://github.com/InfotelGLPI/addressing
+ https://github.com/pluginsGLPI/addressing
  -------------------------------------------------------------------------
 
  LICENSE
