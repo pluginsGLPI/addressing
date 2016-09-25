@@ -1,6 +1,12 @@
 # addressing
 Plugin addressing for GLPI
 
+Ce plugin est sur Transifex - Aidez-nous à le traduire :
+https://www.transifex.com/tsmr/GLPI_addressing/
+
+This plugin is on Transifex - Help us to translate :
+https://www.transifex.com/tsmr/GLPI_addressing/
+
 ## Français
 
 Ce plugin vous permet créer des rapports IP afin de visualiser les adresses ip utilisées et libres sur un réseau donné.
