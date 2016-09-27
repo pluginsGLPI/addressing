@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of addressing.
 
  addressing is free software; you can redistribute it and/or modify
@@ -45,7 +45,6 @@ class PluginAddressingReport extends CommonDBTM {
                $style = " style=\"background-color:#DDDDDD;\" ";
             }
             $PDF_TABLE .= "<tr nobr=\"true\" $style>";
-            break;
             break;
 
          case Search::SYLK_OUTPUT : //sylk
@@ -266,8 +265,10 @@ class PluginAddressingReport extends CommonDBTM {
             echo Search::showEndLine($output_type);
          }
       }
-      //div for the modal
-      echo "<div id=\"plugaddr_form\"  style=\"display:none;text-align:center\"></div>";
+      if ($output_type == Search::HTML_OUTPUT) {
+         //div for the modal
+         echo "<div id=\"plugaddr_form\"  style=\"display:none;text-align:center\"></div>";
+      }
       // Display footer
       echo Search::showFooter($output_type, $PluginAddressingAddressing->getTitle());
 

@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of addressing.
 
  addressing is free software; you can redistribute it and/or modify
@@ -254,13 +254,30 @@ function plugin_addressing_dynamicReport($params) {
 
    $PluginAddressingAddressing = new PluginAddressingAddressing();
 
-   if ($params["item_type"] == 'PluginAddressingReport'
-       && isset($params["id"])
-       && isset($params["display_type"])
-       && $PluginAddressingAddressing->getFromDB($params["id"])) {
-      
-      $PluginAddressingReport     = new PluginAddressingReport();
-      $result = $PluginAddressingAddressing->compute($params["start"]);
+   if ($params["item_type"] == 'PluginAddressingReport' 
+      && isset($params["id"]) 
+      && isset($params["display_type"]) 
+      && $PluginAddressingAddressing->getFromDB($params["id"])) {
+
+      $PluginAddressingReport = new PluginAddressingReport();
+      $PluginAddressingAddressing->getFromDB($params['id']);
+
+      $addressingFilter = new PluginAddressingFilter();
+      if (isset($params['filter']) && $params['filter'] > 0) {
+         if ($addressingFilter->getFromDB($params['filter'])) {
+            $ipdeb  = sprintf("%u", ip2long($addressingFilter->fields['begin_ip']));
+            $ipfin  = sprintf("%u", ip2long($addressingFilter->fields['end_ip']));
+            $result = $PluginAddressingAddressing->compute($params["start"], array( 'ipdeb'       => $ipdeb,
+                                                                                    'ipfin'       => $ipfin,
+                                                                                    'entities_id' => $addressingFilter->fields['entities_id'],
+                                                                                    'type_filter' => $addressingFilter->fields['type']));
+         }
+      } else {
+         $ipdeb  = sprintf("%u", ip2long($PluginAddressingAddressing->fields["begin_ip"]));
+         $ipfin  = sprintf("%u", ip2long($PluginAddressingAddressing->fields["end_ip"]));
+         $result = $PluginAddressingAddressing->compute($params["start"], array( 'ipdeb' => $ipdeb,
+                                                                                 'ipfin' => $ipfin));
+      }
       $PluginAddressingReport->displayReport($result, $PluginAddressingAddressing);
 
       return true;

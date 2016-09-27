@@ -1,30 +1,30 @@
 <?php
 /*
  * @version $Id$
- -------------------------------------------------------------------------
+  -------------------------------------------------------------------------
  addressing plugin for GLPI
  Copyright (C) 2009-2016 by the addressing Development Team.
 
  https://github.com/pluginsGLPI/addressing
- -------------------------------------------------------------------------
+  -------------------------------------------------------------------------
 
- LICENSE
-      
- This file is part of addressing.
+  LICENSE
+
+  This file is part of addressing.
 
  addressing is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 2 of the License, or
- (at your option) any later version.
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
 
  addressing is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
- You should have received a copy of the GNU General Public License
+  You should have received a copy of the GNU General Public License
  along with addressing. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+  --------------------------------------------------------------------------
  */
 
 if (!defined('GLPI_ROOT')) {
@@ -78,19 +78,38 @@ class PluginAddressingReserveip extends CommonDBTM {
       
       // Add a new port
       if ($id) {
-         $newinput = array(
-            "itemtype"                 => $input['type'],
-            "items_id"                 => $id,
-            "entities_id"              => $_SESSION["glpiactive_entity"],
-            "name"                     => self::getPortName($input["ip"]),
-            "instantiation_type"       => "NetworkPortEthernet",
-            "mac"                      => $input["mac"],
-            "NetworkName__ipaddresses" => array("-100" => $input["ip"]),
-            "speed"                    => "0",
-            "speed_other_value"        => "",
-            "add"                      => __("Add"),
-         );
-
+         switch ($input['type']){
+            case 'NetworkEquipment' : 
+               $newinput = array(
+                  "itemtype"                 => $input['type'],
+                  "items_id"                 => $id,
+                  "entities_id"              => $_SESSION["glpiactive_entity"],
+                  "name"                     => self::getPortName($input["ip"]),
+                  "instantiation_type"       => "NetworkPortAggregate",
+                  "mac"                      => $input["mac"],
+                  "NetworkName__ipaddresses" => array("-100" => $input["ip"]),
+                  "speed"                    => "0",
+                  "speed_other_value"        => "",
+                  "add"                      => __("Add"),
+               );
+               break;
+            case 'Computer':
+            case 'Printer':
+               $newinput = array(
+                  "itemtype"                 => $input['type'],
+                  "items_id"                 => $id,
+                  "entities_id"              => $_SESSION["glpiactive_entity"],
+                  "name"                     => self::getPortName($input["ip"]),
+                  "instantiation_type"       => "NetworkPortEthernet",
+                  "mac"                      => $input["mac"],
+                  "NetworkName__ipaddresses" => array("-100" => $input["ip"]),
+                  "speed"                    => "0",
+                  "speed_other_value"        => "",
+                  "add"                      => __("Add"),
+               );
+               break;
+         }
+         
          $np = new NetworkPort();
          $np->splitInputForElements($newinput);
          $newID = $np->add($newinput);

@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of addressing.
 
  addressing is free software; you can redistribute it and/or modify
@@ -523,10 +523,6 @@ class PluginAddressingAddressing extends CommonDBTM {
 
          echo "</td></tr>";
          
-         echo "<tr><td colspan='2' align='center'>";
-         echo "<a href='./report.form.php?id=".$this->getID()."&export=true'>".__('Export')."</a>";
-         echo "</td></tr>";
-         
          echo "</table>";
          echo "</div>";
 
@@ -550,12 +546,8 @@ class PluginAddressingAddressing extends CommonDBTM {
          
          
          $numrows = 1+ip2long($this->fields['end_ip'])-ip2long($this->fields['begin_ip']);
-         if (strpos($_SERVER['PHP_SELF'],"report.form.php")) {
-            Html::printPager($start, $numrows, $_SERVER['PHP_SELF'], "start=$start&amp;id=".$id,
+         Html::printPager($start, $numrows, $_SERVER['PHP_SELF'], "start=$start&amp;id=$id&amp;filter=$filter",
                              'PluginAddressingReport');
-         } else {
-            Html::printAjaxPager("", $start, $numrows);
-         }
          
          //////////////////////////liste ips////////////////////////////////////////////////////////////
 
