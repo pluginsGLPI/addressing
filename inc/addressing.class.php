@@ -546,7 +546,7 @@ class PluginAddressingAddressing extends CommonDBTM {
          
          
          $numrows = 1+ip2long($this->fields['end_ip'])-ip2long($this->fields['begin_ip']);
-         Html::printPager($start, $numrows, $_SERVER['PHP_SELF'], "start=$start&amp;id=$id&amp;filter=$filter",
+         Html::printPager($start, $numrows, self::getFormURL(), "start=$start&amp;id=$id&amp;filter=$filter",
                              'PluginAddressingReport');
          
          //////////////////////////liste ips////////////////////////////////////////////////////////////
