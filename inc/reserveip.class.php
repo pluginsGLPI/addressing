@@ -88,9 +88,6 @@ class PluginAddressingReserveip extends CommonDBTM {
                   "instantiation_type"       => "NetworkPortAggregate",
                   "mac"                      => $input["mac"],
                   "NetworkName__ipaddresses" => array("-100" => $input["ip"]),
-                  "speed"                    => "0",
-                  "speed_other_value"        => "",
-                  "add"                      => __("Add"),
                );
                break;
             case 'Computer':
@@ -103,31 +100,13 @@ class PluginAddressingReserveip extends CommonDBTM {
                   "instantiation_type"       => "NetworkPortEthernet",
                   "mac"                      => $input["mac"],
                   "NetworkName__ipaddresses" => array("-100" => $input["ip"]),
-                  "speed"                    => "0",
-                  "speed_other_value"        => "",
-                  "add"                      => __("Add"),
                );
                break;
          }
          
          $np = new NetworkPort();
-         $np->splitInputForElements($newinput);
          $newID = $np->add($newinput);
-         $np->updateDependencies(1);
-         //search id_networkname 
 
-         $networkname= new NetworkName();
-         $networkname->getFromDBByQuery("WHERE `itemtype` = 'NetworkPort' AND `items_id` = ".$newID);
-         
-         $ipadresses = new IPAddress();
-         //search id of ipaddresses
-         if($ipadresses->getFromDBByQuery("WHERE `items_id` = ".$networkname->fields['id']." AND `itemtype` = 'NetworkName' AND `mainitems_id` = ". $id." AND `mainitemtype` = '".$input['type']."'")){
-            $ipaddresses_ipnetwork = new IPAddress_IPNetwork();
-            $ipaddresses_ipnetwork->add(array('ipaddresses_id' => $ipadresses->fields['id'], 'ipnetworks_id' => $input['ipnetworks_id']));
-         }
-         Event::log($newID, "networkport", 5, "inventory",
-               //TRANS: %s is the user login
-               sprintf(__('%s adds an item'), $_SESSION["glpiname"]));
       }
    }
 
