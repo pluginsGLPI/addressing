@@ -34,8 +34,8 @@ if (!defined('GLPI_ROOT')) {
 class PluginAddressingReserveip extends CommonDBTM
 {
    const COMPUTER = 'Computer';
-   const NETWORK = 'NetworkEquipment';
-   const PRINTER = 'Printer';
+   const NETWORK  = 'NetworkEquipment';
+   const PRINTER  = 'Printer';
 
    static $rightname = 'plugin_addressing';
 
@@ -64,20 +64,20 @@ class PluginAddressingReserveip extends CommonDBTM
 
       // Find computer
       $item = new $input['type']();
-      $id = 0;
+      $id   = 0;
       if (!$item->getFromDBByQuery("WHERE `name`='" . $input["name"] . "' AND `entities_id`=" . $input['entities_id'] . " LIMIT 1")) {
          // Add computer
-         $id = $item->add(array("name" => $input["name"],
-            "entities_id" => $input['entities_id'],
-            'states_id' => $input["states_id"],
-            "comment" => $input['comment']));
+         $id = $item->add(array("name"        => $input["name"],
+                                "entities_id" => $input['entities_id'],
+                                'states_id'   => $input["states_id"],
+                                "comment"     => $input['comment']));
       } else {
          $id = $item->getID();
          //update item
-         $item->update(array("id" => $id,
-            "entities_id" => $input['entities_id'],
-            'states_id' => $input["states_id"],
-            "comment" => $input['comment']));
+         $item->update(array("id"          => $id,
+                             "entities_id" => $input['entities_id'],
+                             'states_id'   => $input["states_id"],
+                             "comment"     => $input['comment']));
       }
 
       // Add a new port
@@ -85,37 +85,37 @@ class PluginAddressingReserveip extends CommonDBTM
          switch ($input['type']) {
             case 'NetworkEquipment' :
                $newinput = array(
-                  "itemtype" => $input['type'],
-                  "items_id" => $id,
-                  "entities_id" => $_SESSION["glpiactive_entity"],
-                  "name" => self::getPortName($input["ip"]),
-                  "instantiation_type" => "NetworkPortAggregate",
-                  "_create_children" => 1,
+                  "itemtype"                 => $input['type'],
+                  "items_id"                 => $id,
+                  "entities_id"              => $_SESSION["glpiactive_entity"],
+                  "name"                     => self::getPortName($input["ip"]),
+                  "instantiation_type"       => "NetworkPortAggregate",
+                  "_create_children"         => 1,
                   "NetworkName__ipaddresses" => array("-100" => $input["ip"]),
-                  "mac" => $input["mac"],
+                  "mac"                      => $input["mac"],
                );
                break;
             case 'Computer':
             case 'Printer':
                $newinput = array(
-                  "itemtype" => $input['type'],
-                  "items_id" => $id,
-                  "entities_id" => $_SESSION["glpiactive_entity"],
-                  "name" => self::getPortName($input["ip"]),
-                  "instantiation_type" => "NetworkPortEthernet",
-                  "_create_children" => 1,
+                  "itemtype"                 => $input['type'],
+                  "items_id"                 => $id,
+                  "entities_id"              => $_SESSION["glpiactive_entity"],
+                  "name"                     => self::getPortName($input["ip"]),
+                  "instantiation_type"       => "NetworkPortEthernet",
+                  "_create_children"         => 1,
                   "NetworkName__ipaddresses" => array("-100" => $input["ip"]),
-                  "mac" => $input["mac"],
+                  "mac"                      => $input["mac"],
                );
                break;
          }
 
-         $np = new NetworkPort();
+         $np    = new NetworkPort();
          $newID = $np->add($newinput);
 
          Event::log($newID, "networkport", 5, "inventory",
             //TRANS: %s is the user login
-            sprintf(__('%s adds an item'), $_SESSION["glpiname"]));
+                    sprintf(__('%s adds an item'), $_SESSION["glpiname"]));
       }
    }
 
@@ -127,17 +127,17 @@ class PluginAddressingReserveip extends CommonDBTM
     */
    function checkMandatoryFields($input)
    {
-      $msg = array();
+      $msg     = array();
       $checkKo = false;
 
       $mandatory_fields = array('name' => __("Object's name", 'addressing'),
-         'ip' => _n("IP address", "IP addresses", 1));
+                                'ip'   => _n("IP address", "IP addresses", 1));
 
       foreach ($input as $key => $value) {
          if (isset($mandatory_fields[$key])) {
             if ((isset($value) && empty($value)) || !isset($value)) {
                $msg[$key] = $mandatory_fields[$key];
-               $checkKo = true;
+               $checkKo   = true;
             }
          }
       }
@@ -201,8 +201,8 @@ class PluginAddressingReserveip extends CommonDBTM
                <td>" . __("Type") . "</td>
                <td>";
       Dropdown::showFromArray('type', array(PluginAddressingReserveip::COMPUTER => Computer::getTypeName(),
-         PluginAddressingReserveip::NETWORK => NetworkEquipment::getTypeName(),
-         PluginAddressingReserveip::PRINTER => Printer::getTypeName()), array('on_change' => "nameIsThere(\"" . $CFG_GLPI['root_doc'] . "\");"));
+                                            PluginAddressingReserveip::NETWORK  => NetworkEquipment::getTypeName(),
+                                            PluginAddressingReserveip::PRINTER  => Printer::getTypeName()), array('on_change' => "nameIsThere(\"" . $CFG_GLPI['root_doc'] . "\");"));
       echo "</td><td></td>";
       echo "</tr>";
       echo "<tr class='tab_bg_1'>
@@ -239,7 +239,7 @@ class PluginAddressingReserveip extends CommonDBTM
       echo "<tr class='tab_bg_1'>
                <td colspan='4' class='center'>
                   <input type='submit' name='add' class='submit' value='" . __("Validate the reservation", 'addressing') . "' "
-         . "onclick=\"" . Html::jsGetElementbyID("reserveip" . $randmodal) . ".dialog('close');window.location.reload();return true;\"/>
+           . "onclick=\"" . Html::jsGetElementbyID("reserveip" . $randmodal) . ".dialog('close');window.location.reload();return true;\"/>
                </td>
             </tr>
             </table>";

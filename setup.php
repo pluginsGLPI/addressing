@@ -72,15 +72,15 @@ function plugin_version_addressing() {
       'author'         => 'Gilles Portheault, Xavier Caillaud, Remi Collet, Nelly Mahu-Lasson',
       'license'        => 'GPLv2+',
       'homepage'       => 'https://github.com/pluginsGLPI/addressing',
-      'minGlpiVersion' => '0.85');// For compatibility / no install in version < 0.85
+      'minGlpiVersion' => '9.1.1');// For compatibility / no install in version < 9.1.1
 }
 
 
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_addressing_check_prerequisites() {
 
-   if (version_compare(GLPI_VERSION,'0.85.3','lt') || version_compare(GLPI_VERSION,'9.2','ge')) {
-      _e('This plugin requires GLPI >= 0.85.3', 'addressing');
+   if (version_compare(GLPI_VERSION, '9.1.1', 'lt') || version_compare(GLPI_VERSION, '9.2', 'ge')) {
+      echo "This plugin requires GLPI = 9.1.1";
       return false;
    }
    return true;
