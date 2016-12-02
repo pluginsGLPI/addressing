@@ -68,7 +68,7 @@ function plugin_version_addressing() {
 
    return array(
       'name'           => _n('IP Adressing', 'IP Adressing', 2, 'addressing'),
-      'version'        => '3.0.0',
+      'version'        => '2.5.0',
       'author'         => 'Gilles Portheault, Xavier Caillaud, Remi Collet, Nelly Mahu-Lasson',
       'license'        => 'GPLv2+',
       'homepage'       => 'https://github.com/pluginsGLPI/addressing',
