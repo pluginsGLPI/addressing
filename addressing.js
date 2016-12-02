@@ -179,7 +179,7 @@ function plugaddr_IsFilter(msg) {
 
 function nameIsThere(params) {
     var root_doc = params;
-    var nameElm = $('input[id*="textfield_name"]');
+    var nameElm = $('input[name="name_reserveip"]');
     var typeElm = $('select[name="type"]');
     var divNameItemElm = $('div[id="nameItem"]');
     $.ajax({

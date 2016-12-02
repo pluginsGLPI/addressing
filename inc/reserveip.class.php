@@ -61,9 +61,9 @@ class PluginAddressingReserveip extends CommonDBTM {
       // Find computer
       $item    = new $input['type']();
       $id = 0;
-      if (!$item->getFromDBByQuery("WHERE `name`='".$input["name"]."' AND `entities_id`=".$input['entities_id']. " LIMIT 1")) {
+      if (!$item->getFromDBByQuery("WHERE `name`='".$input["name_reserveip"]."' AND `entities_id`=".$input['entities_id']. " LIMIT 1")) {
          // Add computer
-         $id = $item->add(array("name"        => $input["name"],
+         $id = $item->add(array("name"        => $input["name_reserveip"],
                                 "entities_id" => $input['entities_id'],
                                 'states_id'   => $input["states_id"],
                                 "comment"     => $input['comment']));
@@ -218,7 +218,7 @@ class PluginAddressingReserveip extends CommonDBTM {
       echo "<tr class='tab_bg_1'>
                <td>".__("Name")." : </td><td>";
       $option = array('option' => "onChange=\"javascript:nameIsThere('".$CFG_GLPI['root_doc']."');\"");
-      Html::autocompletionTextField($this,"name",$option);
+      Html::autocompletionTextField($this,"name_reserveip",$option);
       echo "</td><td><div style=\"display: none;\" id='nameItem'>";
       echo "<img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt=\"warning\">&nbsp;";
       _e('Name already in use', 'addressing');
