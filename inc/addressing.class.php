@@ -67,6 +67,16 @@ class PluginAddressingAddressing extends CommonDBTM {
       $tab[4]['name']            = __('Ping free Ip', 'addressing');
       $tab[4]['datatype']        = 'bool';
 
+      $tab[5]['table']           = 'glpi_locations';
+      $tab[5]['field']           = 'name';
+      $tab[5]['name']            = __('Location');
+      $tab[5]['datatype']        = 'dropdown';
+
+      $tab[6]['table']           = 'glpi_fqdns';
+      $tab[6]['field']           = 'name';
+      $tab[6]['name']            = FQDN::getTypeName(1);
+      $tab[6]['datatype']        = 'dropdown';
+
       $tab[30]['table']          = $this->getTable();
       $tab[30]['field']          = 'id';
       $tab[30]['name']           = __('ID');
@@ -159,10 +169,11 @@ class PluginAddressingAddressing extends CommonDBTM {
       echo "</tr>";
 
       echo "<tr class='tab_bg_1'>";
-      echo "<td>".__('Select the network', 'addressing')."</td>";
+      echo "<td>".__('Location')."</td>";
       echo "<td>";
-      Dropdown::show('Network', array('name'  => "networks_id",
-                                      'value' => $this->fields["networks_id"]));
+      Dropdown::show('Location', array('name'   => "locations_id",
+                                       'value'  => $this->fields["locations_id"],
+                                       'entity' => $this->fields['entities_id']));
       echo "</td>";
 
       if ($PluginAddressingConfig->fields["free_ip"]) {
@@ -170,10 +181,49 @@ class PluginAddressingAddressing extends CommonDBTM {
          Dropdown::showYesNo('free_ip', $this->fields["free_ip"]);
          echo "</td>";
       } else {
-         echo "<td>"; 
+         echo "<td>";
          echo Html::hidden('free_ip', array('value' => 0));
          echo "</td><td></td>";
          //echo "<td><input type='hidden' name='free_ip' value='0'></td><td></td>";
+      }
+      echo "</tr>";
+
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>".FQDN::getTypeName(1)."</td>";
+      echo "<td>";
+      Dropdown::show('FQDN', array('name'  => "fqdns_id",
+                                   'value' => $this->fields["fqdns_id"],
+                                   'entity'=> $this->fields['entities_id']));
+      echo "</td>";
+
+      if ($PluginAddressingConfig->fields["double_ip"]) {
+         echo "<td>".__('Same IP', 'addressing')."</td><td>";
+         Dropdown::showYesNo('double_ip', $this->fields["double_ip"]);
+         echo "</td>";
+      } else {
+         //echo "<td><input type='hidden' name='double_ip' value='0'></td><td></td>";
+         echo "<td>";
+         echo Html::hidden('double_ip', array('value' => 0));
+         echo "</td><td></td>";
+      }
+      echo "</tr>";
+
+      echo "<tr class='tab_bg_1'>";
+      echo "<td>".__('Select the network', 'addressing')."</td>";
+      echo "<td>";
+      Dropdown::show('Network', array('name'  => "networks_id",
+                                      'value' => $this->fields["networks_id"]));
+      echo "</td>";
+
+      if ($PluginAddressingConfig->fields["reserved_ip"]) {
+         echo "<td>".__('Reserved IP', 'addressing')."</td><td>";
+         Dropdown::showYesNo('reserved_ip',$this->fields["reserved_ip"]);
+         echo "</td>";
+      } else {
+         echo "<td>";
+         echo Html::hidden('reserved_ip', array('value' => 0));
+         echo "</td><td></td>";
+         //echo "<td><input type='hidden' name='reserved_ip' value='0'></td><td></td>";
       }
       echo "</tr>";
 
@@ -183,15 +233,15 @@ class PluginAddressingAddressing extends CommonDBTM {
       $this->dropdownSubnet($ID>0 ? $this->fields["entities_id"] : $_SESSION["glpiactive_entity"]);
       echo "</td>";
 
-      if ($PluginAddressingConfig->fields["double_ip"]) {
-         echo "<td>".__('Same IP', 'addressing')."</td><td>";
-         Dropdown::showYesNo('double_ip', $this->fields["double_ip"]);
+      if ($PluginAddressingConfig->fields["use_ping"]) {
+         echo "<td>".__('Ping free Ip', 'addressing')."</td><td>";
+         Dropdown::showYesNo('use_ping', $this->fields["use_ping"]);
          echo "</td>";
       } else {
-         //echo "<td><input type='hidden' name='double_ip' value='0'></td><td></td>";
-         echo "<td>"; 
-         echo Html::hidden('double_ip', array('value' => 0));
+         echo "<td>";
+         echo Html::hidden('use_ping', array('value' => 0));
          echo "</td><td></td>";
+         //echo "<td><input type='hidden' name='use_ping' value='0'></td><td></td>";
       }
       echo "</tr>";
 
@@ -199,50 +249,32 @@ class PluginAddressingAddressing extends CommonDBTM {
       echo "<td>".__('First IP', 'addressing')."</td>"; // Subnet
       echo "<td>";
       echo "<input type='text' id='plugaddr_ipdeb0' value='' name='_ipdeb0' size='3' ".
-             "onChange='plugaddr_ChangeNumber(\"".__('Invalid data !!', 'addressing')."\");'>.";
+           "onChange='plugaddr_ChangeNumber(\"".__('Invalid data !!', 'addressing')."\");'>.";
       echo "<input type='text' id='plugaddr_ipdeb1' value='' name='_ipdeb1' size='3' ".
-             "onChange='plugaddr_ChangeNumber(\"".__('Invalid data !!', 'addressing')."\");'>.";
+           "onChange='plugaddr_ChangeNumber(\"".__('Invalid data !!', 'addressing')."\");'>.";
       echo "<input type='text' id='plugaddr_ipdeb2' value='' name='_ipdeb2' size='3' ".
-             "onChange='plugaddr_ChangeNumber(\"".__('Invalid data !!', 'addressing')."\");'>.";
+           "onChange='plugaddr_ChangeNumber(\"".__('Invalid data !!', 'addressing')."\");'>.";
       echo "<input type='text' id='plugaddr_ipdeb3' value='' name='_ipdeb3' size='3' ".
-             "onChange='plugaddr_ChangeNumber(\"".__('Invalid data !!', 'addressing')."\");'>";
+           "onChange='plugaddr_ChangeNumber(\"".__('Invalid data !!', 'addressing')."\");'>";
       echo "</td>";
-
-      if ($PluginAddressingConfig->fields["reserved_ip"]) {
-         echo "<td>".__('Reserved IP', 'addressing')."</td><td>";
-         Dropdown::showYesNo('reserved_ip',$this->fields["reserved_ip"]);
-         echo "</td>";
-      } else {
-         echo "<td>"; 
-         echo Html::hidden('reserved_ip', array('value' => 0));
-         echo "</td><td></td>";
-         //echo "<td><input type='hidden' name='reserved_ip' value='0'></td><td></td>";
-      }
+      echo "<td></td>";
+      echo "<td></td>";
       echo "</tr>";
 
       echo "<tr class='tab_bg_1'>";
       echo "<td>".__('Last IP', 'addressing')."</td>"; // Mask
       echo "<td>";
       echo "<input type='text' id='plugaddr_ipfin0' value='' name='_ipfin0' size='3' ".
-             "onChange='plugaddr_ChangeNumber(\"".__('Invalid data !!', 'addressing')."\");'>.";
+           "onChange='plugaddr_ChangeNumber(\"".__('Invalid data !!', 'addressing')."\");'>.";
       echo "<input type='text' id='plugaddr_ipfin1' value='' name='_ipfin1' size='3' ".
-             "onChange='plugaddr_ChangeNumber(\"".__('Invalid data !!', 'addressing')."\");'>.";
+           "onChange='plugaddr_ChangeNumber(\"".__('Invalid data !!', 'addressing')."\");'>.";
       echo "<input type='text' id='plugaddr_ipfin2' value='' name='_ipfin2' size='3' ".
-             "onChange='plugaddr_ChangeNumber(\"".__('Invalid data !!', 'addressing')."\");'>.";
+           "onChange='plugaddr_ChangeNumber(\"".__('Invalid data !!', 'addressing')."\");'>.";
       echo "<input type='text' id='plugaddr_ipfin3' value='' name='_ipfin3' size='3' ".
-             "onChange='plugaddr_ChangeNumber(\"".__('Invalid data !!', 'addressing')."\");'>";
+           "onChange='plugaddr_ChangeNumber(\"".__('Invalid data !!', 'addressing')."\");'>";
       echo "</td>";
-
-      if ($PluginAddressingConfig->fields["use_ping"]) {
-         echo "<td>".__('Ping free Ip', 'addressing')."</td><td>";
-         Dropdown::showYesNo('use_ping', $this->fields["use_ping"]);
-         echo "</td>";
-      } else {
-         echo "<td>"; 
-         echo Html::hidden('use_ping', array('value' => 0));
-         echo "</td><td></td>";
-         //echo "<td><input type='hidden' name='use_ping' value='0'></td><td></td>";
-      }
+      echo "<td></td>";
+      echo "<td></td>";
       echo "</tr>";
 
       echo "<tr class='tab_bg_1'>";
@@ -261,13 +293,11 @@ class PluginAddressingAddressing extends CommonDBTM {
       echo "</tr>";
 
       echo "<tr class='tab_bg_1'>";
-      echo "<td colspan = '4'>";
-      echo "<table cellpadding='2' cellspacing='2'><tr><td>";
-      echo __('Comments')."</td></tr>";
-      echo "<tr><td class='center'>".
-            "<textarea cols='125' rows='3' name='comment'>".$this->fields["comment"]."</textarea>";
-      echo "</td></tr></table>";
-      echo "</td>";
+      echo "<td>";
+      echo __('Comments')."</td>";
+      echo "<td class='center' colspan='3'>".
+           "<textarea cols='125' rows='3' name='comment'>".$this->fields["comment"]."</textarea>";
+      echo "</td></tr>";
 
       $this->showFormButtons($options);
 
