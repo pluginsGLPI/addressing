@@ -324,15 +324,15 @@ class PluginAddressingAddressing extends CommonDBTM {
       }
 
       if (!isset($_GET["export_all"])) {
-         if (isset($start)) {
-            $ipdeb += $start;
-         }
-         if ($ipdeb > $ipfin) {
-            $ipdeb = $ipfin;
-         }
-         if ($ipdeb+$_SESSION["glpilist_limit"] <= $ipfin) {
-            $ipfin = $ipdeb+$_SESSION["glpilist_limit"]-1;
-         }
+//         if (isset($start)) {
+//            $ipdeb += $start;
+//         }
+//         if ($ipdeb > $ipfin) {
+//            $ipdeb = $ipfin;
+//         }
+//         if ($ipdeb+$_SESSION["glpilist_limit"] <= $ipfin) {
+//            $ipfin = $ipdeb+$_SESSION["glpilist_limit"]-1;
+//         }
       }
 
       $result = array();
@@ -484,7 +484,7 @@ class PluginAddressingAddressing extends CommonDBTM {
                $result = $this->compute($start, array('ipdeb'       => $ipdeb,
                                                       'ipfin'       => $ipfin,
                                                       'entities_id' => $addressingFilter->fields['entities_id'],
-                                                      'type_filter'        => $addressingFilter->fields['type']));
+                                                      'type_filter' => $addressingFilter->fields['type']));
             }
          }else{
             $ipdeb = sprintf("%u", ip2long($this->fields["begin_ip"]));
@@ -501,15 +501,29 @@ class PluginAddressingAddressing extends CommonDBTM {
 
          foreach ($result as $ip => $lines) {
             if (count($lines)) {
-               if (count($lines)>1) {
+               if (count($lines) > 1) {
                   $nbipd++;
+                  if (!$this->fields['double_ip']) {
+                     unset($result[$ip]);
+                  }
                }
-               if ((isset($lines[0]['pname']) && strstr($lines[0]['pname'],"reserv")))
+               if ((isset($lines[0]['pname']) && strstr($lines[0]['pname'], "reserv"))) {
                   $nbipr++;
+                  if (!$this->fields['alloted_ip']) {
+                     unset($result[$ip]);
+                  }
+               }
                $nbipt++;
+               if (!$this->fields['alloted_ip']) {
+                  unset($result[$ip]);
+               }
             } else {
                $nbipf++;
+               if (!$this->fields['free_ip']) {
+                  unset($result[$ip]);
+               }
             }
+            
          }
 
          ////title
@@ -573,9 +587,10 @@ class PluginAddressingAddressing extends CommonDBTM {
          echo "</td></tr>";
          echo "</table>";
          Html::closeForm();
-         
-         
-         $numrows = 1+ip2long($this->fields['end_ip'])-ip2long($this->fields['begin_ip']);
+        
+         $numrows = count($result);
+//         $numrows = 1 + ip2long($this->fields['end_ip']) - ip2long($this->fields['begin_ip']);
+         $result = array_slice($result, $start, $_SESSION["glpilist_limit"]);
          Html::printPager($start, $numrows, self::getFormURL(), "start=$start&amp;id=$id&amp;filter=$filter",
                              'PluginAddressingReport');
          
