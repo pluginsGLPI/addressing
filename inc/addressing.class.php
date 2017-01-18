@@ -323,16 +323,16 @@ class PluginAddressingAddressing extends CommonDBTM {
          }
       }
 
-      if (!isset($_GET["export_all"])) {
-//         if (isset($start)) {
-//            $ipdeb += $start;
-//         }
-//         if ($ipdeb > $ipfin) {
-//            $ipdeb = $ipfin;
-//         }
-//         if ($ipdeb+$_SESSION["glpilist_limit"] <= $ipfin) {
-//            $ipfin = $ipdeb+$_SESSION["glpilist_limit"]-1;
-//         }
+      if (isset($_GET["export"])) {
+         if (isset($start)) {
+            $ipdeb += $start;
+         }
+         if ($ipdeb > $ipfin) {
+            $ipdeb = $ipfin;
+         }
+         if ($ipdeb+$_SESSION["glpilist_limit"] <= $ipfin) {
+            $ipfin = $ipdeb+$_SESSION["glpilist_limit"]-1;
+         }
       }
 
       $result = array();
