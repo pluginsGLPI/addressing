@@ -185,10 +185,10 @@ class PluginAddressingReserveip extends CommonDBTM
       list($message, $error) = $ping_equip->ping($system, $ip);
       if ($error) {
          echo "<img src=\"" . $CFG_GLPI["root_doc"] . "/pics/ok.png\" alt=\"ok\">&nbsp;";
-         _e('Ping: ip address free', 'addressing');
+         echo __('Ping: ip address free', 'addressing');
       } else {
          echo "<img src=\"" . $CFG_GLPI["root_doc"] . "/pics/warning.png\" alt=\"warning\">&nbsp;";
-         _e('Ping: not available IP address', 'addressing');
+         echo __('Ping: not available IP address', 'addressing');
       }
 
       echo "</td></tr>";
@@ -242,7 +242,7 @@ class PluginAddressingReserveip extends CommonDBTM
       Html::autocompletionTextField($this,"name_reserveip",$option);
       echo "</td><td><div style=\"display: none;\" id='nameItem'>";
       echo "<img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt=\"warning\">&nbsp;";
-      _e('Name already in use', 'addressing');
+      echo __('Name already in use', 'addressing');
       echo "</div></td>
             </tr>";
 

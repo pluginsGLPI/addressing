@@ -33,60 +33,60 @@ function plugin_addressing_install() {
    include_once (GLPI_ROOT."/plugins/addressing/inc/profile.class.php");
    
    $update = false;
-   if (!TableExists("glpi_plugin_addressing_display")
-       &&!TableExists("glpi_plugin_addressing")
-       && !TableExists("glpi_plugin_addressing_configs")) {
+   if (!$DB->tableExists("glpi_plugin_addressing_display")
+       &&!$DB->tableExists("glpi_plugin_addressing")
+       && !$DB->tableExists("glpi_plugin_addressing_configs")) {
 
       $DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/empty-2.5.0.sql");
 
    } else {
       
-      if (!TableExists("glpi_plugin_addressing_profiles")
-          && TableExists("glpi_plugin_addressing_display")
-          && !FieldExists("glpi_plugin_addressing_display","ipconf1")) {//1.4
+      if (!$DB->tableExists("glpi_plugin_addressing_profiles")
+          && $DB->tableExists("glpi_plugin_addressing_display")
+          && !$DB->fieldExists("glpi_plugin_addressing_display","ipconf1")) {//1.4
          $update = true;
          $DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.4.sql");
       }
 
-      if (!TableExists("glpi_plugin_addressing")
-          && TableExists("glpi_plugin_addressing_display")
-          && FieldExists("glpi_plugin_addressing_display","ipconf1")) {
+      if (!$DB->tableExists("glpi_plugin_addressing")
+          && $DB->tableExists("glpi_plugin_addressing_display")
+          && $DB->fieldExists("glpi_plugin_addressing_display","ipconf1")) {
          $update = true;
          $DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.5.sql");
 
       }
 
-      if (TableExists("glpi_plugin_addressing_display")
-          && !FieldExists("glpi_plugin_addressing","ipdeb")) {
+      if ($DB->tableExists("glpi_plugin_addressing_display")
+          && !$DB->fieldExists("glpi_plugin_addressing","ipdeb")) {
          $update = true;
          $DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.6.sql");
 
       }
 
-      if (TableExists("glpi_plugin_addressing_profiles")
-          && FieldExists("glpi_plugin_addressing_profiles","interface")) {
+      if ($DB->tableExists("glpi_plugin_addressing_profiles")
+          && $DB->fieldExists("glpi_plugin_addressing_profiles","interface")) {
          $update = true;
          $DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.7.0.sql");
 
       }
 
-      if (!TableExists("glpi_plugin_addressing_configs")) {
+      if (!$DB->tableExists("glpi_plugin_addressing_configs")) {
          $DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.8.0.sql");
          $update = true;
       }
 
-      if (TableExists("glpi_plugin_addressing_profiles")
-          && !FieldExists("glpi_plugin_addressing_profiles","use_ping_in_equipment")) {
+      if ($DB->tableExists("glpi_plugin_addressing_profiles")
+          && !$DB->fieldExists("glpi_plugin_addressing_profiles","use_ping_in_equipment")) {
          $DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.9.0.sql");
          $update = true;
       }
       //Version 2.4.0
-      if (!TableExists("glpi_plugin_addressing_filters")) {
+      if (!$DB->tableExists("glpi_plugin_addressing_filters")) {
          $DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-2.4.0.sql");
       }
 
       //Version 2.5.0
-      if (!FieldExists("glpi_plugin_addressing_addressings", "locations_id") && !FieldExists("glpi_plugin_addressing_addressings", "fqdns_id")) {
+      if (!$DB->fieldExists("glpi_plugin_addressing_addressings", "locations_id") && !$DB->fieldExists("glpi_plugin_addressing_addressings", "fqdns_id")) {
          $DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-2.5.0.sql");
       }
 
@@ -106,7 +106,7 @@ function plugin_addressing_install() {
          }
       }
 
-      if (FieldExists("glpi_plugin_addressing_profiles", "name")) {
+      if ($DB->fieldExists("glpi_plugin_addressing_profiles", "name")) {
          $query  = "ALTER TABLE `glpi_plugin_addressing_profiles`
                     DROP `name` ";
          $result = $DB->query($query);

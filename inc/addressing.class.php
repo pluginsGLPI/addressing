@@ -576,7 +576,7 @@ class PluginAddressingAddressing extends CommonDBTM {
          echo "<input type='hidden' name='id' value='$id'>";
          echo "<tr class='tab_bg_2 center'>";
          echo "<th colspan='2'>";
-         _e('Search');
+         echo __('Search');
          echo "</th></tr>";
          echo "<tr class='tab_bg_1 center'><td>";
          PluginAddressingFilter::dropdownFilters($params['id'], $filter);

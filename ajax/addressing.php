@@ -46,7 +46,7 @@ if(isset($_POST['action']) && $_POST['action'] == 'isName'){
       $filter = new PluginAddressingFilter();
       $filter->showForm($_POST["id"], array('items_id' => $_POST['items_id']));
    } else {
-      _e('Access denied');
+      echo __('Access denied');
    }
 
 }elseif(isset($_POST['action']) && $_POST['action'] == 'entities_networkip'){

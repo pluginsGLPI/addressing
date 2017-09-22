@@ -170,8 +170,9 @@ class PluginAddressingProfile extends Profile {
    }
    
    static function migrateProfiles() {
+      global $DB;
       
-      if (!TableExists('glpi_plugin_addressing_profiles')) {
+      if (!$DB->tableExists('glpi_plugin_addressing_profiles')) {
       return true;
       }
       
