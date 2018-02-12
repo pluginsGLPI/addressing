@@ -64,6 +64,9 @@ function plugaddr_Check(msg) {
 function plugaddr_ChangeNumber(msg) {
 
    var lst=document.getElementById("plugaddr_subnet");
+    if (lst==null) {
+        return false;
+    }
    lst.selectedIndex=0;
    plugaddr_Compute(msg);
 }

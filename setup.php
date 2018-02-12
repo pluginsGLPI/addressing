@@ -56,6 +56,7 @@ function plugin_init_addressing() {
 
       // Add specific files to add to the header : javascript or css
       $PLUGIN_HOOKS['add_css']['addressing']        = "addressing.css";
+      $PLUGIN_HOOKS["javascript"]['addressing']     = array("/plugins/addressing/addressing.js");
       $PLUGIN_HOOKS['add_javascript']['addressing'] = 'addressing.js';
 
       $PLUGIN_HOOKS['post_init']['addressing'] = array('PluginAddressingPing_Equipment', 'postinit');

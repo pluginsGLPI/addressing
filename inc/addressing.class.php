@@ -139,6 +139,7 @@ class PluginAddressingAddressing extends CommonDBTM {
 
    function showForm ($ID, $options=array()) {
 
+      Html::requireJs("addressing");
       $this->initForm($ID, $options);
 
       $options['formoptions']
