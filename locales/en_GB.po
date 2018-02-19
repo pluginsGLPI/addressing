@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - addressing plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-09 09:14+0100\n"
-"PO-Revision-Date: 2016-03-09 08:16+0000\n"
-"Last-Translator: Xavier CAILLAUD <tsmr@thetsmr.fr>\n"
+"POT-Creation-Date: 2016-06-20 11:58+0200\n"
+"PO-Revision-Date: 2017-09-19 14:02+0000\n"
+"Last-Translator: Amandine Manceau\n"
 "Language-Team: English (United Kingdom) (http://www.transifex.com/tsmr/GLPI_addressing/language/en_GB/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -36,105 +36,112 @@ msgstr "Problem when adding, required fields are not here"
 msgid "Please activate the plugin"
 msgstr "Please activate the plugin"
 
-#: inc/addressing.class.php:67 inc/addressing.class.php:236
-#: inc/addressing.class.php:455
+#: inc/addressing.class.php:67 inc/addressing.class.php:237
+#: inc/addressing.class.php:498
 msgid "Ping free Ip"
 msgstr "Ping free Ip"
 
-#: inc/addressing.class.php:82 inc/addressing.class.php:198
+#: inc/addressing.class.php:82 inc/addressing.class.php:199
+#: inc/filter.class.php:117 inc/filter.class.php:243
 msgid "First IP"
 msgstr "First IP"
 
-#: inc/addressing.class.php:88 inc/addressing.class.php:223
+#: inc/addressing.class.php:88 inc/addressing.class.php:224
+#: inc/filter.class.php:133 inc/filter.class.php:244
 msgid "Last IP"
 msgstr "Last IP"
 
-#: inc/addressing.class.php:107 inc/addressing.class.php:248
+#: inc/addressing.class.php:108 inc/addressing.class.php:249
+#: inc/filter.class.php:147
 msgid "Report for the IP Range"
 msgstr "Report for the IP Range"
 
-#: inc/addressing.class.php:134 inc/addressing.class.php:201
-#: inc/addressing.class.php:203 inc/addressing.class.php:205
-#: inc/addressing.class.php:207 inc/addressing.class.php:226
-#: inc/addressing.class.php:228 inc/addressing.class.php:230
-#: inc/addressing.class.php:232 inc/addressing.class.php:254
+#: inc/addressing.class.php:135 inc/addressing.class.php:202
+#: inc/addressing.class.php:204 inc/addressing.class.php:206
+#: inc/addressing.class.php:208 inc/addressing.class.php:227
+#: inc/addressing.class.php:229 inc/addressing.class.php:231
+#: inc/addressing.class.php:233 inc/addressing.class.php:255
+#: inc/filter.class.php:83 inc/filter.class.php:120 inc/filter.class.php:122
+#: inc/filter.class.php:124 inc/filter.class.php:126 inc/filter.class.php:136
+#: inc/filter.class.php:138 inc/filter.class.php:140 inc/filter.class.php:142
+#: inc/filter.class.php:153
 msgid "Invalid data !!"
 msgstr "Invalid data !!"
 
-#: inc/addressing.class.php:148 inc/config.class.php:64
+#: inc/addressing.class.php:149 inc/config.class.php:64
 msgid "Assigned IP"
 msgstr "Assigned IP"
 
-#: inc/addressing.class.php:161
+#: inc/addressing.class.php:162
 msgid "Select the network"
 msgstr "Select the network"
 
-#: inc/addressing.class.php:168 inc/addressing.class.php:464
+#: inc/addressing.class.php:169 inc/addressing.class.php:507
 #: inc/report.class.php:124
 msgid "Free Ip"
 msgstr "Free Ip"
 
-#: inc/addressing.class.php:180
+#: inc/addressing.class.php:181
 msgid "Detected subnet list"
 msgstr "Detected subnet list"
 
-#: inc/addressing.class.php:186 inc/config.class.php:75
+#: inc/addressing.class.php:187 inc/config.class.php:75
 msgid "Same IP"
 msgstr "Same IP"
 
-#: inc/addressing.class.php:211 inc/config.class.php:80
+#: inc/addressing.class.php:212 inc/config.class.php:80
 msgid "Reserved IP"
 msgstr "Reserved IP"
 
-#: inc/addressing.class.php:437
+#: inc/addressing.class.php:480
 msgid "Number of free ip"
 msgstr "Number of free ip"
 
-#: inc/addressing.class.php:440
+#: inc/addressing.class.php:483
 msgid "Number of reserved ip"
 msgstr "Number of reserved ip"
 
-#: inc/addressing.class.php:443
+#: inc/addressing.class.php:486
 msgid "Number of assigned ip (no doubles)"
 msgstr "Number of assigned ip (no doubles)"
 
-#: inc/addressing.class.php:446
+#: inc/addressing.class.php:489
 msgid "Doubles"
 msgstr "Doubles"
 
-#: inc/addressing.class.php:452
+#: inc/addressing.class.php:495
 msgid "Red row"
 msgstr "Red row"
 
-#: inc/addressing.class.php:452
+#: inc/addressing.class.php:495
 msgid "Same Ip"
 msgstr "Same Ip"
 
-#: inc/addressing.class.php:457 inc/report.class.php:249
+#: inc/addressing.class.php:500 inc/report.class.php:249
 msgid "Ping: got a response - used Ip"
 msgstr "Ping: got a response - used Ip"
 
-#: inc/addressing.class.php:460 inc/report.class.php:253
+#: inc/addressing.class.php:503 inc/report.class.php:253
 msgid "Ping: no response - free Ip"
 msgstr "Ping: no response - free Ip"
 
-#: inc/addressing.class.php:464
+#: inc/addressing.class.php:507
 msgid "Blue row"
 msgstr "Blue row"
 
-#: inc/addressing.class.php:468
+#: inc/addressing.class.php:511
 msgid "Green row"
 msgstr "Green row"
 
-#: inc/addressing.class.php:468
+#: inc/addressing.class.php:511
 msgid "Reserved Ip"
 msgstr "Reserved Ip"
 
-#: inc/addressing.class.php:496
+#: inc/addressing.class.php:558
 msgid "Real free Ip (Ping=KO)"
 msgstr "Real free Ip (Ping=KO)"
 
-#: inc/addressing.class.php:505
+#: inc/addressing.class.php:567
 msgid "Problem detected with the IP Range"
 msgstr "Problem detected with the IP Range"
 
@@ -174,6 +181,16 @@ msgstr "Free IP"
 msgid "Use Ping"
 msgstr "Use Ping"
 
+#: inc/filter.class.php:40
+msgid "Filter"
+msgid_plural "Filters"
+msgstr[0] "Filter"
+msgstr[1] "Filters"
+
+#: inc/filter.class.php:206
+msgid "Add a filter"
+msgstr "Add a filter"
+
 #: inc/ping_equipment.class.php:84 inc/ping_equipment.class.php:180
 msgid "IP ping"
 msgstr "IP ping"
@@ -202,6 +219,22 @@ msgstr "Use ping on equipment form"
 msgid "Reserved Address"
 msgstr "Reserved Address"
 
-#: inc/reserveip.class.php:159
+#: inc/reserveip.class.php:122
+msgid "Object's name"
+msgstr "Object's name"
+
+#: inc/reserveip.class.php:169
+msgid "Ping: ip address free"
+msgstr "Ping: ip address free"
+
+#: inc/reserveip.class.php:172
+msgid "Ping: not available IP address"
+msgstr "Ping: not available IP address"
+
+#: inc/reserveip.class.php:202
+msgid "Name already in use"
+msgstr "Name already in use"
+
+#: inc/reserveip.class.php:229
 msgid "Validate the reservation"
 msgstr "Validate the reservation"
