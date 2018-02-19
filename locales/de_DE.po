@@ -27,15 +27,15 @@ msgstr[1] "IP Adressierung"
 
 #: setup.php:83
 msgid "This plugin requires GLPI >= 0.85.3"
-msgstr ""
+msgstr "Dieses Plugin benötigt GLPI >= 0.85.3"
 
 #: front/addressing.form.php:52 front/addressing.form.php:82
 msgid "Problem when adding, required fields are not here"
-msgstr "Problem mit hinzufügen, benötigte Felder werden nicht anzegeigt"
+msgstr "Problem beim hinzufügen, benötigte Felder nicht ausgefüllt"
 
 #: front/config.form.php:52
 msgid "Please activate the plugin"
-msgstr ""
+msgstr "Bitte Plugin aktivieren"
 
 #: inc/addressing.class.php:67 inc/addressing.class.php:236
 #: inc/addressing.class.php:455
@@ -125,15 +125,15 @@ msgstr "Blaue Reihe"
 
 #: inc/addressing.class.php:468
 msgid "Green row"
-msgstr ""
+msgstr "Grüne Reihe"
 
 #: inc/addressing.class.php:468
 msgid "Reserved Ip"
-msgstr ""
+msgstr "Reservierte IP"
 
 #: inc/addressing.class.php:496
 msgid "Real free Ip (Ping=KO)"
-msgstr "Effektiv freie IPs                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        (Ping=KO)"
+msgstr "Effektiv freie IPs"                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        (Ping=KO)"
 
 #: inc/addressing.class.php:505
 msgid "Problem detected with the IP Range"
@@ -185,11 +185,11 @@ msgstr "Ping"
 
 #: inc/ping_equipment.class.php:102
 msgid "Result"
-msgstr ""
+msgstr "Ergebnis"
 
 #: inc/ping_equipment.class.php:116
 msgid "No IP for this equipment"
-msgstr ""
+msgstr "Für dieses Gerät gibt es keine IP"
 
 #: inc/profile.class.php:41 inc/profile.class.php:71
 msgid "Generate reports"
@@ -205,4 +205,4 @@ msgstr "Reservierte Adresse"
 
 #: inc/reserveip.class.php:159
 msgid "Validate the reservation"
-msgstr ""
+msgstr "Überprüfen der Reservierung"
