@@ -79,6 +79,8 @@ class PluginAddressingFilter extends CommonDBTM {
          $this->check(-1, CREATE, $options);
       }
 
+      Html::requireJs("addressing");
+
       $options['formoptions']
             = "onSubmit='return plugaddr_Check(\"".__('Invalid data !!', 'addressing')."\")'";
       $options['colspan'] = 1;
@@ -151,7 +153,7 @@ class PluginAddressingFilter extends CommonDBTM {
       echo "<div id='plugaddr_range'>-</div>";
       if ($ID > 0) {
          $js = "plugaddr_Init(\"".__('Invalid data !!', 'addressing')."\");";
-         echo Html::scriptBlock($js);
+         echo Html::scriptBlock('$(document).ready(function() {'.$js.'});');
       }
       echo "</td>";
       echo "</tr>";

@@ -163,7 +163,6 @@ class PluginAddressingAddressing extends CommonDBTM {
       } else {
          echo "<td>"; 
          echo Html::hidden('alloted_ip', array('value' => 0));
-         //echo "<input type='hidden' name='alloted_ip' value='0'></td><td></td>";
          echo "</td><td></td>";
       }
 
@@ -185,7 +184,6 @@ class PluginAddressingAddressing extends CommonDBTM {
          echo "<td>";
          echo Html::hidden('free_ip', array('value' => 0));
          echo "</td><td></td>";
-         //echo "<td><input type='hidden' name='free_ip' value='0'></td><td></td>";
       }
       echo "</tr>";
 
@@ -202,7 +200,6 @@ class PluginAddressingAddressing extends CommonDBTM {
          Dropdown::showYesNo('double_ip', $this->fields["double_ip"]);
          echo "</td>";
       } else {
-         //echo "<td><input type='hidden' name='double_ip' value='0'></td><td></td>";
          echo "<td>";
          echo Html::hidden('double_ip', array('value' => 0));
          echo "</td><td></td>";
@@ -224,7 +221,6 @@ class PluginAddressingAddressing extends CommonDBTM {
          echo "<td>";
          echo Html::hidden('reserved_ip', array('value' => 0));
          echo "</td><td></td>";
-         //echo "<td><input type='hidden' name='reserved_ip' value='0'></td><td></td>";
       }
       echo "</tr>";
 
@@ -242,7 +238,6 @@ class PluginAddressingAddressing extends CommonDBTM {
          echo "<td>";
          echo Html::hidden('use_ping', array('value' => 0));
          echo "</td><td></td>";
-         //echo "<td><input type='hidden' name='use_ping' value='0'></td><td></td>";
       }
       echo "</tr>";
 
@@ -286,7 +281,7 @@ class PluginAddressingAddressing extends CommonDBTM {
       echo "<div id='plugaddr_range'>-</div>";
       if ($ID > 0) {
          $js = "plugaddr_Init(\"".__('Invalid data !!', 'addressing')."\");";
-         echo Html::scriptBlock($js);
+         echo Html::scriptBlock('$(document).ready(function() {'.$js.'});');
       }
       echo "</td>";
       echo "<td></td>";
@@ -493,7 +488,6 @@ class PluginAddressingAddressing extends CommonDBTM {
             $result = $this->compute($start, array('ipdeb' => $ipdeb,
                                                    'ipfin' => $ipfin));
          }
-         
          
          $nbipf = 0; // ip libres
          $nbipr = 0; // ip reservees
