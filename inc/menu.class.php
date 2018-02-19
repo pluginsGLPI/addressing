@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of addressing.
 
  addressing is free software; you can redistribute it and/or modify
@@ -26,7 +26,7 @@
  along with addressing. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
  */
- 
+
 class PluginAddressingMenu extends CommonGLPI {
    static $rightname = 'plugin_addressing';
 
@@ -36,7 +36,7 @@ class PluginAddressingMenu extends CommonGLPI {
 
    static function getMenuContent() {
       global $CFG_GLPI;
-      $menu          = array();
+      $menu          = [];
       $menu['title'] = self::getMenuName();
       $menu['page']  = "/plugins/addressing/front/addressing.php";
 
@@ -49,13 +49,13 @@ class PluginAddressingMenu extends CommonGLPI {
       }
       return $menu;
    }
-   
+
    static function removeRightsFromSession() {
       if (isset($_SESSION['glpimenu']['tools']['types']['PluginAddressingMenu'])) {
-         unset($_SESSION['glpimenu']['tools']['types']['PluginAddressingMenu']); 
+         unset($_SESSION['glpimenu']['tools']['types']['PluginAddressingMenu']);
       }
       if (isset($_SESSION['glpimenu']['tools']['content']['pluginaddressingmenu'])) {
-         unset($_SESSION['glpimenu']['tools']['content']['pluginaddressingmenu']); 
+         unset($_SESSION['glpimenu']['tools']['content']['pluginaddressingmenu']);
       }
    }
 }

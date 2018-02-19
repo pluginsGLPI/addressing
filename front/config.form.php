@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of addressing.
 
  addressing is free software; you can redistribute it and/or modify
@@ -49,7 +49,6 @@ if ($plugin->isActivated("addressing")) {
    Html::header(__('Setup'), '', "config", "plugins");
    echo "<div class='center'><br><br>".
          "<img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt='warning'><br><br>";
-   echo "<b>".__('Please activate the plugin','addressing')."</b></div>";
+   echo "<b>".__('Please activate the plugin', 'addressing')."</b></div>";
    Html::footer();
 }
-?>

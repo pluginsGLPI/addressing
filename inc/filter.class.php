@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of addressing.
 
  addressing is free software; you can redistribute it and/or modify
@@ -51,7 +51,7 @@ class PluginAddressingFilter extends CommonDBTM {
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
       $nb = self::countForItem($item->fields['id']);
-      return array(self::createTabEntry(self::getTypeName(1), $nb));
+      return [self::createTabEntry(self::getTypeName(1), $nb)];
    }
 
    function getForbiddenStandardMassiveAction() {
@@ -70,7 +70,7 @@ class PluginAddressingFilter extends CommonDBTM {
     * @param type $options
     * @return boolean
     */
-   function showForm($ID, $options = array()){
+   function showForm($ID, $options = []) {
       global $CFG_GLPI;
 
       if ($ID > 0) {
@@ -88,7 +88,7 @@ class PluginAddressingFilter extends CommonDBTM {
 
       $addressing = new PluginAddressingAddressing();
       $addressing->getFromDB($options['items_id']);
-      
+
       echo "<tr class='tab_bg_1'>";
       echo "<input type='hidden' name='id' value='$ID'/>";
       echo "<input type='hidden' name='plugin_addressing_addressings_id' value='".$options['items_id']."'/>";
@@ -97,21 +97,20 @@ class PluginAddressingFilter extends CommonDBTM {
       Html::autocompletionTextField($this, "name");
       echo "</td>";
       echo "</tr>";
-      
+
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __('Entity') . "</td>";
       echo "<td>";
-      Entity::dropdown(array('name' => 'entities_id', 'value' => $this->fields["entities_id"]));
+      Entity::dropdown(['name' => 'entities_id', 'value' => $this->fields["entities_id"]]);
       echo "</td>";
       echo "</tr>";
-
 
        echo "<tr class='tab_bg_1'>
                <td>".__("Type")."</td>
                <td>";
-      Dropdown::showFromArray('type',array(PluginAddressingReserveip::COMPUTER => Computer::getTypeName(), 
-                                           PluginAddressingReserveip::NETWORK => NetworkEquipment::getTypeName(), 
-                                           PluginAddressingReserveip::PRINTER => Printer::getTypeName()), array('value' => $this->fields["type"]));
+      Dropdown::showFromArray('type', [PluginAddressingReserveip::COMPUTER => Computer::getTypeName(),
+                                           PluginAddressingReserveip::NETWORK => NetworkEquipment::getTypeName(),
+                                           PluginAddressingReserveip::PRINTER => Printer::getTypeName()], ['value' => $this->fields["type"]]);
       echo "</td>";
       echo "</tr>";
 
@@ -129,8 +128,7 @@ class PluginAddressingFilter extends CommonDBTM {
       echo "</td>";
 
       echo "</tr>";
-      
-      
+
        echo "<tr class='tab_bg_1'>";
       echo "<td>".__('Last IP', 'addressing')."</td>"; // Mask
       echo "<td>";
@@ -144,7 +142,7 @@ class PluginAddressingFilter extends CommonDBTM {
              "onChange='plugaddr_ChangeNumber(\"".__('Invalid data !!', 'addressing')."\");'>";
       echo "</td>";
       echo "</tr>";
-      
+
       echo "<tr class='tab_bg_1'>";
       echo "<td>".__('Report for the IP Range', 'addressing')."</td>"; // Mask
       echo "<td>";
@@ -162,16 +160,16 @@ class PluginAddressingFilter extends CommonDBTM {
 
       return true;
    }
-   
+
    /**
     * Filter list
     * @global type $CFG_GLPI
     * @param type $item
     * @param type $options
     */
-   static function showList($item, $options = array()){
+   static function showList($item, $options = []) {
       global $CFG_GLPI;
-      
+
       $item_id = $item['id'];
       $rand          = mt_rand();
       $p['readonly'] = false;
@@ -183,7 +181,7 @@ class PluginAddressingFilter extends CommonDBTM {
       }
       $filter = new PluginAddressingFilter();
 
-      $canedit = Session::haveRightsOr(self::$rightname, array(CREATE, UPDATE, PURGE));
+      $canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]);
       $style   = "class='tab_cadre_fixehov'";
 
       if ($p['readonly']) {
@@ -197,9 +195,9 @@ class PluginAddressingFilter extends CommonDBTM {
 
          echo "<script type='text/javascript' >\n";
          echo "function viewAddFilter" . $item_id . "$rand() {\n";
-         $params = array('action' => 'viewFilter',
+         $params = ['action' => 'viewFilter',
             'items_id'   => $item_id,
-            'id'         => -1);
+            'id'         => -1];
          Ajax::updateItemJsCode("viewfilter" . $item_id . "$rand", $CFG_GLPI["root_doc"] . "/plugins/addressing/ajax/addressing.php", $params);
          echo "};";
          echo "</script>\n";
@@ -214,10 +212,10 @@ class PluginAddressingFilter extends CommonDBTM {
 
       if ($canedit && $nb) {
          Html::openMassiveActionsForm('mass' . $rand);
-         $massiveactionparams = array('num_displayed'  => $nb,
+         $massiveactionparams = ['num_displayed'  => $nb,
             'check_items_id' => $item_id,
             'container'      => 'mass' . $rand
-           );
+           ];
          Html::showMassiveActions($massiveactionparams);
       }
       if ($nb) {
@@ -250,7 +248,7 @@ class PluginAddressingFilter extends CommonDBTM {
          //filters list
          $filter = new self();
          $datas = $filter->find("`plugin_addressing_addressings_id` = ".$item_id);
-         
+
          foreach ($datas as $filter_item) {
             $filter->showMinimalFilterForm($item, $filter_item, $canedit, $rand);
          }
@@ -268,7 +266,7 @@ class PluginAddressingFilter extends CommonDBTM {
 
       echo "</div>\n";
    }
-   
+
    /**
     * Form of an element
     * @global type $CFG_GLPI
@@ -288,9 +286,9 @@ class PluginAddressingFilter extends CommonDBTM {
          Html::showMassiveActionCheckBox(__CLASS__, $filter["id"]);
          echo "\n<script type='text/javascript' >\n";
          echo "function viewEditFilter" . $filter["id"] . "$rand() {\n";
-         $params = array('action' => 'viewFilter',
+         $params = ['action' => 'viewFilter',
             'items_id'   => $item["id"],
-            'id'         => $filter['id']);
+            'id'         => $filter['id']];
          Ajax::updateItemJsCode("viewfilter" . $item["id"] . "$rand", $CFG_GLPI["root_doc"] . "/plugins/addressing/ajax/addressing.php", $params);
          echo "};";
          echo "</script>\n";
@@ -315,23 +313,23 @@ class PluginAddressingFilter extends CommonDBTM {
     * @param type $id
     * @param type $value
     */
-   static function dropdownFilters($id, $value){
+   static function dropdownFilters($id, $value) {
       $filter = new self();
       $datas = $filter->find("`plugin_addressing_addressings_id` = ".$id);
-      $filters = array();
+      $filters = [];
       $filters[0] = Dropdown::EMPTY_VALUE;
-      foreach ($datas as $data){
+      foreach ($datas as $data) {
          $filters[$data['id']] = $data['name'];
       }
-      Dropdown::showFromArray('filter', $filters, array('value' => $value));
+      Dropdown::showFromArray('filter', $filters, ['value' => $value]);
    }
-   
+
    /**
     * Count of filters
     * @param type $item
     * @return type
     */
-   static function countForItem($id){
+   static function countForItem($id) {
       $filter = new self();
       $datas = $filter->find("`plugin_addressing_addressings_id` = ".$id);
       return count($datas);

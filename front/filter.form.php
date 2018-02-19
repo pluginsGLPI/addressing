@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of addressing.
 
  addressing is free software; you can redistribute it and/or modify
@@ -26,7 +26,7 @@
  along with addressing. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
  */
- 
+
 include ('../../../inc/includes.php');
 
 
@@ -38,12 +38,12 @@ if (isset($_POST['add'])) {
    unset($_POST['id']);
    $filter->add($_POST);
    Html::back();
-} elseif(isset($_POST['update'])) {
+} else if (isset($_POST['update'])) {
    $filter->check($_POST['id'], UPDATE);
    $filter->update($_POST);
    Html::back();
 } else if (isset($_POST["purge"])) {
    $filter->check($_POST['id'], PURGE);
-   $filter->delete($_POST,1);
+   $filter->delete($_POST, 1);
    Html::back();
 }

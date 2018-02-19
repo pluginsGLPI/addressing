@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of addressing.
 
  addressing is free software; you can redistribute it and/or modify
@@ -26,7 +26,7 @@
  along with addressing. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
  */
- 
+
 if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
@@ -63,37 +63,37 @@ class PluginAddressingConfig extends CommonDBTM {
 
       echo "<tr class='tab_bg_1'><td>".__('Assigned IP', 'addressing')."</td>";
       echo "<td>";
-      Dropdown::showYesNo("alloted_ip",$this->fields["alloted_ip"]);
+      Dropdown::showYesNo("alloted_ip", $this->fields["alloted_ip"]);
       echo "</td>";
 
       echo "<td>".__('Free IP', 'addressing')."</td>";
       echo "<td>";
-      Dropdown::showYesNo("free_ip",$this->fields["free_ip"]);
+      Dropdown::showYesNo("free_ip", $this->fields["free_ip"]);
       echo "</td>";
       echo "</tr>";
 
       echo "<tr class='tab_bg_1'><td>".__('Same IP', 'addressing')."</td>";
       echo "<td>";
-      Dropdown::showYesNo("double_ip",$this->fields["double_ip"]);
+      Dropdown::showYesNo("double_ip", $this->fields["double_ip"]);
       echo "</td>";
 
       echo "<td>".__('Reserved IP', 'addressing')."</td>";
       echo "<td>";
-      Dropdown::showYesNo("reserved_ip",$this->fields["reserved_ip"]);
+      Dropdown::showYesNo("reserved_ip", $this->fields["reserved_ip"]);
       echo "</td>";
 
       echo "</tr>";
 
       echo "<tr class='tab_bg_1'><td colspan='2'>".__('Use Ping', 'addressing')."</td>";
       echo "<td colspan='2'>";
-      Dropdown::showYesNo("use_ping",$this->fields["use_ping"]);
+      Dropdown::showYesNo("use_ping", $this->fields["use_ping"]);
       echo "</td>";
       echo "</tr>";
 
       echo "<tr><th colspan='4'>";
       echo "<input type='hidden' name='id' value='1'>";
       echo "<div class='center'>".
-            "<input type='submit' name='update' value='"._sx('button','Post')."' class='submit'>".
+            "<input type='submit' name='update' value='"._sx('button', 'Post')."' class='submit'>".
            "</div></th></tr>";
       echo "</table>";
       Html::closeForm();
@@ -101,4 +101,3 @@ class PluginAddressingConfig extends CommonDBTM {
    }
 }
 
-?>

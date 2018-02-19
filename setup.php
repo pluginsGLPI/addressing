@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of addressing.
 
  addressing is free software; you can redistribute it and/or modify
@@ -33,16 +33,14 @@ function plugin_init_addressing() {
 
    $PLUGIN_HOOKS['csrf_compliant']['addressing'] = true;
 
-   $PLUGIN_HOOKS['change_profile']['addressing'] = array('PluginAddressingProfile', 'initProfile');
+   $PLUGIN_HOOKS['change_profile']['addressing'] = ['PluginAddressingProfile', 'initProfile'];
 
    Plugin::registerClass('PluginAddressingProfile',
-                         array('addtabon' => array('Profile')));
+                         ['addtabon' => ['Profile']]);
 
-   
-   
    if (Session::getLoginUserID()) {
       if (Session::haveRight('plugin_addressing', READ)) {
-         $PLUGIN_HOOKS["menu_toadd"]['addressing'] = array('tools'  => 'PluginAddressingMenu');
+         $PLUGIN_HOOKS["menu_toadd"]['addressing'] = ['tools'  => 'PluginAddressingMenu'];
       }
 
       if (Session::haveRight('plugin_addressing', UPDATE)) {
@@ -56,10 +54,10 @@ function plugin_init_addressing() {
 
       // Add specific files to add to the header : javascript or css
       $PLUGIN_HOOKS['add_css']['addressing']        = "addressing.css";
-      $PLUGIN_HOOKS["javascript"]['addressing']     = array("/plugins/addressing/addressing.js");
+      $PLUGIN_HOOKS["javascript"]['addressing']     = ["/plugins/addressing/addressing.js"];
       $PLUGIN_HOOKS['add_javascript']['addressing'] = 'addressing.js';
 
-      $PLUGIN_HOOKS['post_init']['addressing'] = array('PluginAddressingPing_Equipment', 'postinit');
+      $PLUGIN_HOOKS['post_init']['addressing'] = ['PluginAddressingPing_Equipment', 'postinit'];
    }
 }
 
@@ -67,13 +65,13 @@ function plugin_init_addressing() {
 // Get the name and the version of the plugin - Needed
 function plugin_version_addressing() {
 
-   return array(
+   return [
       'name'           => _n('IP Adressing', 'IP Adressing', 2, 'addressing'),
       'version'        => '2.6.0',
       'author'         => 'Gilles Portheault, Xavier Caillaud, Remi Collet, Nelly Mahu-Lasson',
       'license'        => 'GPLv2+',
       'homepage'       => 'https://github.com/pluginsGLPI/addressing',
-      'minGlpiVersion' => '9.2');// For compatibility / no install in version < 9.2
+      'minGlpiVersion' => '9.2'];// For compatibility / no install in version < 9.2
 }
 
 
@@ -93,4 +91,3 @@ function plugin_addressing_check_config() {
    return true;
 }
 
-?>

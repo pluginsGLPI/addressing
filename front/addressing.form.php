@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of addressing.
 
  addressing is free software; you can redistribute it and/or modify
@@ -43,13 +43,13 @@ $addressing = new PluginAddressingAddressing();
 
 if (isset($_POST["add"])) {
    $addressing->check(-1, CREATE, $_POST);
-   if (!empty($_POST["name"]) 
-      && !empty($_POST["begin_ip"]) 
+   if (!empty($_POST["name"])
+      && !empty($_POST["begin_ip"])
          && !empty($_POST["end_ip"])) {
       $newID = $addressing->add($_POST);
-      
+
    } else {
-      Session::addMessageAfterRedirect(__('Problem when adding, required fields are not here','addressing'), 
+      Session::addMessageAfterRedirect(__('Problem when adding, required fields are not here', 'addressing'),
                                        false, ERROR);
    }
    if ($_SESSION['glpibackcreated']) {
@@ -69,31 +69,30 @@ if (isset($_POST["add"])) {
 
 } else if (isset($_POST["purge"])) {
    $addressing->check($_POST['id'], PURGE);
-   $addressing->delete($_POST,1);
+   $addressing->delete($_POST, 1);
    $addressing->redirectToList();
 
 } else if (isset($_POST["update"])) {
    $addressing->check($_POST['id'], UPDATE);
-   if (!empty($_POST["name"]) 
-      && !empty($_POST["begin_ip"]) 
+   if (!empty($_POST["name"])
+      && !empty($_POST["begin_ip"])
          && !empty($_POST["end_ip"])) {
       $addressing->update($_POST);
    } else {
-      Session::addMessageAfterRedirect(__('Problem when adding, required fields are not here','addressing'), 
+      Session::addMessageAfterRedirect(__('Problem when adding, required fields are not here', 'addressing'),
                                        false, ERROR);
    }
    Html::back();
 
 } else if (isset($_POST["search"])) {
-   
+
    $addressing->checkGlobal(READ);
    Html::header(PluginAddressingAddressing::getTypeName(2), '', "tools", "pluginaddressingmenu");
    $addressing->display($_POST);
    Html::footer();
-}else {
+} else {
    $addressing->checkGlobal(READ);
    Html::header(PluginAddressingAddressing::getTypeName(2), '', "tools", "pluginaddressingmenu");
    $addressing->display($_GET);
    Html::footer();
 }
-?>

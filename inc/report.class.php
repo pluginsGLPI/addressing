@@ -33,7 +33,7 @@ if (!defined('GLPI_ROOT')) {
 
 class PluginAddressingReport extends CommonDBTM {
 
-   function displaySearchNewLine($type, $odd=false) {
+   function displaySearchNewLine($type, $odd = false) {
 
       $out = "";
       switch ($type) {
@@ -48,7 +48,7 @@ class PluginAddressingReport extends CommonDBTM {
             break;
 
          case Search::SYLK_OUTPUT : //sylk
-   //       $out="\n";
+            //       $out="\n";
             break;
 
          case Search::CSV_OUTPUT : //csv
@@ -66,11 +66,11 @@ class PluginAddressingReport extends CommonDBTM {
                   case "free" : //free
                      $class = " class='plugin_addressing_ip_free'";
                      break;
-                  
+
                   case "reserved" : //free
                      $class = " class='plugin_addressing_ip_reserved'";
                      break;
-                     
+
                   case "ping_on" : //ping_on
                      $class = " class='plugin_addressing_ping_on'";
                      break;
@@ -113,14 +113,14 @@ class PluginAddressingReport extends CommonDBTM {
       $row_num       = 1;
 
       // Column headers
-      echo Search::showHeader($output_type,1,$nbcols,1);
+      echo Search::showHeader($output_type, 1, $nbcols, 1);
       echo $this->displaySearchNewLine($output_type);
-      echo Search::showHeaderItem($output_type, __('IP'),$header_num);
-      echo Search::showHeaderItem($output_type, __('Connected to'),$header_num);
-      echo Search::showHeaderItem($output_type, _n('User', 'Users', 1),$header_num);
-      echo Search::showHeaderItem($output_type, __('MAC address'),$header_num);
-      echo Search::showHeaderItem($output_type, __('Item type'),$header_num);
-      echo Search::showHeaderItem($output_type, __('Free Ip', 'addressing'),$header_num);
+      echo Search::showHeaderItem($output_type, __('IP'), $header_num);
+      echo Search::showHeaderItem($output_type, __('Connected to'), $header_num);
+      echo Search::showHeaderItem($output_type, _n('User', 'Users', 1), $header_num);
+      echo Search::showHeaderItem($output_type, __('MAC address'), $header_num);
+      echo Search::showHeaderItem($output_type, __('Item type'), $header_num);
+      echo Search::showHeaderItem($output_type, __('Free Ip', 'addressing'), $header_num);
       echo Search::showEndLine($output_type);
 
       $user = new User();
@@ -134,7 +134,7 @@ class PluginAddressingReport extends CommonDBTM {
             } else {
                $disp = $PluginAddressingAddressing->fields["alloted_ip"];
             }
-            if ($disp)
+            if ($disp) {
                foreach ($lines as $line) {
                   $row_num++;
                   $item_num = 1;
@@ -154,7 +154,7 @@ class PluginAddressingReport extends CommonDBTM {
                   if ($line["itemtype"] != 'NetworkEquipment') {
                      if ($item->canView()) {
                         $output_iddev = "<a href='".$link."?id=".$line["on_device"]."'>".$name.
-                              (empty($name) || $_SESSION["glpiis_ids_visible"] ? " (".$line["on_device"].")" : "")."</a>";
+                           (empty($name) || $_SESSION["glpiis_ids_visible"] ? " (".$line["on_device"].")" : "")."</a>";
                      } else {
                         $output_iddev = $name.(empty($name) || $_SESSION["glpiis_ids_visible"] ? " (".$line["on_device"].")" : "");
                      }
@@ -166,7 +166,7 @@ class PluginAddressingReport extends CommonDBTM {
                            $linkp = $namep." - ";
                         }
                         $output_iddev = "<a href='".$link."?id=".$line["on_device"]."'>".$linkp.$name.
-                              (empty($name) || $_SESSION["glpiis_ids_visible"] ? " (".$line["on_device"].")" : "")."</a>";
+                           (empty($name) || $_SESSION["glpiis_ids_visible"] ? " (".$line["on_device"].")" : "")."</a>";
                      } else {
                         $output_iddev = $namep." - ".$name.(empty($name) || $_SESSION["glpiis_ids_visible"] ? " (".$line["on_device"].")" : "");
                      }
@@ -179,7 +179,7 @@ class PluginAddressingReport extends CommonDBTM {
 
                      if ($user->canView()) {
                         $output_iduser = "<a href='".$CFG_GLPI["root_doc"]."/front/user.form.php?id=".
-                              $line["users_id"]."'>".$username."</a>";
+                           $line["users_id"]."'>".$username."</a>";
                      } else {
                         $output_iduser = $username;
                      }
@@ -192,7 +192,7 @@ class PluginAddressingReport extends CommonDBTM {
                   if ($line["id"]) {
                      if ($item->canView()) {
                         $output_mac = "<a href='".$CFG_GLPI["root_doc"]."/front/networkport.form.php?id=".
-                              $line["id"]."'>".$line["mac"]."</a>";
+                           $line["id"]."'>".$line["mac"]."</a>";
                      } else {
                         $output_mac = $line["mac"];
                      }
@@ -213,6 +213,7 @@ class PluginAddressingReport extends CommonDBTM {
                   // End
                   echo Search::showEndLine($output_type);
                }
+            }
 
          } else if ($PluginAddressingAddressing->fields["free_ip"]) {
             $row_num++;
@@ -223,15 +224,15 @@ class PluginAddressingReport extends CommonDBTM {
                echo $this->displaySearchNewLine($output_type, "free");
                echo Search::showItem($output_type, $ip, $item_num, $row_num);
                echo Search::showItem($output_type, " ", $item_num, $row_num);
-               
+
                if ($output_type == Search::HTML_OUTPUT) {
                   $rand    = mt_rand();
-                  $params  = array('id_addressing' => $PluginAddressingAddressing->getID(),
+                  $params  = ['id_addressing' => $PluginAddressingAddressing->getID(),
                      'ip'            => trim($ip),
                      'root_doc'      => $CFG_GLPI['root_doc'],
                      'rand'          => $rand,
                      'width'         => 1000,
-                     'height'        => 550);
+                     'height'        => 550];
                   $content = "<a href=\"#\" onClick='plugaddr_loadForm(\"showForm\", \"plugaddr_form\", " . json_encode($params) . ");'> " . __("Reserve") . "</a>";
                } else {
                   $content = "";
@@ -252,7 +253,7 @@ class PluginAddressingReport extends CommonDBTM {
                   if ($output_type == Search::HTML_OUTPUT) {
                      $rand = mt_rand();
                      $content = "<a href=\"#\" onclick=\"".Html::jsGetElementbyID("reserveip".$rand).".dialog('open');return false;\">".__("Reserve")."</a>";
-                  
+
                   } else {
                      $content = "";
                   }
@@ -285,8 +286,8 @@ class PluginAddressingReport extends CommonDBTM {
              exec("ping -c 1 -w 1 ".$ip, $list);
             $nb = count($list);
             if (isset($nb)) {
-               for($i=0 ; $i<$nb ; $i++) {
-                  if (strpos($list[$i],"ttl=")>0) {
+               for ($i=0; $i<$nb; $i++) {
+                  if (strpos($list[$i], "ttl=")>0) {
                      return true;
                   }
                }
@@ -298,8 +299,8 @@ class PluginAddressingReport extends CommonDBTM {
             exec("ping.exe -n 1 -w 1 -i 4 ".$ip, $list);
             $nb = count($list);
             if (isset($nb)) {
-               for($i=0 ; $i<$nb ; $i++) {
-                  if (strpos($list[$i],"TTL")>0) {
+               for ($i=0; $i<$nb; $i++) {
+                  if (strpos($list[$i], "TTL")>0) {
                      return true;
                   }
                }
@@ -311,21 +312,21 @@ class PluginAddressingReport extends CommonDBTM {
             exec("fping -r1 -c1 -t100 ".$ip, $list);
             $nb = count($list);
             if (isset($nb)) {
-               for($i=0 ; $i<$nb ; $i++) {
-                  if (strpos($list[$i],"bytes")>0) {
+               for ($i=0; $i<$nb; $i++) {
+                  if (strpos($list[$i], "bytes")>0) {
                      return true;
                   }
                }
             }
             break;
 
-            case 3 :
+         case 3 :
             // *BSD ping
             exec("ping -c 1 -W 1 ".$ip, $list);
             $nb = count($list);
             if (isset($nb)) {
-               for($i=0 ; $i<$nb ; $i++) {
-                  if (strpos($list[$i],"ttl=")>0) {
+               for ($i=0; $i<$nb; $i++) {
+                  if (strpos($list[$i], "ttl=")>0) {
                      return true;
                   }
                }
@@ -337,8 +338,8 @@ class PluginAddressingReport extends CommonDBTM {
             exec("ping -c 1 -t 1 ".$ip, $list);
             $nb = count($list);
             if (isset($nb)) {
-               for($i=0 ; $i<$nb ; $i++) {
-                  if (strpos($list[$i],"ttl=")>0) {
+               for ($i=0; $i<$nb; $i++) {
+                  if (strpos($list[$i], "ttl=")>0) {
                      return true;
                   }
                }
@@ -347,4 +348,3 @@ class PluginAddressingReport extends CommonDBTM {
       }
    }
 }
-?>

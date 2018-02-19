@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of addressing.
 
  addressing is free software; you can redistribute it and/or modify
@@ -26,23 +26,22 @@
  along with addressing. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
  */
- 
+
 if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
 class PluginAddressingPing_Equipment {
 
-   function showForm($ID, $options = array())  {
+   function showForm($ID, $options = []) {
       global $DB, $CFG_GLPI;
-
 
       $obj = $options['obj'];
       //Html::printCleanArray($obj);
 
       $itemtype = getItemTypeForTable($obj->getTable());
 
-      $list_ip  = array();
+      $list_ip  = [];
       $total_ip = 0;
 
       /*if ($itemtype == 'NetworkEquipment') {
@@ -118,7 +117,7 @@ class PluginAddressingPing_Equipment {
    }
 
 
-   function ping($system,$ip) {
+   function ping($system, $ip) {
       $error = 1;
       $list  ='';
       switch ($system) {
@@ -149,18 +148,18 @@ class PluginAddressingPing_Equipment {
       }
       $list_str = implode('<br />', $list);
 
-      return array($list_str, $error);
+      return [$list_str, $error];
    }
-   
 
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
       global $CFG_GLPI;
 
       $ping = Session::haveRight('plugin_addressing_use_ping_in_equipment', '1');
 
       if ($ping && in_array($item->getType(), $CFG_GLPI["networkport_types"])) {
          if ($item->getField('id')) {
-            $options = array('obj' => $item);
+            $options = ['obj' => $item];
 
             $pingE = new self();
             $pingE->showForm($item->getField('id'), $options);
@@ -170,14 +169,14 @@ class PluginAddressingPing_Equipment {
    }
 
 
-   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
       global $CFG_GLPI;
 
       $ping = Session::haveRight('plugin_addressing_use_ping_in_equipment', '1');
 
       if ($ping && in_array($item->getType(), $CFG_GLPI["networkport_types"])) {
          if ($item->getField('id')) {
-            return array('1' => __('IP ping', 'addressing'));
+            return ['1' => __('IP ping', 'addressing')];
          }
       }
       return '';

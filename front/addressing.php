@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of addressing.
 
  addressing is free software; you can redistribute it and/or modify
@@ -41,4 +41,3 @@ if ($PluginAddressingAddressing->canView() || Session::haveRight("config", UPDAT
 }
 
 Html::footer();
-?>

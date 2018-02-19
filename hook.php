@@ -31,7 +31,7 @@ function plugin_addressing_install() {
    global $DB;
 
    include_once (GLPI_ROOT."/plugins/addressing/inc/profile.class.php");
-   
+
    $update = false;
    if (!$DB->tableExists("glpi_plugin_addressing_display")
        &&!$DB->tableExists("glpi_plugin_addressing")
@@ -40,31 +40,31 @@ function plugin_addressing_install() {
       $DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/empty-2.5.0.sql");
 
    } else {
-      
+
       if (!$DB->tableExists("glpi_plugin_addressing_profiles")
           && $DB->tableExists("glpi_plugin_addressing_display")
-          && !$DB->fieldExists("glpi_plugin_addressing_display","ipconf1")) {//1.4
+          && !$DB->fieldExists("glpi_plugin_addressing_display", "ipconf1")) {//1.4
          $update = true;
          $DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.4.sql");
       }
 
       if (!$DB->tableExists("glpi_plugin_addressing")
           && $DB->tableExists("glpi_plugin_addressing_display")
-          && $DB->fieldExists("glpi_plugin_addressing_display","ipconf1")) {
+          && $DB->fieldExists("glpi_plugin_addressing_display", "ipconf1")) {
          $update = true;
          $DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.5.sql");
 
       }
 
       if ($DB->tableExists("glpi_plugin_addressing_display")
-          && !$DB->fieldExists("glpi_plugin_addressing","ipdeb")) {
+          && !$DB->fieldExists("glpi_plugin_addressing", "ipdeb")) {
          $update = true;
          $DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.6.sql");
 
       }
 
       if ($DB->tableExists("glpi_plugin_addressing_profiles")
-          && $DB->fieldExists("glpi_plugin_addressing_profiles","interface")) {
+          && $DB->fieldExists("glpi_plugin_addressing_profiles", "interface")) {
          $update = true;
          $DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.7.0.sql");
 
@@ -76,7 +76,7 @@ function plugin_addressing_install() {
       }
 
       if ($DB->tableExists("glpi_plugin_addressing_profiles")
-          && !$DB->fieldExists("glpi_plugin_addressing_profiles","use_ping_in_equipment")) {
+          && !$DB->fieldExists("glpi_plugin_addressing_profiles", "use_ping_in_equipment")) {
          $DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/update-1.9.0.sql");
          $update = true;
       }
@@ -112,14 +112,14 @@ function plugin_addressing_install() {
          $result = $DB->query($query);
       }
 
-      Plugin::migrateItemType(array(5000 => 'PluginAddressingAddressing',
-                                    5001 => 'PluginAddressingReport'),
-                              array("glpi_bookmarks", "glpi_bookmarks_users",
+      Plugin::migrateItemType([5000 => 'PluginAddressingAddressing',
+                                    5001 => 'PluginAddressingReport'],
+                              ["glpi_bookmarks", "glpi_bookmarks_users",
                                     "glpi_displaypreferences", "glpi_documents_items",
-                                    "glpi_infocoms", "glpi_logs", "glpi_items_tickets"));
+                                    "glpi_infocoms", "glpi_logs", "glpi_items_tickets"]);
 
    }
-   
+
    //0.85 : new profile system
    PluginAddressingProfile::migrateProfiles();
    //Add all rights for current user profile
@@ -134,35 +134,35 @@ function plugin_addressing_install() {
 
 function plugin_addressing_uninstall() {
    global $DB;
-   
+
    include_once (GLPI_ROOT."/plugins/addressing/inc/profile.class.php");
    include_once (GLPI_ROOT."/plugins/addressing/inc/menu.class.php");
-   
-   $migration = new Migration("2.5.0");
-   $tables = array("glpi_plugin_addressing_addressings",
-                   "glpi_plugin_addressing_configs",
-                   "glpi_plugin_addressing_filters");
 
-   foreach($tables as $table) {
+   $migration = new Migration("2.5.0");
+   $tables = ["glpi_plugin_addressing_addressings",
+                   "glpi_plugin_addressing_configs",
+                   "glpi_plugin_addressing_filters"];
+
+   foreach ($tables as $table) {
       $migration->dropTable($table);
    }
-   
-   $itemtypes = array('DisplayPreference', 'Bookmark');
+
+   $itemtypes = ['DisplayPreference', 'Bookmark'];
    foreach ($itemtypes as $itemtype) {
       $item = new $itemtype;
-      $item->deleteByCriteria(array('itemtype' => 'PluginAddressingAddressing'));
+      $item->deleteByCriteria(['itemtype' => 'PluginAddressingAddressing']);
    }
 
    //Delete rights associated with the plugin
    $profileRight = new ProfileRight();
 
    foreach (PluginAddressingProfile::getAllRights() as $right) {
-      $profileRight->deleteByCriteria(array('name' => $right['field']));
+      $profileRight->deleteByCriteria(['name' => $right['field']]);
    }
-   
+
    //Remove rigth from $_SESSION['glpiactiveprofile'] if exists
    PluginAddressingProfile::removeRightsFromSession();
-   
+
    PluginAddressingMenu::removeRightsFromSession();
 
    return true;
@@ -175,10 +175,10 @@ function plugin_addressing_getDatabaseRelations() {
    $plugin = new Plugin();
 
    if ($plugin->isActivated("addressing")) {
-      return array("glpi_networks" => array("glpi_plugin_addressing_addressings" => "networks_id"),
-                   "glpi_entities" => array("glpi_plugin_addressing_addressings" => "entities_id"));
+      return ["glpi_networks" => ["glpi_plugin_addressing_addressings" => "networks_id"],
+                   "glpi_entities" => ["glpi_plugin_addressing_addressings" => "entities_id"]];
    }
-   return array();
+   return [];
 }
 
 
@@ -260,9 +260,9 @@ function plugin_addressing_dynamicReport($params) {
 
    $PluginAddressingAddressing = new PluginAddressingAddressing();
 
-   if ($params["item_type"] == 'PluginAddressingReport' 
-      && isset($params["id"]) 
-      && isset($params["display_type"]) 
+   if ($params["item_type"] == 'PluginAddressingReport'
+      && isset($params["id"])
+      && isset($params["display_type"])
       && $PluginAddressingAddressing->getFromDB($params["id"])) {
 
       $PluginAddressingReport = new PluginAddressingReport();
@@ -273,16 +273,16 @@ function plugin_addressing_dynamicReport($params) {
          if ($addressingFilter->getFromDB($params['filter'])) {
             $ipdeb  = sprintf("%u", ip2long($addressingFilter->fields['begin_ip']));
             $ipfin  = sprintf("%u", ip2long($addressingFilter->fields['end_ip']));
-            $result = $PluginAddressingAddressing->compute($params["start"], array( 'ipdeb'       => $ipdeb,
+            $result = $PluginAddressingAddressing->compute($params["start"], [ 'ipdeb'       => $ipdeb,
                                                                                     'ipfin'       => $ipfin,
                                                                                     'entities_id' => $addressingFilter->fields['entities_id'],
-                                                                                    'type_filter' => $addressingFilter->fields['type']));
+                                                                                    'type_filter' => $addressingFilter->fields['type']]);
          }
       } else {
          $ipdeb  = sprintf("%u", ip2long($PluginAddressingAddressing->fields["begin_ip"]));
          $ipfin  = sprintf("%u", ip2long($PluginAddressingAddressing->fields["end_ip"]));
-         $result = $PluginAddressingAddressing->compute($params["start"], array( 'ipdeb' => $ipdeb,
-                                                                                 'ipfin' => $ipfin));
+         $result = $PluginAddressingAddressing->compute($params["start"], [ 'ipdeb' => $ipdeb,
+                                                                                 'ipfin' => $ipfin]);
       }
       $PluginAddressingReport->displayReport($result, $PluginAddressingAddressing);
 
@@ -293,4 +293,3 @@ function plugin_addressing_dynamicReport($params) {
    return false;
 }
 
-?>

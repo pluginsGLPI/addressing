@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of addressing.
 
  addressing is free software; you can redistribute it and/or modify
@@ -34,18 +34,18 @@ if (!defined('GLPI_ROOT')) {
 class PluginAddressingProfile extends Profile {
 
    static $rightname = "profile";
-   
+
    static function getAllRights() {
-      $rights = array(
-          array('itemtype'  => 'PluginAddressingAddressing',
+      $rights = [
+          ['itemtype'  => 'PluginAddressingAddressing',
                 'label'     => __('Generate reports', 'addressing'),
-                'field'     => 'plugin_addressing'),
-          array('itemtype'  => 'PluginAddressingAddressing', 
+                'field'     => 'plugin_addressing'],
+          ['itemtype'  => 'PluginAddressingAddressing',
                 'label'     => __('Use ping on equipment form', 'addressing'),
-                'field'     => 'plugin_addressing_use_ping_in_equipment'));
+                'field'     => 'plugin_addressing_use_ping_in_equipment']];
       return $rights;
    }
-   
+
     /**
     * Show profile form
     *
@@ -54,10 +54,10 @@ class PluginAddressingProfile extends Profile {
     *
     * @return nothing
     **/
-   function showForm($profiles_id=0, $openform=TRUE, $closeform=TRUE) {
+   function showForm($profiles_id = 0, $openform = true, $closeform = true) {
 
       echo "<div class='firstbloc'>";
-      if (($canedit = Session::haveRightsOr(self::$rightname, array(CREATE, UPDATE, PURGE)))
+      if (($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]))
           && $openform) {
          $profile = new Profile();
          echo "<form method='post' action='".$profile->getFormURL()."'>";
@@ -66,39 +66,39 @@ class PluginAddressingProfile extends Profile {
       $profile = new Profile();
       $profile->getFromDB($profiles_id);
 
-      $rights = array(
-          array('itemtype'  => 'PluginAddressingAddressing',
+      $rights = [
+          ['itemtype'  => 'PluginAddressingAddressing',
                 'label'     => __('Generate reports', 'addressing'),
-                'field'     => 'plugin_addressing'));
-      
-      $profile->displayRightsChoiceMatrix($rights, array('canedit'       => $canedit,
+                'field'     => 'plugin_addressing']];
+
+      $profile->displayRightsChoiceMatrix($rights, ['canedit'       => $canedit,
                                                       'default_class' => 'tab_bg_2',
-                                                      'title'         => __('General')));
+                                                      'title'         => __('General')]);
 
       echo "<table class='tab_cadre_fixehov'>";
 
-      $effective_rights = ProfileRight::getProfileRights($profiles_id, 
-                                                         array('plugin_addressing_use_ping_in_equipment'));
+      $effective_rights = ProfileRight::getProfileRights($profiles_id,
+                                                         ['plugin_addressing_use_ping_in_equipment']);
       echo "<tr class='tab_bg_2'>";
       echo "<td width='20%'>".__('Use ping on equipment form', 'addressing')."</td>";
       echo "<td colspan='5'>";
-      Html::showCheckbox(array('name'    => '_plugin_addressing_use_ping_in_equipment[1_0]',
-                               'checked' => $effective_rights['plugin_addressing_use_ping_in_equipment']));
+      Html::showCheckbox(['name'    => '_plugin_addressing_use_ping_in_equipment[1_0]',
+                               'checked' => $effective_rights['plugin_addressing_use_ping_in_equipment']]);
       echo "</td></tr>\n";
       echo "</table>";
-      
+
       if ($canedit
           && $closeform) {
          echo "<div class='center'>";
-         echo Html::hidden('id', array('value' => $profiles_id));
-         echo Html::submit(_sx('button', 'Save'), array('name' => 'update'));
+         echo Html::hidden('id', ['value' => $profiles_id]);
+         echo Html::submit(_sx('button', 'Save'), ['name' => 'update']);
          echo "</div>\n";
          Html::closeForm();
       }
       echo "</div>";
    }
-   
-   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+
+   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
 
       if ($item->getType() == 'Profile') {
          if ($item->getField('interface') == 'central') {
@@ -110,15 +110,15 @@ class PluginAddressingProfile extends Profile {
    }
 
 
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
 
       if ($item->getType() == 'Profile') {
          $profile = new self();
          $ID      = $item->getField('id');
          //In case there's no right for this profile, create it
-         self::addDefaultProfileInfos($item->getID(), 
-                                      array('plugin_addressing' => 0, 
-                                            'plugin_addressing_use_ping_in_equipment' => 0));
+         self::addDefaultProfileInfos($item->getID(),
+                                      ['plugin_addressing' => 0,
+                                            'plugin_addressing_use_ping_in_equipment' => 0]);
          $profile->showForm($ID);
       }
       return true;
@@ -149,12 +149,12 @@ class PluginAddressingProfile extends Profile {
     */
    static function createFirstAccess($profiles_id) {
 
-         self::addDefaultProfileInfos($profiles_id, 
-                                    array('plugin_addressing' => ALLSTANDARDRIGHT, 
-                                          'plugin_addressing_use_ping_in_equipment' => '1'), true);
+         self::addDefaultProfileInfos($profiles_id,
+                                    ['plugin_addressing' => ALLSTANDARDRIGHT,
+                                          'plugin_addressing_use_ping_in_equipment' => '1'], true);
    }
 
-   
+
    /**
    * Initialize profiles
    */
@@ -165,17 +165,17 @@ class PluginAddressingProfile extends Profile {
                            FROM `glpi_profilerights` 
                            WHERE `profiles_id`='".$_SESSION['glpiactiveprofile']['id']."' 
                               AND `name` LIKE '%plugin_addressing%'") as $prof) {
-         $_SESSION['glpiactiveprofile'][$prof['name']] = $prof['rights']; 
+         $_SESSION['glpiactiveprofile'][$prof['name']] = $prof['rights'];
       }
    }
-   
+
    static function migrateProfiles() {
       global $DB;
-      
+
       if (!$DB->tableExists('glpi_plugin_addressing_profiles')) {
-      return true;
+         return true;
       }
-      
+
       $profiles = getAllDatasFromTable('glpi_plugin_addressing_profiles');
       foreach ($profiles as $id => $profile) {
          switch ($profile['addressing']) {
@@ -190,14 +190,14 @@ class PluginAddressingProfile extends Profile {
                $value = 0;
                break;
          }
-         self::addDefaultProfileInfos($profile['profiles_id'], array('plugin_addressing' => $value));
-         self::addDefaultProfileInfos($profile['profiles_id'], 
-                                      array('plugin_addressing_use_ping_in_equipment' 
-                                             => $profile['use_ping_in_equipment']));
+         self::addDefaultProfileInfos($profile['profiles_id'], ['plugin_addressing' => $value]);
+         self::addDefaultProfileInfos($profile['profiles_id'],
+                                      ['plugin_addressing_use_ping_in_equipment'
+                                             => $profile['use_ping_in_equipment']]);
       }
    }
-   
-   
+
+
    static function removeRightsFromSession() {
       foreach (self::getAllRights(true) as $right) {
          if (isset($_SESSION['glpiactiveprofile'][$right['field']])) {
@@ -207,4 +207,3 @@ class PluginAddressingProfile extends Profile {
    }
 
 }
-?>

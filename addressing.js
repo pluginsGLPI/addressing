@@ -12,7 +12,7 @@ function plugaddr_Compute(msg) {
    document.getElementById("plugaddr_ipdeb").value = "";
    document.getElementById("plugaddr_ipfin").value = "";
 
-   for (var i = 0; i < 4 ; i++) {
+   for (var i = 0; i < 4; i++) {
       val=document.getElementById("plugaddr_ipdeb"+i).value
       if (val=='' || isNaN(val) || parseInt(val)<0 || parseInt(val)>255) {
          document.getElementById("plugaddr_range").innerHTML=msg+" ("+val+")"
@@ -64,9 +64,9 @@ function plugaddr_Check(msg) {
 function plugaddr_ChangeNumber(msg) {
 
    var lst=document.getElementById("plugaddr_subnet");
-    if (lst!=null) {
-        lst.selectedIndex=0;
-    }
+   if (lst!=null) {
+       lst.selectedIndex=0;
+   }
 
    plugaddr_Compute(msg);
 }
@@ -76,7 +76,9 @@ function plugaddr_ChangeList(msg) {
 
    var i;
    var lst=document.getElementById("plugaddr_subnet");
-   if (lst.value == "0") return;
+   if (lst.value == "0") {
+      return;
+   }
    var champ=lst.value.split("/");
    var subnet=champ[0].split(".");
    var netmask=champ[1].split(".", 4);
@@ -120,7 +122,7 @@ function plugaddr_Init(msg) {
 
 // Display initial values
 function plugaddr_CheckFilter(msg) {
-    if (plugaddr_IsFilter(msg)) {
+   if (plugaddr_IsFilter(msg)) {
       return true;
    }
    alert(msg);
@@ -141,7 +143,7 @@ function plugaddr_IsFilter(msg) {
    document.getElementById("plugaddr_ipdeb").value = "";
    document.getElementById("plugaddr_ipfin").value = "";
 
-   for (var i = 0; i < 4 ; i++) {
+   for (var i = 0; i < 4; i++) {
       val=document.getElementById("plugaddr_ipdeb"+i).value
       if (val=='' || isNaN(val) || parseInt(val)<0 || parseInt(val)>255) {
          document.getElementById("plugaddr_range").innerHTML=msg+" ("+val+")"
@@ -186,23 +188,23 @@ function nameIsThere(params) {
     var typeElm = $('select[name="type"]');
     var divNameItemElm = $('div[id="nameItem"]');
     $.ajax({
-        url: root_doc + '/plugins/addressing/ajax/addressing.php',
-        type: "POST",
-        dataType: "json",
-        data: {
+         url: root_doc + '/plugins/addressing/ajax/addressing.php',
+         type: "POST",
+         dataType: "json",
+         data: {
             action: 'isName',
             name: (nameElm.length != 0) ? nameElm.val() : '0',
             type: (typeElm.length != 0) ? typeElm.val() : '0',
-        },
-        success: function (json) {
+         },
+         success: function (json) {
             if (json) {
                 divNameItemElm.show();
             } else {
-                divNameItemElm.hide();
+               divNameItemElm.hide();
             }
 
-        }
-    });
+         }
+      });
 }
 
 function getAddressingFormData(form) {
@@ -218,34 +220,34 @@ function getAddressingFormData(form) {
 
 function plugaddr_loadForm(action, modal, params) {
     var formInput;
-    if (params.form != undefined) {
-        formInput = getAddressingFormData($('form[name="' + params.form + '"]'));
-    }
+   if (params.form != undefined) {
+       formInput = getAddressingFormData($('form[name="' + params.form + '"]'));
+   }
 
     $.ajax({
-        url: params.root_doc + '/plugins/addressing/ajax/addressing.php',
-        type: "POST",
-        dataType: "html",
-        data: {
+         url: params.root_doc + '/plugins/addressing/ajax/addressing.php',
+         type: "POST",
+         dataType: "html",
+         data: {
             'action': action,
             'params': params,
             'pdf_action': params.pdf_action,
             'formInput': formInput,
             'modal': modal,
-        },
-        success: function (response, opts) {
+         },
+         success: function (response, opts) {
             $('#' + modal).html(response);
 
             switch (action) {
-                case 'showForm':
-                    $('#' + modal).dialog({
+               case 'showForm':
+                   $('#' + modal).dialog({
                         autoOpen: true,
                         height: params.height,
                         width: params.width,
                         overflow: "none"
-                    });
+                     });
                     break;
             }
-        }
-    });
+         }
+      });
 }

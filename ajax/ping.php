@@ -9,7 +9,7 @@
  -------------------------------------------------------------------------
 
  LICENSE
-      
+
  This file is part of addressing.
 
  addressing is free software; you can redistribute it and/or modify
@@ -54,4 +54,3 @@ $ping_equip = new PluginAddressingPing_Equipment();
 list($message, $error) = $ping_equip->ping($system, $ip);
 echo $ping_response = $message;
 
-?>
