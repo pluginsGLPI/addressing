@@ -114,7 +114,7 @@ function plugin_addressing_install() {
 
       Plugin::migrateItemType([5000 => 'PluginAddressingAddressing',
                                     5001 => 'PluginAddressingReport'],
-                              ["glpi_bookmarks", "glpi_bookmarks_users",
+                              ["glpi_savedsearches", "glpi_savedsearches_users",
                                     "glpi_displaypreferences", "glpi_documents_items",
                                     "glpi_infocoms", "glpi_logs", "glpi_items_tickets"]);
 
@@ -147,7 +147,7 @@ function plugin_addressing_uninstall() {
       $migration->dropTable($table);
    }
 
-   $itemtypes = ['DisplayPreference', 'Bookmark'];
+   $itemtypes = ['DisplayPreference', 'SavedSearch'];
    foreach ($itemtypes as $itemtype) {
       $item = new $itemtype;
       $item->deleteByCriteria(['itemtype' => 'PluginAddressingAddressing']);
