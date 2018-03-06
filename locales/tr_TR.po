@@ -16,13 +16,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: tr_TR\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: setup.php:70 inc/addressing.class.php:40 inc/menu.class.php:34
 #: inc/profile.class.php:105
 msgid "IP Adressing"
 msgid_plural "IP Adressing"
 msgstr[0] "IP Adresleme"
+msgstr[1] "IP Adresleme"
 
 #: setup.php:83
 msgid "This plugin requires GLPI >= 0.85.3"
@@ -185,6 +186,7 @@ msgstr "Ping Kullanılsın"
 msgid "Filter"
 msgid_plural "Filters"
 msgstr[0] "Süzgeç"
+msgstr[1] "Süzgeç"
 
 #: inc/filter.class.php:206
 msgid "Add a filter"

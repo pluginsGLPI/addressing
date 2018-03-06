@@ -64,19 +64,19 @@ class PluginAddressingReserveip extends CommonDBTM
       $id   = 0;
       if (!$item->getFromDBByQuery("WHERE `name`='" . $input["name_reserveip"] . "' AND `entities_id`=" . $input['entities_id'] . " LIMIT 1")) {
          // Add computer
-         $id = $item->add(["name"        => $input["name_reserveip"],
-                                "entities_id" => $input['entities_id'],
-                                "locations_id" => $input["locations_id"],
-                                "states_id"   => $input["states_id"],
-                                "comment"     => $input["comment"]]);
+         $id = $item->add(["name"         => $input["name_reserveip"],
+                           "entities_id"  => $input['entities_id'],
+                           "locations_id" => $input["locations_id"],
+                           "states_id"    => $input["states_id"],
+                           "comment"      => $input["comment"]]);
       } else {
          $id = $item->getID();
          //update item
-         $item->update(["id"          => $id,
-                             "entities_id" => $input['entities_id'],
-                             "states_id"   => $input["states_id"],
-                             "locations_id" => $input["locations_id"],
-                             "comment"     => $input["comment"]]);
+         $item->update(["id"           => $id,
+                        "entities_id"  => $input['entities_id'],
+                        "states_id"    => $input["states_id"],
+                        "locations_id" => $input["locations_id"],
+                        "comment"      => $input["comment"]]);
       }
 
       // Add a new port
