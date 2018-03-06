@@ -422,7 +422,7 @@ class PluginAddressingAddressing extends CommonDBTM {
          }
 
          if ($this->fields["networks_id"]
-                  && FieldExists($type::getTable(), 'networks_id')) {
+                  && $DB->fieldExists($type::getTable(), 'networks_id')) {
             $sql .= " AND `dev`.`networks_id`= ".$this->fields["networks_id"];
          }
       }
@@ -477,15 +477,15 @@ class PluginAddressingAddressing extends CommonDBTM {
                $ipdeb  = sprintf("%u", ip2long($addressingFilter->fields['begin_ip']));
                $ipfin  = sprintf("%u", ip2long($addressingFilter->fields['end_ip']));
                $result = $this->compute($start, ['ipdeb'       => $ipdeb,
-                                                      'ipfin'       => $ipfin,
-                                                      'entities_id' => $addressingFilter->fields['entities_id'],
-                                                      'type_filter' => $addressingFilter->fields['type']]);
+                                                 'ipfin'       => $ipfin,
+                                                 'entities_id' => $addressingFilter->fields['entities_id'],
+                                                 'type_filter' => $addressingFilter->fields['type']]);
             }
          } else {
             $ipdeb = sprintf("%u", ip2long($this->fields["begin_ip"]));
             $ipfin = sprintf("%u", ip2long($this->fields["end_ip"]));
             $result = $this->compute($start, ['ipdeb' => $ipdeb,
-                                                   'ipfin' => $ipfin]);
+                                              'ipfin' => $ipfin]);
          }
 
          $nbipf = 0; // ip libres
