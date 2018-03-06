@@ -126,7 +126,7 @@ class PluginAddressingReport extends CommonDBTM {
       $user = new User();
 
       foreach ($result as $num => $lines) {
-         $ip = long2ip(substr($num, 2));
+         $ip = self::string2ip(substr($num, 2));
 
          if (count($lines)) {
             if (count($lines) > 1) {
@@ -276,6 +276,20 @@ class PluginAddressingReport extends CommonDBTM {
       return $ping_response;
    }
 
+   /**
+    * Converts an (IPv4) Internet network address into a string in Internet standard dotted format
+    * @link http://php.net/manual/en/function.long2ip.php
+    * problem with 32-bit architectures: https://bugs.php.net/bug.php?id=74417&edit=1
+    *
+    * @param $s
+    *
+    * @return string
+    */
+   function string2ip($s) {
+      if ($s > PHP_INT_MAX)
+         $s = 2 * PHP_INT_MIN + $s;
+      return long2ip($s);
+   }
 
    function ping($system, $ip) {
 
