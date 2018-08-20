@@ -293,3 +293,10 @@ function plugin_addressing_dynamicReport($params) {
    return false;
 }
 
+function plugin_addressing_addOrderBy($itemtype, $ID, $order, $key){
+   if($itemtype == "PluginAddressingAddressing"
+      && ($ID == 1000 || $ID == 1001)) {
+      return "ORDER BY INET_ATON(ITEM_$key) $order";
+
+   }
+}
