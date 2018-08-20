@@ -37,7 +37,7 @@ function plugin_addressing_install() {
        &&!$DB->tableExists("glpi_plugin_addressing")
        && !$DB->tableExists("glpi_plugin_addressing_configs")) {
 
-      $DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/empty-2.5.0.sql");
+      $DB->runFile(GLPI_ROOT ."/plugins/addressing/sql/empty-2.7.0.sql");
 
    } else {
 
@@ -132,6 +132,9 @@ function plugin_addressing_install() {
 }
 
 
+/**
+ * @return bool
+ */
 function plugin_addressing_uninstall() {
    global $DB;
 
@@ -169,7 +172,11 @@ function plugin_addressing_uninstall() {
 }
 
 
-// Define database relations
+/**
+ * Define database relations
+ *
+ * @return array
+ */
 function plugin_addressing_getDatabaseRelations() {
 
    $plugin = new Plugin();
@@ -255,7 +262,13 @@ function plugin_addressing_MassiveActionsProcess($data) {
 }
 */
 
-// Do special actions for dynamic report
+/**
+ * Do special actions for dynamic report
+ *
+ * @param $params
+ *
+ * @return bool
+ */
 function plugin_addressing_dynamicReport($params) {
 
    $PluginAddressingAddressing = new PluginAddressingAddressing();
@@ -293,8 +306,16 @@ function plugin_addressing_dynamicReport($params) {
    return false;
 }
 
-function plugin_addressing_addOrderBy($itemtype, $ID, $order, $key){
-   if($itemtype == "PluginAddressingAddressing"
+/**
+ * @param $itemtype
+ * @param $ID
+ * @param $order
+ * @param $key
+ *
+ * @return string
+ */
+function plugin_addressing_addOrderBy($itemtype, $ID, $order, $key) {
+   if ($itemtype == "PluginAddressingAddressing"
       && ($ID == 1000 || $ID == 1001)) {
       return "ORDER BY INET_ATON(ITEM_$key) $order";
 
