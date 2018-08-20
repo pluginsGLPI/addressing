@@ -6,12 +6,14 @@
    <logo>https://github.com/pluginsGLPI/addressing/blob/master/addressing.png?raw=true</logo>
    <description>
       <short>
-         <fr><![CDATA[Rapport IP. Ce plugin vous permet créer un rapport IP afin de visualiser les adresses ip utilisées et libres sur un réseau donné. Génération de la liste des ip attribuées / libres / réservées / doublons. Personnalisation de l’affichage. Fonction ping adresses libres]]></fr>
          <en><![CDATA[IP reports. This plugin enables you to create IP report for visualize IP addresses used and free on a given network.]]></en>
+         <cs><![CDATA[Výkazy o IP adresách. Tento zásuvný modul umožňuje vytvářet výkaz o IP adresách pro vizualizaci použitých a volných adres na dané síti.]]></cs>
+         <fr><![CDATA[Rapport IP. Ce plugin vous permet créer un rapport IP afin de visualiser les adresses ip utilisées et libres sur un réseau donné. Génération de la liste des ip attribuées / libres / réservées / doublons. Personnalisation de l’affichage. Fonction ping adresses libres]]></fr>
       </short>
       <long>
-         <fr><![CDATA[Ce plugin vous permet créer des rapports IP afin de visualiser les adresses ip utilisées et libres sur un réseau donné.<br />-Génération de la liste des ip attribuées / libres / réservées / doublons pour tout type de matériel ayant une IP.<br />-Réservations d'IP.<br />-Ping adresses libres sur divers systèmes.]]></fr>
          <en><![CDATA[This plugin enables you to create IP reports for visualize IP addresses used and free on a given network.<br />-List generation of ip assigned / free / reserved / doubles for all items with IP field.<br />-IP reservations.<br />-Ping fonction for free ip for many systems.]]></en>
+         <cs><![CDATA[Výkazy o IP adresách. Tento zásuvný modul umožňuje vytvářet výkaz o IP adresách pro vizualizaci použitých a volných adres na dané síti.<br />- Vytváření seznamu přiřazených/volných/rezervovaných/duplicitních IP adres pro všechny položky s kolonkou IP adresa.<br />- Rezervace IP adres.<br />- Ping funkce pro volné IP adresy pro mnoho systémů.]]></cs>
+         <fr><![CDATA[Ce plugin vous permet créer des rapports IP afin de visualiser les adresses ip utilisées et libres sur un réseau donné.<br />-Génération de la liste des ip attribuées / libres / réservées / doublons pour tout type de matériel ayant une IP.<br />-Réservations d'IP.<br />-Ping adresses libres sur divers systèmes.]]></fr>
       </long>
    </description>
    <homepage>https://github.com/pluginsGLPI/addressing</homepage>
@@ -117,13 +119,17 @@
    </langs>
    <license><![CDATA[GPL v2+]]></license>
       <tags>
-         <fr>
-            <tag>Rapports</tag>
-            <tag>Réseau</tag>
-         </fr>
          <en>
             <tag>Reports</tag>
             <tag>Network</tag>
          </en>
+         <cs>
+            <tag>Výkazy</tag>
+            <tag>Síť</tag>
+         </cs>
+         <fr>
+            <tag>Rapports</tag>
+            <tag>Réseau</tag>
+         </fr>
    </tags>
 </root>
