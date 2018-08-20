@@ -220,20 +220,22 @@ class PluginAddressingReport extends CommonDBTM {
             $item_num = 1;
             $content  = "";
 
+            $rand   = mt_rand();
+            $params = ['id_addressing' => $PluginAddressingAddressing->getID(),
+                       'ip'            => trim($ip),
+                       'root_doc'      => $CFG_GLPI['root_doc'],
+                       'rand'          => $rand,
+                       'width'         => 1000,
+                       'height'        => 550];
+
             if (!$ping) {
                echo $this->displaySearchNewLine($output_type, "free");
                echo Search::showItem($output_type, $ip, $item_num, $row_num);
                echo Search::showItem($output_type, " ", $item_num, $row_num);
 
                if ($output_type == Search::HTML_OUTPUT) {
-                  $rand    = mt_rand();
-                  $params  = ['id_addressing' => $PluginAddressingAddressing->getID(),
-                     'ip'            => trim($ip),
-                     'root_doc'      => $CFG_GLPI['root_doc'],
-                     'rand'          => $rand,
-                     'width'         => 1000,
-                     'height'        => 550];
-                  $content = "<a href=\"#\" onClick='plugaddr_loadForm(\"showForm\", \"plugaddr_form\", " . json_encode($params) . ");'> " . __("Reserve") . "</a>";
+                  $content = "<a href=\"#\" onClick='plugaddr_loadForm(\"showForm\", \"plugaddr_form\", 
+                  " . json_encode($params) . ");'> " . __("Reserve") . "</a>";
                } else {
                   $content = "";
                }
@@ -251,8 +253,8 @@ class PluginAddressingReport extends CommonDBTM {
                   echo Search::showItem($output_type, $ip, $item_num, $row_num);
                   echo Search::showItem($output_type, __('Ping: no response - free Ip', 'addressing'), $item_num, $row_num);
                   if ($output_type == Search::HTML_OUTPUT) {
-                     $rand = mt_rand();
-                     $content = "<a href=\"#\" onclick=\"".Html::jsGetElementbyID("reserveip".$rand).".dialog('open');return false;\">".__("Reserve")."</a>";
+                     $content = "<a href=\"#\" onClick='plugaddr_loadForm(\"showForm\", \"plugaddr_form\", 
+                     " . json_encode($params) . ");'> " . __("Reserve") . "</a>";
 
                   } else {
                      $content = "";
