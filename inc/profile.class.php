@@ -130,9 +130,11 @@ class PluginAddressingProfile extends Profile {
    **/
    static function addDefaultProfileInfos($profiles_id, $rights) {
       $profileRight = new ProfileRight();
+      $dbu          = new DbUtils();
       foreach ($rights as $right => $value) {
-         if (!countElementsInTable('glpi_profilerights',
-                                   "`profiles_id`='$profiles_id' AND `name`='$right'")) {
+         if (!$dbu->countElementsInTable('glpi_profilerights',
+                                         ["profiles_id" => $profiles_id,
+                                          "name"        => $right])) {
             $myright['profiles_id'] = $profiles_id;
             $myright['name']        = $right;
             $myright['rights']      = $value;
@@ -175,8 +177,8 @@ class PluginAddressingProfile extends Profile {
       if (!$DB->tableExists('glpi_plugin_addressing_profiles')) {
          return true;
       }
-
-      $profiles = getAllDatasFromTable('glpi_plugin_addressing_profiles');
+      $dbu      = new DbUtils();
+      $profiles = $dbu->getAllDatasFromTable('glpi_plugin_addressing_profiles');
       foreach ($profiles as $id => $profile) {
          switch ($profile['addressing']) {
             case 'r' :

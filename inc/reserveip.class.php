@@ -61,8 +61,8 @@ class PluginAddressingReserveip extends CommonDBTM
 
       // Find computer
       $item = new $input['type']();
-      $id   = 0;
-      if (!$item->getFromDBByQuery("WHERE `name`='" . $input["name_reserveip"] . "' AND `entities_id`=" . $input['entities_id'] . " LIMIT 1")) {
+      if (!$item->getFromDBByCrit(["name"        => $input["name_reserveip"],
+                                   "entities_id" => $input['entities_id']])) {
          // Add computer
          $id = $item->add(["name"         => $input["name_reserveip"],
                            "entities_id"  => $input['entities_id'],

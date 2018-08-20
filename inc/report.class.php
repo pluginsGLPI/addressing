@@ -175,7 +175,9 @@ class PluginAddressingReport extends CommonDBTM {
 
                   // User
                   if ($line["users_id"] && $user->getFromDB($line["users_id"])) {
-                     $username = formatUserName($user->fields["id"], $user->fields["name"], $user->fields["realname"], $user->fields["firstname"]);
+                     $dbu = new DbUtils();
+                     $username = $dbu->formatUserName($user->fields["id"], $user->fields["name"],
+                                                      $user->fields["realname"], $user->fields["firstname"]);
 
                      if ($user->canView()) {
                         $output_iduser = "<a href='".$CFG_GLPI["root_doc"]."/front/user.form.php?id=".

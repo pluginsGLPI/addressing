@@ -38,8 +38,8 @@ class PluginAddressingPing_Equipment {
 
       $obj = $options['obj'];
       //Html::printCleanArray($obj);
-
-      $itemtype = getItemTypeForTable($obj->getTable());
+      $dbu      = new DbUtils();
+      $itemtype = $dbu->getItemTypeForTable($obj->getTable());
 
       $list_ip  = [];
       $total_ip = 0;
@@ -153,11 +153,10 @@ class PluginAddressingPing_Equipment {
 
 
    static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
-      global $CFG_GLPI;
 
       $ping = Session::haveRight('plugin_addressing_use_ping_in_equipment', '1');
 
-      if ($ping && in_array($item->getType(), $CFG_GLPI["networkport_types"])) {
+      if ($ping && in_array($item->getType(), PluginAddressingAddressing::getTypes())) {
          if ($item->getField('id')) {
             $options = ['obj' => $item];
 
@@ -170,11 +169,10 @@ class PluginAddressingPing_Equipment {
 
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
-      global $CFG_GLPI;
 
       $ping = Session::haveRight('plugin_addressing_use_ping_in_equipment', '1');
 
-      if ($ping && in_array($item->getType(), $CFG_GLPI["networkport_types"])) {
+      if ($ping && in_array($item->getType(), PluginAddressingAddressing::getTypes())) {
          if ($item->getField('id')) {
             return ['1' => __('IP ping', 'addressing')];
          }
@@ -184,9 +182,8 @@ class PluginAddressingPing_Equipment {
 
 
    static function postinit() {
-      global $CFG_GLPI;
 
-      foreach ($CFG_GLPI["networkport_types"] as $type) {
+      foreach (PluginAddressingAddressing::getTypes() as $type) {
          CommonGLPI::registerStandardTab($type, __CLASS__);
       }
    }

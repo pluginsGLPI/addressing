@@ -35,69 +35,102 @@ class PluginAddressingAddressing extends CommonDBTM {
 
    static $rightname = "plugin_addressing";
 
+   static $types = ['Computer', 'NetworkEquipment', 'Peripheral', 'Phone', 'Printer'];
+
    static function getTypeName($nb = 0) {
 
       return _n('IP Adressing', 'IP Adressing', $nb, 'addressing');
    }
 
-   function getSearchOptions() {
+   public function rawSearchOptions() {
 
-      $tab = [];
+      $tab[] = [
+         'id'                 => 'common',
+         'name'               => self::getTypeName(2)
+      ];
 
-      $tab['common']             = self::getTypeName(2);
+      $tab[] = [
+         'id'                 => '2',
+         'table'              => 'glpi_networks',
+         'field'              => 'name',
+         'name'               => _n('Network', 'Networks', 2),
+         'datatype'           => 'dropdown'
+      ];
 
-      $tab[1]['table']           = $this->getTable();
-      $tab[1]['field']           = 'name';
-      $tab[1]['name']            = __('Name');
-      $tab[1]['datatype']        = 'itemlink';
-      $tab[1]['itemlink_type']   = $this->getType();
+      $tab[] = [
+         'id'                 => '3',
+         'table'              => $this->getTable(),
+         'field'              => 'comment',
+         'name'               => __('Comments'),
+         'datatype'           => 'text'
+      ];
 
-      $tab[2]['table']           = 'glpi_networks';
-      $tab[2]['field']           = 'name';
-      $tab[2]['name']            = _n('Network', 'Networks', 2);
-      $tab[2]['datatype']        = 'dropdown';
+      $tab[] = [
+         'id'                 => '4',
+         'table'              => $this->getTable(),
+         'field'              => 'use_ping',
+         'name'               => __('Ping free Ip', 'addressing'),
+         'datatype'           => 'bool'
+      ];
 
-      $tab[3]['table']           = $this->getTable();
-      $tab[3]['field']           = 'comment';
-      $tab[3]['name']            = __('Comments');
-      $tab[3]['datatype']        = 'text';
+      $tab[] = [
+         'id'                 => '5',
+         'table'              => 'glpi_locations',
+         'field'              => 'name',
+         'name'               => __('Location'),
+         'datatype'           => 'dropdown'
+      ];
 
-      $tab[4]['table']           = $this->getTable();
-      $tab[4]['field']           = 'use_ping';
-      $tab[4]['name']            = __('Ping free Ip', 'addressing');
-      $tab[4]['datatype']        = 'bool';
+      $tab[] = [
+         'id'                 => '6',
+         'table'              => 'glpi_fqdns',
+         'field'              => 'name',
+         'name'               => FQDN::getTypeName(1),
+         'datatype'           => 'dropdown'
+      ];
 
-      $tab[5]['table']           = 'glpi_locations';
-      $tab[5]['field']           = 'name';
-      $tab[5]['name']            = __('Location');
-      $tab[5]['datatype']        = 'dropdown';
+      $tab[] = [
+         'id'                 => '30',
+         'table'              => $this->getTable(),
+         'field'              => 'id',
+         'name'               => __('ID'),
+         'datatype'           => 'number'
+      ];
 
-      $tab[6]['table']           = 'glpi_fqdns';
-      $tab[6]['field']           = 'name';
-      $tab[6]['name']            = FQDN::getTypeName(1);
-      $tab[6]['datatype']        = 'dropdown';
+      $tab[] = [
+         'id'                 => '80',
+         'table'              => 'glpi_entities',
+         'field'              => 'completename',
+         'name'               => __('Entity'),
+         'datatype'           => 'dropdown'
+      ];
 
-      $tab[30]['table']          = $this->getTable();
-      $tab[30]['field']          = 'id';
-      $tab[30]['name']           = __('ID');
-      $tab[30]['datatype']       = 'number';
+      $tab[] = [
+         'id'                 => '1000',
+         'table'              => $this->getTable(),
+         'field'              => 'begin_ip',
+         'name'               => __('First IP'),
+         'nosearch'           => true,
+         'massiveaction'      => false
+      ];
 
-      $tab[80]['table']          = 'glpi_entities';
-      $tab[80]['field']          = 'completename';
-      $tab[80]['name']           = __('Entity');
-      $tab[80]['datatype']       = 'dropdown';
+      $tab[] = [
+         'id'                 => '1001',
+         'table'              => $this->getTable(),
+         'field'              => 'end_ip',
+         'name'               => __('Last IP'),
+         'nosearch'           => true,
+         'massiveaction'      => false
+      ];
 
-      $tab[1000]['table']         = $this->getTable();
-      $tab[1000]['field']         = 'begin_ip';
-      $tab[1000]['name']          = __('First IP', 'addressing');
-      $tab[1000]['nosearch']      = true;
-      $tab[1000]['massiveaction'] = false;
-
-      $tab[1001]['table']         = $this->getTable();
-      $tab[1001]['field']         = 'end_ip';
-      $tab[1001]['name']          = __('Last IP', 'addressing');
-      $tab[1001]['nosearch']      = true;
-      $tab[1001]['massiveaction'] = false;
+      $tab[] = [
+         'id'                 => '1',
+         'table'              => $this->getTable(),
+         'field'              => 'name',
+         'name'               => __('Name'),
+         'datatype'           => 'itemlink',
+         'massiveaction'      => false
+      ];
 
       return $tab;
    }
@@ -123,12 +156,11 @@ class PluginAddressingAddressing extends CommonDBTM {
    function dropdownSubnet($entity) {
       global $DB;
 
-      $rand = mt_rand();
       echo "<select name='_subnet' id='plugaddr_subnet' onChange='plugaddr_ChangeList();'>";
-
+      $dbu = new DbUtils();
       $sql = "SELECT DISTINCT `completename`
               FROM `glpi_ipnetworks`" .
-              getEntitiesRestrictRequest(" WHERE ", "glpi_ipnetworks", "entities_id", $entity) ."";
+             $dbu->getEntitiesRestrictRequest(" WHERE ", "glpi_ipnetworks", "entities_id", $entity) ."";
       echo "<option value='0'>".Dropdown::EMPTY_VALUE."</option>";
       foreach ($DB->request($sql) as $network) {
          echo "<option value='".$network["completename"]."'>".$network["completename"]."</option>";
@@ -354,10 +386,11 @@ class PluginAddressingAddressing extends CommonDBTM {
                      AND INET_ATON(`glpi_ipaddresses`.`name`) <= '$ipfin'
                      AND `dev`.`is_deleted` = 0
                      AND `dev`.`is_template` = 0 ";
+      $dbu = new DbUtils();
       if (isset($entities)) {
-         $sql .= getSonsAndAncestorsOf('glpi_entities', $entities);
+         $sql .= $dbu->getSonsAndAncestorsOf('glpi_entities', $entities);
       } else {
-         $sql .= getEntitiesRestrictRequest(" AND ", "dev");
+         $sql .= $dbu->getEntitiesRestrictRequest(" AND ", "dev");
       }
       if (isset($type_filter)) {
          $sql .= " AND `glpi_ipaddresses`.`mainitemtype` = '" . $type_filter . "'";
@@ -376,11 +409,12 @@ class PluginAddressingAddressing extends CommonDBTM {
       if (isset($type_filter)) {
          $types = [$type_filter];
       } else {
-         $types = $CFG_GLPI["networkport_types"];
+         $types = self::getTypes();
       }
+      $dbu = new DbUtils();
       foreach ($types as $type) {
-         $itemtable = getTableForItemType($type);
-         if (!($item = getItemForItemtype($type))) {
+         $itemtable = $dbu->getTableForItemType($type);
+         if (!($item = $dbu->getItemForItemtype($type))) {
             continue;
          }
             $sql .= " UNION SELECT `port`.`id`,
@@ -404,10 +438,11 @@ class PluginAddressingAddressing extends CommonDBTM {
                            LEFT JOIN `glpi_ipaddresses` ON (`glpi_ipaddresses`.`items_id` = `glpi_networknames`.`id`)
                            WHERE INET_ATON(`glpi_ipaddresses`.`name`) >= '$ipdeb'
                                  AND INET_ATON(`glpi_ipaddresses`.`name`) <= '$ipfin'";
-         if (isset($entities)) {
-            $sql .= getSonsAndAncestorsOf('glpi_entities', $entities);
+         $dbu = new DbUtils();
+            if (isset($entities)) {
+            $sql .= $dbu->getSonsAndAncestorsOf('glpi_entities', $entities);
          } else {
-            $sql .= getEntitiesRestrictRequest(" AND ", "dev");
+            $sql .= $dbu->getEntitiesRestrictRequest(" AND ", "dev");
          }
          if (isset($type_filter)) {
             $sql .= " AND `glpi_ipaddresses`.`mainitemtype` = '" . $type_filter . "'";
@@ -451,7 +486,6 @@ class PluginAddressingAddressing extends CommonDBTM {
       }
       return $result;
    }
-
 
    function showReport($params) {
       global $CFG_GLPI;
@@ -677,6 +711,35 @@ class PluginAddressingAddressing extends CommonDBTM {
             }
             break;
       }
+   }
+
+   /**
+    * Type than could be linked to a Rack
+    *
+    * @param $all boolean, all type, or only allowed ones
+    *
+    * @return array of types
+    **/
+   static function getTypes($all = false) {
+
+      if ($all) {
+         return self::$types;
+      }
+
+      // Only allowed types
+      $types = self::$types;
+
+      foreach ($types as $key => $type) {
+         if (!class_exists($type)) {
+            continue;
+         }
+
+         $item = new $type();
+         if (!$item->canView()) {
+            unset($types[$key]);
+         }
+      }
+      return $types;
    }
 }
 
