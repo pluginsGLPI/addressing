@@ -31,6 +31,9 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
+/**
+ * Class PluginAddressingProfile
+ */
 class PluginAddressingProfile extends Profile {
 
    static $rightname = "profile";
@@ -151,9 +154,9 @@ class PluginAddressingProfile extends Profile {
     */
    static function createFirstAccess($profiles_id) {
 
-         self::addDefaultProfileInfos($profiles_id,
-                                    ['plugin_addressing' => ALLSTANDARDRIGHT,
-                                          'plugin_addressing_use_ping_in_equipment' => '1'], true);
+      self::addDefaultProfileInfos($profiles_id,
+                                   ['plugin_addressing'                       => ALLSTANDARDRIGHT,
+                                    'plugin_addressing_use_ping_in_equipment' => '1']);
    }
 
 
@@ -201,7 +204,7 @@ class PluginAddressingProfile extends Profile {
 
 
    static function removeRightsFromSession() {
-      foreach (self::getAllRights(true) as $right) {
+      foreach (self::getAllRights() as $right) {
          if (isset($_SESSION['glpiactiveprofile'][$right['field']])) {
             unset($_SESSION['glpiactiveprofile'][$right['field']]);
          }

@@ -31,8 +31,17 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
+/**
+ * Class PluginAddressingReport
+ */
 class PluginAddressingReport extends CommonDBTM {
 
+   /**
+    * @param      $type
+    * @param bool $odd
+    *
+    * @return string
+    */
    function displaySearchNewLine($type, $odd = false) {
 
       $out = "";
@@ -90,6 +99,12 @@ class PluginAddressingReport extends CommonDBTM {
    }
 
 
+   /**
+    * @param $result
+    * @param $PluginAddressingAddressing
+    *
+    * @return int
+    */
    function displayReport(&$result, $PluginAddressingAddressing) {
       global $CFG_GLPI;
 
@@ -141,10 +156,12 @@ class PluginAddressingReport extends CommonDBTM {
                   $name     = $line["dname"];
                   $namep    = $line["pname"];
                   // IP
-                  if ($PluginAddressingAddressing->fields["reserved_ip"] && strstr($line["pname"], "reserv")) {
+                  if ($PluginAddressingAddressing->fields["reserved_ip"] && strstr($line["pname"],
+                                                                                   "reserv")) {
                      echo $this->displaySearchNewLine($output_type, "reserved");
                   } else {
-                     echo $this->displaySearchNewLine($output_type, (count($lines) > 1 ? "double" : $row_num % 2));
+                     echo $this->displaySearchNewLine($output_type,
+                        (count($lines) > 1 ? "double" : $row_num % 2));
                   }
                   echo Search::showItem($output_type, $ip, $item_num, $row_num);
 
@@ -249,11 +266,13 @@ class PluginAddressingReport extends CommonDBTM {
                   $ping_response++;
                   echo $this->displaySearchNewLine($output_type, "ping_off");
                   echo Search::showItem($output_type, $ip, $item_num, $row_num);
-                  echo Search::showItem($output_type, __('Ping: got a response - used Ip', 'addressing'), $item_num, $row_num);
+                  echo Search::showItem($output_type, __('Ping: got a response - used Ip', 'addressing'),
+                                        $item_num, $row_num);
                } else {
                   echo $this->displaySearchNewLine($output_type, "ping_on");
                   echo Search::showItem($output_type, $ip, $item_num, $row_num);
-                  echo Search::showItem($output_type, __('Ping: no response - free Ip', 'addressing'), $item_num, $row_num);
+                  echo Search::showItem($output_type, __('Ping: no response - free Ip', 'addressing'),
+                                        $item_num, $row_num);
                   if ($output_type == Search::HTML_OUTPUT) {
                      $content = "<a href=\"#\" onClick='plugaddr_loadForm(\"showForm\", \"plugaddr_form\", 
                      " . json_encode($params) . ");'> " . __("Reserve") . "</a>";
@@ -290,11 +309,18 @@ class PluginAddressingReport extends CommonDBTM {
     * @return string
     */
    function string2ip($s) {
-      if ($s > PHP_INT_MAX)
+      if ($s > PHP_INT_MAX) {
          $s = 2 * PHP_INT_MIN + $s;
+      }
       return long2ip($s);
    }
 
+   /**
+    * @param $system
+    * @param $ip
+    *
+    * @return bool
+    */
    function ping($system, $ip) {
 
       $list ='';

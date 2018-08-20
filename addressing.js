@@ -13,16 +13,16 @@ function plugaddr_Compute(msg) {
    document.getElementById("plugaddr_ipfin").value = "";
 
    for (var i = 0; i < 4; i++) {
-      val=document.getElementById("plugaddr_ipdeb"+i).value
+      val=document.getElementById("plugaddr_ipdeb"+i).value;
       if (val=='' || isNaN(val) || parseInt(val)<0 || parseInt(val)>255) {
-         document.getElementById("plugaddr_range").innerHTML=msg+" ("+val+")"
+         document.getElementById("plugaddr_range").innerHTML=msg+" ("+val+")";
          return false;
       }
       ipdeb[i]=parseInt(val);
 
-      val=document.getElementById("plugaddr_ipfin"+i).value
+      val=document.getElementById("plugaddr_ipfin"+i).value;
       if (val=='' || isNaN(val) || parseInt(val)<0 || parseInt(val)>255) {
-         document.getElementById("plugaddr_range").innerHTML=msg+" ("+val+")"
+         document.getElementById("plugaddr_range").innerHTML=msg+" ("+val+")";
          return false;
       }
       ipfin[i]=parseInt(val);
@@ -144,16 +144,16 @@ function plugaddr_IsFilter(msg) {
    document.getElementById("plugaddr_ipfin").value = "";
 
    for (var i = 0; i < 4; i++) {
-      val=document.getElementById("plugaddr_ipdeb"+i).value
+      val=document.getElementById("plugaddr_ipdeb"+i).value;
       if (val=='' || isNaN(val) || parseInt(val)<0 || parseInt(val)>255) {
-         document.getElementById("plugaddr_range").innerHTML=msg+" ("+val+")"
+         document.getElementById("plugaddr_range").innerHTML=msg+" ("+val+")";
          return false;
       }
       ipdeb[i]=parseInt(val);
 
-      val=document.getElementById("plugaddr_ipfin"+i).value
+      val=document.getElementById("plugaddr_ipfin"+i).value;
       if (val=='' || isNaN(val) || parseInt(val)<0 || parseInt(val)>255) {
-         document.getElementById("plugaddr_range").innerHTML=msg+" ("+val+")"
+         document.getElementById("plugaddr_range").innerHTML=msg+" ("+val+")";
          return false;
       }
       ipfin[i]=parseInt(val);

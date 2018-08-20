@@ -31,6 +31,9 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
+/**
+ * Class PluginAddressingFilter
+ */
 class PluginAddressingFilter extends CommonDBTM {
 
    static $rightname = "plugin_addressing";
@@ -71,7 +74,6 @@ class PluginAddressingFilter extends CommonDBTM {
     * @return boolean
     */
    function showForm($ID, $options = []) {
-      global $CFG_GLPI;
 
       if ($ID > 0) {
          $this->check($ID, READ);
@@ -110,7 +112,8 @@ class PluginAddressingFilter extends CommonDBTM {
                <td>";
       Dropdown::showFromArray('type', [PluginAddressingReserveip::COMPUTER => Computer::getTypeName(),
                                            PluginAddressingReserveip::NETWORK => NetworkEquipment::getTypeName(),
-                                           PluginAddressingReserveip::PRINTER => Printer::getTypeName()], ['value' => $this->fields["type"]]);
+                                           PluginAddressingReserveip::PRINTER => Printer::getTypeName()],
+                              ['value' => $this->fields["type"]]);
       echo "</td>";
       echo "</tr>";
 
@@ -179,7 +182,6 @@ class PluginAddressingFilter extends CommonDBTM {
             $p[$key] = $val;
          }
       }
-      $filter = new PluginAddressingFilter();
 
       $canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]);
       $style   = "class='tab_cadre_fixehov'";
@@ -198,7 +200,9 @@ class PluginAddressingFilter extends CommonDBTM {
          $params = ['action' => 'viewFilter',
             'items_id'   => $item_id,
             'id'         => -1];
-         Ajax::updateItemJsCode("viewfilter" . $item_id . "$rand", $CFG_GLPI["root_doc"] . "/plugins/addressing/ajax/addressing.php", $params);
+         Ajax::updateItemJsCode("viewfilter" . $item_id . "$rand",
+                                $CFG_GLPI["root_doc"] . "/plugins/addressing/ajax/addressing.php",
+                                $params);
          echo "};";
          echo "</script>\n";
          echo "<div class='center firstbloc'>" .
@@ -289,7 +293,9 @@ class PluginAddressingFilter extends CommonDBTM {
          $params = ['action' => 'viewFilter',
             'items_id'   => $item["id"],
             'id'         => $filter['id']];
-         Ajax::updateItemJsCode("viewfilter" . $item["id"] . "$rand", $CFG_GLPI["root_doc"] . "/plugins/addressing/ajax/addressing.php", $params);
+         Ajax::updateItemJsCode("viewfilter" . $item["id"] . "$rand",
+                                $CFG_GLPI["root_doc"] . "/plugins/addressing/ajax/addressing.php",
+                                $params);
          echo "};";
          echo "</script>\n";
          echo "</td>";

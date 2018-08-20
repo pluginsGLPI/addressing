@@ -27,6 +27,9 @@
  --------------------------------------------------------------------------
  */
 
+/**
+ * Class PluginAddressingMenu
+ */
 class PluginAddressingMenu extends CommonGLPI {
    static $rightname = 'plugin_addressing';
 
@@ -35,7 +38,7 @@ class PluginAddressingMenu extends CommonGLPI {
    }
 
    static function getMenuContent() {
-      global $CFG_GLPI;
+
       $menu          = [];
       $menu['title'] = self::getMenuName();
       $menu['page']  = "/plugins/addressing/front/addressing.php";

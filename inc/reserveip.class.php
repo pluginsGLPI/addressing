@@ -31,8 +31,10 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
-class PluginAddressingReserveip extends CommonDBTM
-{
+/**
+ * Class PluginAddressingReserveip
+ */
+class PluginAddressingReserveip extends CommonDBTM {
    const COMPUTER = 'Computer';
    const NETWORK  = 'NetworkEquipment';
    const PRINTER  = 'Printer';
@@ -43,6 +45,11 @@ class PluginAddressingReserveip extends CommonDBTM
       return __("Reserve");
    }
 
+   /**
+    * @param $ip
+    *
+    * @return string
+    */
    function getPortName($ip) {
       return "reserv-" . $ip;
    }
@@ -51,6 +58,7 @@ class PluginAddressingReserveip extends CommonDBTM
     * Show form
     *
     * @param type $input
+    *
     * @return type
     */
    function reserveip($input = []) {
@@ -124,6 +132,7 @@ class PluginAddressingReserveip extends CommonDBTM
     * Check mandatory fields
     *
     * @param type $input
+    *
     * @return boolean
     */
    function checkMandatoryFields($input) {
@@ -131,7 +140,7 @@ class PluginAddressingReserveip extends CommonDBTM
       $checkKo = false;
 
       $mandatory_fields = ['name' => __("Object's name", 'addressing'),
-                                'ip'   => _n("IP address", "IP addresses", 1)];
+                           'ip'   => _n("IP address", "IP addresses", 1)];
 
       foreach ($input as $key => $value) {
          if (isset($mandatory_fields[$key])) {
@@ -143,7 +152,8 @@ class PluginAddressingReserveip extends CommonDBTM
       }
 
       if ($checkKo) {
-         Session::addMessageAfterRedirect(sprintf(__("Mandatory fields are not filled. Please correct: %s"), implode(', ', $msg)), false, ERROR);
+         Session::addMessageAfterRedirect(sprintf(__("Mandatory fields are not filled. Please correct: %s"),
+                                                  implode(', ', $msg)), false, ERROR);
          return false;
       }
       return true;
@@ -191,21 +201,29 @@ class PluginAddressingReserveip extends CommonDBTM
       if (Session::haveAccessToOneOfEntities($strict_entities)
           && Session::isViewAllEntities()) {
          echo "<tr class='tab_bg_1'>
-               <td>".__("Entity")."</td>
+               <td>" . __("Entity") . "</td>
                <td>";
 
-         $rand = Entity::dropdown(['name' => 'entities_id',
-                                        'entity' => $_SESSION["glpiactiveentities"],
-                                        'value' => $addressing->fields['entities_id']]);
+         $rand = Entity::dropdown(['name'   => 'entities_id',
+                                   'entity' => $_SESSION["glpiactiveentities"],
+                                   'value'  => $addressing->fields['entities_id']]);
 
          $params = ['action' => 'entities_networkip', 'entities_id' => '__VALUE__'];
-         Ajax::updateItemOnEvent("dropdown_entities_id".$rand, 'entities_networkip', $CFG_GLPI["root_doc"]."/plugins/addressing/ajax/addressing.php", $params);
+         Ajax::updateItemOnEvent("dropdown_entities_id" . $rand, 'entities_networkip',
+                                 $CFG_GLPI["root_doc"] . "/plugins/addressing/ajax/addressing.php",
+                                 $params);
 
-         $params = ['action' => 'entities_location', 'entities_id' => '__VALUE__', 'value' => $addressing->fields["locations_id"]];
-         Ajax::updateItemOnEvent("dropdown_entities_id".$rand, 'entities_location', $CFG_GLPI["root_doc"]."/plugins/addressing/ajax/addressing.php", $params);
+         $params = ['action' => 'entities_location', 'entities_id' => '__VALUE__',
+                    'value' => $addressing->fields["locations_id"]];
+         Ajax::updateItemOnEvent("dropdown_entities_id" . $rand, 'entities_location',
+                                 $CFG_GLPI["root_doc"] . "/plugins/addressing/ajax/addressing.php",
+                                 $params);
 
-         $params = ['action' => 'entities_fqdn', 'entities_id' => '__VALUE__', 'value' => $addressing->fields["fqdns_id"]];
-         Ajax::updateItemOnEvent("dropdown_entities_id".$rand, 'entities_fqdn', $CFG_GLPI["root_doc"]."/plugins/addressing/ajax/addressing.php", $params);
+         $params = ['action' => 'entities_fqdn', 'entities_id' => '__VALUE__',
+                    'value' => $addressing->fields["fqdns_id"]];
+         Ajax::updateItemOnEvent("dropdown_entities_id" . $rand, 'entities_fqdn',
+                                 $CFG_GLPI["root_doc"] . "/plugins/addressing/ajax/addressing.php",
+                                 $params);
 
          echo "</td><td></td>";
          echo "</tr>";
@@ -213,70 +231,71 @@ class PluginAddressingReserveip extends CommonDBTM
 
       echo "</td></tr>";
       echo "<tr class='tab_bg_1'>
-               <td>".__("Location")."</td>
+               <td>" . __("Location") . "</td>
                <td><div id='entities_location'>";
 
       Dropdown::show('Location', ['name'   => "locations_id",
-                                       'value'  => $addressing->fields["locations_id"],
-                                       'entity' => $addressing->fields['entities_id']]);
+                                  'value'  => $addressing->fields["locations_id"],
+                                  'entity' => $addressing->fields['entities_id']]);
       echo "</div></td><td></td>";
       echo "</tr>";
 
       echo "</tr>";
       echo "<tr class='tab_bg_1'>
-               <td>".__("Type")."</td>
+               <td>" . __("Type") . "</td>
                <td>";
       Dropdown::showFromArray('type', [PluginAddressingReserveip::COMPUTER => Computer::getTypeName(),
-                                           PluginAddressingReserveip::NETWORK => NetworkEquipment::getTypeName(),
-                                           PluginAddressingReserveip::PRINTER => Printer::getTypeName()], ['on_change' => "nameIsThere(\"".$CFG_GLPI['root_doc']."\");"]);
+                                       PluginAddressingReserveip::NETWORK  => NetworkEquipment::getTypeName(),
+                                       PluginAddressingReserveip::PRINTER  => Printer::getTypeName()],
+                              ['on_change' => "nameIsThere(\"" . $CFG_GLPI['root_doc'] . "\");"]);
       echo "</td><td></td>";
       echo "</tr>";
       echo "<tr class='tab_bg_1'>
-               <td>".__("Name")." : </td><td>";
-      $option = ['option' => "onChange=\"javascript:nameIsThere('".$CFG_GLPI['root_doc']."');\""];
+               <td>" . __("Name") . " : </td><td>";
+      $option = ['option' => "onChange=\"javascript:nameIsThere('" . $CFG_GLPI['root_doc'] . "');\""];
       Html::autocompletionTextField($this, "name_reserveip", $option);
       echo "</td><td><div style=\"display: none;\" id='nameItem'>";
-      echo "<img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt=\"warning\">&nbsp;";
+      echo "<img src=\"" . $CFG_GLPI["root_doc"] . "/pics/warning.png\" alt=\"warning\">&nbsp;";
       echo __('Name already in use', 'addressing');
       echo "</div></td>
             </tr>";
 
       echo "<tr class='tab_bg_1'>
-               <td>".__("Status")." : </td>
+               <td>" . __("Status") . " : </td>
                <td>";
       Dropdown::show("State");
       echo "</td>
              <td></td> </tr>";
 
       echo "<tr class='tab_bg_1'>
-               <td>".__("MAC address")." :</td>
+               <td>" . __("MAC address") . " :</td>
                <td><input type='text' name='mac' value='' size='40' /></td>
             <td></td></tr>";
 
       echo "<tr class='tab_bg_1'>
-               <td>".FQDN::getTypeName(1)." :</td>
+               <td>" . FQDN::getTypeName(1) . " :</td>
                <td><div id='entities_fqdn'>";
-      Dropdown::show('FQDN', ['name'  => "fqdns_id",
-                                   'value' => $addressing->fields["fqdns_id"],
-                                   'entity'=> $addressing->fields['entities_id']]);
+      Dropdown::show('FQDN', ['name'   => "fqdns_id",
+                              'value'  => $addressing->fields["fqdns_id"],
+                              'entity' => $addressing->fields['entities_id']]);
       echo "</div></td><td></td></tr>";
 
       echo "<tr class='tab_bg_1'>
-               <td>".__("Network")." :</td>
+               <td>" . __("Network") . " :</td>
                <td><div id='entities_networkip'>";
       IPNetwork::showIPNetworkProperties($addressing->fields['entities_id']);
       echo "</div></td>
             <td></td></tr>";
 
       echo "<tr class='tab_bg_1'>
-               <td>".__("Comments")." :</td>
+               <td>" . __("Comments") . " :</td>
                <td colspan='2'><textarea cols='75' rows='5' name='comment' ></textarea></td>
             </tr>";
 
       echo "<tr class='tab_bg_1'>
                <td colspan='4' class='center'>
-                  <input type='submit' name='add' class='submit' value='".__("Validate the reservation", 'addressing')."' "
-           . "onclick=\"".Html::jsGetElementbyID("reserveip".$randmodal).".dialog('close');window.location.reload();return true;\"/>
+                  <input type='submit' name='add' class='submit' value='" . __("Validate the reservation", 'addressing') . "' "
+           . "onclick=\"" . Html::jsGetElementbyID("reserveip" . $randmodal) . ".dialog('close');window.location.reload();return true;\"/>
                </td>
             </tr>
             </table>";

@@ -26,7 +26,7 @@ CREATE TABLE `glpi_plugin_addressing_display` (
 	`ip_reserved` smallint(6) NOT NULL default '0',
 	`ping` smallint(6) NOT NULL default '0',
 	`system` smallint(6) NOT NULL default '0'
-) TYPE = MYISAM ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 	
 INSERT INTO `glpi_plugin_addressing_display` ( `ID`, `ip_alloted`,`ip_double`,`ip_free`,`ip_reserved`,`ping`,`system`) VALUES ('1','1','1','1','1','0','0');
 
@@ -37,7 +37,7 @@ CREATE TABLE `glpi_plugin_addressing_profiles` (
 	`addressing` char(1) default NULL,
 	PRIMARY KEY  (`ID`),
 	KEY `name` (`name`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `glpi_display` (`type` , `num` , `rank` , `FK_users` ) VALUES (5000,2,2,0);
 INSERT INTO `glpi_display` (`type` , `num` , `rank` , `FK_users` ) VALUES (5000,3,6,0);

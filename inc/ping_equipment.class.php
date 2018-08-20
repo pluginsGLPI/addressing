@@ -31,6 +31,9 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
+/**
+ * Class PluginAddressingPing_Equipment
+ */
 class PluginAddressingPing_Equipment {
 
    function showForm($ID, $options = []) {
@@ -42,7 +45,6 @@ class PluginAddressingPing_Equipment {
       $itemtype = $dbu->getItemTypeForTable($obj->getTable());
 
       $list_ip  = [];
-      $total_ip = 0;
 
       /*if ($itemtype == 'NetworkEquipment') {
          $query = "SELECT `ip`
@@ -117,6 +119,12 @@ class PluginAddressingPing_Equipment {
    }
 
 
+   /**
+    * @param $system
+    * @param $ip
+    *
+    * @return array
+    */
    function ping($system, $ip) {
       $error = 1;
       $list  ='';
@@ -152,6 +160,13 @@ class PluginAddressingPing_Equipment {
    }
 
 
+   /**
+    * @param \CommonGLPI $item
+    * @param int         $tabnum
+    * @param int         $withtemplate
+    *
+    * @return bool
+    */
    static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
 
       $ping = Session::haveRight('plugin_addressing_use_ping_in_equipment', '1');

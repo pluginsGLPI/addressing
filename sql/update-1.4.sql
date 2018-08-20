@@ -7,7 +7,7 @@ CREATE TABLE `glpi_plugin_addressing_profiles` (
 `addressing` char(1) default NULL,
 PRIMARY KEY  (`ID`),
 KEY `interface` (`interface`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 ALTER TABLE `glpi_plugin_addressing_display` ADD `ping` smallint(6) NOT NULL default '0';
 ALTER TABLE `glpi_plugin_addressing_display` ADD `system` smallint(6) NOT NULL default '0';

@@ -31,6 +31,9 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access directly to this file");
 }
 
+/**
+ * Class PluginAddressingAddressing
+ */
 class PluginAddressingAddressing extends CommonDBTM {
 
    static $rightname = "plugin_addressing";
@@ -146,6 +149,9 @@ class PluginAddressingAddressing extends CommonDBTM {
    }
 
 
+   /**
+    * @return string
+    */
    function getTitle() {
 
       return __('Report for the IP Range', 'addressing')." ".$this->fields["begin_ip"]." ".
@@ -153,6 +159,9 @@ class PluginAddressingAddressing extends CommonDBTM {
    }
 
 
+   /**
+    * @param $entity
+    */
    function dropdownSubnet($entity) {
       global $DB;
 
@@ -342,8 +351,15 @@ class PluginAddressingAddressing extends CommonDBTM {
    }*/
 
 
+   /**
+    * @param       $start
+    * @param array $params
+    *
+    * @return array
+    * @throws \GlpitestSQLError
+    */
    function compute($start, $params = []) {
-      global $DB, $CFG_GLPI;
+      global $DB;
 
       foreach ($params as $key => $val) {
          if (isset($params[$key])) {
@@ -439,7 +455,7 @@ class PluginAddressingAddressing extends CommonDBTM {
                            WHERE INET_ATON(`glpi_ipaddresses`.`name`) >= '$ipdeb'
                                  AND INET_ATON(`glpi_ipaddresses`.`name`) <= '$ipfin'";
          $dbu = new DbUtils();
-            if (isset($entities)) {
+         if (isset($entities)) {
             $sql .= $dbu->getSonsAndAncestorsOf('glpi_entities', $entities);
          } else {
             $sql .= $dbu->getEntitiesRestrictRequest(" AND ", "dev");
@@ -487,6 +503,9 @@ class PluginAddressingAddressing extends CommonDBTM {
       return $result;
    }
 
+   /**
+    * @param $params
+    */
    function showReport($params) {
       global $CFG_GLPI;
 
