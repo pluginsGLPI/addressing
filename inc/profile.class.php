@@ -181,7 +181,7 @@ class PluginAddressingProfile extends Profile {
          return true;
       }
       $dbu      = new DbUtils();
-      $profiles = $dbu->getAllDatasFromTable('glpi_plugin_addressing_profiles');
+      $profiles = $dbu->getAllDataFromTable('glpi_plugin_addressing_profiles');
       foreach ($profiles as $id => $profile) {
          switch ($profile['addressing']) {
             case 'r' :
