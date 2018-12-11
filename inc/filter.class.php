@@ -251,7 +251,7 @@ class PluginAddressingFilter extends CommonDBTM {
 
          //filters list
          $filter = new self();
-         $datas = $filter->find("`plugin_addressing_addressings_id` = ".$item_id);
+         $datas = $filter->find(['plugin_addressing_addressings_id' => $item_id]);
 
          foreach ($datas as $filter_item) {
             $filter->showMinimalFilterForm($item, $filter_item, $canedit, $rand);
@@ -321,7 +321,7 @@ class PluginAddressingFilter extends CommonDBTM {
     */
    static function dropdownFilters($id, $value) {
       $filter = new self();
-      $datas = $filter->find("`plugin_addressing_addressings_id` = ".$id);
+      $datas = $filter->find(['plugin_addressing_addressings_id' => $id]);
       $filters = [];
       $filters[0] = Dropdown::EMPTY_VALUE;
       foreach ($datas as $data) {
@@ -337,7 +337,7 @@ class PluginAddressingFilter extends CommonDBTM {
     */
    static function countForItem($id) {
       $filter = new self();
-      $datas = $filter->find("`plugin_addressing_addressings_id` = ".$id);
+      $datas = $filter->find(['plugin_addressing_addressings_id' => $id]);
       return count($datas);
    }
 

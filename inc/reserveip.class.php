@@ -199,7 +199,7 @@ class PluginAddressingReserveip extends CommonDBTM {
       echo "</td></tr>";
       $strict_entities = Profile_User::getUserEntities($_SESSION['glpiID'], false);
       if (Session::haveAccessToOneOfEntities($strict_entities)
-          && Session::isViewAllEntities()) {
+          && Session::canViewAllEntities()) {
          echo "<tr class='tab_bg_1'>
                <td>" . __("Entity") . "</td>
                <td>";
