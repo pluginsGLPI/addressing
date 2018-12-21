@@ -34,7 +34,7 @@ Session::checkLoginUser();
 Html::header_nocache();
 if (isset($_POST['action']) && $_POST['action'] == 'isName') {
    $item = new $_POST['type']();
-   $datas = $item->find(['name' => ['LIKE' => $_POST['name']]]);
+   $datas = $item->find(['name' => ['LIKE', $_POST['name']]]);
    if (count($datas) > 0) {
       echo json_encode(true);
    } else {
