@@ -48,18 +48,13 @@ class PluginAddressingConfig extends CommonDBTM {
       echo "<table class='tab_cadre_fixe' cellpadding='5'>";
       echo "<tr><th colspan='4'>".__('System for ping', 'addressing')."</th></tr>";
 
-      echo "<tr class='tab_bg_1'><td colspan='4'><div class='center'><select name='used_system'>";
-      echo "<option value='0' ".($system==0?" selected ":"").">".
-            __('Linux ping', 'addressing')."</option>";
-      echo "<option value='2' ".($system==2?" selected ":"").">".
-            __('Linux fping', 'addressing')."</option>";
-      echo "<option value='1' ".($system==1?" selected ":"").">".
-            __('Windows', 'addressing')."</option>";
-      echo "<option value='3' ".($system==3?" selected ":"").">".
-            __('BSD ping', 'addressing')."</option>";
-      echo "<option value='4' ".($system==4?" selected ":"").">".
-            __('MacOSX ping', 'addressing')."</option>";
-      echo "</select>";
+      echo "<tr class='tab_bg_1'><td colspan='4'><div class='center'>";
+      $array = [0 => __('Linux ping', 'addressing'),
+                1 => __('Windows', 'addressing'),
+                2 => __('Linux fping', 'addressing'),
+                3 => __('BSD ping', 'addressing'),
+                4 => __('MacOSX ping', 'addressing')];
+      Dropdown::ShowFromArray("used_system", $array, ['value' => $system]);
       echo "</div></td></tr>";
 
       echo "<tr><th colspan='4'>".__('Display', 'addressing')."</th></tr>";

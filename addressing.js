@@ -72,10 +72,10 @@ function plugaddr_ChangeNumber(msg) {
 }
 
 // Refresh the check message after onChange (from list)
-function plugaddr_ChangeList(msg) {
+function plugaddr_ChangeList(id,msg) {
 
    var i;
-   var lst=document.getElementById("plugaddr_subnet");
+   var lst=document.getElementById(id);
    if (lst.value == "0") {
       return;
    }
