@@ -165,16 +165,18 @@ class PluginAddressingAddressing extends CommonDBTM {
    function dropdownSubnet($entity) {
       global $DB;
 
-      echo "<select name='_subnet' id='plugaddr_subnet' onChange='plugaddr_ChangeList();'>";
       $dbu = new DbUtils();
       $sql = "SELECT DISTINCT `completename`
               FROM `glpi_ipnetworks`" .
-             $dbu->getEntitiesRestrictRequest(" WHERE ", "glpi_ipnetworks", "entities_id", $entity) ."";
-      echo "<option value='0'>".Dropdown::EMPTY_VALUE."</option>";
+             $dbu->getEntitiesRestrictRequest(" WHERE ", "glpi_ipnetworks", "entities_id", $entity);
+      $networkList = [0 => Dropdown::EMPTY_VALUE];
       foreach ($DB->request($sql) as $network) {
-         echo "<option value='".$network["completename"]."'>".$network["completename"]."</option>";
+         $networkList += [$network["completename"] => $network["completename"]];
       }
-      echo "</select>\n";
+      $rand = mt_rand();
+      $name = "_subnet";
+      Dropdown::ShowFromArray($name, $networkList, ['rand' => $rand,
+                                                               'on_change' => 'plugaddr_ChangeList("dropdown_'.$name.$rand.'");']);
    }
 
 
