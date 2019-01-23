@@ -192,7 +192,7 @@ class PluginAddressingReserveip extends CommonDBTM {
          echo "<img src=\"" . $CFG_GLPI["root_doc"] . "/pics/ok.png\" alt=\"ok\">&nbsp;";
          echo __('Ping: ip address free', 'addressing');
       } else {
-         echo "<img src=\"" . $CFG_GLPI["root_doc"] . "/pics/warning.png\" alt=\"warning\">&nbsp;";
+         echo "<i class='fas fa-exclamation-triangle fa-4x' style='color:orange'></i>&nbsp;";
          echo __('Ping: not available IP address', 'addressing');
       }
 
@@ -255,7 +255,7 @@ class PluginAddressingReserveip extends CommonDBTM {
       $option = ['option' => "onChange=\"javascript:nameIsThere('" . $CFG_GLPI['root_doc'] . "');\""];
       Html::autocompletionTextField($this, "name_reserveip", $option);
       echo "</td><td><div style=\"display: none;\" id='nameItem'>";
-      echo "<img src=\"" . $CFG_GLPI["root_doc"] . "/pics/warning.png\" alt=\"warning\">&nbsp;";
+      echo "<i class='fas fa-exclamation-triangle fa-4x' style='color:orange'></i>&nbsp;";
       echo __('Name already in use', 'addressing');
       echo "</div></td>
             </tr>";

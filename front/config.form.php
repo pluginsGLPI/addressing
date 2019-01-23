@@ -48,7 +48,7 @@ if ($plugin->isActivated("addressing")) {
 } else {
    Html::header(__('Setup'), '', "config", "plugins");
    echo "<div class='center'><br><br>".
-         "<img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt='warning'><br><br>";
+         "<i class='fas fa-exclamation-triangle fa-4x' style='color:orange'></i><br><br>";
    echo "<b>".__('Please activate the plugin', 'addressing')."</b></div>";
    Html::footer();
 }

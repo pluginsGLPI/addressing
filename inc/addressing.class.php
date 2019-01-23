@@ -657,7 +657,7 @@ class PluginAddressingAddressing extends CommonDBTM {
 
       } else {
          echo "<div class='center'>".
-               "<img src=\"".$CFG_GLPI["root_doc"]."/pics/warning.png\" alt='warning'><br><br><b>".
+               "<i class='fas fa-exclamation-triangle fa-4x' style='color:orange'></i><br><br><b>".
                  __('Problem detected with the IP Range', 'addressing')."</b></div>";
       }
    }
