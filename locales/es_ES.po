@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the GLPI - Addressing plugin package.
 # 
 # Translators:
+# Gustavo Plottier Pilotto <gplottier@gmail.com>, 2018
 # Le Rohellec Benoit <blerohellec@hotmail.com>, 2015
 # Xavier CAILLAUD <thetsmr@gmail.com>, 2012
 msgid ""
@@ -10,8 +11,8 @@ msgstr ""
 "Project-Id-Version: GLPI Project - addressing plugin\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-08-20 14:47+0200\n"
-"PO-Revision-Date: 2018-08-20 12:52+0000\n"
-"Last-Translator: Amandine Manceau\n"
+"PO-Revision-Date: 2018-12-28 14:31+0000\n"
+"Last-Translator: Gustavo Plottier Pilotto <gplottier@gmail.com>\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/tsmr/GLPI_addressing/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -37,12 +38,12 @@ msgstr "Se ruega activar el plugin"
 #: inc/addressing.class.php:75 inc/addressing.class.php:275
 #: inc/addressing.class.php:599
 msgid "Ping free Ip"
-msgstr "Ping Ip libre"
+msgstr "Ping:  IP libre"
 
 #: inc/addressing.class.php:157 inc/addressing.class.php:318
 #: inc/filter.class.php:150
 msgid "Report for the IP Range"
-msgstr "Informe para el rango IP"
+msgstr "Informe rango de  IP's"
 
 #: inc/addressing.class.php:187 inc/addressing.class.php:289
 #: inc/addressing.class.php:291 inc/addressing.class.php:293
@@ -58,7 +59,7 @@ msgstr "dato inválido!!"
 
 #: inc/addressing.class.php:201 inc/config.class.php:67
 msgid "Assigned IP"
-msgstr "IP Asignada"
+msgstr "IP Asignado"
 
 #: inc/addressing.class.php:221 inc/addressing.class.php:608
 #: inc/report.class.php:138
@@ -67,7 +68,7 @@ msgstr "Ip Libre"
 
 #: inc/addressing.class.php:240 inc/config.class.php:78
 msgid "Same IP"
-msgstr "Misma Ip"
+msgstr "Mismo Ip"
 
 #: inc/addressing.class.php:251
 msgid "Select the network"
@@ -75,7 +76,7 @@ msgstr "Selecciona la Red"
 
 #: inc/addressing.class.php:258 inc/config.class.php:83
 msgid "Reserved IP"
-msgstr "IP Reservada"
+msgstr "IP Reservado"
 
 #: inc/addressing.class.php:269
 msgid "Detected subnet list"
@@ -84,28 +85,28 @@ msgstr "Lista de subred detectada"
 #: inc/addressing.class.php:286 inc/filter.class.php:121
 #: inc/filter.class.php:247
 msgid "First IP"
-msgstr "Primera IP"
+msgstr "Primer IP"
 
 #: inc/addressing.class.php:302 inc/filter.class.php:136
 #: inc/filter.class.php:248
 msgid "Last IP"
-msgstr "Última IP"
+msgstr "Último IP"
 
 #: inc/addressing.class.php:581
 msgid "Number of free ip"
-msgstr "Número de ip libres"
+msgstr "Cantidad de IP libres"
 
 #: inc/addressing.class.php:584
 msgid "Number of reserved ip"
-msgstr "Número de ip reservadas"
+msgstr "Número de IP's reservados"
 
 #: inc/addressing.class.php:587
 msgid "Number of assigned ip (no doubles)"
-msgstr "Número de ip asignadas (no duplicadas)"
+msgstr "Número de IP's asignados (no duplicados)"
 
 #: inc/addressing.class.php:590
 msgid "Doubles"
-msgstr "Duplicadas"
+msgstr "Duplicados"
 
 #: inc/addressing.class.php:596
 msgid "Red row"
@@ -113,15 +114,15 @@ msgstr "Línea en Rojo"
 
 #: inc/addressing.class.php:596
 msgid "Same Ip"
-msgstr "Misma Ip"
+msgstr "Mismo IP"
 
 #: inc/addressing.class.php:601 inc/report.class.php:269
 msgid "Ping: got a response - used Ip"
-msgstr "Ping: responde - Ip usada"
+msgstr "Ping: responde - IP ocupado"
 
 #: inc/addressing.class.php:604 inc/report.class.php:274
 msgid "Ping: no response - free Ip"
-msgstr "Ping: no responde - Ip libre"
+msgstr "Ping: no responde - IP libre"
 
 #: inc/addressing.class.php:608
 msgid "Blue row"
@@ -129,19 +130,19 @@ msgstr "Línea en Azul"
 
 #: inc/addressing.class.php:612
 msgid "Green row"
-msgstr ""
+msgstr "Linea verde "
 
 #: inc/addressing.class.php:612
 msgid "Reserved Ip"
-msgstr ""
+msgstr "IP reservado"
 
 #: inc/addressing.class.php:652
 msgid "Real free Ip (Ping=KO)"
-msgstr "Ip libre real (Ping=KO)"
+msgstr "IP libre real (Ping=OK)"
 
 #: inc/addressing.class.php:661
 msgid "Problem detected with the IP Range"
-msgstr "Problema detectado con el rango IP"
+msgstr "Problema detectado con el rango IP's"
 
 #: inc/config.class.php:49
 msgid "System for ping"
@@ -173,7 +174,7 @@ msgstr "Muestra"
 
 #: inc/config.class.php:72
 msgid "Free IP"
-msgstr "Ip Libre"
+msgstr "IP Libre"
 
 #: inc/config.class.php:90
 msgid "Use Ping"
@@ -182,12 +183,12 @@ msgstr "Utilizar Ping"
 #: inc/filter.class.php:43
 msgid "Filter"
 msgid_plural "Filters"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Filtros"
+msgstr[1] "Filtros "
 
 #: inc/filter.class.php:210
 msgid "Add a filter"
-msgstr ""
+msgstr "Agregar un filtro"
 
 #: inc/ping_equipment.class.php:85 inc/ping_equipment.class.php:192
 msgid "IP ping"
@@ -207,7 +208,7 @@ msgstr "Este equipo no tiene IP"
 
 #: inc/profile.class.php:44 inc/profile.class.php:74
 msgid "Generate reports"
-msgstr "Genera Informes"
+msgstr "Genera informes"
 
 #: inc/profile.class.php:47 inc/profile.class.php:86
 msgid "Use ping on equipment form"
@@ -219,20 +220,20 @@ msgstr "Direcciones reservadas"
 
 #: inc/reserveip.class.php:142
 msgid "Object's name"
-msgstr ""
+msgstr "Nombre del objeto "
 
 #: inc/reserveip.class.php:193
 msgid "Ping: ip address free"
-msgstr ""
+msgstr "Ping: dirección IP libre "
 
 #: inc/reserveip.class.php:196
 msgid "Ping: not available IP address"
-msgstr ""
+msgstr "Ping: la dirección IP está ocupada"
 
 #: inc/reserveip.class.php:259
 msgid "Name already in use"
-msgstr ""
+msgstr "El nombre ya está en uso"
 
 #: inc/reserveip.class.php:297
 msgid "Validate the reservation"
-msgstr ""
+msgstr "Validar la reserva "

@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the GLPI - Addressing plugin package.
 # 
 # Translators:
-# polar147 <andrei_simoni@hotmail.com>, 2017
+# Andrei Bernardo Simoni <andrei_simoni@hotmail.com>, 2017
 # Xavier CAILLAUD <thetsmr@gmail.com>, 2012
 msgid ""
 msgstr ""
