@@ -112,7 +112,7 @@ class PluginAddressingAddressing extends CommonDBTM {
          'id'                 => '1000',
          'table'              => $this->getTable(),
          'field'              => 'begin_ip',
-         'name'               => __('First IP'),
+         'name'               => __('First IP', 'addressing'),
          'nosearch'           => true,
          'massiveaction'      => false
       ];
@@ -121,7 +121,7 @@ class PluginAddressingAddressing extends CommonDBTM {
          'id'                 => '1001',
          'table'              => $this->getTable(),
          'field'              => 'end_ip',
-         'name'               => __('Last IP'),
+         'name'               => __('Last IP', 'addressing'),
          'nosearch'           => true,
          'massiveaction'      => false
       ];
