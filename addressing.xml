@@ -27,6 +27,10 @@
       <author>Nelly Mahu-Lasson</author>
    </authors>
    <versions>
+        <version>
+           <num>2.8.0</num>
+           <compatibility>9.4</compatibility>
+       </version>
        <version>
            <num>2.7.1</num>
            <compatibility>9.3</compatibility>
