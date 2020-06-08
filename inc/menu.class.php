@@ -50,7 +50,13 @@ class PluginAddressingMenu extends CommonGLPI {
       if (Session::haveRight('plugin_addressing', UPDATE)) {
          $menu['links']['add'] = PluginAddressingAddressing::getFormURL(false);
       }
+      $menu['icon'] = self::getIcon();
+
       return $menu;
+   }
+
+   static function getIcon() {
+      return "fas fa-map-pin";
    }
 
    static function removeRightsFromSession() {

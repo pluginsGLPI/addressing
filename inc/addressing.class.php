@@ -363,6 +363,8 @@ class PluginAddressingAddressing extends CommonDBTM {
    function compute($start, $params = []) {
       global $DB;
 
+      $ipdeb = 0;
+      $ipfin = 0;
       foreach ($params as $key => $val) {
          if (isset($params[$key])) {
             $$key = $params[$key];
@@ -481,7 +483,7 @@ class PluginAddressingAddressing extends CommonDBTM {
       }
       $res = $DB->query($sql);
       if ($res) {
-         while ($row=$DB->fetch_assoc($res)) {
+         while ($row=$DB->fetchAssoc($res)) {
             $result["IP".$row["ipnum"]][]=$row;
          }
       }

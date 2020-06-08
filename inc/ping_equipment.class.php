@@ -52,7 +52,7 @@ class PluginAddressingPing_Equipment {
                    WHERE `id` = '".$obj->fields['id']."'";
 
          $res = $DB->query($query);
-         while ($row = $DB->fetch_array($res)) {
+         while ($row = $DB->fetchArray($res)) {
             if ($row['ip'] != '') {
                $list_ip[$row['ip']] = $row['ip'];
             }
@@ -72,7 +72,7 @@ class PluginAddressingPing_Equipment {
                 WHERE `" . $obj->getTable() . "`.`id` = '".$obj->fields['id']."'";
 
       $res = $DB->query($query);
-      while ($row = $DB->fetch_array($res)) {
+      while ($row = $DB->fetchArray($res)) {
          if ($row['ip'] != '') {
             $port = $row['ip'];
             if ($row['name'] != '') {

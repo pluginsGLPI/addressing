@@ -27,7 +27,7 @@
  --------------------------------------------------------------------------
  */
 
-define('PLUGIN_ADDRESSING_VERSION', '2.8.0');
+define('PLUGIN_ADDRESSING_VERSION', '2.9.0');
 
 // Init the hooks of the plugins -Needed
 function plugin_init_addressing() {
@@ -75,7 +75,7 @@ function plugin_version_addressing() {
       'homepage'       => 'https://github.com/pluginsGLPI/addressing',
       'requirements'   => [
          'glpi' => [
-            'min' => '9.4',
+            'min' => '9.5',
             'dev' => false
          ]
       ]];
@@ -84,10 +84,10 @@ function plugin_version_addressing() {
 
 // Optional : check prerequisites before install : may print errors or add to message after redirect
 function plugin_addressing_check_prerequisites() {
-   if (version_compare(GLPI_VERSION, '9.4', 'lt') 
-         || version_compare(GLPI_VERSION, '9.5', 'ge')) {
+   if (version_compare(GLPI_VERSION, '9.5', 'lt')
+         || version_compare(GLPI_VERSION, '9.6', 'ge')) {
       if (method_exists('Plugin', 'messageIncompatible')) {
-         echo Plugin::messageIncompatible('core', '9.4');
+         echo Plugin::messageIncompatible('core', '9.5');
       }
       return false;
    }

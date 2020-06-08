@@ -122,7 +122,7 @@ class PluginAddressingReserveip extends CommonDBTM {
          $np    = new NetworkPort();
          $newID = $np->add($newinput);
 
-         Event::log($newID, "networkport", 5, "inventory",
+         \Glpi\Event::log($newID, "networkport", 5, "inventory",
             //TRANS: %s is the user login
                     sprintf(__('%s adds an item'), $_SESSION["glpiname"]));
       }
