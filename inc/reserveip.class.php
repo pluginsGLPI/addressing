@@ -45,6 +45,10 @@ class PluginAddressingReserveip extends CommonDBTM {
       return __("Reserve");
    }
 
+   public static function getTable($classname = null) {
+      return "glpi_plugin_addressing_addressings";
+   }
+
    /**
     * @param $ip
     *
