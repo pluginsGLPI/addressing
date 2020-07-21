@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Addressing plugin 2.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-24 12:42+0100\n"
+"POT-Creation-Date: 2020-07-19 20:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,8 +34,18 @@ msgid "Please activate the plugin"
 msgstr ""
 
 #: inc/addressing.class.php:75 inc/addressing.class.php:277
-#: inc/addressing.class.php:601
+#: inc/addressing.class.php:603
 msgid "Ping free Ip"
+msgstr ""
+
+#: inc/addressing.class.php:115 inc/addressing.class.php:288
+#: inc/filter.class.php:121 inc/filter.class.php:247
+msgid "First IP"
+msgstr ""
+
+#: inc/addressing.class.php:124 inc/addressing.class.php:304
+#: inc/filter.class.php:136 inc/filter.class.php:248
+msgid "Last IP"
 msgstr ""
 
 #: inc/addressing.class.php:157 inc/addressing.class.php:320
@@ -59,7 +69,7 @@ msgstr ""
 msgid "Assigned IP"
 msgstr ""
 
-#: inc/addressing.class.php:223 inc/addressing.class.php:610
+#: inc/addressing.class.php:223 inc/addressing.class.php:612
 #: inc/report.class.php:138
 msgid "Free Ip"
 msgstr ""
@@ -80,65 +90,55 @@ msgstr ""
 msgid "Detected subnet list"
 msgstr ""
 
-#: inc/addressing.class.php:288 inc/filter.class.php:121
-#: inc/filter.class.php:247
-msgid "First IP"
-msgstr ""
-
-#: inc/addressing.class.php:304 inc/filter.class.php:136
-#: inc/filter.class.php:248
-msgid "Last IP"
-msgstr ""
-
-#: inc/addressing.class.php:583
+#: inc/addressing.class.php:585
 msgid "Number of free ip"
 msgstr ""
 
-#: inc/addressing.class.php:586
+#: inc/addressing.class.php:588
 msgid "Number of reserved ip"
 msgstr ""
 
-#: inc/addressing.class.php:589
+#: inc/addressing.class.php:591
 msgid "Number of assigned ip (no doubles)"
 msgstr ""
 
-#: inc/addressing.class.php:592
+#: inc/addressing.class.php:594
 msgid "Doubles"
 msgstr ""
 
-#: inc/addressing.class.php:598
+#: inc/addressing.class.php:600
 msgid "Red row"
 msgstr ""
 
-#: inc/addressing.class.php:598
+#: inc/addressing.class.php:600
 msgid "Same Ip"
 msgstr ""
 
-#: inc/addressing.class.php:603 inc/report.class.php:269
+#: inc/addressing.class.php:605 inc/report.class.php:269
 msgid "Ping: got a response - used Ip"
 msgstr ""
 
-#: inc/addressing.class.php:606 inc/report.class.php:274
+#: inc/addressing.class.php:608 inc/report.class.php:274
 msgid "Ping: no response - free Ip"
 msgstr ""
 
-#: inc/addressing.class.php:610
+#: inc/addressing.class.php:612
 msgid "Blue row"
 msgstr ""
 
-#: inc/addressing.class.php:614
+#: inc/addressing.class.php:616
 msgid "Green row"
 msgstr ""
 
-#: inc/addressing.class.php:614
+#: inc/addressing.class.php:616
 msgid "Reserved Ip"
 msgstr ""
 
-#: inc/addressing.class.php:654
+#: inc/addressing.class.php:656
 msgid "Real free Ip (Ping=KO)"
 msgstr ""
 
-#: inc/addressing.class.php:663
+#: inc/addressing.class.php:665
 msgid "Problem detected with the IP Range"
 msgstr ""
 
@@ -216,22 +216,22 @@ msgstr ""
 msgid "Reserved Address"
 msgstr ""
 
-#: inc/reserveip.class.php:142
+#: inc/reserveip.class.php:146
 msgid "Object's name"
 msgstr ""
 
-#: inc/reserveip.class.php:193
+#: inc/reserveip.class.php:197
 msgid "Ping: ip address free"
 msgstr ""
 
-#: inc/reserveip.class.php:196
+#: inc/reserveip.class.php:200
 msgid "Ping: not available IP address"
 msgstr ""
 
-#: inc/reserveip.class.php:259
+#: inc/reserveip.class.php:263
 msgid "Name already in use"
 msgstr ""
 
-#: inc/reserveip.class.php:297
+#: inc/reserveip.class.php:301
 msgid "Validate the reservation"
 msgstr ""
