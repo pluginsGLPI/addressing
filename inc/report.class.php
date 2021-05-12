@@ -340,7 +340,7 @@ class PluginAddressingReport extends CommonDBTM {
 
          case 1 :
             //windows
-            exec("ping.exe -n 1 -w 1 -i 4 ".$ip, $list);
+            exec("ping.exe -n 1 -w 1 -i 64 ".$ip, $list);
             $nb = count($list);
             if (isset($nb)) {
                for ($i=0; $i<$nb; $i++) {

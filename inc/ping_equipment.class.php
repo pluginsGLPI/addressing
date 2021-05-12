@@ -136,7 +136,7 @@ class PluginAddressingPing_Equipment {
 
          case 1 :
             //windows
-            exec("ping.exe -n 1 -w 1 -i 4 ".$ip, $list, $error);
+            exec("ping.exe -n 1 -w 1 -i 64 ".$ip, $list, $error);
             break;
 
          case 2 :
