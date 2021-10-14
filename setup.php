@@ -27,7 +27,11 @@
  --------------------------------------------------------------------------
  */
 
-define('PLUGIN_ADDRESSING_VERSION', '2.9.0');
+define('PLUGIN_ADDRESSING_VERSION', '2.9.1');
+if (!defined("PLUGIN_ADDRESSING_DIR")) {
+   define("PLUGIN_ADDRESSING_DIR", Plugin::getPhpDir("addressing"));
+   define("PLUGIN_ADDRESSING_DIR_NOFULL", Plugin::getPhpDir("addressing",false));
+}
 
 // Init the hooks of the plugins -Needed
 function plugin_init_addressing() {

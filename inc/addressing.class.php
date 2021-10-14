@@ -617,6 +617,12 @@ class PluginAddressingAddressing extends CommonDBTM {
          }
 
          echo "</td></tr>";
+         echo "</tr><td class='center' colspan='2'>";
+         echo "<button form='' type='submit id='updatePingInfo' class='vsubmit center' name='updatePingInfo' title='" . _sx('button', 'Update ping information', 'metademands') . "'>";
+         echo "<i class='fas fa-spinner' data-hasqtip='0' aria-hidden='true'></i>&nbsp;";
+         echo _sx('button', 'Manual update of ping information', 'addressing');
+         echo "</button>";
+         echo "</td></tr>";
 
          echo "</table>";
          echo "</div>";
@@ -639,11 +645,43 @@ class PluginAddressingAddressing extends CommonDBTM {
          echo "</table>";
          Html::closeForm();
 
+
+         echo "<script>
+                          $('#updatePingInfo').click(function() {
+                             var addressing_id = {$this->getID()};
+                             
+                            
+                          
+                             $('#ajax_loader').show();
+                             $.ajax({
+                                url: '" . $CFG_GLPI["root_doc"] . PLUGIN_ADDRESSING_DIR_NOFULL . "/ajax/updatepinginfo.php',
+                                   type: 'POST',
+                                   data: {'addressing_id' : addressing_id},
+                                   success: function(response){
+                                    console.log(response);                                    
+                                       $('#ajax_loader').hide();
+                                       if (response == 1) {
+                                          document.location.reload();
+                                       }                                 
+                                    },
+                                   error: function(xhr, status, error) {
+                                      console.log(xhr);
+                                      console.log(status);
+                                      console.log(error);
+                                    } 
+                                });
+                          });
+                        </script>";
+
+         echo "<div id='ajax_loader' class=\"ajax_loader hidden\">";
+         echo "</div>";
+
          $numrows = count($result);
          //         $numrows = 1 + ip2long($this->fields['end_ip']) - ip2long($this->fields['begin_ip']);
          $result = array_slice($result, $start, $_SESSION["glpilist_limit"]);
          Html::printPager($start, $numrows, self::getFormURL(), "start=$start&amp;id=$id&amp;filter=$filter",
                              'PluginAddressingReport');
+
 
          //////////////////////////liste ips////////////////////////////////////////////////////////////
 

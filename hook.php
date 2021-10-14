@@ -37,7 +37,7 @@ function plugin_addressing_install() {
        && !$DB->tableExists("glpi_plugin_addressing")
        && !$DB->tableExists("glpi_plugin_addressing_configs")) {
 
-      $DB->runFile(GLPI_ROOT . "/plugins/addressing/sql/empty-2.7.0.sql");
+      $DB->runFile(GLPI_ROOT . "/plugins/addressing/sql/empty-2.9.1.sql");
 
    } else {
 
@@ -89,6 +89,10 @@ function plugin_addressing_install() {
       if (!$DB->fieldExists("glpi_plugin_addressing_addressings", "locations_id") && !$DB->fieldExists("glpi_plugin_addressing_addressings", "fqdns_id")) {
          $DB->runFile(GLPI_ROOT . "/plugins/addressing/sql/update-2.5.0.sql");
       }
+      //Version 2.9.1
+      if (!$DB->tableExists("glpi_plugin_addressing_pinginfos")) {
+         $DB->runFile(GLPI_ROOT . "/plugins/addressing/sql/update-2.9.1.sql");
+      }
 
    }
 
@@ -127,6 +131,7 @@ function plugin_addressing_install() {
    //Drop old profile table : not used anymore
    $migration = new Migration("2.5.0");
    $migration->dropTable('glpi_plugin_addressing_profiles');
+   CronTask::Register(PluginAddressingPinginfo::class, 'UpdatePing', DAY_TIMESTAMP);
 
    return true;
 }
@@ -167,7 +172,7 @@ function plugin_addressing_uninstall() {
    PluginAddressingProfile::removeRightsFromSession();
 
    PluginAddressingMenu::removeRightsFromSession();
-
+   CronTask::unregister("addressing");
    return true;
 }
 
