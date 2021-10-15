@@ -34,7 +34,7 @@ if (!defined('GLPI_ROOT')) {
 /**
  * Class PluginAddressingPing_Equipment
  */
-class PluginAddressingPing_Equipment {
+class PluginAddressingPing_Equipment extends commonDBTM{
 
    function showForm($ID, $options = []) {
       global $DB, $CFG_GLPI;

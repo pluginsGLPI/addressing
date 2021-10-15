@@ -226,7 +226,29 @@ class PluginAddressingReport extends CommonDBTM {
                   if ($PluginAddressingAddressing->fields["reserved_ip"] && strstr($line["pname"], "reserv")) {
                      echo Search::showItem($output_type, __('Reserved Address', 'addressing'), $item_num, $row_num);
                   } else {
-                     echo Search::showItem($output_type, " ", $item_num, $row_num);
+                     if ($PluginAddressingAddressing->fields["free_ip"]) {
+                        $plugin_addressing_pinginfo = new PluginAddressingPinginfo();
+                        if($plugin_addressing_pinginfo->getFromDBByCrit(['plugin_addressing_addressings_id'=>$PluginAddressingAddressing->getID(),'ipname'=>$num])) {
+                           $ping_value = $plugin_addressing_pinginfo->fields['ping_response'];
+                        } else {
+                           $ping_value = $this->ping($system, $ip);
+                           $data = [];
+                           $data['plugin_addressing_addressings_id'] = $PluginAddressingAddressing->getID();
+                           $data['ipname'] = $num;
+                           $data['ping_response'] = $ping_value ?? 0;
+                           $data['ping_date'] = date('Y-m-d H:i:s');;
+                           $plugin_addressing_pinginfo->add($data);
+                        }
+                        $plugin_addressing_pinginfo->getFromDBByCrit(['plugin_addressing_addressings_id'=>$PluginAddressingAddressing->getID(),'ipname'=>$num]);
+                        if($ping_value) {
+                           echo Search::showItem($output_type, __("Last ping attempt",'addressing')." : ".Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']) . " <i class=\"fas fa-check-square fa-2x\" style='color: darkgreen'></i>", $item_num, $row_num,"style='background-color:white'");
+                        } else {
+                           echo Search::showItem($output_type, __("Last ping attempt",'addressing')." : ".Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']) . " <i class=\"fas fa-window-close fa-2x\" style='color: darkred'></i>", $item_num, $row_num,"style='background-color:white'");
+                        }
+                     } else {
+                        echo Search::showItem($output_type, " ", $item_num, $row_num);
+                     }
+
                   }
 
                   // End
@@ -271,7 +293,7 @@ class PluginAddressingReport extends CommonDBTM {
                   $data = [];
                   $data['plugin_addressing_addressings_id'] = $PluginAddressingAddressing->getID();
                   $data['ipname'] = $num;
-                  $data['ping_response'] = $ping_value;
+                  $data['ping_response'] = $ping_value ?? 0;
                   $data['ping_date'] = date('Y-m-d H:i:s');;
                   $plugin_addressing_pinginfo->add($data);
                }
@@ -282,14 +304,14 @@ class PluginAddressingReport extends CommonDBTM {
                   echo Search::showItem($output_type, $ip, $item_num, $row_num);
                   echo Search::showItem($output_type, __('Ping: got a response - used Ip', 'addressing'),
                                         $item_num, $row_num);
-                  $content = __("last ping : ",'addressing').Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']);
+                  $content = __("Last ping attempt",'addressing')." : ".Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']). " <i class=\"fas fa-check-square fa-2x\" style='color: darkgreen'></i>";
                } else {
                   echo $this->displaySearchNewLine($output_type, "ping_on");
                   echo Search::showItem($output_type, $ip, $item_num, $row_num);
                   echo Search::showItem($output_type, __('Ping: no response - free Ip', 'addressing'),
                                         $item_num, $row_num);
                   if ($output_type == Search::HTML_OUTPUT) {
-                     $content = __("last ping : ",'addressing').Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date'])." <br/><a href=\"#\" onClick='plugaddr_loadForm(\"showForm\", \"plugaddr_form\", 
+                     $content = __("Last ping attempt",'addressing')." : ".Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']). " <i class=\"fas fa-window-close fa-2x\" style='color: darkred'></i>" . " <br/><a href=\"#\" onClick='plugaddr_loadForm(\"showForm\", \"plugaddr_form\", 
                      " . json_encode($params) . ");'> " . __("Reserve") . "</a>";
 
                   } else {
@@ -300,7 +322,7 @@ class PluginAddressingReport extends CommonDBTM {
             echo Search::showItem($output_type, " ", $item_num, $row_num);
             echo Search::showItem($output_type, " ", $item_num, $row_num);
             echo Search::showItem($output_type, " ", $item_num, $row_num);
-            echo Search::showItem($output_type, "$content ", $item_num, $row_num);
+            echo Search::showItem($output_type, "$content ", $item_num, $row_num,"style='background-color:white'");
             echo Search::showEndLine($output_type);
          }
       }

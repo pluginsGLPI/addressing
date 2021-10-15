@@ -144,6 +144,21 @@ class PluginAddressingPinginfo extends CommonDBTM {
 
             }
 
+         } else if(count($lines) && $PluginAddressingAddressing->fields["free_ip"]) {
+            if ($ping) {
+
+               $ping_value                               = $PluginAddressingReport->ping($system, $ip);
+               $data                                     = [];
+               $data['plugin_addressing_addressings_id'] = $PluginAddressingAddressing->getID();
+               $data['ipname']                           = $num;
+               $data['ping_response']                    = $ping_value ?? 0;
+               $data['ping_date']                        = date('Y-m-d H:i:s');;
+               $plugin_addressing_pinginfo->add($data);
+               if (!is_null($ping_value)) {
+                  $ping_response++;
+               }
+
+            }
          }
       }
 
