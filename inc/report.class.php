@@ -246,7 +246,13 @@ class PluginAddressingReport extends CommonDBTM
                      if ($ping_value) {
                         echo Search::showItem($output_type, "<i class=\"fas fa-check-square fa-2x\" style='color: darkgreen' title='" . __("Last ping attempt", 'addressing') . " : "
                            . Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']) . "'></i>", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
-                        echo Search::showItem($output_type, " ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
+
+                        if ($PluginAddressingAddressing->fields["reserved_ip"] && strstr($line["pname"], "reserv")) {
+                           $reserv = "<i class='fas fa-clipboard-check fa-2x' style='color: #d56f15' title='" . __('Reserved Address', 'addressing') . "'></i>";
+                           echo Search::showItem($output_type, "$reserv ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
+                        } else {
+                           echo Search::showItem($output_type, " ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
+                        }
                      } else {
                         echo Search::showItem($output_type, "<i class=\"fas fa-window-close fa-2x\" style='color: darkred' title='" . __("Last ping attempt", 'addressing') . " : "
                            . Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']) . "'></i>", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
@@ -261,7 +267,7 @@ class PluginAddressingReport extends CommonDBTM
                               'width' => 1000,
                               'height' => 550];
                            $reserv = "<a href=\"#\" onClick='plugaddr_loadForm(\"showForm\", \"plugaddr_form\", 
-                  " . json_encode($params) . ");'><i class='fas fa-edit fa-2x pointer' style='color: #d56f15' title='" . __("Reserve") . "'></i></a>";
+                  " . json_encode($params) . ");'><i class='fas fa-clipboard fa-2x pointer' style='color: #d56f15' title='" . __("Reserve") . "'></i></a>";
                            echo Search::showItem($output_type, "$reserv ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
                         }
                      }
@@ -327,6 +333,7 @@ class PluginAddressingReport extends CommonDBTM
                   $content = "<i class=\"fas fa-check-square fa-2x\" style='color: darkgreen' title='" . __("Last ping attempt", 'addressing') . " : "
                      . Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']) . "'></i>";
                   $reserv = "";
+
                } else {
                   echo $this->displaySearchNewLine($output_type, "ping_on");
                   echo Search::showItem($output_type, $ip, $item_num, $row_num);
@@ -339,6 +346,7 @@ class PluginAddressingReport extends CommonDBTM
                      " . json_encode($params) . ");'><i class='fas fa-clipboard fa-2x pointer' style='color: #d56f15' title='" . __("Reserve") . "'></i></a>";
                   } else {
                      $content = "";
+                     $reserv = "";
                   }
                }
             }
