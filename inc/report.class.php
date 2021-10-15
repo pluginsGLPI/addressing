@@ -282,14 +282,14 @@ class PluginAddressingReport extends CommonDBTM {
                   echo Search::showItem($output_type, $ip, $item_num, $row_num);
                   echo Search::showItem($output_type, __('Ping: got a response - used Ip', 'addressing'),
                                         $item_num, $row_num);
-                  $content = __("last ping : ",'addressing').Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']);
+                  $content = __("Last ping",'addressing')." : ".Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']);
                } else {
                   echo $this->displaySearchNewLine($output_type, "ping_on");
                   echo Search::showItem($output_type, $ip, $item_num, $row_num);
                   echo Search::showItem($output_type, __('Ping: no response - free Ip', 'addressing'),
                                         $item_num, $row_num);
                   if ($output_type == Search::HTML_OUTPUT) {
-                     $content = __("last ping : ",'addressing').Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date'])." <br/><a href=\"#\" onClick='plugaddr_loadForm(\"showForm\", \"plugaddr_form\", 
+                     $content = __("Last ping",'addressing')." : ".Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date'])." <br/><a href=\"#\" onClick='plugaddr_loadForm(\"showForm\", \"plugaddr_form\", 
                      " . json_encode($params) . ");'> " . __("Reserve") . "</a>";
 
                   } else {
