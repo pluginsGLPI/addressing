@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Addressing plugin 2.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-19 20:03+0200\n"
+"POT-Creation-Date: 2021-10-15 09:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: setup.php:71 inc/addressing.class.php:45 inc/menu.class.php:37
+#: setup.php:79 inc/addressing.class.php:45 inc/menu.class.php:37
 #: inc/profile.class.php:108
 msgid "IP Adressing"
 msgid_plural "IP Adressing"
@@ -114,11 +114,11 @@ msgstr ""
 msgid "Same Ip"
 msgstr ""
 
-#: inc/addressing.class.php:605 inc/report.class.php:269
+#: inc/addressing.class.php:605 inc/report.class.php:283
 msgid "Ping: got a response - used Ip"
 msgstr ""
 
-#: inc/addressing.class.php:608 inc/report.class.php:274
+#: inc/addressing.class.php:608 inc/report.class.php:289
 msgid "Ping: no response - free Ip"
 msgstr ""
 
@@ -134,11 +134,21 @@ msgstr ""
 msgid "Reserved Ip"
 msgstr ""
 
-#: inc/addressing.class.php:656
+#: inc/addressing.class.php:621
+msgctxt "button"
+msgid "Update ping information"
+msgstr ""
+
+#: inc/addressing.class.php:623
+msgctxt "button"
+msgid "Manual update of ping information"
+msgstr ""
+
+#: inc/addressing.class.php:694
 msgid "Real free Ip (Ping=KO)"
 msgstr ""
 
-#: inc/addressing.class.php:665
+#: inc/addressing.class.php:703
 msgid "Problem detected with the IP Range"
 msgstr ""
 
@@ -214,6 +224,10 @@ msgstr ""
 
 #: inc/report.class.php:227
 msgid "Reserved Address"
+msgstr ""
+
+#: inc/report.class.php:285 inc/report.class.php:292
+msgid "last ping : "
 msgstr ""
 
 #: inc/reserveip.class.php:146
