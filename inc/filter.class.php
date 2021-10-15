@@ -110,9 +110,8 @@ class PluginAddressingFilter extends CommonDBTM {
        echo "<tr class='tab_bg_1'>
                <td>".__("Type")."</td>
                <td>";
-      Dropdown::showFromArray('type', [PluginAddressingReserveip::COMPUTER => Computer::getTypeName(),
-                                           PluginAddressingReserveip::NETWORK => NetworkEquipment::getTypeName(),
-                                           PluginAddressingReserveip::PRINTER => Printer::getTypeName()],
+      $types = PluginAddressingAddressing::dropdownItemtype();
+      Dropdown::showFromArray('type', $types,
                               ['value' => $this->fields["type"]]);
       echo "</td>";
       echo "</tr>";
@@ -304,11 +303,8 @@ class PluginAddressingFilter extends CommonDBTM {
       //display of data backup
       echo "<td $edit>" . $filter['name'] . "</td>";
       echo "<td $edit>" . Dropdown::getDropdownName('glpi_entities', $filter['entities_id']) . "</td>";
-      switch ($filter['type']) {
-         case PluginAddressingReserveip::COMPUTER : echo "<td $edit>" . Computer::getTypeName() . "</td>";break;
-         case PluginAddressingReserveip::NETWORK : echo "<td $edit>" . NetworkEquipment::getTypeName() . "</td>";break;
-         case PluginAddressingReserveip::PRINTER : echo "<td $edit>" . Printer::getTypeName() . "</td>";break;
-      }
+      $types = PluginAddressingAddressing::dropdownItemtype();
+      echo "<td $edit>" . $types[$filter['type']] . "</td>";
       echo "<td $edit>" . $filter['begin_ip'] . "</td>";
       echo "<td $edit>" . $filter['end_ip'] . "</td>";
       echo "</tr>\n";

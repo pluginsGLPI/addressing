@@ -100,7 +100,7 @@ class PluginAddressingPing_Equipment extends commonDBTM{
          echo "</tr>";
 
          echo "<tr class='tab_bg_1'>";
-         echo "<td>".__('Result', 'addressing')." : </td>";
+         echo "<td>".__('Ping result', 'addressing')." : </td>";
          echo "<td colspan='3'>";
          echo "<div id='ping_response' class='plugin_addressing_ping_equipment'></div>";
          echo "</td></tr>";

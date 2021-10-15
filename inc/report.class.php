@@ -34,7 +34,8 @@ if (!defined('GLPI_ROOT')) {
 /**
  * Class PluginAddressingReport
  */
-class PluginAddressingReport extends CommonDBTM {
+class PluginAddressingReport extends CommonDBTM
+{
 
    /**
     * @param      $type
@@ -42,7 +43,8 @@ class PluginAddressingReport extends CommonDBTM {
     *
     * @return string
     */
-   function displaySearchNewLine($type, $odd = false) {
+   function displaySearchNewLine($type, $odd = false)
+   {
 
       $out = "";
       switch ($type) {
@@ -65,7 +67,7 @@ class PluginAddressingReport extends CommonDBTM {
             break;
 
          default :
-            $class=" class='tab_bg_2' ";
+            $class = " class='tab_bg_2' ";
             if ($odd) {
                switch ($odd) {
                   case "double" : //double
@@ -105,7 +107,8 @@ class PluginAddressingReport extends CommonDBTM {
     *
     * @return int
     */
-   function displayReport(&$result, $PluginAddressingAddressing) {
+   function displayReport(&$result, $PluginAddressingAddressing)
+   {
       global $CFG_GLPI;
 
       $ping = $PluginAddressingAddressing->fields["use_ping"];
@@ -113,7 +116,7 @@ class PluginAddressingReport extends CommonDBTM {
       // Get config
       $PluginAddressingConfig = new PluginAddressingConfig();
       $PluginAddressingConfig->getFromDB('1');
-      $system                 = $PluginAddressingConfig->fields["used_system"];
+      $system = $PluginAddressingConfig->fields["used_system"];
 
       // Set display type for export if define
       $output_type = Search::HTML_OUTPUT;
@@ -122,10 +125,10 @@ class PluginAddressingReport extends CommonDBTM {
          $output_type = $_GET["display_type"];
       }
 
-      $header_num    = 1;
-      $nbcols        = 6;
+      $header_num = 1;
+      $nbcols = 6;
       $ping_response = 0;
-      $row_num       = 1;
+      $row_num = 1;
 
       // Column headers
       echo Search::showHeader($output_type, 1, $nbcols, 1);
@@ -135,7 +138,7 @@ class PluginAddressingReport extends CommonDBTM {
       echo Search::showHeaderItem($output_type, _n('User', 'Users', 1), $header_num);
       echo Search::showHeaderItem($output_type, __('MAC address'), $header_num);
       echo Search::showHeaderItem($output_type, __('Item type'), $header_num);
-      echo Search::showHeaderItem($output_type, __('Free Ip', 'addressing'), $header_num);
+      echo Search::showHeaderItem($output_type, __('Ping result', 'addressing'), $header_num);
       echo Search::showEndLine($output_type);
 
       $user = new User();
@@ -153,11 +156,11 @@ class PluginAddressingReport extends CommonDBTM {
                foreach ($lines as $line) {
                   $row_num++;
                   $item_num = 1;
-                  $name     = $line["dname"];
-                  $namep    = $line["pname"];
+                  $name = $line["dname"];
+                  $namep = $line["pname"];
                   // IP
                   if ($PluginAddressingAddressing->fields["reserved_ip"] && strstr($line["pname"],
-                                                                                   "reserv")) {
+                        "reserv")) {
                      echo $this->displaySearchNewLine($output_type, "reserved");
                   } else {
                      echo $this->displaySearchNewLine($output_type,
@@ -170,22 +173,22 @@ class PluginAddressingReport extends CommonDBTM {
                   $link = Toolbox::getItemTypeFormURL($line["itemtype"]);
                   if ($line["itemtype"] != 'NetworkEquipment') {
                      if ($item->canView()) {
-                        $output_iddev = "<a href='".$link."?id=".$line["on_device"]."'>".$name.
-                           (empty($name) || $_SESSION["glpiis_ids_visible"] ? " (".$line["on_device"].")" : "")."</a>";
+                        $output_iddev = "<a href='" . $link . "?id=" . $line["on_device"] . "'>" . $name .
+                           (empty($name) || $_SESSION["glpiis_ids_visible"] ? " (" . $line["on_device"] . ")" : "") . "</a>";
                      } else {
-                        $output_iddev = $name.(empty($name) || $_SESSION["glpiis_ids_visible"] ? " (".$line["on_device"].")" : "");
+                        $output_iddev = $name . (empty($name) || $_SESSION["glpiis_ids_visible"] ? " (" . $line["on_device"] . ")" : "");
                      }
                   } else {
                      if ($item->canView()) {
                         if (empty($namep)) {
                            $linkp = '';
                         } else {
-                           $linkp = $namep." - ";
+                           $linkp = $namep . " - ";
                         }
-                        $output_iddev = "<a href='".$link."?id=".$line["on_device"]."'>".$linkp.$name.
-                           (empty($name) || $_SESSION["glpiis_ids_visible"] ? " (".$line["on_device"].")" : "")."</a>";
+                        $output_iddev = "<a href='" . $link . "?id=" . $line["on_device"] . "'>" . $linkp . $name .
+                           (empty($name) || $_SESSION["glpiis_ids_visible"] ? " (" . $line["on_device"] . ")" : "") . "</a>";
                      } else {
-                        $output_iddev = $namep." - ".$name.(empty($name) || $_SESSION["glpiis_ids_visible"] ? " (".$line["on_device"].")" : "");
+                        $output_iddev = $namep . " - " . $name . (empty($name) || $_SESSION["glpiis_ids_visible"] ? " (" . $line["on_device"] . ")" : "");
                      }
                   }
                   echo Search::showItem($output_type, $output_iddev, $item_num, $row_num);
@@ -194,11 +197,11 @@ class PluginAddressingReport extends CommonDBTM {
                   if ($line["users_id"] && $user->getFromDB($line["users_id"])) {
                      $dbu = new DbUtils();
                      $username = $dbu->formatUserName($user->fields["id"], $user->fields["name"],
-                                                      $user->fields["realname"], $user->fields["firstname"]);
+                        $user->fields["realname"], $user->fields["firstname"]);
 
                      if ($user->canView()) {
-                        $output_iduser = "<a href='".$CFG_GLPI["root_doc"]."/front/user.form.php?id=".
-                           $line["users_id"]."'>".$username."</a>";
+                        $output_iduser = "<a href='" . $CFG_GLPI["root_doc"] . "/front/user.form.php?id=" .
+                           $line["users_id"] . "'>" . $username . "</a>";
                      } else {
                         $output_iduser = $username;
                      }
@@ -210,8 +213,8 @@ class PluginAddressingReport extends CommonDBTM {
                   // Mac
                   if ($line["id"]) {
                      if ($item->canView()) {
-                        $output_mac = "<a href='".$CFG_GLPI["root_doc"]."/front/networkport.form.php?id=".
-                           $line["id"]."'>".$line["mac"]."</a>";
+                        $output_mac = "<a href='" . $CFG_GLPI["root_doc"] . "/front/networkport.form.php?id=" .
+                           $line["id"] . "'>" . $line["mac"] . "</a>";
                      } else {
                         $output_mac = $line["mac"];
                      }
@@ -228,7 +231,8 @@ class PluginAddressingReport extends CommonDBTM {
                   } else {
                      if ($PluginAddressingAddressing->fields["free_ip"]) {
                         $plugin_addressing_pinginfo = new PluginAddressingPinginfo();
-                        if($plugin_addressing_pinginfo->getFromDBByCrit(['plugin_addressing_addressings_id'=>$PluginAddressingAddressing->getID(),'ipname'=>$num])) {
+                        if ($plugin_addressing_pinginfo->getFromDBByCrit(['plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID(),
+                                                                           'ipname' => $num])) {
                            $ping_value = $plugin_addressing_pinginfo->fields['ping_response'];
                         } else {
                            $ping_value = $this->ping($system, $ip);
@@ -239,11 +243,12 @@ class PluginAddressingReport extends CommonDBTM {
                            $data['ping_date'] = date('Y-m-d H:i:s');;
                            $plugin_addressing_pinginfo->add($data);
                         }
-                        $plugin_addressing_pinginfo->getFromDBByCrit(['plugin_addressing_addressings_id'=>$PluginAddressingAddressing->getID(),'ipname'=>$num]);
-                        if($ping_value) {
-                           echo Search::showItem($output_type, __("Last ping attempt",'addressing')." : ".Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']) . " <i class=\"fas fa-check-square fa-2x\" style='color: darkgreen'></i>", $item_num, $row_num,"style='background-color:white'");
+                        $plugin_addressing_pinginfo->getFromDBByCrit(['plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID(),
+                                                                     'ipname' => $num]);
+                        if ($ping_value) {
+                           echo Search::showItem($output_type, __("Last ping attempt", 'addressing') . " : " . Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']) . " <i class=\"fas fa-check-square fa-2x\" style='color: darkgreen'></i>", $item_num, $row_num, "style='background-color:#e0e0e0'");
                         } else {
-                           echo Search::showItem($output_type, __("Last ping attempt",'addressing')." : ".Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']) . " <i class=\"fas fa-window-close fa-2x\" style='color: darkred'></i>", $item_num, $row_num,"style='background-color:white'");
+                           echo Search::showItem($output_type, __("Last ping attempt", 'addressing') . " : " . Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']) . " <i class=\"fas fa-window-close fa-2x\" style='color: darkred'></i>", $item_num, $row_num, "style='background-color:#e0e0e0'");
                         }
                      } else {
                         echo Search::showItem($output_type, " ", $item_num, $row_num);
@@ -259,15 +264,15 @@ class PluginAddressingReport extends CommonDBTM {
          } else if ($PluginAddressingAddressing->fields["free_ip"]) {
             $row_num++;
             $item_num = 1;
-            $content  = "";
+            $content = "";
 
-            $rand   = mt_rand();
+            $rand = mt_rand();
             $params = ['id_addressing' => $PluginAddressingAddressing->getID(),
-                       'ip'            => trim($ip),
-                       'root_doc'      => $CFG_GLPI['root_doc'],
-                       'rand'          => $rand,
-                       'width'         => 1000,
-                       'height'        => 550];
+               'ip' => trim($ip),
+               'root_doc' => $CFG_GLPI['root_doc'],
+               'rand' => $rand,
+               'width' => 1000,
+               'height' => 550];
 
             if (!$ping) {
                echo $this->displaySearchNewLine($output_type, "free");
@@ -276,7 +281,7 @@ class PluginAddressingReport extends CommonDBTM {
 
                if ($output_type == Search::HTML_OUTPUT) {
                   $content = "<a href=\"#\" onClick='plugaddr_loadForm(\"showForm\", \"plugaddr_form\", 
-                  " . json_encode($params) . ");'> " . __("Reserve") . "</a>";
+                  " . json_encode($params) . ");'><i class='fas fa-edit fa-2x pointer' style='color: #d56f15' title='".__("Reserve")."'></i></a>";
                } else {
                   $content = "";
                }
@@ -286,7 +291,7 @@ class PluginAddressingReport extends CommonDBTM {
                }
 
                $plugin_addressing_pinginfo = new PluginAddressingPinginfo();
-               if($plugin_addressing_pinginfo->getFromDBByCrit(['plugin_addressing_addressings_id'=>$PluginAddressingAddressing->getID(),'ipname'=>$num])) {
+               if ($plugin_addressing_pinginfo->getFromDBByCrit(['plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID(), 'ipname' => $num])) {
                   $ping_value = $plugin_addressing_pinginfo->fields['ping_response'];
                } else {
                   $ping_value = $this->ping($system, $ip);
@@ -297,22 +302,22 @@ class PluginAddressingReport extends CommonDBTM {
                   $data['ping_date'] = date('Y-m-d H:i:s');;
                   $plugin_addressing_pinginfo->add($data);
                }
-               $plugin_addressing_pinginfo->getFromDBByCrit(['plugin_addressing_addressings_id'=>$PluginAddressingAddressing->getID(),'ipname'=>$num]);
+               $plugin_addressing_pinginfo->getFromDBByCrit(['plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID(), 'ipname' => $num]);
                if ($ping_value) {
                   $ping_response++;
                   echo $this->displaySearchNewLine($output_type, "ping_off");
                   echo Search::showItem($output_type, $ip, $item_num, $row_num);
                   echo Search::showItem($output_type, __('Ping: got a response - used Ip', 'addressing'),
-                                        $item_num, $row_num);
-                  $content = __("Last ping attempt",'addressing')." : ".Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']). " <i class=\"fas fa-check-square fa-2x\" style='color: darkgreen'></i>";
+                     $item_num, $row_num);
+                  $content = __("Last ping attempt", 'addressing') . " : " . Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']) . " <i class=\"fas fa-check-square fa-2x\" style='color: darkgreen'></i>";
                } else {
                   echo $this->displaySearchNewLine($output_type, "ping_on");
                   echo Search::showItem($output_type, $ip, $item_num, $row_num);
                   echo Search::showItem($output_type, __('Ping: no response - free Ip', 'addressing'),
-                                        $item_num, $row_num);
+                     $item_num, $row_num);
                   if ($output_type == Search::HTML_OUTPUT) {
-                     $content = __("Last ping attempt",'addressing')." : ".Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']). " <i class=\"fas fa-window-close fa-2x\" style='color: darkred'></i>" . " <br/><a href=\"#\" onClick='plugaddr_loadForm(\"showForm\", \"plugaddr_form\", 
-                     " . json_encode($params) . ");'> " . __("Reserve") . "</a>";
+                     $content = __("Last ping attempt", 'addressing') . " : " . Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']) . " <i class=\"fas fa-window-close fa-2x\" style='color: darkred'></i>" . " <a href=\"#\" onClick='plugaddr_loadForm(\"showForm\", \"plugaddr_form\", 
+                     " . json_encode($params) . ");'><i class='fas fa-edit fa-2x pointer' style='color: #d56f15' title='".__("Reserve")."'></i></a>";
 
                   } else {
                      $content = "";
@@ -322,7 +327,7 @@ class PluginAddressingReport extends CommonDBTM {
             echo Search::showItem($output_type, " ", $item_num, $row_num);
             echo Search::showItem($output_type, " ", $item_num, $row_num);
             echo Search::showItem($output_type, " ", $item_num, $row_num);
-            echo Search::showItem($output_type, "$content ", $item_num, $row_num,"style='background-color:white'");
+            echo Search::showItem($output_type, "$content ", $item_num, $row_num, "style='background-color:#e0e0e0'");
             echo Search::showEndLine($output_type);
          }
       }
@@ -345,7 +350,8 @@ class PluginAddressingReport extends CommonDBTM {
     *
     * @return string
     */
-   static function string2ip($s) {
+   static function string2ip($s)
+   {
       if ($s > PHP_INT_MAX) {
          $s = 2 * PHP_INT_MIN + $s;
       }
@@ -358,17 +364,18 @@ class PluginAddressingReport extends CommonDBTM {
     *
     * @return bool
     */
-   function ping($system, $ip) {
+   function ping($system, $ip)
+   {
 
-      $list ='';
+      $list = '';
       switch ($system) {
          case 0 :
             // linux ping
-             exec("ping -c 1 -w 100 ".$ip, $list);
+            exec("ping -c 1 -w 100 " . $ip, $list);
             $nb = count($list);
             if (isset($nb)) {
-               for ($i=0; $i<$nb; $i++) {
-                  if (strpos($list[$i], "ttl=")>0) {
+               for ($i = 0; $i < $nb; $i++) {
+                  if (strpos($list[$i], "ttl=") > 0) {
                      return true;
                   }
                }
@@ -377,11 +384,11 @@ class PluginAddressingReport extends CommonDBTM {
 
          case 1 :
             //windows
-            exec("ping.exe -n 1 -w 100 -i 64 ".$ip, $list);
+            exec("ping.exe -n 1 -w 100 -i 64 " . $ip, $list);
             $nb = count($list);
             if (isset($nb)) {
-               for ($i=0; $i<$nb; $i++) {
-                  if (strpos($list[$i], "TTL")>0) {
+               for ($i = 0; $i < $nb; $i++) {
+                  if (strpos($list[$i], "TTL") > 0) {
                      return true;
                   }
                }
@@ -390,11 +397,11 @@ class PluginAddressingReport extends CommonDBTM {
 
          case 2 :
             //linux fping
-            exec("fping -r1 -c1 -t100 ".$ip, $list);
+            exec("fping -r1 -c1 -t100 " . $ip, $list);
             $nb = count($list);
             if (isset($nb)) {
-               for ($i=0; $i<$nb; $i++) {
-                  if (strpos($list[$i], "bytes")>0) {
+               for ($i = 0; $i < $nb; $i++) {
+                  if (strpos($list[$i], "bytes") > 0) {
                      return true;
                   }
                }
@@ -403,11 +410,11 @@ class PluginAddressingReport extends CommonDBTM {
 
          case 3 :
             // *BSD ping
-            exec("ping -c 1 -W 1 ".$ip, $list);
+            exec("ping -c 1 -W 1 " . $ip, $list);
             $nb = count($list);
             if (isset($nb)) {
-               for ($i=0; $i<$nb; $i++) {
-                  if (strpos($list[$i], "ttl=")>0) {
+               for ($i = 0; $i < $nb; $i++) {
+                  if (strpos($list[$i], "ttl=") > 0) {
                      return true;
                   }
                }
@@ -416,11 +423,11 @@ class PluginAddressingReport extends CommonDBTM {
 
          case 4 :
             // MacOSX ping
-            exec("ping -c 1 -t 1 ".$ip, $list);
+            exec("ping -c 1 -t 1 " . $ip, $list);
             $nb = count($list);
             if (isset($nb)) {
-               for ($i=0; $i<$nb; $i++) {
-                  if (strpos($list[$i], "ttl=")>0) {
+               for ($i = 0; $i < $nb; $i++) {
+                  if (strpos($list[$i], "ttl=") > 0) {
                      return true;
                   }
                }

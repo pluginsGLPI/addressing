@@ -35,9 +35,6 @@ if (!defined('GLPI_ROOT')) {
  * Class PluginAddressingReserveip
  */
 class PluginAddressingReserveip extends CommonDBTM {
-   const COMPUTER = 'Computer';
-   const NETWORK  = 'NetworkEquipment';
-   const PRINTER  = 'Printer';
 
    static $rightname = 'plugin_addressing';
 
@@ -107,8 +104,7 @@ class PluginAddressingReserveip extends CommonDBTM {
                   "mac"                      => $input["mac"],
                ];
                break;
-            case 'Computer':
-            case 'Printer':
+            default :
                $newinput = [
                   "itemtype"                 => $input['type'],
                   "items_id"                 => $id,
@@ -248,9 +244,8 @@ class PluginAddressingReserveip extends CommonDBTM {
       echo "<tr class='tab_bg_1'>
                <td>" . __("Type") . "</td>
                <td>";
-      Dropdown::showFromArray('type', [PluginAddressingReserveip::COMPUTER => Computer::getTypeName(),
-                                       PluginAddressingReserveip::NETWORK  => NetworkEquipment::getTypeName(),
-                                       PluginAddressingReserveip::PRINTER  => Printer::getTypeName()],
+      $types = PluginAddressingAddressing::dropdownItemtype();
+      Dropdown::showFromArray('type', $types,
                               ['on_change' => "nameIsThere(\"" . $CFG_GLPI['root_doc'] . "\");"]);
       echo "</td><td></td>";
       echo "</tr>";
