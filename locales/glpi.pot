@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Addressing plugin 2.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-15 18:11+0200\n"
+"POT-Creation-Date: 2021-10-15 18:53+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -114,11 +114,11 @@ msgstr ""
 msgid "Same Ip"
 msgstr ""
 
-#: inc/addressing.class.php:604 inc/report.class.php:310
+#: inc/addressing.class.php:604 inc/report.class.php:325
 msgid "Ping: got a response - used Ip"
 msgstr ""
 
-#: inc/addressing.class.php:607 inc/report.class.php:316
+#: inc/addressing.class.php:607 inc/report.class.php:333
 msgid "Ping: no response - free Ip"
 msgstr ""
 
@@ -208,13 +208,17 @@ msgstr ""
 msgid "Use ping on equipment form"
 msgstr ""
 
-#: inc/report.class.php:230
-msgid "Reserved Address"
+#: inc/report.class.php:142
+msgid "Reservation"
 msgstr ""
 
-#: inc/report.class.php:249 inc/report.class.php:251 inc/report.class.php:312
-#: inc/report.class.php:319
+#: inc/report.class.php:247 inc/report.class.php:251 inc/report.class.php:327
+#: inc/report.class.php:336
 msgid "Last ping attempt"
+msgstr ""
+
+#: inc/report.class.php:254
+msgid "Reserved Address"
 msgstr ""
 
 #: inc/reserveip.class.php:142
