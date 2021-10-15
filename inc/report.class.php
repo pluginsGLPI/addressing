@@ -229,7 +229,7 @@ class PluginAddressingReport extends CommonDBTM
                   if ($PluginAddressingAddressing->fields["reserved_ip"] && strstr($line["pname"], "reserv")) {
                      echo Search::showItem($output_type, __('Reserved Address', 'addressing'), $item_num, $row_num);
                   } else {
-                     if ($PluginAddressingAddressing->fields["free_ip"]) {
+                     if ($PluginAddressingAddressing->fields["free_ip"] && $ping) {
                         $plugin_addressing_pinginfo = new PluginAddressingPinginfo();
                         if ($plugin_addressing_pinginfo->getFromDBByCrit(['plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID(),
                                                                            'ipname' => $num])) {
