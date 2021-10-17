@@ -107,7 +107,7 @@ class PluginAddressingReport extends CommonDBTM
     *
     * @return int
     */
-   function displayReport(&$result, $PluginAddressingAddressing)
+   function displayReport(&$result, $PluginAddressingAddressing, $ping_status = [])
    {
       global $CFG_GLPI;
 
@@ -138,7 +138,9 @@ class PluginAddressingReport extends CommonDBTM
       echo Search::showHeaderItem($output_type, _n('User', 'Users', 1), $header_num);
       echo Search::showHeaderItem($output_type, __('MAC address'), $header_num);
       echo Search::showHeaderItem($output_type, __('Item type'), $header_num);
-      echo Search::showHeaderItem($output_type, __('Ping result', 'addressing'), $header_num);
+      if ($ping == 1) {
+         echo Search::showHeaderItem($output_type, __('Ping result', 'addressing'), $header_num);
+      }
       echo Search::showHeaderItem($output_type, __('Reservation', 'addressing'), $header_num);
       echo Search::showEndLine($output_type);
 
@@ -273,7 +275,6 @@ class PluginAddressingReport extends CommonDBTM
                      }
                   } else {
                      echo Search::showItem($output_type, " ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
-                     echo Search::showItem($output_type, " ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
                   }
                   // End
                   echo Search::showEndLine($output_type);
@@ -306,13 +307,18 @@ class PluginAddressingReport extends CommonDBTM
                   $content = "";
                   $reserv = "";
                }
+               echo Search::showItem($output_type, " ", $item_num, $row_num);
+               echo Search::showItem($output_type, " ", $item_num, $row_num);
+               echo Search::showItem($output_type, "$reserv ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
+               echo Search::showEndLine($output_type);
             } else {
                if ($output_type == Search::HTML_OUTPUT) {
                   Html::glpi_flush();
                }
 
                $plugin_addressing_pinginfo = new PluginAddressingPinginfo();
-               if ($plugin_addressing_pinginfo->getFromDBByCrit(['plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID(), 'ipname' => $num])) {
+               if ($plugin_addressing_pinginfo->getFromDBByCrit(['plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID(),
+                  'ipname' => $num])) {
                   $ping_value = $plugin_addressing_pinginfo->fields['ping_response'];
                } else {
                   $ping_value = $this->ping($system, $ip);
@@ -323,39 +329,61 @@ class PluginAddressingReport extends CommonDBTM
                   $data['ping_date'] = date('Y-m-d H:i:s');;
                   $plugin_addressing_pinginfo->add($data);
                }
-               $plugin_addressing_pinginfo->getFromDBByCrit(['plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID(), 'ipname' => $num]);
-               if ($ping_value) {
-                  $ping_response++;
-                  echo $this->displaySearchNewLine($output_type, "ping_off");
-                  echo Search::showItem($output_type, $ip, $item_num, $row_num);
-                  echo Search::showItem($output_type, __('Ping: got a response - used Ip', 'addressing'),
-                     $item_num, $row_num);
-                  $content = "<i class=\"fas fa-check-square fa-2x\" style='color: darkgreen' title='" . __("Last ping attempt", 'addressing') . " : "
-                     . Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']) . "'></i>";
-                  $reserv = "";
 
-               } else {
-                  echo $this->displaySearchNewLine($output_type, "ping_on");
-                  echo Search::showItem($output_type, $ip, $item_num, $row_num);
-                  echo Search::showItem($output_type, __('Ping: no response - free Ip', 'addressing'),
-                     $item_num, $row_num);
-                  if ($output_type == Search::HTML_OUTPUT) {
-                     $content = "<i class=\"fas fa-window-close fa-2x\" style='color: darkred' title='" . __("Last ping attempt", 'addressing') . " : "
-                        . Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']) . "'></i>";
-                     $reserv = "<a href=\"#\" onClick='plugaddr_loadForm(\"showForm\", \"plugaddr_form\", 
-                     " . json_encode($params) . ");'><i class='fas fa-clipboard fa-2x pointer' style='color: #d56f15' title='" . __("Reserve") . "'></i></a>";
+               $plugin_addressing_pinginfo->getFromDBByCrit(['plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID(),
+                  'ipname' => $num]);
+
+               $content = "";
+               $reserv = "";
+               $see_ping_on = $ping_status[0];
+               $see_ping_off = $ping_status[1];
+               if ($see_ping_on == 1 || $see_ping_off == 1) {
+
+                  if ($ping_value) {
+                     if ($see_ping_on == 1) {
+                        $ping_response++;
+                        echo $this->displaySearchNewLine($output_type, "ping_off");
+                        echo Search::showItem($output_type, $ip, $item_num, $row_num);
+                        echo Search::showItem($output_type, __('Ping: got a response - used Ip', 'addressing'),
+                           $item_num, $row_num);
+                        $content = "<i class=\"fas fa-check-square fa-2x\" style='color: darkgreen' title='" . __("Last ping attempt", 'addressing') . " : "
+                           . Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']) . "'></i>";
+                        $reserv = "";
+                        echo Search::showItem($output_type, " ", $item_num, $row_num);
+                        echo Search::showItem($output_type, " ", $item_num, $row_num);
+                        echo Search::showItem($output_type, " ", $item_num, $row_num);
+                        if ($ping) {
+                           echo Search::showItem($output_type, "$content ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
+                        }
+                        echo Search::showItem($output_type, "$reserv ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
+                        echo Search::showEndLine($output_type);
+                     }
+
                   } else {
-                     $content = "";
-                     $reserv = "";
+                     if ($see_ping_off == 1) {
+                        echo $this->displaySearchNewLine($output_type, "ping_on");
+                        echo Search::showItem($output_type, $ip, $item_num, $row_num);
+                        echo Search::showItem($output_type, __('Ping: no response - free Ip', 'addressing'),
+                           $item_num, $row_num);
+
+                        if ($output_type == Search::HTML_OUTPUT) {
+                           $content = "<i class=\"fas fa-window-close fa-2x\" style='color: darkred' title='" . __("Last ping attempt", 'addressing') . " : "
+                              . Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']) . "'></i>";
+                           $reserv = "<a href=\"#\" onClick='plugaddr_loadForm(\"showForm\", \"plugaddr_form\", 
+                     " . json_encode($params) . ");'><i class='fas fa-clipboard fa-2x pointer' style='color: #d56f15' title='" . __("Reserve") . "'></i></a>";
+                        }
+                        echo Search::showItem($output_type, " ", $item_num, $row_num);
+                        echo Search::showItem($output_type, " ", $item_num, $row_num);
+                        echo Search::showItem($output_type, " ", $item_num, $row_num);
+                        if ($ping) {
+                           echo Search::showItem($output_type, "$content ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
+                        }
+                        echo Search::showItem($output_type, "$reserv ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
+                        echo Search::showEndLine($output_type);
+                     }
                   }
                }
             }
-            echo Search::showItem($output_type, " ", $item_num, $row_num);
-            echo Search::showItem($output_type, " ", $item_num, $row_num);
-            echo Search::showItem($output_type, " ", $item_num, $row_num);
-            echo Search::showItem($output_type, "$content ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
-            echo Search::showItem($output_type, "$reserv ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
-            echo Search::showEndLine($output_type);
          }
       }
       if ($output_type == Search::HTML_OUTPUT) {

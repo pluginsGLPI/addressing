@@ -58,3 +58,8 @@
    border-radius: 4px 4px 4px 4px;
    padding: 2px;
 }
+
+.legend {
+   padding: 10px;
+   margin: 10px;
+}
