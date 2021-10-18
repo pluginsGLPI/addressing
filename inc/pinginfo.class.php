@@ -112,8 +112,6 @@ class PluginAddressingPinginfo extends CommonDBTM
 
    private function updatePingInfos($result, PluginAddressingAddressing $PluginAddressingAddressing)
    {
-      global $CFG_GLPI;
-
       $ping = $PluginAddressingAddressing->fields["use_ping"];
 
       // Get config

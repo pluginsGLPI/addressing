@@ -186,6 +186,13 @@ class PluginAddressingAddressing extends CommonDBTM
    }
 
 
+   function post_getEmpty() {
+      $this->fields['alloted_ip'] = 1;
+      $this->fields['free_ip'] = 1;
+      $this->fields['reserved_ip'] = 1;
+      $this->fields['double_ip'] = 1;
+   }
+
    function showForm($ID, $options = [])
    {
 
@@ -224,15 +231,27 @@ class PluginAddressingAddressing extends CommonDBTM
 //      $this->dropdownSubnet($ID > 0 ? $this->fields["entities_id"] : $_SESSION["glpiactive_entity"]);
       echo "<td>" . __('First IP', 'addressing') . "</td>"; // Subnet
       echo "<td>";
-      echo "<input type='text' id='plugaddr_ipdeb0' value='' name='_ipdeb0' size='3' " .
-         "onChange='plugaddr_ChangeNumber(\"" . __('Invalid data !!', 'addressing') . "\");'>.";
-      echo "<input type='text' id='plugaddr_ipdeb1' value='' name='_ipdeb1' size='3' " .
-         "onChange='plugaddr_ChangeNumber(\"" . __('Invalid data !!', 'addressing') . "\");'>.";
-      echo "<input type='text' id='plugaddr_ipdeb2' value='' name='_ipdeb2' size='3' " .
-         "onChange='plugaddr_ChangeNumber(\"" . __('Invalid data !!', 'addressing') . "\");'>.";
-      echo "<input type='text' id='plugaddr_ipdeb3' value='' name='_ipdeb3' size='3' " .
-         "onChange='plugaddr_ChangeNumber(\"" . __('Invalid data !!', 'addressing') . "\");'>";
-      echo "</td>";
+      if (empty($this->fields["begin_ip"])) {
+         $this->fields["begin_ip"] = "...";
+      }
+      $ipexploded = explode(".", $this->fields["begin_ip"]);
+      $i = 0;
+      foreach ($ipexploded as $ipnum) {
+         if ($ipnum > 255) {
+            $ipexploded[$i] = '';
+         }
+         $i++;
+      }
+      echo "<input type='text' value='".$ipexploded[0].
+         "' name='_ipdeb0' id='plugaddr_ipdeb0' size='3' maxlength='3' >.";
+      echo "<input type='text' value='".$ipexploded[1].
+         "' name='_ipdeb1' id='plugaddr_ipdeb1' size='3' maxlength='3' >.";
+      echo "<input type='text' value='".$ipexploded[2].
+         "' name='_ipdeb2' id='plugaddr_ipdeb2' size='3' maxlength='3' >.";
+      echo "<input type='text' value='".$ipexploded[3].
+         "' name='_ipdeb3' id='plugaddr_ipdeb3' size='3' maxlength='3' >";
+
+
       echo "</td>";
 
       if ($PluginAddressingConfig->fields["free_ip"]) {
@@ -250,14 +269,42 @@ class PluginAddressingAddressing extends CommonDBTM
 
       echo "<td>" . __('Last IP', 'addressing') . "</td>"; // Mask
       echo "<td>";
-      echo "<input type='text' id='plugaddr_ipfin0' value='' name='_ipfin0' size='3' " .
-         "onChange='plugaddr_ChangeNumber(\"" . __('Invalid data !!', 'addressing') . "\");'>.";
-      echo "<input type='text' id='plugaddr_ipfin1' value='' name='_ipfin1' size='3' " .
-         "onChange='plugaddr_ChangeNumber(\"" . __('Invalid data !!', 'addressing') . "\");'>.";
-      echo "<input type='text' id='plugaddr_ipfin2' value='' name='_ipfin2' size='3' " .
-         "onChange='plugaddr_ChangeNumber(\"" . __('Invalid data !!', 'addressing') . "\");'>.";
-      echo "<input type='text' id='plugaddr_ipfin3' value='' name='_ipfin3' size='3' " .
-         "onChange='plugaddr_ChangeNumber(\"" . __('Invalid data !!', 'addressing') . "\");'>";
+
+      unset($ipexploded);
+      if (empty($this->fields["end_ip"])) {
+         $this->fields["end_ip"] = "...";
+      }
+      $ipexploded = explode(".", $this->fields["end_ip"]);
+      $j = 0;
+      foreach ($ipexploded as $ipnum) {
+         if ($ipnum > 255) {
+            $ipexploded[$j] = '';
+         }
+         $j++;
+      }
+
+      echo "<script type='text/javascript'>
+      function test(id) {
+         if (document.getElementById('plugaddr_ipfin' + id).value == '') {
+            if (id == 3) {
+               document.getElementById('plugaddr_ipfin' + id).value = '254';
+            } else {
+               document.getElementById('plugaddr_ipfin' + id).value = ".
+         "document.getElementById('plugaddr_ipdeb' + id).value;
+            }
+         }
+      }
+      </script>";
+
+      echo "<input type='text' value='".$ipexploded[0].
+         "' name='_ipfin0' id='plugaddr_ipfin0' size='3' maxlength='3' onfocus='test(0)'>.";
+      echo "<input type='text' value='".$ipexploded[1].
+         "' name='_ipfin1' id='plugaddr_ipfin1' size='3' maxlength='3' onfocus='test(1)'>.";
+      echo "<input type='text' value='".$ipexploded[2].
+         "' name='_ipfin2' id='plugaddr_ipfin2' size='3' maxlength='3' onfocus='test(2)'>.";
+      echo "<input type='text' value='".$ipexploded[3].
+         "' name='_ipfin3' id='plugaddr_ipfin3' size='3' maxlength='3' onfocus='test(3)'>";
+
       echo "</td>";
 
       if ($PluginAddressingConfig->fields["double_ip"]) {

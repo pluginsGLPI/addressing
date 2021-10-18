@@ -459,7 +459,7 @@ class PluginAddressingReport extends CommonDBTM
       switch ($system) {
          case 0 :
             // linux ping
-            exec("ping -c 1 -w 100 " . $ip, $list);
+            exec("ping -c 1 -w 1 " . $ip, $list);
             $nb = count($list);
             if (isset($nb)) {
                for ($i = 0; $i < $nb; $i++) {
