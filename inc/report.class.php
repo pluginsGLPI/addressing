@@ -36,6 +36,7 @@ if (!defined('GLPI_ROOT')) {
  */
 class PluginAddressingReport extends CommonDBTM
 {
+   static $rightname = "plugin_addressing";
 
    /**
     * @param      $type
@@ -444,83 +445,5 @@ class PluginAddressingReport extends CommonDBTM
          $s = 2 * PHP_INT_MIN + $s;
       }
       return long2ip($s);
-   }
-
-   /**
-    * @param $system
-    * @param $ip
-    *
-    * @return bool
-    */
-   function ping($system, $ip)
-   {
-
-      $list = '';
-      switch ($system) {
-         case 0 :
-            // linux ping
-            exec("ping -c 1 -w 1 " . $ip, $list);
-            $nb = count($list);
-            if (isset($nb)) {
-               for ($i = 0; $i < $nb; $i++) {
-                  if (strpos($list[$i], "ttl=") > 0) {
-                     return true;
-                  }
-               }
-            }
-            break;
-
-         case 1 :
-            //windows
-            exec("ping.exe -n 1 -w 100 -i 64 " . $ip, $list);
-            $nb = count($list);
-            if (isset($nb)) {
-               for ($i = 0; $i < $nb; $i++) {
-                  if (strpos($list[$i], "TTL") > 0) {
-                     return true;
-                  }
-               }
-            }
-            break;
-
-         case 2 :
-            //linux fping
-            exec("fping -r1 -c1 -t100 " . $ip, $list);
-            $nb = count($list);
-            if (isset($nb)) {
-               for ($i = 0; $i < $nb; $i++) {
-                  if (strpos($list[$i], "bytes") > 0) {
-                     return true;
-                  }
-               }
-            }
-            break;
-
-         case 3 :
-            // *BSD ping
-            exec("ping -c 1 -W 1 " . $ip, $list);
-            $nb = count($list);
-            if (isset($nb)) {
-               for ($i = 0; $i < $nb; $i++) {
-                  if (strpos($list[$i], "ttl=") > 0) {
-                     return true;
-                  }
-               }
-            }
-            break;
-
-         case 4 :
-            // MacOSX ping
-            exec("ping -c 1 -t 1 " . $ip, $list);
-            $nb = count($list);
-            if (isset($nb)) {
-               for ($i = 0; $i < $nb; $i++) {
-                  if (strpos($list[$i], "ttl=") > 0) {
-                     return true;
-                  }
-               }
-            }
-            break;
-      }
    }
 }

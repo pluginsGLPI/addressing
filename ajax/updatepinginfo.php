@@ -44,7 +44,7 @@ if (!isset($_POST['addressing_id'])) {
 }
 $addressing_id = $_POST['addressing_id'];
 $old_execution = ini_set("max_execution_time", "0");
-$addressing    = new PluginAddressingAddressing();
+$addressing = new PluginAddressingAddressing();
 $addressing->getFromDB($addressing_id);
 $pingInfo = new PluginAddressingPinginfo();
 $pingInfo->updateAnAddressing($addressing);

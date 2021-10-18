@@ -193,79 +193,62 @@ function plugin_addressing_getDatabaseRelations() {
    return [];
 }
 
+/**
+ * @param $itemtype
+ *
+ * @return array
+ */
+function plugin_addressing_getAddSearchOptions($itemtype)
+{
 
-////// SPECIFIC MODIF MASSIVE FUNCTIONS ///////
+   $sopt = [];
 
-/*
-function plugin_addressing_MassiveActions($type) {
-
-   switch ($type) {
-      case 'Profile' :
-         return array("plugin_addressing_allow" => PluginAddressingAddressing::getTypeName(2) . " - " .
-                                                   __('Generate reports', 'addressing'));
+   if (in_array($itemtype, PluginAddressingAddressing::getTypes(true))) {
+      if (Session::haveRight("plugin_addressing", READ)) {
+         $sopt[5000]['table'] = 'glpi_plugin_addressing_pinginfos';
+         $sopt[5000]['field'] = 'ping_response';
+         $sopt[5000]['name'] = __('Ping result', 'addressing');
+         $sopt[5000]['forcegroupby'] = true;
+         $sopt[5000]['linkfield'] = 'id';
+         $sopt[5000]['massiveaction'] = false;
+         $sopt[5000]['joinparams'] = ['beforejoin' => ['table' => 'glpi_plugin_addressing_pinginfos',
+            'joinparams' => ['jointype' => 'itemtype_item']]];
+      }
    }
-   return array();
+   return $sopt;
 }
 
+/**
+ * @param $type
+ * @param $ID
+ * @param $data
+ * @param $num
+ *
+ * @return string
+ */
+function plugin_addressing_giveItem($type, $ID, $data, $num) {
+   global $DB;
 
-function plugin_addressing_MassiveActionsDisplay($options=array()) {
+   $dbu = new DbUtils();
 
-   switch ($options['itemtype']) {
-      case 'Profile' :
-         switch ($options['action']) {
-            case "plugin_addressing_allow" :
-               Profile::dropdownNoneReadWrite('use','');
-               echo "&nbsp;<input type='submit' name='massiveaction' class='submit' value=\"".
-                            _sx('button','Post')."\" >";
+   $searchopt =& Search::getOptions($type);
+   $table     = $searchopt[$ID]["table"];
+   $field     = $searchopt[$ID]["field"];
+   $out = "";
+   if (in_array($type, PluginAddressingAddressing::getTypes(true))) {
+         switch ($table . '.' . $field) {
+            case "glpi_plugin_addressing_pinginfos.ping_response" :
+               if ($data[$num][0]['name'] == "1") {
+                  $out .= "<i class=\"fas fa-check-square fa-2x\" style='color: darkgreen'></i><br>".__('Last ping OK', 'addressing');
+               } else {
+                  $out .= "<i class=\"fas fa-window-close fa-2x\" style='color: darkred'></i><br>".__('Last ping KO', 'addressing');
+               }
+               return $out;
                break;
          }
-         break;
    }
    return "";
 }
-
-
-function plugin_addressing_MassiveActionsProcess($data) {
-
-   $res = array('ok' => 0,
-            'ko' => 0,
-            'noright' => 0);
-
-   switch ($data['action']) {
-      case 'plugin_addressing_allow' :
-         if ($data['itemtype'] == 'Profile') {
-            $profglpi = new Profile();
-            $prof     = new PluginAddressingProfile();
-            foreach ($data["item"] as $key => $val) {
-               if ($profglpi->getFromDB($key)
-                     && $profglpi->fields['interface']!='helpdesk') {
-                  if ($prof->getFromDBByProfile($key)) {
-                     if ($prof->update(array('id'          => $prof->fields['id'],
-                                         'profiles_id' => $key,
-                                         'addressing'  => $data['use']))) {
-                        $res['ok']++;
-                     } else {
-                        $res['ko']++;
-                     }
-                  } else {
-                     if ($prof->add(array('id'             => $prof->fields['id'],
-                                      'profiles_id'    => $key,
-                                      'addressing'     => $data['use']))) {
-                        $res['ok']++;
-                     } else {
-                        $res['ko']++;
-                     }
-                  }
-               } else {
-                  $res['ko']++;
-               }
-            }
-         }
-         break;
-   }
-   return $res;
-}
-*/
 
 /**
  * Do special actions for dynamic report

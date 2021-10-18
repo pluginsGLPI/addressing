@@ -36,6 +36,8 @@ if (!defined('GLPI_ROOT')) {
  */
 class PluginAddressingPing_Equipment extends commonDBTM{
 
+   static $rightname = "plugin_addressing";
+
    function showForm($ID, $options = []) {
       global $DB, $CFG_GLPI;
 
@@ -125,38 +127,100 @@ class PluginAddressingPing_Equipment extends commonDBTM{
     *
     * @return array
     */
-   function ping($system, $ip) {
+   function ping($system, $ip, $return = "list") {
       $error = 1;
       $list  ='';
       switch ($system) {
          case 0 :
             // linux ping
-            exec("ping -c 1 -w 1 ".$ip, $list, $error);
+            if ($return == "true") {
+               exec("ping -c 1 -w 1 " . $ip, $list);
+            } else {
+               exec("ping -c 1 -w 1 ".$ip, $list, $error);
+            }
+            $nb = count($list);
+            if (isset($nb) && $return == "true") {
+               for ($i = 0; $i < $nb; $i++) {
+                  if (strpos($list[$i], "ttl=") > 0) {
+                     return true;
+                  }
+               }
+            }
             break;
 
          case 1 :
             //windows
-            exec("ping.exe -n 1 -w 100 -i 64 ".$ip, $list, $error);
+            if ($return == "true") {
+               exec("ping.exe -n 1 -w 100 -i 64 ".$ip, $list);
+            } else {
+               exec("ping.exe -n 1 -w 100 -i 64 ".$ip, $list, $error);
+            }
+            $nb = count($list);
+            if (isset($nb) && $return == "true") {
+               for ($i = 0; $i < $nb; $i++) {
+                  if (strpos($list[$i], "TTL") > 0) {
+                     return true;
+                  }
+               }
+            }
             break;
 
          case 2 :
             //linux fping
-            exec("fping -r1 -c1 -t100 ".$ip, $list, $error);
+            if ($return == "true") {
+               exec("fping -r1 -c1 -t100 ".$ip, $list);
+            } else {
+               exec("fping -r1 -c1 -t100 ".$ip, $list, $error);
+            }
+            $nb = count($list);
+            if (isset($nb) && $return == "true") {
+               for ($i = 0; $i < $nb; $i++) {
+                  if (strpos($list[$i], "bytes") > 0) {
+                     return true;
+                  }
+               }
+            }
             break;
 
          case 3 :
-            // *BSD ping
-            exec("ping -c 1 -W 1 ".$ip, $list, $error);
+            // BSD ping
+            if ($return == "true") {
+               exec("ping -c 1 -W 1 ".$ip, $list);
+            } else {
+               exec("ping -c 1 -W 1 ".$ip, $list, $error);
+            }
+            $nb = count($list);
+            if (isset($nb) && $return == "true") {
+               for ($i = 0; $i < $nb; $i++) {
+                  if (strpos($list[$i], "ttl=") > 0) {
+                     return true;
+                  }
+               }
+            }
             break;
 
          case 4 :
             // MacOSX ping
-            exec("ping -c 1 -t 1 ".$ip, $list, $error);
+            if ($return == "true") {
+               exec("ping -c 1 -t 1 ".$ip, $list);
+            } else {
+               exec("ping -c 1 -t 1 ".$ip, $list, $error);
+            }
+            $nb = count($list);
+            if (isset($nb) && $return == "true") {
+               for ($i = 0; $i < $nb; $i++) {
+                  if (strpos($list[$i], "ttl=") > 0) {
+                     return true;
+                  }
+               }
+            }
             break;
       }
-      $list_str = implode('<br />', $list);
+      if ($return == "list") {
+         $list_str = implode('<br />', $list);
 
-      return [$list_str, $error];
+         return [$list_str, $error];
+      }
    }
 
 
@@ -202,5 +266,4 @@ class PluginAddressingPing_Equipment extends commonDBTM{
          CommonGLPI::registerStandardTab($type, __CLASS__);
       }
    }
-
 }
