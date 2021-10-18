@@ -50,6 +50,21 @@ class PluginAddressingMenu extends CommonGLPI {
       if (Session::haveRight('plugin_addressing', UPDATE)) {
          $menu['links']['add'] = PluginAddressingAddressing::getFormURL(false);
       }
+
+      if (Session::haveRight(static::$rightname, UPDATE)
+         || Session::haveRight("config", UPDATE)) {
+         //Entry icon in breadcrumb
+         $menu['links']['config']                      = PluginAddressingConfig::getSearchURL(false);
+         //Link to config page in admin plugins list
+         $menu['config_page']                          = PluginAddressingConfig::getSearchURL(false);
+
+         //Add a fourth level in breadcrumb for configuration page
+         $menu['options']['config']['title']           = __('Setup');
+         $menu['options']['config']['page']            = PluginAddressingConfig::getSearchURL(false);
+         $menu['options']['config']['links']['search'] = PluginAddressingConfig::getSearchURL(false);
+         $menu['options']['config']['links']['add']    = PluginAddressingConfig::getFormURL(false);
+      }
+
       $menu['icon'] = self::getIcon();
 
       return $menu;

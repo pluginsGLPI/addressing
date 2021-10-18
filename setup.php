@@ -55,7 +55,7 @@ function plugin_init_addressing() {
 
       // Config page
       if (Session::haveRight("config", UPDATE)) {
-         $PLUGIN_HOOKS['config_page']['addressing']             = 'front/config.form.php';
+         $PLUGIN_HOOKS['config_page']['addressing']             = 'front/config.php';
       }
 
       // Add specific files to add to the header : javascript or css

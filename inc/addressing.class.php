@@ -664,38 +664,39 @@ class PluginAddressingAddressing extends CommonDBTM
          echo "</td>";
          echo "<td style='padding: 10px;margin: 10px;'>";
          if ($doubles == 1) {
-            echo "<span class='legend plugin_addressing_ip_double'>" . __('Same IP', 'addressing') . "</span>&nbsp;";
+            echo "<span class='legend_addressing plugin_addressing_ip_double'>" . __('Same IP', 'addressing') . "</span>&nbsp;";
          }
          $ping_off = 1;
          $ping_on = 1;
          if (isset($this->fields['use_ping']) && $this->fields['use_ping']) {
             $ping_off = isset($params['ping_off'])?$params['ping_off']:$ping_off;
             if ($ping_off == 1) {
-               echo "<span class='legend plugin_addressing_ping_off'>" .
+               echo "<span class='legend_addressing plugin_addressing_ping_off'>" .
                   __('Ping: got a response - used Ip', 'addressing') .
                   "</span>&nbsp;";
             }
             $ping_on = isset($params['ping_on'])?$params['ping_on']:$ping_on;
             if ($ping_on == 1) {
-               echo "<span class='legend plugin_addressing_ping_on'>" .
+               echo "<span class='legend_addressing plugin_addressing_ping_on'>" .
                   __('Ping: no response - free Ip', 'addressing') .
                   "</span>&nbsp;";
             }
          } else {
-            echo "<span class='legend plugin_addressing_ip_free'>" . __('Free Ip', 'addressing') . "</span>&nbsp;";
+            echo "<span class='legend_addressing plugin_addressing_ip_free'>" . __('Free Ip', 'addressing') . "</span>&nbsp;";
          }
          if ($reserved == 1) {
-            echo "<span class='legend plugin_addressing_ip_reserved'>" . __('Reserved Ip', 'addressing') . "</span>&nbsp;";
+            echo "<span class='legend_addressing plugin_addressing_ip_reserved'>" . __('Reserved Ip', 'addressing') . "</span>&nbsp;";
          }
 
          echo "</td></tr>";
-         echo "</tr><td class='center' colspan='2'>";
-         echo "<button form='' type='submit' id='updatePingInfo' class='vsubmit center' name='updatePingInfo' title='" . _sx('button', 'Update ping information', 'addressing') . "'>";
-         echo "<i class='fas fa-spinner' data-hasqtip='0' aria-hidden='true'></i>&nbsp;";
-         echo _sx('button', 'Manual update of ping information', 'addressing');
-         echo "</button>";
-         echo "</td></tr>";
-
+         if (isset($this->fields['use_ping']) && $this->fields['use_ping']) {
+            echo "</tr><td class='center' colspan='2'>";
+            echo "<button form='' type='submit' id='updatePingInfo' class='vsubmit center' name='updatePingInfo' title='" . _sx('button', 'Update ping information', 'addressing') . "'>";
+            echo "<i class='fas fa-spinner' data-hasqtip='0' aria-hidden='true'></i>&nbsp;";
+            echo _sx('button', 'Manual update of ping information', 'addressing');
+            echo "</button>";
+            echo "</td></tr>";
+         }
          echo "</table>";
          echo "</div>";
 
@@ -788,6 +789,8 @@ class PluginAddressingAddressing extends CommonDBTM
          $result = array_slice($result, $start, $_SESSION["glpilist_limit"]);
          Html::printPager($start, $numrows, self::getFormURL(), "start=$start&amp;id=$id&amp;filter=$filter",
             'PluginAddressingReport');
+
+
 
 
          //////////////////////////liste ips////////////////////////////////////////////////////////////

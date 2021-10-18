@@ -38,9 +38,9 @@ class PluginAddressingConfig extends CommonDBTM {
 
    static $rightname = "plugin_addressing";
 
-   function showForm() {
+   function showForm($ID, $options = []) {
 
-      $this->getFromDB('1');
+      $this->getFromDB($ID);
 
       $system = $this->fields["used_system"];
 
