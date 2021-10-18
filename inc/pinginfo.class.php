@@ -84,7 +84,8 @@ class PluginAddressingPinginfo extends CommonDBTM
       $old_memory = ini_set("memory_limit", "-1");
       $old_execution = ini_set("max_execution_time", "0");
       $addressing = new PluginAddressingAddressing();
-      $addressings = $addressing->find(['is_deleted' => 0, 'use_ping' => 1]);
+      $addressings = $addressing->find(['is_deleted' => 0,
+         'use_ping' => 1]);
       $total_ping_responses = 0;
       foreach ($addressings as $addressing_array) {
          $addressing->getFromDB($addressing_array['id']);

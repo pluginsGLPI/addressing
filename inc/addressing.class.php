@@ -495,6 +495,7 @@ class PluginAddressingAddressing extends CommonDBTM
             && $DB->fieldExists($type::getTable(), 'networks_id')) {
             $sql .= " AND `dev`.`networks_id`= " . $this->fields["networks_id"];
          }
+         $sql .= " GROUP BY `ip`, `port`.`mac` ";
       }
       $res = $DB->query($sql);
       if ($res) {
