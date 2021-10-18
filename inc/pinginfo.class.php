@@ -34,22 +34,25 @@ if (!defined('GLPI_ROOT')) {
 /**
  * Class PluginAddressingPinginfo
  */
-class PluginAddressingPinginfo extends CommonDBTM {
+class PluginAddressingPinginfo extends CommonDBTM
+{
    static $rightname = "plugin_addressing";
 
-   function showForm() {
+   function showForm()
+   {
 
    }
 
    /**
     * @param $name
     **/
-   static function cronInfo($name) {
+   static function cronInfo($name)
+   {
 
       switch ($name) {
          case 'UpdatePing' :
             return [
-               'description' => __('Update last ping on free ip', 'addressing'),
+               'description' => __('Launch ping for each ip report', 'addressing'),
             ];
 
       }
@@ -62,11 +65,12 @@ class PluginAddressingPinginfo extends CommonDBTM {
     * @param $task for log, if NULL display
     *
     **/
-   static function cronUpdatePing($task = null) {
+   static function cronUpdatePing($task = null)
+   {
 
       $cron_status = 1;
-      $self        = new self();
-      $vol         = $self->updateAllAddressing();
+      $self = new self();
+      $vol = $self->updateAllAddressing();
       $task->addVolume($vol);
       //      $task->log(Dropdown::getDropdownName("glpi_entities",
       //                                           $entity) . ":  $message\n");
@@ -75,15 +79,16 @@ class PluginAddressingPinginfo extends CommonDBTM {
    }
 
 
-   public function updateAllAddressing() {
-      $old_memory           = ini_set("memory_limit", "-1");
-      $old_execution        = ini_set("max_execution_time", "0");
-      $addressing           = new PluginAddressingAddressing();
-      $addressings          = $addressing->find(['is_deleted' => 0]);
+   public function updateAllAddressing()
+   {
+      $old_memory = ini_set("memory_limit", "-1");
+      $old_execution = ini_set("max_execution_time", "0");
+      $addressing = new PluginAddressingAddressing();
+      $addressings = $addressing->find(['is_deleted' => 0, 'use_ping' => 1]);
       $total_ping_responses = 0;
       foreach ($addressings as $addressing_array) {
          $addressing->getFromDB($addressing_array['id']);
-         $ping_responses       = $this->updateAnAddressing($addressing);
+         $ping_responses = $this->updateAnAddressing($addressing);
          $total_ping_responses += $ping_responses;
       }
       ini_set("memory_limit", $old_memory);
@@ -91,19 +96,21 @@ class PluginAddressingPinginfo extends CommonDBTM {
       return $total_ping_responses;
    }
 
-   public function updateAnAddressing(PluginAddressingAddressing $addressing) {
+   public function updateAnAddressing(PluginAddressingAddressing $addressing)
+   {
 
-      $ipdeb  = sprintf("%u", ip2long($addressing->fields["begin_ip"]));
-      $ipfin  = sprintf("%u", ip2long($addressing->fields["end_ip"]));
+      $ipdeb = sprintf("%u", ip2long($addressing->fields["begin_ip"]));
+      $ipfin = sprintf("%u", ip2long($addressing->fields["end_ip"]));
       $result = $addressing->compute(0, ['ipdeb' => $ipdeb,
-                                         'ipfin' => $ipfin]);
+         'ipfin' => $ipfin]);
 
       $ping_responses = $this->updatePingInfos($result, $addressing);
 
       return $ping_responses;
    }
 
-   private function updatePingInfos($result, PluginAddressingAddressing $PluginAddressingAddressing) {
+   private function updatePingInfos($result, PluginAddressingAddressing $PluginAddressingAddressing)
+   {
       global $CFG_GLPI;
 
       $ping = $PluginAddressingAddressing->fields["use_ping"];
@@ -125,27 +132,27 @@ class PluginAddressingPinginfo extends CommonDBTM {
 
             if ($ping) {
 
-               $ping_value                               = $PluginAddressingReport->ping($system, $ip);
-               $data                                     = [];
+               $ping_value = $PluginAddressingReport->ping($system, $ip);
+               $data = [];
                $data['plugin_addressing_addressings_id'] = $PluginAddressingAddressing->getID();
-               $data['ipname']                           = $num;
-               $data['ping_response']                    = $ping_value ?? 0;
-               $data['ping_date']                        = date('Y-m-d H:i:s');;
+               $data['ipname'] = $num;
+               $data['ping_response'] = $ping_value ?? 0;
+               $data['ping_date'] = date('Y-m-d H:i:s');;
                $plugin_addressing_pinginfo->add($data);
                if (!is_null($ping_value)) {
                   $ping_response++;
                }
             }
 
-         } else if(count($lines) && $PluginAddressingAddressing->fields["free_ip"]) {
+         } else if (count($lines) && $PluginAddressingAddressing->fields["free_ip"]) {
             if ($ping) {
 
-               $ping_value                               = $PluginAddressingReport->ping($system, $ip);
-               $data                                     = [];
+               $ping_value = $PluginAddressingReport->ping($system, $ip);
+               $data = [];
                $data['plugin_addressing_addressings_id'] = $PluginAddressingAddressing->getID();
-               $data['ipname']                           = $num;
-               $data['ping_response']                    = $ping_value ?? 0;
-               $data['ping_date']                        = date('Y-m-d H:i:s');;
+               $data['ipname'] = $num;
+               $data['ping_response'] = $ping_value ?? 0;
+               $data['ping_date'] = date('Y-m-d H:i:s');;
                $plugin_addressing_pinginfo->add($data);
                if (!is_null($ping_value)) {
                   $ping_response++;
