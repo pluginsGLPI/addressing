@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - addressing plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-18 09:11+0200\n"
-"PO-Revision-Date: 2021-10-18 07:12+0000\n"
+"POT-Creation-Date: 2021-10-18 14:02+0200\n"
+"PO-Revision-Date: 2021-10-18 12:02+0000\n"
 "Last-Translator: Xavier CAILLAUD <thetsmr@gmail.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/infotelGLPI/GLPI_addressing/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
@@ -19,6 +19,18 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
+
+#: hook.php:210 inc/ping_equipment.class.php:105 inc/report.class.php:143
+msgid "Ping result"
+msgstr ""
+
+#: hook.php:242
+msgid "Last ping OK"
+msgstr ""
+
+#: hook.php:244
+msgid "Last ping KO"
+msgstr ""
 
 #: setup.php:79 inc/addressing.class.php:47 inc/menu.class.php:37
 #: inc/pinginfo.class.php:44 inc/profile.class.php:108
@@ -37,30 +49,26 @@ msgstr "Problém při přidávání, chybí požadované kolonky"
 msgid "Please activate the plugin"
 msgstr "Zapněte zásuvný modul"
 
-#: inc/addressing.class.php:78 inc/addressing.class.php:303
+#: inc/addressing.class.php:78 inc/addressing.class.php:350
 msgid "Ping free Ip"
 msgstr "Ping na volné IP adresy"
 
-#: inc/addressing.class.php:118 inc/addressing.class.php:225
+#: inc/addressing.class.php:118 inc/addressing.class.php:232
 #: inc/filter.class.php:120 inc/filter.class.php:246
 msgid "First IP"
 msgstr "První IP adresa"
 
-#: inc/addressing.class.php:127 inc/addressing.class.php:251
+#: inc/addressing.class.php:127 inc/addressing.class.php:270
 #: inc/filter.class.php:135 inc/filter.class.php:247
 msgid "Last IP"
 msgstr "Poslední IP adresa"
 
-#: inc/addressing.class.php:162 inc/addressing.class.php:276
+#: inc/addressing.class.php:162 inc/addressing.class.php:323
 #: inc/filter.class.php:149
 msgid "Report for the IP Range"
 msgstr "Přehled IP rozsahu"
 
-#: inc/addressing.class.php:196 inc/addressing.class.php:228
-#: inc/addressing.class.php:230 inc/addressing.class.php:232
-#: inc/addressing.class.php:234 inc/addressing.class.php:254
-#: inc/addressing.class.php:256 inc/addressing.class.php:258
-#: inc/addressing.class.php:260 inc/addressing.class.php:282
+#: inc/addressing.class.php:203 inc/addressing.class.php:329
 #: inc/filter.class.php:87 inc/filter.class.php:123 inc/filter.class.php:125
 #: inc/filter.class.php:127 inc/filter.class.php:129 inc/filter.class.php:138
 #: inc/filter.class.php:140 inc/filter.class.php:142 inc/filter.class.php:144
@@ -68,27 +76,27 @@ msgstr "Přehled IP rozsahu"
 msgid "Invalid data !!"
 msgstr "Neplatná data!"
 
-#: inc/addressing.class.php:210 inc/addressing.class.php:664
-#: inc/config.class.php:62
+#: inc/addressing.class.php:217 inc/addressing.class.php:712
+#: inc/config.class.php:64
 msgid "Assigned IP"
 msgstr "Přiřazené IP adresy"
 
-#: inc/addressing.class.php:239 inc/addressing.class.php:637
-#: inc/addressing.class.php:668
+#: inc/addressing.class.php:258 inc/addressing.class.php:685
+#: inc/addressing.class.php:716
 msgid "Free Ip"
 msgstr "Volné IP adresy"
 
-#: inc/addressing.class.php:264 inc/addressing.class.php:619
-#: inc/config.class.php:73
+#: inc/addressing.class.php:311 inc/addressing.class.php:667
+#: inc/config.class.php:75
 msgid "Same IP"
 msgstr "Stejné IP adresy"
 
-#: inc/addressing.class.php:288 inc/addressing.class.php:689
-#: inc/config.class.php:78
+#: inc/addressing.class.php:335 inc/addressing.class.php:737
+#: inc/config.class.php:80
 msgid "Reserved IP"
 msgstr "Rezervované IP adresy"
 
-#: inc/addressing.class.php:320 inc/addressing.class.php:696
+#: inc/addressing.class.php:367 inc/addressing.class.php:744
 #: inc/filter.class.php:43
 msgid "Filter"
 msgid_plural "Filters"
@@ -97,95 +105,95 @@ msgstr[1] "Filtry"
 msgstr[2] "Filtrů"
 msgstr[3] "Filtry"
 
-#: inc/addressing.class.php:322
+#: inc/addressing.class.php:369
 msgid "The display of items depends on these criterias"
 msgstr ""
 
-#: inc/addressing.class.php:602
+#: inc/addressing.class.php:650
 msgid "Number of free ip"
 msgstr "Počet volných IP adres"
 
-#: inc/addressing.class.php:606
+#: inc/addressing.class.php:654
 msgid "Number of reserved ip"
 msgstr "Počet rezervovaných IP adres"
 
-#: inc/addressing.class.php:610
+#: inc/addressing.class.php:658
 msgid "Number of assigned ip (no doubles)"
 msgstr "Počet přiřazených IP adres (bez duplicit)"
 
-#: inc/addressing.class.php:614
+#: inc/addressing.class.php:662
 msgid "Doubles"
 msgstr "Duplicity"
 
-#: inc/addressing.class.php:627 inc/addressing.class.php:679
-#: inc/report.class.php:371
+#: inc/addressing.class.php:675 inc/addressing.class.php:727
+#: inc/report.class.php:372
 msgid "Ping: got a response - used Ip"
 msgstr "Ping: získána odpověď – použitá IP adresa"
 
-#: inc/addressing.class.php:633 inc/addressing.class.php:675
-#: inc/report.class.php:395
+#: inc/addressing.class.php:681 inc/addressing.class.php:723
+#: inc/report.class.php:396
 msgid "Ping: no response - free Ip"
 msgstr "Ping: nezískána odpověď – volná IP adresa"
 
-#: inc/addressing.class.php:640
+#: inc/addressing.class.php:688
 msgid "Reserved Ip"
 msgstr "Vyhrazené IP adresy"
 
-#: inc/addressing.class.php:645
+#: inc/addressing.class.php:693
 msgctxt "button"
 msgid "Update ping information"
 msgstr ""
 
-#: inc/addressing.class.php:647
+#: inc/addressing.class.php:695
 msgctxt "button"
 msgid "Manual update of ping information"
 msgstr ""
 
-#: inc/addressing.class.php:685
+#: inc/addressing.class.php:733
 msgid "Same Ip"
 msgstr "Stejné IP adresy"
 
-#: inc/addressing.class.php:753
+#: inc/addressing.class.php:801
 msgid "Real free Ip (Ping=KO)"
 msgstr "Skutečně volná IP adresa (Ping=KO)"
 
-#: inc/addressing.class.php:762
+#: inc/addressing.class.php:810
 msgid "Problem detected with the IP Range"
 msgstr "Zjištěn problém s IP rozsahem"
 
-#: inc/config.class.php:49
+#: inc/config.class.php:51
 msgid "System for ping"
 msgstr "Program pro ping"
 
-#: inc/config.class.php:52
+#: inc/config.class.php:54
 msgid "Linux ping"
 msgstr "Linuxový ping"
 
-#: inc/config.class.php:53
+#: inc/config.class.php:55
 msgid "Windows"
 msgstr "Windows"
 
-#: inc/config.class.php:54
+#: inc/config.class.php:56
 msgid "Linux fping"
 msgstr "Linuxový fping"
 
-#: inc/config.class.php:55
+#: inc/config.class.php:57
 msgid "BSD ping"
 msgstr "BSD ping "
 
-#: inc/config.class.php:56
+#: inc/config.class.php:58
 msgid "MacOSX ping"
 msgstr "macOS ping"
 
-#: inc/config.class.php:60
+#: inc/config.class.php:62
 msgid "Display"
 msgstr "Zobrazení"
 
-#: inc/config.class.php:67
+#: inc/config.class.php:69
 msgid "Free IP"
 msgstr "Volné IP adresy"
 
-#: inc/config.class.php:85
+#: inc/config.class.php:87
 msgid "Use Ping"
 msgstr "Použít ping"
 
@@ -193,19 +201,15 @@ msgstr "Použít ping"
 msgid "Add a filter"
 msgstr "Přidat filtr"
 
-#: inc/ping_equipment.class.php:85 inc/ping_equipment.class.php:192
+#: inc/ping_equipment.class.php:87 inc/ping_equipment.class.php:256
 msgid "IP ping"
 msgstr "IP ping"
 
-#: inc/ping_equipment.class.php:98
+#: inc/ping_equipment.class.php:100
 msgid "Ping"
 msgstr "Ping"
 
-#: inc/ping_equipment.class.php:103 inc/report.class.php:142
-msgid "Ping result"
-msgstr ""
-
-#: inc/ping_equipment.class.php:117
+#: inc/ping_equipment.class.php:119
 msgid "No IP for this equipment"
 msgstr "Žádná IP adresa pro toto zařízení"
 
@@ -221,20 +225,20 @@ msgstr "Vytvořit přehledy"
 msgid "Use ping on equipment form"
 msgstr "Použít ping na formuláři zařízení"
 
-#: inc/report.class.php:144
+#: inc/report.class.php:145
 msgid "Reservation"
 msgstr ""
 
-#: inc/report.class.php:254 inc/report.class.php:374
+#: inc/report.class.php:255 inc/report.class.php:375 inc/report.class.php:401
 msgid "Automatic action has not be launched"
 msgstr ""
 
-#: inc/report.class.php:269 inc/report.class.php:279 inc/report.class.php:376
-#: inc/report.class.php:399
+#: inc/report.class.php:270 inc/report.class.php:280 inc/report.class.php:377
+#: inc/report.class.php:403
 msgid "Last ping attempt"
 msgstr ""
 
-#: inc/report.class.php:273 inc/report.class.php:282
+#: inc/report.class.php:274 inc/report.class.php:283
 msgid "Reserved Address"
 msgstr "Rezervované adresy"
 
