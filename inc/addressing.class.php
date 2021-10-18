@@ -219,9 +219,20 @@ class PluginAddressingAddressing extends CommonDBTM
       echo "</tr>";
 
       echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __('Detected subnet list', 'addressing') . "</td>";
+//      echo "<td>" . __('Detected subnet list', 'addressing') . "</td>";
+//      echo "<td>";
+//      $this->dropdownSubnet($ID > 0 ? $this->fields["entities_id"] : $_SESSION["glpiactive_entity"]);
+      echo "<td>" . __('First IP', 'addressing') . "</td>"; // Subnet
       echo "<td>";
-      $this->dropdownSubnet($ID > 0 ? $this->fields["entities_id"] : $_SESSION["glpiactive_entity"]);
+      echo "<input type='text' id='plugaddr_ipdeb0' value='' name='_ipdeb0' size='3' " .
+         "onChange='plugaddr_ChangeNumber(\"" . __('Invalid data !!', 'addressing') . "\");'>.";
+      echo "<input type='text' id='plugaddr_ipdeb1' value='' name='_ipdeb1' size='3' " .
+         "onChange='plugaddr_ChangeNumber(\"" . __('Invalid data !!', 'addressing') . "\");'>.";
+      echo "<input type='text' id='plugaddr_ipdeb2' value='' name='_ipdeb2' size='3' " .
+         "onChange='plugaddr_ChangeNumber(\"" . __('Invalid data !!', 'addressing') . "\");'>.";
+      echo "<input type='text' id='plugaddr_ipdeb3' value='' name='_ipdeb3' size='3' " .
+         "onChange='plugaddr_ChangeNumber(\"" . __('Invalid data !!', 'addressing') . "\");'>";
+      echo "</td>";
       echo "</td>";
 
       if ($PluginAddressingConfig->fields["free_ip"]) {
@@ -236,15 +247,16 @@ class PluginAddressingAddressing extends CommonDBTM
       echo "</tr>";
 
       echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __('First IP', 'addressing') . "</td>"; // Subnet
+
+      echo "<td>" . __('Last IP', 'addressing') . "</td>"; // Mask
       echo "<td>";
-      echo "<input type='text' id='plugaddr_ipdeb0' value='' name='_ipdeb0' size='3' " .
+      echo "<input type='text' id='plugaddr_ipfin0' value='' name='_ipfin0' size='3' " .
          "onChange='plugaddr_ChangeNumber(\"" . __('Invalid data !!', 'addressing') . "\");'>.";
-      echo "<input type='text' id='plugaddr_ipdeb1' value='' name='_ipdeb1' size='3' " .
+      echo "<input type='text' id='plugaddr_ipfin1' value='' name='_ipfin1' size='3' " .
          "onChange='plugaddr_ChangeNumber(\"" . __('Invalid data !!', 'addressing') . "\");'>.";
-      echo "<input type='text' id='plugaddr_ipdeb2' value='' name='_ipdeb2' size='3' " .
+      echo "<input type='text' id='plugaddr_ipfin2' value='' name='_ipfin2' size='3' " .
          "onChange='plugaddr_ChangeNumber(\"" . __('Invalid data !!', 'addressing') . "\");'>.";
-      echo "<input type='text' id='plugaddr_ipdeb3' value='' name='_ipdeb3' size='3' " .
+      echo "<input type='text' id='plugaddr_ipfin3' value='' name='_ipfin3' size='3' " .
          "onChange='plugaddr_ChangeNumber(\"" . __('Invalid data !!', 'addressing') . "\");'>";
       echo "</td>";
 
@@ -260,16 +272,16 @@ class PluginAddressingAddressing extends CommonDBTM
       echo "</tr>";
 
       echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __('Last IP', 'addressing') . "</td>"; // Mask
+
+      echo "<td>" . __('Report for the IP Range', 'addressing') . "</td>"; // Mask
       echo "<td>";
-      echo "<input type='text' id='plugaddr_ipfin0' value='' name='_ipfin0' size='3' " .
-         "onChange='plugaddr_ChangeNumber(\"" . __('Invalid data !!', 'addressing') . "\");'>.";
-      echo "<input type='text' id='plugaddr_ipfin1' value='' name='_ipfin1' size='3' " .
-         "onChange='plugaddr_ChangeNumber(\"" . __('Invalid data !!', 'addressing') . "\");'>.";
-      echo "<input type='text' id='plugaddr_ipfin2' value='' name='_ipfin2' size='3' " .
-         "onChange='plugaddr_ChangeNumber(\"" . __('Invalid data !!', 'addressing') . "\");'>.";
-      echo "<input type='text' id='plugaddr_ipfin3' value='' name='_ipfin3' size='3' " .
-         "onChange='plugaddr_ChangeNumber(\"" . __('Invalid data !!', 'addressing') . "\");'>";
+      echo "<input type='hidden' id='plugaddr_ipdeb' value='" . $this->fields["begin_ip"] . "' name='begin_ip'>";
+      echo "<input type='hidden' id='plugaddr_ipfin' value='" . $this->fields["end_ip"] . "' name='end_ip'>";
+      echo "<div id='plugaddr_range'>-</div>";
+      if ($ID > 0) {
+         $js = "plugaddr_Init(\"" . __('Invalid data !!', 'addressing') . "\");";
+         echo Html::scriptBlock('$(document).ready(function() {' . $js . '});');
+      }
       echo "</td>";
 
       if ($PluginAddressingConfig->fields["reserved_ip"]) {
@@ -284,17 +296,9 @@ class PluginAddressingAddressing extends CommonDBTM
       echo "</tr>";
 
       echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __('Report for the IP Range', 'addressing') . "</td>"; // Mask
-      echo "<td>";
-      echo "<input type='hidden' id='plugaddr_ipdeb' value='" . $this->fields["begin_ip"] . "' name='begin_ip'>";
-      echo "<input type='hidden' id='plugaddr_ipfin' value='" . $this->fields["end_ip"] . "' name='end_ip'>";
-      echo "<div id='plugaddr_range'>-</div>";
-      if ($ID > 0) {
-         $js = "plugaddr_Init(\"" . __('Invalid data !!', 'addressing') . "\");";
-         echo Html::scriptBlock('$(document).ready(function() {' . $js . '});');
-      }
-      echo "</td>";
 
+      echo "<td colspan='2'>";
+      echo "</td>";
       if ($PluginAddressingConfig->fields["use_ping"]) {
          echo "<td>" . __('Ping free Ip', 'addressing') . "</td><td>";
          Dropdown::showYesNo('use_ping', $this->fields["use_ping"]);
@@ -617,13 +621,13 @@ class PluginAddressingAddressing extends CommonDBTM
          $ping_off = 1;
          $ping_on = 1;
          if (isset($this->fields['use_ping']) && $this->fields['use_ping']) {
-            $ping_off = isset($params['ping_off'])?$params['ping_off']:0;
+            $ping_off = isset($params['ping_off'])?$params['ping_off']:$ping_off;
             if ($ping_off == 1) {
                echo "<span class='legend plugin_addressing_ping_off'>" .
                   __('Ping: got a response - used Ip', 'addressing') .
                   "</span>&nbsp;";
             }
-            $ping_on = isset($params['ping_on'])?$params['ping_on']:0;
+            $ping_on = isset($params['ping_on'])?$params['ping_on']:$ping_on;
             if ($ping_on == 1) {
                echo "<span class='legend plugin_addressing_ping_on'>" .
                   __('Ping: no response - free Ip', 'addressing') .

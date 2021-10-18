@@ -229,48 +229,69 @@ class PluginAddressingReport extends CommonDBTM
                   echo Search::showItem($output_type, $item::getTypeName(), $item_num, $row_num);
 
                   // Ping
+                  $ping_action = NOT_AVAILABLE;
                   if ($PluginAddressingAddressing->fields["free_ip"] && $ping) {
                      $plugin_addressing_pinginfo = new PluginAddressingPinginfo();
                      if ($plugin_addressing_pinginfo->getFromDBByCrit(['plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID(),
                         'ipname' => $num])) {
                         $ping_value = $plugin_addressing_pinginfo->fields['ping_response'];
+                        $ping_action = 1;
                      } else {
-                        $ping_value = $this->ping($system, $ip);
-                        $data = [];
-                        $data['plugin_addressing_addressings_id'] = $PluginAddressingAddressing->getID();
-                        $data['ipname'] = $num;
-                        $data['ping_response'] = $ping_value ?? 0;
-                        $data['ping_date'] = date('Y-m-d H:i:s');;
-                        $plugin_addressing_pinginfo->add($data);
+                        $ping_value = 0;
+//                        $ping_value = $this->ping($system, $ip);
+//                        $data = [];
+//                        $data['plugin_addressing_addressings_id'] = $PluginAddressingAddressing->getID();
+//                        $data['ipname'] = $num;
+//                        $data['ping_response'] = $ping_value ?? 0;
+//                        $data['ping_date'] = date('Y-m-d H:i:s');;
+//                        $plugin_addressing_pinginfo->add($data);
                      }
-                     $plugin_addressing_pinginfo->getFromDBByCrit(['plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID(),
-                        'ipname' => $num]);
-                     if ($ping_value) {
-                        echo Search::showItem($output_type, "<i class=\"fas fa-check-square fa-2x\" style='color: darkgreen' title='" . __("Last ping attempt", 'addressing') . " : "
-                           . Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']) . "'></i>", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
+//                     $plugin_addressing_pinginfo->getFromDBByCrit(['plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID(),
+//                        'ipname' => $num]);
 
-                        if ($PluginAddressingAddressing->fields["reserved_ip"] && strstr($line["pname"], "reserv")) {
-                           $reserv = "<i class='fas fa-clipboard-check fa-2x' style='color: #d56f15' title='" . __('Reserved Address', 'addressing') . "'></i>";
-                           echo Search::showItem($output_type, "$reserv ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
-                        } else {
-                           echo Search::showItem($output_type, " ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
-                        }
-                     } else {
-                        echo Search::showItem($output_type, "<i class=\"fas fa-window-close fa-2x\" style='color: darkred' title='" . __("Last ping attempt", 'addressing') . " : "
-                           . Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']) . "'></i>", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
-                        if ($PluginAddressingAddressing->fields["reserved_ip"] && strstr($line["pname"], "reserv")) {
-                           echo Search::showItem($output_type, "<i class='fas fa-clipboard-check fa-2x' style='color: #d56f15' title='" . __('Reserved Address', 'addressing') . "'></i>", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
-                        } else {
-                           $rand = mt_rand();
-                           $params = ['id_addressing' => $PluginAddressingAddressing->getID(),
-                              'ip' => trim($ip),
-                              'root_doc' => $CFG_GLPI['root_doc'],
-                              'rand' => $rand,
-                              'width' => 1000,
-                              'height' => 550];
-                           $reserv = "<a href=\"#\" onClick='plugaddr_loadForm(\"showForm\", \"plugaddr_form\", 
+                     if ($ping_action == NOT_AVAILABLE) {
+
+                        $content = "<i class=\"fas fa-question fa-2x\" style='color: orange' title='" . __("Automatic action has not be launched", 'addressing') . "'></i>";
+                        echo Search::showItem($output_type, "$content ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
+                        $rand = mt_rand();
+                        $params = ['id_addressing' => $PluginAddressingAddressing->getID(),
+                           'ip' => trim($ip),
+                           'root_doc' => $CFG_GLPI['root_doc'],
+                           'rand' => $rand,
+                           'width' => 1000,
+                           'height' => 550];
+                        $reserv = "<a href=\"#\" onClick='plugaddr_loadForm(\"showForm\", \"plugaddr_form\", 
                   " . json_encode($params) . ");'><i class='fas fa-clipboard fa-2x pointer' style='color: #d56f15' title='" . __("Reserve") . "'></i></a>";
-                           echo Search::showItem($output_type, "$reserv ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
+                        echo Search::showItem($output_type, "$reserv ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
+
+                     } else {
+                        if ($ping_value) {
+                           echo Search::showItem($output_type, "<i class=\"fas fa-check-square fa-2x\" style='color: darkgreen' title='" . __("Last ping attempt", 'addressing') . " : "
+                              . Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']) . "'></i>", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
+
+                           if ($PluginAddressingAddressing->fields["reserved_ip"] && strstr($line["pname"], "reserv")) {
+                              $reserv = "<i class='fas fa-clipboard-check fa-2x' style='color: #d56f15' title='" . __('Reserved Address', 'addressing') . "'></i>";
+                              echo Search::showItem($output_type, "$reserv ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
+                           } else {
+                              echo Search::showItem($output_type, " ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
+                           }
+                        } else {
+                           echo Search::showItem($output_type, "<i class=\"fas fa-window-close fa-2x\" style='color: darkred' title='" . __("Last ping attempt", 'addressing') . " : "
+                              . Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']) . "'></i>", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
+                           if ($PluginAddressingAddressing->fields["reserved_ip"] && strstr($line["pname"], "reserv")) {
+                              echo Search::showItem($output_type, "<i class='fas fa-clipboard-check fa-2x' style='color: #d56f15' title='" . __('Reserved Address', 'addressing') . "'></i>", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
+                           } else {
+                              $rand = mt_rand();
+                              $params = ['id_addressing' => $PluginAddressingAddressing->getID(),
+                                 'ip' => trim($ip),
+                                 'root_doc' => $CFG_GLPI['root_doc'],
+                                 'rand' => $rand,
+                                 'width' => 1000,
+                                 'height' => 550];
+                              $reserv = "<a href=\"#\" onClick='plugaddr_loadForm(\"showForm\", \"plugaddr_form\", 
+                  " . json_encode($params) . ");'><i class='fas fa-clipboard fa-2x pointer' style='color: #d56f15' title='" . __("Reserve") . "'></i></a>";
+                              echo Search::showItem($output_type, "$reserv ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
+                           }
                         }
                      }
                   } else {
@@ -315,19 +336,22 @@ class PluginAddressingReport extends CommonDBTM
                if ($output_type == Search::HTML_OUTPUT) {
                   Html::glpi_flush();
                }
-
+               $ping_action = NOT_AVAILABLE;
                $plugin_addressing_pinginfo = new PluginAddressingPinginfo();
                if ($plugin_addressing_pinginfo->getFromDBByCrit(['plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID(),
                   'ipname' => $num])) {
                   $ping_value = $plugin_addressing_pinginfo->fields['ping_response'];
+                  $ping_action = 1;
                } else {
-                  $ping_value = $this->ping($system, $ip);
-                  $data = [];
-                  $data['plugin_addressing_addressings_id'] = $PluginAddressingAddressing->getID();
-                  $data['ipname'] = $num;
-                  $data['ping_response'] = $ping_value ?? 0;
-                  $data['ping_date'] = date('Y-m-d H:i:s');;
-                  $plugin_addressing_pinginfo->add($data);
+                  $ping_value = 0;
+//                  $ping_value = $this->ping($system, $ip);
+//                  $data = [];
+//                  $data['plugin_addressing_addressings_id'] = $PluginAddressingAddressing->getID();
+//                  $data['ipname'] = $num;
+//                  $data['ping_response'] = $ping_value ?? 0;
+//                  $data['ping_date'] = date('Y-m-d H:i:s');;
+//                  $plugin_addressing_pinginfo->add($data);
+
                }
 
                $plugin_addressing_pinginfo->getFromDBByCrit(['plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID(),
@@ -346,8 +370,13 @@ class PluginAddressingReport extends CommonDBTM
                         echo Search::showItem($output_type, $ip, $item_num, $row_num);
                         echo Search::showItem($output_type, __('Ping: got a response - used Ip', 'addressing'),
                            $item_num, $row_num);
-                        $content = "<i class=\"fas fa-check-square fa-2x\" style='color: darkgreen' title='" . __("Last ping attempt", 'addressing') . " : "
-                           . Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']) . "'></i>";
+                        if ($ping_action == NOT_AVAILABLE) {
+                           $content = "<i class=\"fas fa-question fa-2x\" style='color: orange' title='" . __("Automatic action has not be launched", 'addressing') . "'></i>";
+                        } else {
+                           $content = "<i class=\"fas fa-check-square fa-2x\" style='color: darkgreen' title='" . __("Last ping attempt", 'addressing') . " : "
+                              . Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']) . "'></i>";
+                        }
+
                         $reserv = "";
                         echo Search::showItem($output_type, " ", $item_num, $row_num);
                         echo Search::showItem($output_type, " ", $item_num, $row_num);

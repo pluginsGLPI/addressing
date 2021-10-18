@@ -49,7 +49,7 @@ class PluginAddressingPinginfo extends CommonDBTM {
       switch ($name) {
          case 'UpdatePing' :
             return [
-               'description' => __('Update last ping on free ip'),
+               'description' => __('Update last ping on free ip', 'addressing'),
             ];
 
       }
@@ -70,7 +70,6 @@ class PluginAddressingPinginfo extends CommonDBTM {
       $task->addVolume($vol);
       //      $task->log(Dropdown::getDropdownName("glpi_entities",
       //                                           $entity) . ":  $message\n");
-
 
       return $cron_status;
    }
@@ -99,9 +98,7 @@ class PluginAddressingPinginfo extends CommonDBTM {
       $result = $addressing->compute(0, ['ipdeb' => $ipdeb,
                                          'ipfin' => $ipfin]);
 
-
       $ping_responses = $this->updatePingInfos($result, $addressing);
-
 
       return $ping_responses;
    }
@@ -117,9 +114,7 @@ class PluginAddressingPinginfo extends CommonDBTM {
       $PluginAddressingConfig->getFromDB('1');
       $system = $PluginAddressingConfig->fields["used_system"];
 
-
       $ping_response = 0;
-
 
       $plugin_addressing_pinginfo = new PluginAddressingPinginfo();
       $plugin_addressing_pinginfo->deleteByCriteria(['plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID()]);
@@ -127,7 +122,6 @@ class PluginAddressingPinginfo extends CommonDBTM {
          $ip = PluginAddressingReport::string2ip(substr($num, 2));
 
          if (!count($lines) && $PluginAddressingAddressing->fields["free_ip"]) {
-
 
             if ($ping) {
 
@@ -141,7 +135,6 @@ class PluginAddressingPinginfo extends CommonDBTM {
                if (!is_null($ping_value)) {
                   $ping_response++;
                }
-
             }
 
          } else if(count($lines) && $PluginAddressingAddressing->fields["free_ip"]) {
@@ -157,14 +150,9 @@ class PluginAddressingPinginfo extends CommonDBTM {
                if (!is_null($ping_value)) {
                   $ping_response++;
                }
-
             }
          }
       }
-
-
       return $ping_response;
    }
-
-
 }
