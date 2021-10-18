@@ -251,7 +251,7 @@ class PluginAddressingReport extends CommonDBTM
 
                      if ($ping_action == NOT_AVAILABLE) {
 
-                        $content = "<i class=\"fas fa-question fa-2x\" style='color: orange' title='" . __("Automatic action has not be launched", 'addressing') . "'></i>";
+                        $content = "<i class=\"fas fa-question fa-2x\" style='color: orange' title=\"" . __("Automatic action has not be launched", 'addressing') . "\"></i>";
                         echo Search::showItem($output_type, "$content ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
                         $rand = mt_rand();
                         $params = ['id_addressing' => $PluginAddressingAddressing->getID(),
@@ -371,7 +371,7 @@ class PluginAddressingReport extends CommonDBTM
                         echo Search::showItem($output_type, __('Ping: got a response - used Ip', 'addressing'),
                            $item_num, $row_num);
                         if ($ping_action == NOT_AVAILABLE) {
-                           $content = "<i class=\"fas fa-question fa-2x\" style='color: orange' title='" . __("Automatic action has not be launched", 'addressing') . "'></i>";
+                           $content = "<i class=\"fas fa-question fa-2x\" style='color: orange' title=\"" . __("Automatic action has not be launched", 'addressing') . "\"></i>";
                         } else {
                            $content = "<i class=\"fas fa-check-square fa-2x\" style='color: darkgreen' title='" . __("Last ping attempt", 'addressing') . " : "
                               . Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']) . "'></i>";
@@ -396,10 +396,14 @@ class PluginAddressingReport extends CommonDBTM
                            $item_num, $row_num);
 
                         if ($output_type == Search::HTML_OUTPUT) {
-                           $content = "<i class=\"fas fa-window-close fa-2x\" style='color: darkred' title='" . __("Last ping attempt", 'addressing') . " : "
-                              . Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']) . "'></i>";
-                           $reserv = "<a href=\"#\" onClick='plugaddr_loadForm(\"showForm\", \"plugaddr_form\", 
+                           if ($ping_action == NOT_AVAILABLE) {
+                              $content = "<i class=\"fas fa-question fa-2x\" style='color: orange' title=\"" . __("Automatic action has not be launched", 'addressing') . "\"></i>";
+                           } else {
+                              $content = "<i class=\"fas fa-window-close fa-2x\" style='color: darkred' title='" . __("Last ping attempt", 'addressing') . " : "
+                                 . Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']) . "'></i>";
+                              $reserv = "<a href=\"#\" onClick='plugaddr_loadForm(\"showForm\", \"plugaddr_form\", 
                      " . json_encode($params) . ");'><i class='fas fa-clipboard fa-2x pointer' style='color: #d56f15' title='" . __("Reserve") . "'></i></a>";
+                           }
                         }
                         echo Search::showItem($output_type, " ", $item_num, $row_num);
                         echo Search::showItem($output_type, " ", $item_num, $row_num);

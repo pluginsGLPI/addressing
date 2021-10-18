@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - addressing plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-15 18:52+0200\n"
-"PO-Revision-Date: 2021-10-15 16:52+0000\n"
+"POT-Creation-Date: 2021-10-18 09:11+0200\n"
+"PO-Revision-Date: 2021-10-18 07:12+0000\n"
 "Last-Translator: Xavier CAILLAUD <thetsmr@gmail.com>\n"
 "Language-Team: Russian (Russia) (http://www.transifex.com/infotelGLPI/GLPI_addressing/language/ru_RU/)\n"
 "MIME-Version: 1.0\n"
@@ -19,8 +19,8 @@ msgstr ""
 "Language: ru_RU\n"
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: setup.php:79 inc/addressing.class.php:45 inc/menu.class.php:37
-#: inc/profile.class.php:108
+#: setup.php:79 inc/addressing.class.php:47 inc/menu.class.php:37
+#: inc/pinginfo.class.php:44 inc/profile.class.php:108
 msgid "IP Adressing"
 msgid_plural "IP Adressing"
 msgstr[0] "IP Adressing"
@@ -36,30 +36,30 @@ msgstr "Ошибка при добавлении. Требуется запол�
 msgid "Please activate the plugin"
 msgstr "Пожалуйста, активируйте дополнение"
 
-#: inc/addressing.class.php:75 inc/addressing.class.php:292
+#: inc/addressing.class.php:78 inc/addressing.class.php:303
 msgid "Ping free Ip"
 msgstr "Пинг свободного IP"
 
-#: inc/addressing.class.php:115 inc/addressing.class.php:232
+#: inc/addressing.class.php:118 inc/addressing.class.php:225
 #: inc/filter.class.php:120 inc/filter.class.php:246
 msgid "First IP"
 msgstr "Первый IP"
 
-#: inc/addressing.class.php:124 inc/addressing.class.php:256
+#: inc/addressing.class.php:127 inc/addressing.class.php:251
 #: inc/filter.class.php:135 inc/filter.class.php:247
 msgid "Last IP"
 msgstr "Последний IP"
 
-#: inc/addressing.class.php:157 inc/addressing.class.php:280
+#: inc/addressing.class.php:162 inc/addressing.class.php:276
 #: inc/filter.class.php:149
 msgid "Report for the IP Range"
 msgstr "Отчет по диапазону IP адресов"
 
-#: inc/addressing.class.php:189 inc/addressing.class.php:235
-#: inc/addressing.class.php:237 inc/addressing.class.php:239
-#: inc/addressing.class.php:241 inc/addressing.class.php:259
-#: inc/addressing.class.php:261 inc/addressing.class.php:263
-#: inc/addressing.class.php:265 inc/addressing.class.php:286
+#: inc/addressing.class.php:196 inc/addressing.class.php:228
+#: inc/addressing.class.php:230 inc/addressing.class.php:232
+#: inc/addressing.class.php:234 inc/addressing.class.php:254
+#: inc/addressing.class.php:256 inc/addressing.class.php:258
+#: inc/addressing.class.php:260 inc/addressing.class.php:282
 #: inc/filter.class.php:87 inc/filter.class.php:123 inc/filter.class.php:125
 #: inc/filter.class.php:127 inc/filter.class.php:129 inc/filter.class.php:138
 #: inc/filter.class.php:140 inc/filter.class.php:142 inc/filter.class.php:144
@@ -67,27 +67,28 @@ msgstr "Отчет по диапазону IP адресов"
 msgid "Invalid data !!"
 msgstr "Неверные данные!!"
 
-#: inc/addressing.class.php:203 inc/config.class.php:62
+#: inc/addressing.class.php:210 inc/addressing.class.php:664
+#: inc/config.class.php:62
 msgid "Assigned IP"
 msgstr "Назначенные IP"
 
-#: inc/addressing.class.php:215
-msgid "Detected subnet list"
-msgstr "Список обнаруженных сетей"
-
-#: inc/addressing.class.php:221 inc/addressing.class.php:610
+#: inc/addressing.class.php:239 inc/addressing.class.php:637
+#: inc/addressing.class.php:668
 msgid "Free Ip"
 msgstr "Свободные IP"
 
-#: inc/addressing.class.php:245 inc/config.class.php:73
+#: inc/addressing.class.php:264 inc/addressing.class.php:619
+#: inc/config.class.php:73
 msgid "Same IP"
 msgstr "Одинаковые IP"
 
-#: inc/addressing.class.php:269 inc/config.class.php:78
+#: inc/addressing.class.php:288 inc/addressing.class.php:689
+#: inc/config.class.php:78
 msgid "Reserved IP"
 msgstr "Зарезервированные IP"
 
-#: inc/addressing.class.php:309 inc/filter.class.php:43
+#: inc/addressing.class.php:320 inc/addressing.class.php:696
+#: inc/filter.class.php:43
 msgid "Filter"
 msgid_plural "Filters"
 msgstr[0] "Фильтр"
@@ -95,57 +96,59 @@ msgstr[1] "Фильтры"
 msgstr[2] "Фильтры"
 msgstr[3] "Фильтр"
 
-#: inc/addressing.class.php:328
-msgid "Select the network"
-msgstr "Выбрать сеть"
+#: inc/addressing.class.php:322
+msgid "The display of items depends on these criterias"
+msgstr ""
 
-#: inc/addressing.class.php:586
+#: inc/addressing.class.php:602
 msgid "Number of free ip"
 msgstr "Количество свободных IP"
 
-#: inc/addressing.class.php:589
+#: inc/addressing.class.php:606
 msgid "Number of reserved ip"
 msgstr "Количество зарезервированных IP"
 
-#: inc/addressing.class.php:592
+#: inc/addressing.class.php:610
 msgid "Number of assigned ip (no doubles)"
 msgstr "Количество назначенных IP (без дублей)"
 
-#: inc/addressing.class.php:595
+#: inc/addressing.class.php:614
 msgid "Doubles"
 msgstr "Дубли"
 
-#: inc/addressing.class.php:600
-msgid "Same Ip"
-msgstr "Такой же IP"
-
-#: inc/addressing.class.php:604 inc/report.class.php:325
+#: inc/addressing.class.php:627 inc/addressing.class.php:679
+#: inc/report.class.php:371
 msgid "Ping: got a response - used Ip"
 msgstr "Ping: ответ получен - IP занят"
 
-#: inc/addressing.class.php:607 inc/report.class.php:333
+#: inc/addressing.class.php:633 inc/addressing.class.php:675
+#: inc/report.class.php:395
 msgid "Ping: no response - free Ip"
 msgstr "Ping: нет ответа - свободный IP"
 
-#: inc/addressing.class.php:613
+#: inc/addressing.class.php:640
 msgid "Reserved Ip"
 msgstr "Зарезервированный IP"
 
-#: inc/addressing.class.php:618
+#: inc/addressing.class.php:645
 msgctxt "button"
 msgid "Update ping information"
 msgstr ""
 
-#: inc/addressing.class.php:620
+#: inc/addressing.class.php:647
 msgctxt "button"
 msgid "Manual update of ping information"
 msgstr ""
 
-#: inc/addressing.class.php:691
+#: inc/addressing.class.php:685
+msgid "Same Ip"
+msgstr "Такой же IP"
+
+#: inc/addressing.class.php:753
 msgid "Real free Ip (Ping=KO)"
 msgstr "По-настоящему свободные IP адреса (Ping=OK)"
 
-#: inc/addressing.class.php:700
+#: inc/addressing.class.php:762
 msgid "Problem detected with the IP Range"
 msgstr "Обнаруженные проблемы с IP диапазоном"
 
@@ -197,13 +200,17 @@ msgstr "IP пинг"
 msgid "Ping"
 msgstr "Пинг"
 
-#: inc/ping_equipment.class.php:103 inc/report.class.php:141
+#: inc/ping_equipment.class.php:103 inc/report.class.php:142
 msgid "Ping result"
 msgstr ""
 
 #: inc/ping_equipment.class.php:117
 msgid "No IP for this equipment"
 msgstr "Нет IP для этого оборудования"
+
+#: inc/pinginfo.class.php:55
+msgid "Launch ping for each ip report"
+msgstr ""
 
 #: inc/profile.class.php:44 inc/profile.class.php:74
 msgid "Generate reports"
@@ -213,16 +220,20 @@ msgstr "Создать отчет"
 msgid "Use ping on equipment form"
 msgstr "Использовать ping на форме оборудования"
 
-#: inc/report.class.php:142
+#: inc/report.class.php:144
 msgid "Reservation"
 msgstr ""
 
-#: inc/report.class.php:247 inc/report.class.php:251 inc/report.class.php:327
-#: inc/report.class.php:336
+#: inc/report.class.php:254 inc/report.class.php:374
+msgid "Automatic action has not be launched"
+msgstr ""
+
+#: inc/report.class.php:269 inc/report.class.php:279 inc/report.class.php:376
+#: inc/report.class.php:399
 msgid "Last ping attempt"
 msgstr ""
 
-#: inc/report.class.php:254
+#: inc/report.class.php:273 inc/report.class.php:282
 msgid "Reserved Address"
 msgstr "Зарезервированные адреса"
 
