@@ -190,10 +190,10 @@ class PluginAddressingReserveip extends CommonDBTM {
       list($message, $error) = $ping_equip->ping($system, $ip);
       if ($error) {
          echo "<img src=\"" . $CFG_GLPI["root_doc"] . "/pics/ok.png\" alt=\"ok\">&nbsp;";
-         echo __('Ping: ip address free', 'addressing');
+         echo __('Ping: no response - free IP', 'addressing');
       } else {
          echo "<i class='fas fa-exclamation-triangle fa-4x' style='color:orange'></i>&nbsp;";
-         echo __('Ping: not available IP address', 'addressing');
+         echo __('Ping: got a response - used IP', 'addressing');
       }
 
       echo "</td></tr>";

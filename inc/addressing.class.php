@@ -75,7 +75,7 @@ class PluginAddressingAddressing extends CommonDBTM
          'id' => '4',
          'table' => $this->getTable(),
          'field' => 'use_ping',
-         'name' => __('Ping free Ip', 'addressing'),
+         'name' => __('Ping free IP', 'addressing'),
          'datatype' => 'bool'
       ];
 
@@ -255,7 +255,7 @@ class PluginAddressingAddressing extends CommonDBTM
       echo "</td>";
 
       if ($PluginAddressingConfig->fields["free_ip"]) {
-         echo "<td>" . __('Free Ip', 'addressing') . "</td><td>";
+         echo "<td>" . __('Free IP', 'addressing') . "</td><td>";
          Dropdown::showYesNo('free_ip', $this->fields["free_ip"]);
          echo "</td>";
       } else {
@@ -347,7 +347,7 @@ class PluginAddressingAddressing extends CommonDBTM
       echo "<td colspan='2'>";
       echo "</td>";
       if ($PluginAddressingConfig->fields["use_ping"]) {
-         echo "<td>" . __('Ping free Ip', 'addressing') . "</td><td>";
+         echo "<td>" . __('Ping free IP', 'addressing') . "</td><td>";
          Dropdown::showYesNo('use_ping', $this->fields["use_ping"]);
          echo "</td>";
       } else {
@@ -647,19 +647,19 @@ class PluginAddressingAddressing extends CommonDBTM
          echo "<td>";
          $free = isset($params['seefreeip'])?$params['seefreeip']:$this->fields['free_ip'];
          if ($free == 1) {
-            echo __('Number of free ip', 'addressing') . " " . $nbipf . "<br>";
+            echo __('Number of free IP', 'addressing') . " " . $nbipf . "<br>";
          }
          $reserved = isset($params['seereservedip'])?$params['seereservedip']:$this->fields['reserved_ip'];
          if ($reserved == 1) {
-            echo __('Number of reserved ip', 'addressing') . " " . $nbipr . "<br>";
+            echo __('Number of reserved IP', 'addressing') . " " . $nbipr . "<br>";
          }
          $alloted = isset($params['seeallotedip'])?$params['seeallotedip']:$this->fields['alloted_ip'];
          if ($alloted == 1) {
-            echo __('Number of assigned ip (no doubles)', 'addressing') . " " . $nbipt . "<br>";
+            echo __('Number of assigned IP (no doubles)', 'addressing') . " " . $nbipt . "<br>";
          }
          $doubles = isset($params['seedoubleip'])?$params['seedoubleip']:$this->fields['double_ip'];
          if ($doubles == 1) {
-            echo __('Doubles', 'addressing') . " " . $nbipd . "<br>";
+            echo __('Number of doubles IP', 'addressing') . " " . $nbipd . "<br>";
          }
          echo "</td>";
          echo "<td style='padding: 10px;margin: 10px;'>";
@@ -672,20 +672,20 @@ class PluginAddressingAddressing extends CommonDBTM
             $ping_off = isset($params['ping_off'])?$params['ping_off']:$ping_off;
             if ($ping_off == 1) {
                echo "<span class='legend_addressing plugin_addressing_ping_off'>" .
-                  __('Ping: got a response - used Ip', 'addressing') .
+                  __('Ping: got a response - used IP', 'addressing') .
                   "</span>&nbsp;";
             }
             $ping_on = isset($params['ping_on'])?$params['ping_on']:$ping_on;
             if ($ping_on == 1) {
                echo "<span class='legend_addressing plugin_addressing_ping_on'>" .
-                  __('Ping: no response - free Ip', 'addressing') .
+                  __('Ping: no response - free IP', 'addressing') .
                   "</span>&nbsp;";
             }
          } else {
-            echo "<span class='legend_addressing plugin_addressing_ip_free'>" . __('Free Ip', 'addressing') . "</span>&nbsp;";
+            echo "<span class='legend_addressing plugin_addressing_ip_free'>" . __('Free IP', 'addressing') . "</span>&nbsp;";
          }
          if ($reserved == 1) {
-            echo "<span class='legend_addressing plugin_addressing_ip_reserved'>" . __('Reserved Ip', 'addressing') . "</span>&nbsp;";
+            echo "<span class='legend_addressing plugin_addressing_ip_reserved'>" . __('Reserved IP', 'addressing') . "</span>&nbsp;";
          }
 
          echo "</td></tr>";
@@ -714,24 +714,24 @@ class PluginAddressingAddressing extends CommonDBTM
          self::showSwitchField('seeallotedip', $alloted);
          echo "</td>";
 
-         echo "<td>" . __('Free Ip', 'addressing') . "</td><td>";
+         echo "<td>" . __('Free IP', 'addressing') . "</td><td>";
          self::showSwitchField('seefreeip', $free);
          echo "</td>";
          echo "</tr>";
 
          if (isset($this->fields['use_ping']) && $this->fields['use_ping']) {
             echo "<tr class='tab_bg_1 center'>";
-            echo "<td>" . __('Ping: no response - free Ip', 'addressing') . "</td><td>";
+            echo "<td>" . __('Ping: no response - free IP', 'addressing') . "</td><td>";
             self::showSwitchField('ping_on', $ping_on);
             echo "</td>";
 
-            echo "<td>" . __('Ping: got a response - used Ip', 'addressing') . "</td><td>";
+            echo "<td>" . __('Ping: got a response - used IP', 'addressing') . "</td><td>";
             self::showSwitchField('ping_off', $ping_off);
             echo "</td>";
             echo "</tr>";
          }
          echo "<tr class='tab_bg_1 center'>";
-         echo "<td>" . __('Same Ip', 'addressing') . "</td><td>";
+         echo "<td>" . __('Same IP', 'addressing') . "</td><td>";
          self::showSwitchField('seedoubleip', $doubles);
          echo "</td>";
 
@@ -801,7 +801,7 @@ class PluginAddressingAddressing extends CommonDBTM
             $total_realfreeip = $nbipf - $ping_response;
             echo "<table class='tab_cadre_fixe'><tr class='tab_bg_2 center'>";
             echo "<td>";
-            echo __('Real free Ip (Ping=KO)', 'addressing') . " " . $total_realfreeip;
+            echo __('Real free IP (Ping=KO)', 'addressing') . " " . $total_realfreeip;
             echo "</td></tr>";
             echo "</table>";
          }

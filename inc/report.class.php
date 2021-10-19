@@ -369,7 +369,7 @@ class PluginAddressingReport extends CommonDBTM
                         $ping_response++;
                         echo $this->displaySearchNewLine($output_type, "ping_off");
                         echo Search::showItem($output_type, $ip, $item_num, $row_num);
-                        echo Search::showItem($output_type, __('Ping: got a response - used Ip', 'addressing'),
+                        echo Search::showItem($output_type, __('Ping: got a response - used IP', 'addressing'),
                            $item_num, $row_num);
                         if ($ping_action == NOT_AVAILABLE) {
                            $content = "<i class=\"fas fa-question fa-2x\" style='color: orange' title=\"" . __("Automatic action has not be launched", 'addressing') . "\"></i>";
@@ -393,7 +393,7 @@ class PluginAddressingReport extends CommonDBTM
                      if ($see_ping_off == 1) {
                         echo $this->displaySearchNewLine($output_type, "ping_on");
                         echo Search::showItem($output_type, $ip, $item_num, $row_num);
-                        echo Search::showItem($output_type, __('Ping: no response - free Ip', 'addressing'),
+                        echo Search::showItem($output_type, __('Ping: no response - free IP', 'addressing'),
                            $item_num, $row_num);
 
                         if ($output_type == Search::HTML_OUTPUT) {

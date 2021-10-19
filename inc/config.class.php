@@ -47,7 +47,7 @@ class PluginAddressingConfig extends CommonDBTM {
       echo "<div class='center'>";
       echo "<form method='post' action='".$this->getFormURL()."'>";
 
-      echo "<table class='tab_cadre_fixe' cellpadding='5'>";
+      echo "<table class='tab_cadre_fixe'>";
       echo "<tr><th colspan='4'>".__('System for ping', 'addressing')."</th></tr>";
 
       echo "<tr class='tab_bg_1'><td colspan='4'><div class='center'>";

@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - addressing plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-18 14:02+0200\n"
-"PO-Revision-Date: 2021-10-18 12:03+0000\n"
+"POT-Creation-Date: 2021-10-19 08:40+0200\n"
+"PO-Revision-Date: 2021-10-19 06:43+0000\n"
 "Last-Translator: Xavier CAILLAUD <thetsmr@gmail.com>\n"
 "Language-Team: French (France) (http://www.transifex.com/infotelGLPI/GLPI_addressing/language/fr_FR/)\n"
 "MIME-Version: 1.0\n"
@@ -44,58 +44,55 @@ msgstr[1] "Adressage IP"
 msgid "Problem when adding, required fields are not here"
 msgstr "Problème lors de l'ajout, des champs requis sont manquant"
 
-#: front/config.form.php:52
+#: front/config.php:52
 msgid "Please activate the plugin"
 msgstr "Merci d'activer ce plugin"
 
 #: inc/addressing.class.php:78 inc/addressing.class.php:350
-msgid "Ping free Ip"
-msgstr "Pinger les Ip libres"
+msgid "Ping free IP"
+msgstr "Pinger les IP libres"
 
 #: inc/addressing.class.php:118 inc/addressing.class.php:232
-#: inc/filter.class.php:120 inc/filter.class.php:246
+#: inc/filter.class.php:120 inc/filter.class.php:287
 msgid "First IP"
 msgstr "Première IP"
 
 #: inc/addressing.class.php:127 inc/addressing.class.php:270
-#: inc/filter.class.php:135 inc/filter.class.php:247
+#: inc/filter.class.php:148 inc/filter.class.php:288
 msgid "Last IP"
 msgstr "Dernière IP"
 
 #: inc/addressing.class.php:162 inc/addressing.class.php:323
-#: inc/filter.class.php:149
+#: inc/filter.class.php:190
 msgid "Report for the IP Range"
 msgstr "Rapport pour la plage IP"
 
 #: inc/addressing.class.php:203 inc/addressing.class.php:329
-#: inc/filter.class.php:87 inc/filter.class.php:123 inc/filter.class.php:125
-#: inc/filter.class.php:127 inc/filter.class.php:129 inc/filter.class.php:138
-#: inc/filter.class.php:140 inc/filter.class.php:142 inc/filter.class.php:144
-#: inc/filter.class.php:155
+#: inc/filter.class.php:87 inc/filter.class.php:196
 msgid "Invalid data !!"
 msgstr "Données saisies incorrectes !!"
 
-#: inc/addressing.class.php:217 inc/addressing.class.php:712
+#: inc/addressing.class.php:217 inc/addressing.class.php:713
 #: inc/config.class.php:64
 msgid "Assigned IP"
 msgstr "Ip attribuées"
 
 #: inc/addressing.class.php:258 inc/addressing.class.php:685
-#: inc/addressing.class.php:716
-msgid "Free Ip"
+#: inc/addressing.class.php:717 inc/config.class.php:69
+msgid "Free IP"
 msgstr "Ip libres"
 
 #: inc/addressing.class.php:311 inc/addressing.class.php:667
-#: inc/config.class.php:75
+#: inc/addressing.class.php:734 inc/config.class.php:75
 msgid "Same IP"
 msgstr "Ip en double"
 
-#: inc/addressing.class.php:335 inc/addressing.class.php:737
-#: inc/config.class.php:80
+#: inc/addressing.class.php:335 inc/addressing.class.php:688
+#: inc/addressing.class.php:738 inc/config.class.php:80
 msgid "Reserved IP"
 msgstr "IP réservées"
 
-#: inc/addressing.class.php:367 inc/addressing.class.php:744
+#: inc/addressing.class.php:367 inc/addressing.class.php:745
 #: inc/filter.class.php:43
 msgid "Filter"
 msgid_plural "Filters"
@@ -107,54 +104,46 @@ msgid "The display of items depends on these criterias"
 msgstr "L'affichage des objets dépend de ces critères"
 
 #: inc/addressing.class.php:650
-msgid "Number of free ip"
-msgstr "Nombre d'ip libres"
+msgid "Number of free IP"
+msgstr "Nombre d'IP libres"
 
 #: inc/addressing.class.php:654
-msgid "Number of reserved ip"
-msgstr "Nombre d'ip réservées"
+msgid "Number of reserved IP"
+msgstr "Nombre d'IP réservées"
 
 #: inc/addressing.class.php:658
-msgid "Number of assigned ip (no doubles)"
-msgstr "Nombre d'ip affectées (hors doublons)"
+msgid "Number of assigned IP (no doubles)"
+msgstr "Nombre d'IP affectées (hors doublons)"
 
 #: inc/addressing.class.php:662
-msgid "Doubles"
-msgstr "Doublons"
+msgid "Number of doubles IP"
+msgstr "Nombre d'IP en doubles"
 
-#: inc/addressing.class.php:675 inc/addressing.class.php:727
-#: inc/report.class.php:372
-msgid "Ping: got a response - used Ip"
-msgstr "Réponse au ping - adresse utilisée"
+#: inc/addressing.class.php:675 inc/addressing.class.php:728
+#: inc/report.class.php:372 inc/reserveip.class.php:196
+msgid "Ping: got a response - used IP"
+msgstr "Réponse au ping - IP utilisée"
 
-#: inc/addressing.class.php:681 inc/addressing.class.php:723
-#: inc/report.class.php:396
-msgid "Ping: no response - free Ip"
-msgstr "Pas de réponse au ping - adresse libre"
+#: inc/addressing.class.php:681 inc/addressing.class.php:724
+#: inc/report.class.php:396 inc/reserveip.class.php:193
+msgid "Ping: no response - free IP"
+msgstr "Pas de réponse au ping - IP libre"
 
-#: inc/addressing.class.php:688
-msgid "Reserved Ip"
-msgstr "IP réservée"
-
-#: inc/addressing.class.php:693
+#: inc/addressing.class.php:694
 msgctxt "button"
 msgid "Update ping information"
 msgstr "Mettre à jour les informations des pings"
 
-#: inc/addressing.class.php:695
+#: inc/addressing.class.php:696
 msgctxt "button"
 msgid "Manual update of ping information"
 msgstr "Mise à jour manuelle des informations des pings"
 
-#: inc/addressing.class.php:733
-msgid "Same Ip"
-msgstr "Ip en double"
+#: inc/addressing.class.php:804
+msgid "Real free IP (Ping=KO)"
+msgstr "IPlibres réelles (Ping=KO)"
 
-#: inc/addressing.class.php:801
-msgid "Real free Ip (Ping=KO)"
-msgstr "ip libres réelles (Ping=KO)"
-
-#: inc/addressing.class.php:810
+#: inc/addressing.class.php:813
 msgid "Problem detected with the IP Range"
 msgstr "Problème dans le choix de la plage IP"
 
@@ -186,25 +175,18 @@ msgstr "MacOSX ping"
 msgid "Display"
 msgstr "Affichage"
 
-#: inc/config.class.php:69
-msgid "Free IP"
-msgstr "Ip libres"
-
 #: inc/config.class.php:87
 msgid "Use Ping"
 msgstr "Utiliser le Ping"
 
-#: inc/filter.class.php:209
+#: inc/filter.class.php:250
 msgid "Add a filter"
 msgstr "Ajouter un filtre"
 
-#: inc/ping_equipment.class.php:87 inc/ping_equipment.class.php:256
+#: inc/ping_equipment.class.php:87 inc/ping_equipment.class.php:100
+#: inc/ping_equipment.class.php:256
 msgid "IP ping"
 msgstr "Ping IP"
-
-#: inc/ping_equipment.class.php:100
-msgid "Ping"
-msgstr "Ping"
 
 #: inc/ping_equipment.class.php:119
 msgid "No IP for this equipment"
@@ -242,14 +224,6 @@ msgstr "Adresse réservée"
 #: inc/reserveip.class.php:142
 msgid "Object's name"
 msgstr "Nom de l'objet"
-
-#: inc/reserveip.class.php:193
-msgid "Ping: ip address free"
-msgstr "Ping : adresse IP libre"
-
-#: inc/reserveip.class.php:196
-msgid "Ping: not available IP address"
-msgstr "Ping : Adresse IP non disponible"
 
 #: inc/reserveip.class.php:258
 msgid "Name already in use"
