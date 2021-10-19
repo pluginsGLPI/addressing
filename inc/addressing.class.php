@@ -704,19 +704,24 @@ class PluginAddressingAddressing extends CommonDBTM
          echo "<form method='post' name='filtering_form' id='filtering_form' action='" . Toolbox::getItemTypeFormURL("PluginAddressingAddressing") . "?id=$id'>";
          echo "<table class='tab_cadre_fixe'><tr class='tab_bg_2 center'>";
          echo "<input type='hidden' name='id' value='$id'>";
-         echo "<tr class='tab_bg_2 center'>";
-         echo "<th colspan='4'>";
-         echo __('Search');
-         echo "</th></tr>";
 
          echo "<tr class='tab_bg_1 center'>";
          echo "<td>" . __('Assigned IP', 'addressing') . "</td><td>";
          self::showSwitchField('seeallotedip', $alloted);
          echo "</td>";
 
+         echo "<td>" . __('Same IP', 'addressing') . "</td><td>";
+         self::showSwitchField('seedoubleip', $doubles);
+         echo "</td>";
+
+         echo "<td>" . __('Reserved IP', 'addressing') . "</td><td>";
+         self::showSwitchField('seereservedip', $reserved);
+         echo "</td>";
+
          echo "<td>" . __('Free IP', 'addressing') . "</td><td>";
          self::showSwitchField('seefreeip', $free);
          echo "</td>";
+
          echo "</tr>";
 
          if (isset($this->fields['use_ping']) && $this->fields['use_ping']) {
@@ -728,30 +733,27 @@ class PluginAddressingAddressing extends CommonDBTM
             echo "<td>" . __('Ping: got a response - used IP', 'addressing') . "</td><td>";
             self::showSwitchField('ping_off', $ping_off);
             echo "</td>";
+            echo "<td colspan='4'></td>";
             echo "</tr>";
          }
+         $filter_list = new PluginAddressingFilter();
+         $datas = $filter_list->find(['plugin_addressing_addressings_id' => $id]);
+         if (count($datas) > 0) {
+            echo "<tr class='tab_bg_1 center'>";
+            echo "<td colspan='4'>";
+            echo _n('Filter', 'Filters', 2, 'addressing');
+            echo "</td>";
+            echo "<td colspan='4'>";
+            PluginAddressingFilter::dropdownFilters($params['id'], $filter);
+            echo "</td>";
+         }
          echo "<tr class='tab_bg_1 center'>";
-         echo "<td>" . __('Same IP', 'addressing') . "</td><td>";
-         self::showSwitchField('seedoubleip', $doubles);
-         echo "</td>";
-
-         echo "<td>" . __('Reserved IP', 'addressing') . "</td><td>";
-         self::showSwitchField('seereservedip', $reserved);
-         echo "</td>";
-         echo "</tr>";
-
-         echo "<tr class='tab_bg_2 center'>";
-         echo "<th colspan='4'>";
-         echo _n('Filter', 'Filters', 2, 'addressing');
-         echo "</th></tr>";
-         echo "<tr class='tab_bg_1 center'><td colspan='2'>";
-         PluginAddressingFilter::dropdownFilters($params['id'], $filter);
-         echo "</td>";
-         echo "<td colspan='2'>";
+         echo "<td colspan='8'>";
          echo "<input type='submit' name='search' value=\"" . _sx('button', 'Search') . "\"
                             class='submit'></td>";
          echo "</td></tr>";
          echo "</table>";
+
          Html::closeForm();
 
 
