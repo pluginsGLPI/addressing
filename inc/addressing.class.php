@@ -693,7 +693,7 @@ class PluginAddressingAddressing extends CommonDBTM
             echo "</tr><td class='center' colspan='2'>";
             echo "<button form='' type='submit' id='updatePingInfo' class='vsubmit center' name='updatePingInfo' title='" . _sx('button', 'Update ping information', 'addressing') . "'>";
             echo "<i class='fas fa-spinner' data-hasqtip='0' aria-hidden='true'></i>&nbsp;";
-            echo _sx('button', 'Manual update of ping information', 'addressing');
+            echo _sx('button', 'Manual launch of ping', 'addressing');
             echo "</button>";
             echo "</td></tr>";
          }

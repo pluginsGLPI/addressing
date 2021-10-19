@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - addressing plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-19 08:40+0200\n"
-"PO-Revision-Date: 2021-10-19 06:41+0000\n"
+"POT-Creation-Date: 2021-10-19 09:27+0200\n"
+"PO-Revision-Date: 2021-10-19 07:28+0000\n"
 "Last-Translator: Xavier CAILLAUD <thetsmr@gmail.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/infotelGLPI/GLPI_addressing/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
@@ -139,7 +139,7 @@ msgstr ""
 
 #: inc/addressing.class.php:696
 msgctxt "button"
-msgid "Manual update of ping information"
+msgid "Manual launch of ping"
 msgstr ""
 
 #: inc/addressing.class.php:804
