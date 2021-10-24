@@ -240,7 +240,7 @@ class PluginAddressingPinginfo extends CommonDBTM
             'items_id' => $items_id,
             'itemtype' => $itemtype];
          Ajax::updateItemJsCode("ping_item",
-            $CFG_GLPI["root_doc"] . "/plugins/addressing/ajax/seePingtab.php",
+            $CFG_GLPI["root_doc"] . "/plugins/addressing/ajax/seePingTab.php",
             $params);
          echo "};";
          echo "</script>\n";
@@ -249,7 +249,7 @@ class PluginAddressingPinginfo extends CommonDBTM
          echo "</td></tr>";
          echo "<tr class='tab_bg_1 center'><td colspan='4'>";
          echo "<div id='ping_item'>";
-         include(GLPI_ROOT . "/plugins/addressing/ajax/seePingtab.php");
+         include(GLPI_ROOT . "/plugins/addressing/ajax/seePingTab.php");
          echo "</div>";
          echo "</td></tr>";
       }
