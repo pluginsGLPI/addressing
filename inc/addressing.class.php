@@ -47,6 +47,19 @@ class PluginAddressingAddressing extends CommonDBTM
       return _n('IP Adressing', 'IP Adressing', $nb, 'addressing');
    }
 
+
+   /**
+    * Actions done when item is deleted from the database
+    *
+    * @return nothing
+    **/
+   function cleanDBonPurge(){
+      $temp1 = new PluginAddressingPinginfo();
+      $temp1->deleteByCriteria(array('plugin_addressing_addressings_id' => $this->fields['id']));
+      $temp2 = new PluginAddressingFilter();
+      $temp2->deleteByCriteria(array('plugin_addressing_addressings_id' => $this->fields['id']));
+   }
+
    public function rawSearchOptions()
    {
 
@@ -689,14 +702,6 @@ class PluginAddressingAddressing extends CommonDBTM
          }
 
          echo "</td></tr>";
-         if (isset($this->fields['use_ping']) && $this->fields['use_ping']) {
-            echo "</tr><td class='center' colspan='2'>";
-            echo "<button form='' type='submit' id='updatePingInfo' class='vsubmit center' name='updatePingInfo' title='" . _sx('button', 'Update ping information', 'addressing') . "'>";
-            echo "<i class='fas fa-spinner' data-hasqtip='0' aria-hidden='true'></i>&nbsp;";
-            echo _sx('button', 'Manual launch of ping', 'addressing');
-            echo "</button>";
-            echo "</td></tr>";
-         }
          echo "</table>";
          echo "</div>";
 
@@ -733,7 +738,14 @@ class PluginAddressingAddressing extends CommonDBTM
             echo "<td>" . __('Ping: got a response - used IP', 'addressing') . "</td><td>";
             self::showSwitchField('ping_off', $ping_off);
             echo "</td>";
-            echo "<td colspan='4'></td>";
+
+            echo "<td class='center' colspan='4'>";
+            echo "<button form='' type='submit' id='updatePingInfo' class='vsubmit center' name='updatePingInfo' title='" . _sx('button', 'Manual launch of ping', 'addressing') . "'>";
+            echo "<i class='fas fa-spinner' data-hasqtip='0' aria-hidden='true'></i>&nbsp;";
+            echo _sx('button', 'Manual launch of ping', 'addressing');
+            echo "</button>";
+            echo "</td>";
+
             echo "</tr>";
          }
          $filter_list = new PluginAddressingFilter();

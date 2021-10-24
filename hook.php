@@ -188,7 +188,9 @@ function plugin_addressing_getDatabaseRelations() {
 
    if ($plugin->isActivated("addressing")) {
       return ["glpi_networks" => ["glpi_plugin_addressing_addressings" => "networks_id"],
-              "glpi_entities" => ["glpi_plugin_addressing_addressings" => "entities_id"]];
+         "glpi_fqdns" => ["glpi_plugin_addressing_addressings" => "fqdns_id"],
+         "glpi_locations" => ["glpi_plugin_addressing_addressings" => "locations_id"],
+         "glpi_entities" => ["glpi_plugin_addressing_addressings" => "entities_id"]];
    }
    return [];
 }
@@ -306,6 +308,19 @@ function plugin_addressing_addOrderBy($itemtype, $ID, $order, $key) {
    if ($itemtype == "PluginAddressingAddressing"
        && ($ID == 1000 || $ID == 1001)) {
       return "ORDER BY INET_ATON(ITEM_$key) $order";
+
+   }
+}
+
+function plugin_addressing_postinit() {
+   global $PLUGIN_HOOKS;
+
+   $PLUGIN_HOOKS['item_purge']['addressing'] = [];
+
+   foreach (PluginAddressingAddressing::getTypes() as $type) {
+
+      $PLUGIN_HOOKS['item_purge']['addressing'][$type]
+         = ['PluginAddressingPinginfo', 'cleanForItem'];
 
    }
 }

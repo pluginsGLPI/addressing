@@ -43,6 +43,7 @@ class PluginAddressingPinginfo extends CommonDBTM
 
       return _n('IP Adressing', 'IP Adressing', $nb, 'addressing');
    }
+
    /**
     * @param $name
     **/
@@ -152,11 +153,25 @@ class PluginAddressingPinginfo extends CommonDBTM
                $data = [];
                $data['plugin_addressing_addressings_id'] = $PluginAddressingAddressing->getID();
                $data['ipname'] = $num;
-               $data['itemtype'] = isset($lines['0']['itemtype'])?$lines['0']['itemtype']:"";
-               $data['items_id'] = isset($lines['0']['on_device'])?$lines['0']['on_device']:"0";
+
+               $data['itemtype'] = isset($lines['0']['itemtype']) ? $lines['0']['itemtype'] : "";
+               $data['items_id'] = isset($lines['0']['on_device']) ? $lines['0']['on_device'] : "0";
                $data['ping_response'] = $ping_value ?? 0;
                $data['ping_date'] = date('Y-m-d H:i:s');
-               $plugin_addressing_pinginfo->add($data);
+
+               if ($pings = $plugin_addressing_pinginfo->find(['itemtype' => $data['itemtype'],
+                  'items_id' => $data['items_id']])) {
+                  foreach ($pings as $ping) {
+                     $id = $ping['id'];
+                     $plugin_addressing_pinginfo->update(['id' => $id,
+                        'plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID(),
+                        'ping_response' => $data['ping_response'],
+                        'ping_date' => $data['ping_date']]);
+                  }
+               } else {
+                  $plugin_addressing_pinginfo->add($data);
+               }
+
                if (!is_null($ping_value)) {
                   $ping_response++;
                }
@@ -164,5 +179,92 @@ class PluginAddressingPinginfo extends CommonDBTM
          }
       }
       return $ping_response;
+   }
+
+   static function getPingResponseForItem($params)
+   {
+      global $CFG_GLPI;
+
+      $ping_right = Session::haveRight('plugin_addressing_use_ping_in_equipment', '1');
+      $item = $params['item'];
+
+      if ($ping_right
+         && in_array($item->getType(), PluginAddressingAddressing::getTypes()) && $item->getID() > 0) {
+
+         $items_id = $item->getID();
+         $itemtype = $item->getType();
+         $plugin_addressing_pinginfo = new PluginAddressingPinginfo();
+
+         $ping_action = 0;
+         $ping_value = 0;
+         if ($pings = $plugin_addressing_pinginfo->find(['itemtype' => $itemtype,
+            'items_id' => $items_id])) {
+            foreach ($pings as $ping) {
+               $ping_value = $ping['ping_response'];
+               $ping_date = $ping['ping_date'];
+            }
+            $ping_action = 1;
+         }
+
+         if ($ping_action == 0) {
+            $content = "<i class=\"fas fa-question fa-2x\" style='color: orange' title=\"" . __("Automatic action has not be launched", 'addressing') . "\">
+                    </i><br>" . __("Ping never launched", 'addressing');
+         } else {
+            if ($ping_value == 1) {
+               $content = "<i class=\"fas fa-check-square fa-2x\" style='color: darkgreen' title='" . __("Last ping attempt", 'addressing') . " : "
+                  . Html::convDateTime($ping_date) . "'></i><br>" . __("Last ping attempt", 'addressing') . " : "
+                  . Html::convDateTime($ping_date);
+            } else {
+               $content = "<i class=\"fas fa-window-close fa-2x\" style='color: darkred' title='" . __("Last ping attempt", 'addressing') . " : "
+                  . Html::convDateTime($ping_date) . "'></i><br>" . __("Last ping attempt", 'addressing') . " : "
+                  . Html::convDateTime($ping_date);
+            }
+         }
+         echo "<tr class='tab_bg_1'><th colspan='4'>";
+         echo __('Ping result', 'addressing');
+         echo "</th></tr>";
+
+         //$('#ping_item').hide();
+         echo "<tr class='tab_bg_1 center'><td colspan='2'>";
+         echo $content;
+         echo "</td><td colspan='2'>";
+
+         $rand = mt_rand();
+         echo "<a class='vsubmit' href='javascript:viewPingform" . $items_id . "$rand();'>";
+         echo "<i class='fas fa-terminal fa-2x' style='color: orange' title='" . _sx('button', 'Manual launch of ping', 'addressing') . "'></i>";
+         echo "</a>";
+
+         echo "<script type='text/javascript' >\n";
+         echo "function viewPingform" . $items_id . "$rand() {\n";
+         $params = ['action' => 'viewPingform',
+            'items_id' => $items_id,
+            'itemtype' => $itemtype];
+         Ajax::updateItemJsCode("ping_item",
+            $CFG_GLPI["root_doc"] . "/plugins/addressing/ajax/seePingtab.php",
+            $params);
+         echo "};";
+         echo "</script>\n";
+
+
+         echo "</td></tr>";
+         echo "<tr class='tab_bg_1 center'><td colspan='4'>";
+         echo "<div id='ping_item'>";
+         include(GLPI_ROOT . "/plugins/addressing/ajax/seePingtab.php");
+         echo "</div>";
+         echo "</td></tr>";
+      }
+   }
+
+
+   /**
+    * @param \CommonDBTM $item
+    */
+   public static function cleanForItem(CommonDBTM $item) {
+
+      $temp = new self();
+      $temp->deleteByCriteria(
+         ['itemtype' => $item->getType(),
+            'items_id' => $item->getField('id')]
+      );
    }
 }

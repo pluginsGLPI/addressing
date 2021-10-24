@@ -58,6 +58,9 @@ function plugin_init_addressing() {
          $PLUGIN_HOOKS['config_page']['addressing']             = 'front/config.php';
       }
 
+      $PLUGIN_HOOKS['post_item_form']['addressing'] = ['PluginAddressingPinginfo',
+         'getPingResponseForItem'];
+
       // Add specific files to add to the header : javascript or css
       if (isset($_SESSION['glpiactiveprofile']['interface'])
           && $_SESSION['glpiactiveprofile']['interface'] == 'central') {
@@ -65,9 +68,6 @@ function plugin_init_addressing() {
          $PLUGIN_HOOKS["javascript"]['addressing']     = ["/plugins/addressing/addressing.js"];
          $PLUGIN_HOOKS['add_javascript']['addressing'] = 'addressing.js';
       }
-
-
-      $PLUGIN_HOOKS['post_init']['addressing'] = ['PluginAddressingPing_Equipment', 'postinit'];
    }
 }
 

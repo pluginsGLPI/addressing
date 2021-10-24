@@ -446,4 +446,12 @@ class PluginAddressingReport extends CommonDBTM
       }
       return long2ip($s);
    }
+
+   static function ip2string($s)
+   {
+      if ($s > PHP_INT_MAX) {
+         $s = 2 * PHP_INT_MIN + $s;
+      }
+      return ip2long($s);
+   }
 }

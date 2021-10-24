@@ -33,7 +33,7 @@
 // ----------------------------------------------------------------------
 
 
-include ('../../../inc/includes.php');
+include('../../../inc/includes.php');
 
 header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
@@ -44,7 +44,8 @@ if (!isset($_POST['ip'])) {
    exit();
 }
 $ip = $_POST['ip'];
-
+$itemtype = $_POST['itemtype'];
+$items_id = $_POST['items_id'];
 
 $config = new PluginAddressingConfig();
 $config->getFromDB('1');
@@ -52,5 +53,33 @@ $system = $config->fields["used_system"];
 
 $ping_equip = new PluginAddressingPing_Equipment();
 list($message, $error) = $ping_equip->ping($system, $ip);
+
+$plugin_addressing_pinginfo = new PluginAddressingPinginfo();
+
+$ping_value = $ping_equip->ping($system, $ip, "true");
+
+$id = 0;
+$ping_date = 0;
+if ($ping_value == false || $ping_value == true) {
+
+   $ping_date = $_SESSION['glpi_currenttime'];
+   if ($pings = $plugin_addressing_pinginfo->find(['itemtype' => $itemtype,
+      'items_id' => $items_id])) {
+      foreach ($pings as $ping) {
+         $id = $ping['id'];
+
+         $plugin_addressing_pinginfo->update(['id' => $id,
+            'ping_response' => $ping_value,
+            'ping_date' => $ping_date]);
+      }
+   } else {
+
+      $num = "IP".PluginAddressingReport::ip2string($ip);
+      $plugin_addressing_pinginfo->add(['ping_response' => $ping_value,
+         'ping_date' => $ping_date, 'itemtype' => $itemtype,
+         'items_id' => $items_id, 'ipname' => $num]);
+   }
+}
+
 echo $ping_response = $message;
 
