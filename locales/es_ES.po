@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - addressing plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-19 09:27+0200\n"
-"PO-Revision-Date: 2021-10-19 07:28+0000\n"
+"POT-Creation-Date: 2021-10-24 17:38+0200\n"
+"PO-Revision-Date: 2021-10-24 15:39+0000\n"
 "Last-Translator: Xavier CAILLAUD <thetsmr@gmail.com>\n"
 "Language-Team: Spanish (Spain) (http://www.transifex.com/infotelGLPI/GLPI_addressing/language/es_ES/)\n"
 "MIME-Version: 1.0\n"
@@ -20,15 +20,16 @@ msgstr ""
 "Language: es_ES\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: hook.php:210 inc/ping_equipment.class.php:105 inc/report.class.php:143
+#: hook.php:212 inc/ping_equipment.class.php:111 inc/pinginfo.class.php:224
+#: inc/report.class.php:143
 msgid "Ping result"
 msgstr ""
 
-#: hook.php:242
+#: hook.php:244
 msgid "Last ping OK"
 msgstr ""
 
-#: hook.php:244
+#: hook.php:246
 msgid "Last ping KO"
 msgstr ""
 
@@ -47,102 +48,98 @@ msgstr "Problema al añadir, campos requeridos vacíos"
 msgid "Please activate the plugin"
 msgstr "Se ruega activar el plugin"
 
-#: inc/addressing.class.php:78 inc/addressing.class.php:350
+#: inc/addressing.class.php:91 inc/addressing.class.php:363
 msgid "Ping free IP"
 msgstr ""
 
-#: inc/addressing.class.php:118 inc/addressing.class.php:232
+#: inc/addressing.class.php:131 inc/addressing.class.php:245
 #: inc/filter.class.php:120 inc/filter.class.php:287
 msgid "First IP"
 msgstr "Primer IP"
 
-#: inc/addressing.class.php:127 inc/addressing.class.php:270
+#: inc/addressing.class.php:140 inc/addressing.class.php:283
 #: inc/filter.class.php:148 inc/filter.class.php:288
 msgid "Last IP"
 msgstr "Último IP"
 
-#: inc/addressing.class.php:162 inc/addressing.class.php:323
+#: inc/addressing.class.php:175 inc/addressing.class.php:336
 #: inc/filter.class.php:190
 msgid "Report for the IP Range"
 msgstr "Informe rango de  IP's"
 
-#: inc/addressing.class.php:203 inc/addressing.class.php:329
+#: inc/addressing.class.php:216 inc/addressing.class.php:342
 #: inc/filter.class.php:87 inc/filter.class.php:196
 msgid "Invalid data !!"
 msgstr "dato inválido!!"
 
-#: inc/addressing.class.php:217 inc/addressing.class.php:713
+#: inc/addressing.class.php:230 inc/addressing.class.php:714
 #: inc/config.class.php:64
 msgid "Assigned IP"
 msgstr "IP Asignado"
 
-#: inc/addressing.class.php:258 inc/addressing.class.php:685
-#: inc/addressing.class.php:717 inc/config.class.php:69
+#: inc/addressing.class.php:271 inc/addressing.class.php:698
+#: inc/addressing.class.php:726 inc/config.class.php:69
 msgid "Free IP"
 msgstr "IP Libre"
 
-#: inc/addressing.class.php:311 inc/addressing.class.php:667
-#: inc/addressing.class.php:734 inc/config.class.php:75
+#: inc/addressing.class.php:324 inc/addressing.class.php:680
+#: inc/addressing.class.php:718 inc/config.class.php:75
 msgid "Same IP"
 msgstr "Mismo Ip"
 
-#: inc/addressing.class.php:335 inc/addressing.class.php:688
-#: inc/addressing.class.php:738 inc/config.class.php:80
+#: inc/addressing.class.php:348 inc/addressing.class.php:701
+#: inc/addressing.class.php:722 inc/config.class.php:80
 msgid "Reserved IP"
 msgstr "IP Reservado"
 
-#: inc/addressing.class.php:367 inc/addressing.class.php:745
+#: inc/addressing.class.php:380 inc/addressing.class.php:756
 #: inc/filter.class.php:43
 msgid "Filter"
 msgid_plural "Filters"
 msgstr[0] "Filtros"
 msgstr[1] "Filtros "
 
-#: inc/addressing.class.php:369
+#: inc/addressing.class.php:382
 msgid "The display of items depends on these criterias"
 msgstr ""
 
-#: inc/addressing.class.php:650
+#: inc/addressing.class.php:663
 msgid "Number of free IP"
 msgstr ""
 
-#: inc/addressing.class.php:654
+#: inc/addressing.class.php:667
 msgid "Number of reserved IP"
 msgstr ""
 
-#: inc/addressing.class.php:658
+#: inc/addressing.class.php:671
 msgid "Number of assigned IP (no doubles)"
 msgstr ""
 
-#: inc/addressing.class.php:662
+#: inc/addressing.class.php:675
 msgid "Number of doubles IP"
 msgstr ""
 
-#: inc/addressing.class.php:675 inc/addressing.class.php:728
+#: inc/addressing.class.php:688 inc/addressing.class.php:738
 #: inc/report.class.php:372 inc/reserveip.class.php:196
 msgid "Ping: got a response - used IP"
 msgstr ""
 
-#: inc/addressing.class.php:681 inc/addressing.class.php:724
+#: inc/addressing.class.php:694 inc/addressing.class.php:734
 #: inc/report.class.php:396 inc/reserveip.class.php:193
 msgid "Ping: no response - free IP"
 msgstr ""
 
-#: inc/addressing.class.php:694
-msgctxt "button"
-msgid "Update ping information"
-msgstr ""
-
-#: inc/addressing.class.php:696
+#: inc/addressing.class.php:743 inc/addressing.class.php:745
+#: inc/pinginfo.class.php:234
 msgctxt "button"
 msgid "Manual launch of ping"
 msgstr ""
 
-#: inc/addressing.class.php:804
+#: inc/addressing.class.php:818
 msgid "Real free IP (Ping=KO)"
 msgstr ""
 
-#: inc/addressing.class.php:813
+#: inc/addressing.class.php:827
 msgid "Problem detected with the IP Range"
 msgstr "Problema detectado con el rango IP's"
 
@@ -182,17 +179,32 @@ msgstr "Utilizar Ping"
 msgid "Add a filter"
 msgstr "Agregar un filtro"
 
-#: inc/ping_equipment.class.php:87 inc/ping_equipment.class.php:100
-#: inc/ping_equipment.class.php:256
+#: inc/ping_equipment.class.php:90 inc/ping_equipment.class.php:106
 msgid "IP ping"
 msgstr "IP ping"
 
-#: inc/ping_equipment.class.php:119
+#: inc/ping_equipment.class.php:127
 msgid "No IP for this equipment"
 msgstr "Este equipo no tiene IP"
 
-#: inc/pinginfo.class.php:55
+#: inc/pinginfo.class.php:56
 msgid "Launch ping for each ip report"
+msgstr ""
+
+#: inc/pinginfo.class.php:210 inc/report.class.php:255
+#: inc/report.class.php:375 inc/report.class.php:401
+msgid "Automatic action has not be launched"
+msgstr ""
+
+#: inc/pinginfo.class.php:211
+msgid "Ping never launched"
+msgstr ""
+
+#: inc/pinginfo.class.php:214 inc/pinginfo.class.php:215
+#: inc/pinginfo.class.php:218 inc/pinginfo.class.php:219
+#: inc/report.class.php:270 inc/report.class.php:280 inc/report.class.php:377
+#: inc/report.class.php:403
+msgid "Last ping attempt"
 msgstr ""
 
 #: inc/profile.class.php:44 inc/profile.class.php:74
@@ -205,15 +217,6 @@ msgstr "Utilizar Ping en la ficha del equipo"
 
 #: inc/report.class.php:145
 msgid "Reservation"
-msgstr ""
-
-#: inc/report.class.php:255 inc/report.class.php:375 inc/report.class.php:401
-msgid "Automatic action has not be launched"
-msgstr ""
-
-#: inc/report.class.php:270 inc/report.class.php:280 inc/report.class.php:377
-#: inc/report.class.php:403
-msgid "Last ping attempt"
 msgstr ""
 
 #: inc/report.class.php:274 inc/report.class.php:283
