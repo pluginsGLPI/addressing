@@ -104,7 +104,8 @@ class PluginAddressingPinginfo extends CommonDBTM
       $ipdeb = sprintf("%u", ip2long($addressing->fields["begin_ip"]));
       $ipfin = sprintf("%u", ip2long($addressing->fields["end_ip"]));
       $result = $addressing->compute(0, ['ipdeb' => $ipdeb,
-         'ipfin' => $ipfin]);
+         'ipfin' => $ipfin,
+         'entities' => $addressing->fields['entities_id']]);
 
       $ping_responses = $this->updatePingInfos($result, $addressing);
 

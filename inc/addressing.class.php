@@ -500,7 +500,7 @@ class PluginAddressingAddressing extends CommonDBTM
       if (isset($type_filter)) {
          $types = [$type_filter];
       } else {
-         $types = self::getTypes();
+         $types = self::getTypes(true);
       }
 
       $dbu = new DbUtils();
