@@ -165,6 +165,8 @@ class PluginAddressingPinginfo extends CommonDBTM
                      $id = $ping['id'];
                      $plugin_addressing_pinginfo->update(['id' => $id,
                         'plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID(),
+                        'itemtype' => $data['itemtype'],
+                        'items_id' => $data['items_id'],
                         'ping_response' => $data['ping_response'],
                         'ping_date' => $data['ping_date']]);
                   }
@@ -202,6 +204,7 @@ class PluginAddressingPinginfo extends CommonDBTM
             foreach ($pings as $ping) {
                $ping_value = $ping['ping_response'];
                $ping_date = $ping['ping_date'];
+               $ipname = $ping['ipname'];
             }
             $ping_action = 1;
          }
@@ -214,10 +217,12 @@ class PluginAddressingPinginfo extends CommonDBTM
                $content = "<i class=\"fas fa-check-square fa-2x\" style='color: darkgreen' title='" . __("Last ping attempt", 'addressing') . " : "
                   . Html::convDateTime($ping_date) . "'></i><br>" . __("Last ping attempt", 'addressing') . " : "
                   . Html::convDateTime($ping_date);
+               $content .= "<br>"._('IP')."&nbsp;".$ip = PluginAddressingReport::string2ip(substr($ipname, 2));
             } else {
                $content = "<i class=\"fas fa-window-close fa-2x\" style='color: darkred' title='" . __("Last ping attempt", 'addressing') . " : "
                   . Html::convDateTime($ping_date) . "'></i><br>" . __("Last ping attempt", 'addressing') . " : "
                   . Html::convDateTime($ping_date);
+               $content .= "<br>"._('IP')."&nbsp;".$ip = PluginAddressingReport::string2ip(substr($ipname, 2));
             }
          }
          echo "<tr class='tab_bg_1'><th colspan='4'>";
