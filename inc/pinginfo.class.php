@@ -103,9 +103,12 @@ class PluginAddressingPinginfo extends CommonDBTM
 
       $ipdeb = sprintf("%u", ip2long($addressing->fields["begin_ip"]));
       $ipfin = sprintf("%u", ip2long($addressing->fields["end_ip"]));
+
       $result = $addressing->compute(0, ['ipdeb' => $ipdeb,
          'ipfin' => $ipfin,
          'entities' => $addressing->fields['entities_id']]);
+      $plugin_addressing_pinginfo = new PluginAddressingPinginfo();
+      $plugin_addressing_pinginfo->deleteByCriteria(['plugin_addressing_addressings_id' => $addressing->getID()]);
 
       $ping_responses = $this->updatePingInfos($result, $addressing);
 
@@ -114,7 +117,6 @@ class PluginAddressingPinginfo extends CommonDBTM
 
    private function updatePingInfos($result, PluginAddressingAddressing $PluginAddressingAddressing)
    {
-      $ping = $PluginAddressingAddressing->fields["use_ping"];
 
       // Get config
       $PluginAddressingConfig = new PluginAddressingConfig();
@@ -125,60 +127,24 @@ class PluginAddressingPinginfo extends CommonDBTM
       $ping_response = 0;
 
       $plugin_addressing_pinginfo = new PluginAddressingPinginfo();
-      $plugin_addressing_pinginfo->deleteByCriteria(['plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID()]);
 
       foreach ($result as $num => $lines) {
          $ip = PluginAddressingReport::string2ip(substr($num, 2));
 
-         if (!count($lines) && $PluginAddressingAddressing->fields["free_ip"]) {
+         $ping_value = $PluginAddressingPing_Equipment->ping($system, $ip, "true");
+         $data = [];
+         $data['plugin_addressing_addressings_id'] = $PluginAddressingAddressing->getID();
+         $data['ipname'] = $num;
 
-            if ($ping) {
+         $data['itemtype'] = isset($lines['0']['itemtype']) ? $lines['0']['itemtype'] : "";
+         $data['items_id'] = isset($lines['0']['on_device']) ? $lines['0']['on_device'] : "0";
+         $data['ping_response'] = $ping_value ?? 0;
+         $data['ping_date'] = date('Y-m-d H:i:s');
 
-               $ping_value = $PluginAddressingPing_Equipment->ping($system, $ip, "true");
-               $data = [];
-               $data['plugin_addressing_addressings_id'] = $PluginAddressingAddressing->getID();
-               $data['ipname'] = $num;
-               $data['itemtype'] = "";
-               $data['items_id'] = 0;
-               $data['ping_response'] = $ping_value ?? 0;
-               $data['ping_date'] = date('Y-m-d H:i:s');
-               $plugin_addressing_pinginfo->add($data);
-               if (!is_null($ping_value)) {
-                  $ping_response++;
-               }
-            }
+         $plugin_addressing_pinginfo->add($data);
 
-         } else if (count($lines) && $PluginAddressingAddressing->fields["free_ip"]) {
-            if ($ping) {
-               $ping_value = $PluginAddressingPing_Equipment->ping($system, $ip, "true");
-               $data = [];
-               $data['plugin_addressing_addressings_id'] = $PluginAddressingAddressing->getID();
-               $data['ipname'] = $num;
-
-               $data['itemtype'] = isset($lines['0']['itemtype']) ? $lines['0']['itemtype'] : "";
-               $data['items_id'] = isset($lines['0']['on_device']) ? $lines['0']['on_device'] : "0";
-               $data['ping_response'] = $ping_value ?? 0;
-               $data['ping_date'] = date('Y-m-d H:i:s');
-
-               if ($pings = $plugin_addressing_pinginfo->find(['itemtype' => $data['itemtype'],
-                  'items_id' => $data['items_id']])) {
-                  foreach ($pings as $ping) {
-                     $id = $ping['id'];
-                     $plugin_addressing_pinginfo->update(['id' => $id,
-                        'plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID(),
-                        'itemtype' => $data['itemtype'],
-                        'items_id' => $data['items_id'],
-                        'ping_response' => $data['ping_response'],
-                        'ping_date' => $data['ping_date']]);
-                  }
-               } else {
-                  $plugin_addressing_pinginfo->add($data);
-               }
-
-               if (!is_null($ping_value)) {
-                  $ping_response++;
-               }
-            }
+         if (!is_null($ping_value)) {
+            $ping_response++;
          }
       }
       return $ping_response;
@@ -212,7 +178,7 @@ class PluginAddressingPinginfo extends CommonDBTM
 
          if ($ping_action == 0) {
             $content = "<i class=\"fas fa-question fa-2x\" style='color: orange' title=\"" . __("Automatic action has not be launched", 'addressing') . "\">
-                    </i><br>" . __("Ping never launched", 'addressing');
+                    </i><br>" . __("Ping informations not available", 'addressing');
          } else {
             if ($ping_value == 1) {
                $content = "<i class=\"fas fa-check-square fa-2x\" style='color: darkgreen' title='" . __("Last ping attempt", 'addressing') . " : "

@@ -234,6 +234,31 @@ class PluginAddressingPing_Equipment extends commonDBTM
       }
    }
 
+   /**
+    * @param $system
+    * @param $ip
+    *
+    * @return array
+    */
+   function getHostnameByPing($system, $ip)
+   {
+      $error = 1;
+      $list = '';
+      switch ($system) {
+         case 0 :
+            // linux host
+            exec("ping -c 1 -w 1 -a " . $ip, $list, $error);
+            break;
+
+         case 1 :
+            //windows
+            exec("ping.exe -n 1 -w 100 -i 64 -a " . $ip, $list, $error);
+            break;
+      }
+      $list_str = implode('<br />', $list);
+//      return [$list_str, $error];
+      return $list[1];
+   }
 
    /**
     * @param \CommonGLPI $item

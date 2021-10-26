@@ -245,7 +245,7 @@ function plugin_addressing_giveItem($type, $ID, $data, $num) {
                } elseif ($data[$num][0]['name'] == "0") {
                   $out .= "<i class=\"fas fa-window-close fa-2x\" style='color: darkred'></i><br>".__('Last ping KO', 'addressing');
                } else {
-                  $out .= "<i class=\"fas fa-question fa-2x\" style='color: orange'></i><br>".__("Ping never launched", 'addressing');
+                  $out .= "<i class=\"fas fa-question fa-2x\" style='color: orange'></i><br>".__("Ping informations not available", 'addressing');
                }
                return $out;
                break;

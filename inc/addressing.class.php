@@ -40,7 +40,7 @@ class PluginAddressingAddressing extends CommonDBTM
    static $rightname = "plugin_addressing";
 
    static $types = ['Computer', 'NetworkEquipment', 'Peripheral', 'Phone', 'Printer'];
-
+   public    $dohistory  = true;
    static function getTypeName($nb = 0)
    {
 
@@ -162,6 +162,7 @@ class PluginAddressingAddressing extends CommonDBTM
       $this->addDefaultFormTab($ong);
       $this->addStandardTab(__CLASS__, $ong, $options);
       $this->addStandardTab('PluginAddressingFilter', $ong, $options);
+      $this->addStandardTab('Log', $ong, $options);
       return $ong;
    }
 
