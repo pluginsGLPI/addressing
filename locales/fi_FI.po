@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - addressing plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-24 17:38+0200\n"
-"PO-Revision-Date: 2021-10-24 15:39+0000\n"
+"POT-Creation-Date: 2021-10-26 10:24+0200\n"
+"PO-Revision-Date: 2021-10-26 08:25+0000\n"
 "Last-Translator: Xavier CAILLAUD <thetsmr@gmail.com>\n"
 "Language-Team: Finnish (Finland) (http://www.transifex.com/infotelGLPI/GLPI_addressing/language/fi_FI/)\n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Language: fi_FI\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: hook.php:212 inc/ping_equipment.class.php:111 inc/pinginfo.class.php:224
+#: hook.php:212 inc/ping_equipment.class.php:111 inc/pinginfo.class.php:196
 #: inc/report.class.php:143
 msgid "Ping result"
 msgstr ""
@@ -29,6 +29,10 @@ msgstr ""
 
 #: hook.php:246
 msgid "Last ping KO"
+msgstr ""
+
+#: hook.php:248 inc/pinginfo.class.php:181
+msgid "Ping informations not available"
 msgstr ""
 
 #: setup.php:79 inc/addressing.class.php:47 inc/menu.class.php:37
@@ -46,98 +50,98 @@ msgstr "Ongelma lisättäessä, vaaditut kentät eivät ole täällä"
 msgid "Please activate the plugin"
 msgstr "Aktivoi liitännäinen"
 
-#: inc/addressing.class.php:91 inc/addressing.class.php:363
+#: inc/addressing.class.php:91 inc/addressing.class.php:364
 msgid "Ping free IP"
 msgstr ""
 
-#: inc/addressing.class.php:131 inc/addressing.class.php:245
+#: inc/addressing.class.php:131 inc/addressing.class.php:246
 #: inc/filter.class.php:120 inc/filter.class.php:287
 msgid "First IP"
 msgstr "Ensimmäinen IP"
 
-#: inc/addressing.class.php:140 inc/addressing.class.php:283
+#: inc/addressing.class.php:140 inc/addressing.class.php:284
 #: inc/filter.class.php:148 inc/filter.class.php:288
 msgid "Last IP"
 msgstr "Viimeinen IP"
 
-#: inc/addressing.class.php:175 inc/addressing.class.php:336
+#: inc/addressing.class.php:176 inc/addressing.class.php:337
 #: inc/filter.class.php:190
 msgid "Report for the IP Range"
 msgstr "Raportti IP-alueesta"
 
-#: inc/addressing.class.php:216 inc/addressing.class.php:342
+#: inc/addressing.class.php:217 inc/addressing.class.php:343
 #: inc/filter.class.php:87 inc/filter.class.php:196
 msgid "Invalid data !!"
 msgstr "Virheellinen tieto!"
 
-#: inc/addressing.class.php:230 inc/addressing.class.php:714
+#: inc/addressing.class.php:231 inc/addressing.class.php:715
 #: inc/config.class.php:64
 msgid "Assigned IP"
 msgstr "Määritetty IP"
 
-#: inc/addressing.class.php:271 inc/addressing.class.php:698
-#: inc/addressing.class.php:726 inc/config.class.php:69
+#: inc/addressing.class.php:272 inc/addressing.class.php:699
+#: inc/addressing.class.php:727 inc/config.class.php:69
 msgid "Free IP"
 msgstr "Vapaa IP"
 
-#: inc/addressing.class.php:324 inc/addressing.class.php:680
-#: inc/addressing.class.php:718 inc/config.class.php:75
+#: inc/addressing.class.php:325 inc/addressing.class.php:681
+#: inc/addressing.class.php:719 inc/config.class.php:75
 msgid "Same IP"
 msgstr "Sama IP"
 
-#: inc/addressing.class.php:348 inc/addressing.class.php:701
-#: inc/addressing.class.php:722 inc/config.class.php:80
+#: inc/addressing.class.php:349 inc/addressing.class.php:702
+#: inc/addressing.class.php:723 inc/config.class.php:80
 msgid "Reserved IP"
 msgstr "Varattu IP"
 
-#: inc/addressing.class.php:380 inc/addressing.class.php:756
+#: inc/addressing.class.php:381 inc/addressing.class.php:757
 #: inc/filter.class.php:43
 msgid "Filter"
 msgid_plural "Filters"
 msgstr[0] "Suodatin"
 msgstr[1] "Suodattimet"
 
-#: inc/addressing.class.php:382
+#: inc/addressing.class.php:383
 msgid "The display of items depends on these criterias"
 msgstr ""
 
-#: inc/addressing.class.php:663
+#: inc/addressing.class.php:664
 msgid "Number of free IP"
 msgstr ""
 
-#: inc/addressing.class.php:667
+#: inc/addressing.class.php:668
 msgid "Number of reserved IP"
 msgstr ""
 
-#: inc/addressing.class.php:671
+#: inc/addressing.class.php:672
 msgid "Number of assigned IP (no doubles)"
 msgstr ""
 
-#: inc/addressing.class.php:675
+#: inc/addressing.class.php:676
 msgid "Number of doubles IP"
 msgstr ""
 
-#: inc/addressing.class.php:688 inc/addressing.class.php:738
-#: inc/report.class.php:372 inc/reserveip.class.php:196
+#: inc/addressing.class.php:689 inc/addressing.class.php:739
+#: inc/report.class.php:375 inc/reserveip.class.php:196
 msgid "Ping: got a response - used IP"
 msgstr ""
 
-#: inc/addressing.class.php:694 inc/addressing.class.php:734
-#: inc/report.class.php:396 inc/reserveip.class.php:193
+#: inc/addressing.class.php:695 inc/addressing.class.php:735
+#: inc/report.class.php:406 inc/reserveip.class.php:193
 msgid "Ping: no response - free IP"
 msgstr ""
 
-#: inc/addressing.class.php:743 inc/addressing.class.php:745
-#: inc/pinginfo.class.php:234
+#: inc/addressing.class.php:744 inc/addressing.class.php:746
+#: inc/pinginfo.class.php:206
 msgctxt "button"
 msgid "Manual launch of ping"
 msgstr ""
 
-#: inc/addressing.class.php:818
+#: inc/addressing.class.php:819
 msgid "Real free IP (Ping=KO)"
 msgstr ""
 
-#: inc/addressing.class.php:827
+#: inc/addressing.class.php:828
 msgid "Problem detected with the IP Range"
 msgstr "IP-alueen kanssa havaittu ongelma"
 
@@ -189,20 +193,20 @@ msgstr "Ei IP:tä tälle laitteelle"
 msgid "Launch ping for each ip report"
 msgstr ""
 
-#: inc/pinginfo.class.php:210 inc/report.class.php:255
-#: inc/report.class.php:375 inc/report.class.php:401
+#: inc/pinginfo.class.php:180 inc/report.class.php:258
+#: inc/report.class.php:384 inc/report.class.php:411
 msgid "Automatic action has not be launched"
 msgstr ""
 
-#: inc/pinginfo.class.php:211
-msgid "Ping never launched"
+#: inc/pinginfo.class.php:184 inc/pinginfo.class.php:185
+#: inc/pinginfo.class.php:189 inc/pinginfo.class.php:190
+#: inc/report.class.php:273 inc/report.class.php:283 inc/report.class.php:386
+#: inc/report.class.php:413
+msgid "Last ping attempt"
 msgstr ""
 
-#: inc/pinginfo.class.php:214 inc/pinginfo.class.php:215
-#: inc/pinginfo.class.php:218 inc/pinginfo.class.php:219
-#: inc/report.class.php:270 inc/report.class.php:280 inc/report.class.php:377
-#: inc/report.class.php:403
-msgid "Last ping attempt"
+#: inc/pinginfo.class.php:187 inc/pinginfo.class.php:192
+msgid "IP"
 msgstr ""
 
 #: inc/profile.class.php:44 inc/profile.class.php:74
@@ -217,7 +221,7 @@ msgstr "Käytä pingiä laitelomakkeessa"
 msgid "Reservation"
 msgstr ""
 
-#: inc/report.class.php:274 inc/report.class.php:283
+#: inc/report.class.php:277 inc/report.class.php:286
 msgid "Reserved Address"
 msgstr "Varattu osoite"
 
