@@ -224,7 +224,7 @@ class PluginAddressingAddressing extends CommonDBTM
 
       echo "<td>" . __('Name') . "</td>";
       echo "<td>";
-      Html::autocompletionTextField($this, "name");
+      echo Html::input('name', ['value' => $this->fields['name'], 'size' => 40]);
       echo "</td>";
 
       if ($PluginAddressingConfig->fields["alloted_ip"]) {
@@ -709,7 +709,8 @@ class PluginAddressingAddressing extends CommonDBTM
          ////////////////////////// research ////////////////////////////////////////////////////////////
          echo "<form method='post' name='filtering_form' id='filtering_form' action='" . Toolbox::getItemTypeFormURL("PluginAddressingAddressing") . "?id=$id'>";
          echo "<table class='tab_cadre_fixe'><tr class='tab_bg_2 center'>";
-         echo "<input type='hidden' name='id' value='$id'>";
+
+         echo Html::hidden('id', ['value' => $id]);
 
          echo "<tr class='tab_bg_1 center'>";
          echo "<td>" . __('Assigned IP', 'addressing') . "</td><td>";
@@ -741,7 +742,7 @@ class PluginAddressingAddressing extends CommonDBTM
             echo "</td>";
 
             echo "<td class='center' colspan='4'>";
-            echo "<button form='' type='submit' id='updatePingInfo' class='vsubmit center' name='updatePingInfo' title='" . _sx('button', 'Manual launch of ping', 'addressing') . "'>";
+            echo "<button form='' type='submit' id='updatePingInfo' class='btn btn-primary me-2 center' name='updatePingInfo' title='" . _sx('button', 'Manual launch of ping', 'addressing') . "'>";
             echo "<i class='fas fa-spinner' data-hasqtip='0' aria-hidden='true'></i>&nbsp;";
             echo _sx('button', 'Manual launch of ping', 'addressing');
             echo "</button>";
@@ -762,8 +763,8 @@ class PluginAddressingAddressing extends CommonDBTM
          }
          echo "<tr class='tab_bg_1 center'>";
          echo "<td colspan='8'>";
-         echo "<input type='submit' name='search' value=\"" . _sx('button', 'Search') . "\"
-                            class='submit'></td>";
+         echo Html::submit(_sx('button', 'Search'), ['name' => 'search', 'class' => 'btn btn-primary me-2']);
+         echo "<</td>";
          echo "</td></tr>";
          echo "</table>";
 

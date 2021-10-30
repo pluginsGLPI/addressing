@@ -92,11 +92,12 @@ class PluginAddressingFilter extends CommonDBTM {
       $addressing->getFromDB($options['items_id']);
 
       echo "<tr class='tab_bg_1'>";
-      echo "<input type='hidden' name='id' value='$ID'/>";
-      echo "<input type='hidden' name='plugin_addressing_addressings_id' value='".$options['items_id']."'/>";
+
+      echo Html::hidden('id', ['value' => $ID]);
+      echo Html::hidden('plugin_addressing_addressings_id', ['value' => $options['items_id']]);
       echo "<td>" . __('Name') . "</td>";
       echo "<td>";
-      Html::autocompletionTextField($this, "name");
+      echo Html::input('name', ['value' => $this->fields['name'], 'size' => 40]);
       echo "</td>";
       echo "</tr>";
 
@@ -246,7 +247,7 @@ class PluginAddressingFilter extends CommonDBTM {
          echo "};";
          echo "</script>\n";
          echo "<div class='center firstbloc'>" .
-         "<a class='vsubmit' href='javascript:viewAddFilter" . $item_id . "$rand();'>";
+         "<a class='btn btn-primary me-2' href='javascript:viewAddFilter" . $item_id . "$rand();'>";
          echo __('Add a filter', 'addressing') . "</a></div>\n";
       }
 

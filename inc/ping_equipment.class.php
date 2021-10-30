@@ -96,7 +96,7 @@ class PluginAddressingPing_Equipment extends commonDBTM
          echo "<tr class='tab_bg_1'>";
          echo "<td>" . __('IP') . " : </td>";
          echo "<td colspan='3'>";
-         echo "<select id='ip'>";
+         echo "<select class='form-select' id='ip'>";
          echo "<option>" . Dropdown::EMPTY_VALUE . "</option>";
          foreach ($list_ip as $ip => $name) {
             echo "<option value='$ip'>$name</option>";

@@ -176,8 +176,8 @@ class PluginAddressingReserveip extends CommonDBTM {
       $options['colspan'] = 2;
       $this->showFormHeader($options);
 
-      echo "<input type='hidden' name='ip' value='" . $ip . "' />";
-      echo "<input type='hidden' name='id_addressing' value='" . $id_addressing . "' />";
+      echo Html::hidden('ip', ['value' => $ip]);
+      echo Html::hidden('id_addressing', ['value' => $id_addressing]);
       echo "<tr class='tab_bg_1'>
                <td>" . _n("IP address", "IP addresses", 1) . "</td>
                <td>" . $ip . "</td>
@@ -252,7 +252,7 @@ class PluginAddressingReserveip extends CommonDBTM {
       echo "<tr class='tab_bg_1'>
                <td>" . __("Name") . " : </td><td>";
       $option = ['option' => "onChange=\"javascript:nameIsThere('" . $CFG_GLPI['root_doc'] . "');\""];
-      Html::autocompletionTextField($this, "name_reserveip", $option);
+      echo Html::input('name_reserveip', ['value' => $this->fields['name_reserveip'], $option]);
       echo "</td><td><div style=\"display: none;\" id='nameItem'>";
       echo "<i class='fas fa-exclamation-triangle fa-4x' style='color:orange'></i>&nbsp;";
       echo __('Name already in use', 'addressing');
