@@ -131,15 +131,27 @@ class PluginAddressingFilter extends CommonDBTM {
          }
          $i++;
       }
-      echo "<input type='text' value='".$ipexploded[0].
-         "' name='_ipdeb0' id='plugaddr_ipdeb0' size='3' maxlength='3' >.";
-      echo "<input type='text' value='".$ipexploded[1].
-         "' name='_ipdeb1' id='plugaddr_ipdeb1' size='3' maxlength='3' >.";
-      echo "<input type='text' value='".$ipexploded[2].
-         "' name='_ipdeb2' id='plugaddr_ipdeb2' size='3' maxlength='3' >.";
-      echo "<input type='text' value='".$ipexploded[3].
-         "' name='_ipdeb3' id='plugaddr_ipdeb3' size='3' maxlength='3' >";
 
+      echo Html::input('_ipdeb0', ['value' => $ipexploded[0],
+                                   'id' => 'plugaddr_ipdeb0',
+                                   'size' => 3,
+                                   'maxlength' => 3,
+                                   'class' => 'form-inline']);
+      echo Html::input('_ipdeb1', ['value' => $ipexploded[0],
+                                   'id' => 'plugaddr_ipdeb1',
+                                   'size' => 3,
+                                   'maxlength' => 3,
+                                   'class' => 'form-inline']);
+      echo Html::input('_ipdeb2', ['value' => $ipexploded[0],
+                                   'id' => 'plugaddr_ipdeb2',
+                                   'size' => 3,
+                                   'maxlength' => 3,
+                                   'class' => 'form-inline']);
+      echo Html::input('_ipdeb3', ['value' => $ipexploded[0],
+                                   'id' => 'plugaddr_ipdeb3',
+                                   'size' => 3,
+                                   'maxlength' => 3,
+                                   'class' => 'form-inline']);
 
       echo "</td>";
 
@@ -175,14 +187,30 @@ class PluginAddressingFilter extends CommonDBTM {
       }
       </script>";
 
-      echo "<input type='text' value='".$ipexploded[0].
-         "' name='_ipfin0' id='plugaddr_ipfin0' size='3' maxlength='3' onfocus='test(0)'>.";
-      echo "<input type='text' value='".$ipexploded[1].
-         "' name='_ipfin1' id='plugaddr_ipfin1' size='3' maxlength='3' onfocus='test(1)'>.";
-      echo "<input type='text' value='".$ipexploded[2].
-         "' name='_ipfin2' id='plugaddr_ipfin2' size='3' maxlength='3' onfocus='test(2)'>.";
-      echo "<input type='text' value='".$ipexploded[3].
-         "' name='_ipfin3' id='plugaddr_ipfin3' size='3' maxlength='3' onfocus='test(3)'>";
+      echo Html::input('_ipfin0', ['value' => $ipexploded[0],
+                                   'id' => 'plugaddr_ipfin0',
+                                   'size' => 3,
+                                   'maxlength' => 3,
+                                   'class' => 'form-inline',
+                                   'onfocus'=>'test(0)']);
+      echo Html::input('_ipfin1', ['value' => $ipexploded[0],
+                                   'id' => 'plugaddr_ipfin1',
+                                   'size' => 3,
+                                   'maxlength' => 3,
+                                   'class' => 'form-inline',
+                                   'onfocus'=>'test(1)']);
+      echo Html::input('_ipfin2', ['value' => $ipexploded[0],
+                                   'id' => 'plugaddr_ipfin2',
+                                   'size' => 3,
+                                   'maxlength' => 3,
+                                   'class' => 'form-inline',
+                                   'onfocus'=>'test(2)']);
+      echo Html::input('_ipfin3', ['value' => $ipexploded[0],
+                                   'id' => 'plugaddr_ipfin3',
+                                   'size' => 3,
+                                   'maxlength' => 3,
+                                   'class' => 'form-inline',
+                                   'onfocus'=>'test(3)']);
 
       echo "</td>";
       echo "</tr>";

@@ -51,23 +51,6 @@ class PluginAddressingPing_Equipment extends commonDBTM
 
       $list_ip = [];
 
-      /*if ($itemtype == 'NetworkEquipment') {
-         $query = "SELECT `ip`
-                   FROM `glpi_networkequipments`
-                   WHERE `id` = '".$obj->fields['id']."'";
-
-         $res = $DB->query($query);
-         while ($row = $DB->fetchArray($res)) {
-            if ($row['ip'] != '') {
-               $list_ip[$row['ip']] = $row['ip'];
-            }
-         }
-      }
-      $tmp = array_values($list_ip);
-      if (count($tmp) > 0 && $tmp[0] == '') {
-         array_pop($list_ip);
-      }*/
-
       $query = "SELECT `glpi_networknames`.`name`, `glpi_ipaddresses`.`name` as ip, `glpi_networkports`.`items_id`
                FROM `glpi_networkports` 
                LEFT JOIN `" . $obj->getTable() . "` ON (`glpi_networkports`.`items_id` = `" . $obj->getTable() . "`.`id`
@@ -96,13 +79,13 @@ class PluginAddressingPing_Equipment extends commonDBTM
          echo "<tr class='tab_bg_1'>";
          echo "<td>" . __('IP') . " : </td>";
          echo "<td colspan='3'>";
-         echo "<select class='form-select' id='ip'>";
+         echo "<select style='width:200px' class='form-select' id='ip'>";
          echo "<option>" . Dropdown::EMPTY_VALUE . "</option>";
          foreach ($list_ip as $ip => $name) {
             echo "<option value='$ip'>$name</option>";
          }
          echo "</select>";
-         echo "&nbsp;<input class='submit' type='button' value='" .
+         echo "&nbsp;<input class='btn btn-primary' type='button' value='" .
             __s('IP ping', 'addressing') . "' id='ping_ip'>";
          echo "</td>";
          echo "</tr>";

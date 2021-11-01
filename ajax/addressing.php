@@ -27,20 +27,14 @@
  --------------------------------------------------------------------------
  */
 
-include ('../../../inc/includes.php');
+include('../../../inc/includes.php');
 
 Session::checkLoginUser();
 
 Html::header_nocache();
-if (isset($_POST['action']) && $_POST['action'] == 'isName') {
-   $item = new $_POST['type']();
-   $datas = $item->find(['name' => ['LIKE', $_POST['name']]]);
-   if (count($datas) > 0) {
-      echo json_encode(true);
-   } else {
-      echo json_encode(false);
-   }
-} else if (isset($_POST['action']) && $_POST['action'] == 'viewFilter') {
+header("Content-Type: text/html; charset=UTF-8");
+
+if (isset($_POST['action']) && $_POST['action'] == 'viewFilter') {
    if (isset($_POST['items_id'])
        && isset($_POST["id"])) {
       $filter = new PluginAddressingFilter();
@@ -54,16 +48,17 @@ if (isset($_POST['action']) && $_POST['action'] == 'isName') {
 
 } else if (isset($_POST['action']) && $_POST['action'] == 'entities_location') {
    Dropdown::show('Location', ['name'   => "locations_id",
-                                    'value'  => $_POST["value"],
-                                    'entity' => $_POST['entities_id']]);
+                               'value'  => $_POST["value"],
+                               'entity' => $_POST['entities_id']]);
 
 } else if (isset($_POST['action']) && $_POST['action'] == 'entities_fqdn') {
-   Dropdown::show('FQDN', ['name'  => "fqdns_id",
-                                'value' => $_POST["value"],
-                                'entity'=> $_POST['entities_id']]);
+   Dropdown::show('FQDN', ['name'   => "fqdns_id",
+                           'value'  => $_POST["value"],
+                           'entity' => $_POST['entities_id']]);
 
-} else if (isset($_POST['action']) && $_POST['action'] == 'showForm') {
-      $PluginAddressingReserveip = new PluginAddressingReserveip();
-      $params = $_POST["params"];
-      $PluginAddressingReserveip->showForm($params["ip"], $params['id_addressing'], $params['rand']);
+} else {
+   Html::popHeader(__s('IP reservation', 'addressing'), $_SERVER['PHP_SELF']);
+   $PluginAddressingReserveip = new PluginAddressingReserveip();
+   $PluginAddressingReserveip->showReservationForm($_GET["ip"], $_GET['id_addressing'], $_GET['rand']);
+   Html::ajaxFooter();
 }

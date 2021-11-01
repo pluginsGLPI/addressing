@@ -29,15 +29,28 @@
 
 include ('../../../inc/includes.php');
 
-Html::header(PluginAddressingAddressing::getTypeName(2), '', "tools", "pluginaddressingmenu");
-
-$PluginAddressingAddressing = new PluginAddressingAddressing();
-
-if ($PluginAddressingAddressing->canView() || Session::haveRight("config", UPDATE)) {
-   Search::show("PluginAddressingAddressing");
-
+if (isset($_GET['action']) && $_GET['action'] == 'isName') {
+   $item  = new $_GET['type']();
+   $datas = $item->find(['name' => ['LIKE', $_GET['name']]]);
+   if (count($datas) > 0) {
+      echo json_encode(true);
+   } else {
+      echo json_encode(false);
+   }
 } else {
-   Html::displayRightError();
+
+   Html::header(PluginAddressingAddressing::getTypeName(2), '', "tools", "pluginaddressingmenu");
+
+   $PluginAddressingAddressing = new PluginAddressingAddressing();
+
+   if ($PluginAddressingAddressing->canView() || Session::haveRight("config", UPDATE)) {
+      Search::show("PluginAddressingAddressing");
+
+   } else {
+      Html::displayRightError();
+   }
+
+   Html::footer();
 }
 
-Html::footer();
+

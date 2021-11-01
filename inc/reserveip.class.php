@@ -39,7 +39,7 @@ class PluginAddressingReserveip extends CommonDBTM {
    static $rightname = 'plugin_addressing';
 
    static function getTypeName($nb = 0) {
-      return __("Reserve");
+      return __("IP reservation", "addressing");
    }
 
    public static function getTable($classname = null) {
@@ -124,7 +124,7 @@ class PluginAddressingReserveip extends CommonDBTM {
 
          \Glpi\Event::log($newID, "networkport", 5, "inventory",
             //TRANS: %s is the user login
-                    sprintf(__('%s adds an item'), $_SESSION["glpiname"]));
+                          sprintf(__('%s adds an item'), $_SESSION["glpiname"]));
       }
    }
 
@@ -139,7 +139,7 @@ class PluginAddressingReserveip extends CommonDBTM {
       $msg     = [];
       $checkKo = false;
 
-      $mandatory_fields = ['name' => __("Object's name", 'addressing'),
+      $mandatory_fields = ['name_reserveip' => __("Object's name", 'addressing'),
                            'ip'   => _n("IP address", "IP addresses", 1)];
 
       foreach ($input as $key => $value) {
@@ -165,8 +165,10 @@ class PluginAddressingReserveip extends CommonDBTM {
     * @param type $ip
     * @param type $id_addressing
     */
-   function showForm($ip, $id_addressing, $randmodal) {
+   function showReservationForm($ip, $id_addressing, $rand) {
       global $CFG_GLPI;
+
+      echo Html::script("/plugins/addressing/addressing.js");
 
       $addressing = new PluginAddressingAddressing();
       $addressing->getFromDB($id_addressing);
@@ -189,10 +191,10 @@ class PluginAddressingReserveip extends CommonDBTM {
       $ping_equip = new PluginAddressingPing_Equipment();
       list($message, $error) = $ping_equip->ping($system, $ip);
       if ($error) {
-         echo "<img src=\"" . $CFG_GLPI["root_doc"] . "/pics/ok.png\" alt=\"ok\">&nbsp;";
+         echo "<i class='fas fa-check-circle fa-1x' style='color:forestgreen'>&nbsp;";
          echo __('Ping: no response - free IP', 'addressing');
       } else {
-         echo "<i class='fas fa-exclamation-triangle fa-4x' style='color:orange'></i>&nbsp;";
+         echo "<i class='fas fa-exclamation-triangle fa-1x' style='color:orange'></i>&nbsp;";
          echo __('Ping: got a response - used IP', 'addressing');
       }
 
@@ -206,7 +208,8 @@ class PluginAddressingReserveip extends CommonDBTM {
 
          $rand = Entity::dropdown(['name'   => 'entities_id',
                                    'entity' => $_SESSION["glpiactiveentities"],
-                                   'value'  => $addressing->fields['entities_id']]);
+                                   'value'  => $addressing->fields['entities_id']
+                                  ]);
 
          $params = ['action' => 'entities_networkip', 'entities_id' => '__VALUE__'];
          Ajax::updateItemOnEvent("dropdown_entities_id" . $rand, 'entities_networkip',
@@ -214,13 +217,13 @@ class PluginAddressingReserveip extends CommonDBTM {
                                  $params);
 
          $params = ['action' => 'entities_location', 'entities_id' => '__VALUE__',
-                    'value' => $addressing->fields["locations_id"]];
+                    'value'  => $addressing->fields["locations_id"]];
          Ajax::updateItemOnEvent("dropdown_entities_id" . $rand, 'entities_location',
                                  $CFG_GLPI["root_doc"] . "/plugins/addressing/ajax/addressing.php",
                                  $params);
 
          $params = ['action' => 'entities_fqdn', 'entities_id' => '__VALUE__',
-                    'value' => $addressing->fields["fqdns_id"]];
+                    'value'  => $addressing->fields["fqdns_id"]];
          Ajax::updateItemOnEvent("dropdown_entities_id" . $rand, 'entities_fqdn',
                                  $CFG_GLPI["root_doc"] . "/plugins/addressing/ajax/addressing.php",
                                  $params);
@@ -231,12 +234,13 @@ class PluginAddressingReserveip extends CommonDBTM {
 
       echo "</td></tr>";
       echo "<tr class='tab_bg_1'>
-               <td>" . __("Location") . "</td>
-               <td><div id='entities_location'>";
+                     <td>" . __("Location") . "</td>
+                     <td><div id='entities_location'>";
 
       Dropdown::show('Location', ['name'   => "locations_id",
                                   'value'  => $addressing->fields["locations_id"],
-                                  'entity' => $addressing->fields['entities_id']]);
+                                  'entity' => $addressing->fields['entities_id']
+      ]);
       echo "</div></td><td></td>";
       echo "</tr>";
 
@@ -251,10 +255,10 @@ class PluginAddressingReserveip extends CommonDBTM {
       echo "</tr>";
       echo "<tr class='tab_bg_1'>
                <td>" . __("Name") . " : </td><td>";
-      $option = ['option' => "onChange=\"javascript:nameIsThere('" . $CFG_GLPI['root_doc'] . "');\""];
-      echo Html::input('name_reserveip', ['value' => $this->fields['name_reserveip'], $option]);
+      $option = ['onChange' => "nameIsThere(\"" . $CFG_GLPI['root_doc'] . "\");", 'id' => 'name_reserveip'];
+      echo Html::input('name_reserveip', $option);
       echo "</td><td><div style=\"display: none;\" id='nameItem'>";
-      echo "<i class='fas fa-exclamation-triangle fa-4x' style='color:orange'></i>&nbsp;";
+      echo "<i class='fas fa-exclamation-triangle fa-2x' style='color:orange'></i>&nbsp;";
       echo __('Name already in use', 'addressing');
       echo "</div></td>
             </tr>";
@@ -262,13 +266,14 @@ class PluginAddressingReserveip extends CommonDBTM {
       echo "<tr class='tab_bg_1'>
                <td>" . __("Status") . " : </td>
                <td>";
-      Dropdown::show("State");
+      State::dropdown(['entity' => $addressing->fields["entities_id"]]);
       echo "</td>
              <td></td> </tr>";
 
       echo "<tr class='tab_bg_1'>
-               <td>" . __("MAC address") . " :</td>
-               <td><input type='text' name='mac' value='' size='40' /></td>
+               <td>" . __("MAC address") . " :</td><td>";
+      echo Html::input('mac', ['size' => 40]);
+      echo "</td>
             <td></td></tr>";
 
       echo "<tr class='tab_bg_1'>
@@ -292,12 +297,13 @@ class PluginAddressingReserveip extends CommonDBTM {
             </tr>";
 
       echo "<tr class='tab_bg_1'>
-               <td colspan='4' class='center'>
-                  <input type='submit' name='add' class='submit' value='" . __("Validate the reservation", 'addressing') . "' "
-           . "onclick=\"" . Html::jsGetElementbyID("reserveip" . $randmodal) . ".dialog('close');window.location.reload();return true;\"/>
-               </td>
-            </tr>
-            </table>";
+               <td colspan='4' class='center'>";
+      echo Html::submit(__("Validate the reservation", 'addressing'), ['name'    => 'add',
+                                                                       'class'   => 'btn btn-primary',
+                                                                       'onclick' => "$('#reservation$rand').modal('hide');window.location.reload();return true;"]);
+      echo "</td>
+            </tr>";
+      echo " </table>";
 
       Html::closeForm();
    }

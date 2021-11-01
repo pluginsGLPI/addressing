@@ -192,6 +192,7 @@ class PluginAddressingPinginfo extends CommonDBTM
                $content .= "<br>"._('IP')."&nbsp;".$ip = PluginAddressingReport::string2ip(substr($ipname, 2));
             }
          }
+         echo "<table class='tab_cadre_fixe'>";
          echo "<tr class='tab_bg_1'><th colspan='4'>";
          echo __('Ping result', 'addressing');
          echo "</th></tr>";
@@ -202,9 +203,9 @@ class PluginAddressingPinginfo extends CommonDBTM
          echo "</td><td colspan='2'>";
 
          $rand = mt_rand();
-         echo "<a class='vsubmit' href='javascript:viewPingform" . $items_id . "$rand();'>";
+         echo "<button form='' class='btn btn-warning' onclick='javascript:viewPingform" . $items_id . "$rand();'>";
          echo "<i class='fas fa-terminal fa-2x' style='color: orange' title='" . _sx('button', 'Manual launch of ping', 'addressing') . "'></i>";
-         echo "</a>";
+         echo "</button>";
 
          echo "<script type='text/javascript' >\n";
          echo "function viewPingform" . $items_id . "$rand() {\n";
@@ -224,6 +225,7 @@ class PluginAddressingPinginfo extends CommonDBTM
          include(GLPI_ROOT . "/plugins/addressing/ajax/seePingTab.php");
          echo "</div>";
          echo "</td></tr>";
+         echo "</table>";
       }
    }
 
