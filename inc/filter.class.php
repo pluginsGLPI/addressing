@@ -218,8 +218,8 @@ class PluginAddressingFilter extends CommonDBTM {
       echo "<tr class='tab_bg_1'>";
       echo "<td>".__('Report for the IP Range', 'addressing')."</td>"; // Mask
       echo "<td>";
-      echo "<input type='hidden' id='plugaddr_ipdeb' value='".$this->fields["begin_ip"]."' name='begin_ip'>";
-      echo "<input type='hidden' id='plugaddr_ipfin' value='".$this->fields["end_ip"]."' name='end_ip'>";
+      echo Html::hidden('begin_ip', ['id' => 'plugaddr_ipdeb', 'value' => $this->fields["begin_ip"]]);
+      echo Html::hidden('end_ip', ['id' => 'plugaddr_ipfin', 'value' => $this->fields["end_ip"]]);
       echo "<div id='plugaddr_range'>-</div>";
       if ($ID > 0) {
          $js = "plugaddr_Init(\"".__('Invalid data !!', 'addressing')."\");";
