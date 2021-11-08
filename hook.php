@@ -37,7 +37,7 @@ function plugin_addressing_install() {
        && !$DB->tableExists("glpi_plugin_addressing")
        && !$DB->tableExists("glpi_plugin_addressing_configs")) {
 
-      $DB->runFile(GLPI_ROOT . "/plugins/addressing/sql/empty-2.9.1.sql");
+      $DB->runFile(GLPI_ROOT . "/plugins/addressing/sql/empty-3.0.0.sql");
 
    } else {
 
