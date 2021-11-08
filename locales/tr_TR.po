@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI Project - addressing plugin\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-26 10:24+0200\n"
-"PO-Revision-Date: 2021-10-26 08:25+0000\n"
+"POT-Creation-Date: 2021-11-08 09:57+0100\n"
+"PO-Revision-Date: 2021-11-08 08:58+0000\n"
 "Last-Translator: Xavier CAILLAUD <thetsmr@gmail.com>\n"
 "Language-Team: Turkish (Turkey) (http://www.transifex.com/infotelGLPI/GLPI_addressing/language/tr_TR/)\n"
 "MIME-Version: 1.0\n"
@@ -18,8 +18,8 @@ msgstr ""
 "Language: tr_TR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: hook.php:212 inc/ping_equipment.class.php:111 inc/pinginfo.class.php:196
-#: inc/report.class.php:143
+#: hook.php:212 inc/ping_equipment.class.php:94 inc/pinginfo.class.php:197
+#: inc/report.class.php:140
 msgid "Ping result"
 msgstr "Ping sonucu"
 
@@ -35,12 +35,18 @@ msgstr "Son ping KO"
 msgid "Ping informations not available"
 msgstr ""
 
-#: setup.php:79 inc/addressing.class.php:47 inc/menu.class.php:37
+#: setup.php:79 inc/addressing.class.php:46 inc/menu.class.php:37
 #: inc/pinginfo.class.php:44 inc/profile.class.php:108
 msgid "IP Adressing"
 msgid_plural "IP Adressing"
 msgstr[0] "IP adresleme"
 msgstr[1] "IP adresleme"
+
+#: ajax/addressing.php:60 inc/report.class.php:271 inc/report.class.php:306
+#: inc/report.class.php:346 inc/report.class.php:439
+#: inc/reserveip.class.php:42
+msgid "IP reservation"
+msgstr ""
 
 #: front/addressing.form.php:52 front/addressing.form.php:82
 msgid "Problem when adding, required fields are not here"
@@ -50,98 +56,98 @@ msgstr "Ekleme sırasında bir sorun çıktı. Zorunlu alanlar burada değil"
 msgid "Please activate the plugin"
 msgstr "Lütfen uygulama ekini etkinleştirin"
 
-#: inc/addressing.class.php:91 inc/addressing.class.php:364
+#: inc/addressing.class.php:89 inc/addressing.class.php:386
 msgid "Ping free IP"
 msgstr "Serbest IP adresine ping gönder"
 
-#: inc/addressing.class.php:131 inc/addressing.class.php:246
-#: inc/filter.class.php:120 inc/filter.class.php:287
+#: inc/addressing.class.php:129 inc/addressing.class.php:240
+#: inc/filter.class.php:121 inc/filter.class.php:316
 msgid "First IP"
 msgstr "IP aralığı başlangıcı"
 
-#: inc/addressing.class.php:140 inc/addressing.class.php:284
-#: inc/filter.class.php:148 inc/filter.class.php:288
+#: inc/addressing.class.php:138 inc/addressing.class.php:289
+#: inc/filter.class.php:161 inc/filter.class.php:317
 msgid "Last IP"
 msgstr "IP aralığı bitişi"
 
-#: inc/addressing.class.php:176 inc/addressing.class.php:337
-#: inc/filter.class.php:190
+#: inc/addressing.class.php:172 inc/addressing.class.php:357
+#: inc/filter.class.php:219
 msgid "Report for the IP Range"
 msgstr "IP aralığı raporu"
 
-#: inc/addressing.class.php:217 inc/addressing.class.php:343
-#: inc/filter.class.php:87 inc/filter.class.php:196
+#: inc/addressing.class.php:211 inc/addressing.class.php:365
+#: inc/filter.class.php:87 inc/filter.class.php:225
 msgid "Invalid data !!"
 msgstr "Veri geçersiz !!"
 
-#: inc/addressing.class.php:231 inc/addressing.class.php:715
+#: inc/addressing.class.php:225 inc/addressing.class.php:743
 #: inc/config.class.php:64
 msgid "Assigned IP"
 msgstr "Atanmış IP adresi"
 
-#: inc/addressing.class.php:272 inc/addressing.class.php:699
-#: inc/addressing.class.php:727 inc/config.class.php:69
+#: inc/addressing.class.php:277 inc/addressing.class.php:724
+#: inc/addressing.class.php:755 inc/config.class.php:69
 msgid "Free IP"
 msgstr "Serbest IP adresi"
 
-#: inc/addressing.class.php:325 inc/addressing.class.php:681
-#: inc/addressing.class.php:719 inc/config.class.php:75
+#: inc/addressing.class.php:345 inc/addressing.class.php:706
+#: inc/addressing.class.php:747 inc/config.class.php:75
 msgid "Same IP"
 msgstr "Aynı IP adresi"
 
-#: inc/addressing.class.php:349 inc/addressing.class.php:702
-#: inc/addressing.class.php:723 inc/config.class.php:80
+#: inc/addressing.class.php:371 inc/addressing.class.php:727
+#: inc/addressing.class.php:751 inc/config.class.php:80
 msgid "Reserved IP"
 msgstr "Ayırtılmış IP adresi"
 
-#: inc/addressing.class.php:381 inc/addressing.class.php:757
+#: inc/addressing.class.php:403 inc/addressing.class.php:785
 #: inc/filter.class.php:43
 msgid "Filter"
 msgid_plural "Filters"
 msgstr[0] "Süzgeç"
 msgstr[1] "Süzgeç"
 
-#: inc/addressing.class.php:383
+#: inc/addressing.class.php:405
 msgid "The display of items depends on these criterias"
 msgstr "Ögelerin görüntülenmesi bu ölçütlere bağlıdır"
 
-#: inc/addressing.class.php:664
+#: inc/addressing.class.php:684
 msgid "Number of free IP"
 msgstr "Serbest IP adresi sayısı"
 
-#: inc/addressing.class.php:668
+#: inc/addressing.class.php:688
 msgid "Number of reserved IP"
 msgstr "Ayırtılmış IP adresi sayısı"
 
-#: inc/addressing.class.php:672
+#: inc/addressing.class.php:692
 msgid "Number of assigned IP (no doubles)"
 msgstr "Atanmış IP adresi sayısı (çift olmayan)"
 
-#: inc/addressing.class.php:676
+#: inc/addressing.class.php:696
 msgid "Number of doubles IP"
 msgstr "Çift IP adresi sayısı"
 
-#: inc/addressing.class.php:689 inc/addressing.class.php:739
-#: inc/report.class.php:375 inc/reserveip.class.php:196
+#: inc/addressing.class.php:714 inc/addressing.class.php:767
+#: inc/report.class.php:393 inc/reserveip.class.php:198
 msgid "Ping: got a response - used IP"
 msgstr "Ping: yanıt var - IP adresi kullanımda"
 
-#: inc/addressing.class.php:695 inc/addressing.class.php:735
-#: inc/report.class.php:406 inc/reserveip.class.php:193
+#: inc/addressing.class.php:720 inc/addressing.class.php:763
+#: inc/report.class.php:424 inc/reserveip.class.php:195
 msgid "Ping: no response - free IP"
 msgstr "Ping: yanıt yok - IP adresi serbest"
 
-#: inc/addressing.class.php:744 inc/addressing.class.php:746
-#: inc/pinginfo.class.php:206
+#: inc/addressing.class.php:772 inc/addressing.class.php:774
+#: inc/pinginfo.class.php:207
 msgctxt "button"
 msgid "Manual launch of ping"
 msgstr "El ile ping gönder"
 
-#: inc/addressing.class.php:819
+#: inc/addressing.class.php:845
 msgid "Real free IP (Ping=KO)"
 msgstr "Gerçekten serbest IP adresi (Ping=KO)"
 
-#: inc/addressing.class.php:828
+#: inc/addressing.class.php:854
 msgid "Problem detected with the IP Range"
 msgstr "IP aralığında sorun algılandı"
 
@@ -177,15 +183,15 @@ msgstr "Görünüm"
 msgid "Use Ping"
 msgstr "Ping kullanılsın"
 
-#: inc/filter.class.php:250
+#: inc/filter.class.php:279
 msgid "Add a filter"
 msgstr "Bir süzgeç ekle"
 
-#: inc/ping_equipment.class.php:90 inc/ping_equipment.class.php:106
+#: inc/ping_equipment.class.php:73 inc/ping_equipment.class.php:89
 msgid "IP ping"
 msgstr "IP ping"
 
-#: inc/ping_equipment.class.php:127
+#: inc/ping_equipment.class.php:110
 msgid "No IP for this equipment"
 msgstr "Bu aygıtın IP adresi yok"
 
@@ -193,15 +199,15 @@ msgstr "Bu aygıtın IP adresi yok"
 msgid "Launch ping for each ip report"
 msgstr "Her IP raporu için ping başlatılsın "
 
-#: inc/pinginfo.class.php:180 inc/report.class.php:258
-#: inc/report.class.php:384 inc/report.class.php:411
+#: inc/pinginfo.class.php:180 inc/report.class.php:255
+#: inc/report.class.php:402 inc/report.class.php:429
 msgid "Automatic action has not be launched"
 msgstr "Otomatik işlem başlatılmadı"
 
 #: inc/pinginfo.class.php:184 inc/pinginfo.class.php:185
 #: inc/pinginfo.class.php:189 inc/pinginfo.class.php:190
-#: inc/report.class.php:273 inc/report.class.php:283 inc/report.class.php:386
-#: inc/report.class.php:413
+#: inc/report.class.php:277 inc/report.class.php:287 inc/report.class.php:404
+#: inc/report.class.php:431
 msgid "Last ping attempt"
 msgstr "Son ping denemesi"
 
@@ -217,11 +223,16 @@ msgstr "Raporları üret"
 msgid "Use ping on equipment form"
 msgstr "Aygıt formunda ping kullanılsın"
 
-#: inc/report.class.php:145
+#: inc/report.class.php:142
 msgid "Reservation"
 msgstr "Ayırtma"
 
-#: inc/report.class.php:277 inc/report.class.php:286
+#: inc/report.class.php:266 inc/report.class.php:301 inc/report.class.php:342
+#: inc/report.class.php:435
+msgid "Reserve IP"
+msgstr ""
+
+#: inc/report.class.php:281 inc/report.class.php:290
 msgid "Reserved Address"
 msgstr "Ayırtılmış adres"
 
@@ -229,10 +240,10 @@ msgstr "Ayırtılmış adres"
 msgid "Object's name"
 msgstr "Nesnenin adı"
 
-#: inc/reserveip.class.php:258
+#: inc/reserveip.class.php:262
 msgid "Name already in use"
 msgstr "Ad zaten kullanılmış"
 
-#: inc/reserveip.class.php:296
+#: inc/reserveip.class.php:301
 msgid "Validate the reservation"
 msgstr "Ayırtmayı doğrula"
