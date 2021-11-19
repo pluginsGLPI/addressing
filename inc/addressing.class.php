@@ -396,8 +396,12 @@ class PluginAddressingAddressing extends CommonDBTM {
       echo "<tr class='tab_bg_1'>";
       echo "<td>";
       echo __('Comments') . "</td>";
-      echo "<td class='center' colspan='3'>" .
-           "<textarea cols='125' rows='3' name='comment'>" . $this->fields["comment"] . "</textarea>";
+      echo "<td class='center' colspan='3'>";
+      Html::textarea(['name'            => 'comment',
+                      'value'           => $this->fields["comment"],
+                      'cols'       => 125,
+                      'rows'       => 3,
+                      'enable_richtext' => false]);
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1'><th colspan='4'>" . _n('Filter', 'Filters', 2, 'addressing');

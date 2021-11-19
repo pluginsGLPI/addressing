@@ -293,7 +293,12 @@ class PluginAddressingReserveip extends CommonDBTM {
 
       echo "<tr class='tab_bg_1'>
                <td>" . __("Comments") . " :</td>
-               <td colspan='2'><textarea cols='75' rows='5' name='comment' ></textarea></td>
+               <td colspan='2'>";
+      Html::textarea(['name'            => 'comment',
+                      'cols'       => 75,
+                      'rows'       => 5,
+                      'enable_richtext' => false]);
+      echo "</td>
             </tr>";
 
       echo "<tr class='tab_bg_1'>
