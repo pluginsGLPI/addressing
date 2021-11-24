@@ -63,7 +63,9 @@ if (isset($_POST['action']) && $_POST['action'] == 'isName') {
                                 'entity'=> $_POST['entities_id']]);
 
 } else if (isset($_POST['action']) && $_POST['action'] == 'showForm') {
-      $PluginAddressingReserveip = new PluginAddressingReserveip();
-      $params = $_POST["params"];
+   $PluginAddressingReserveip = new PluginAddressingReserveip();
+   $params                    = $_POST["params"];
+   if (filter_var($params["ip"], FILTER_VALIDATE_IP)) {
       $PluginAddressingReserveip->showForm($params["ip"], $params['id_addressing'], $params['rand']);
+   }
 }
