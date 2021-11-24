@@ -40,7 +40,7 @@ Html::header_nocache();
 
 Session::checkLoginUser();
 
-if (!isset($_POST['ip'])) {
+if (!isset($_POST['ip']) || !filter_var($_POST["ip"], FILTER_VALIDATE_IP)) {
    exit();
 }
 $ip = $_POST['ip'];
