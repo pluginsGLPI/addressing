@@ -38,7 +38,7 @@ class PluginAddressingAddressing extends CommonDBTM {
 
    static $rightname = "plugin_addressing";
 
-   static $types     = ['Computer', 'NetworkEquipment', 'Peripheral', 'Phone', 'Printer'];
+   static $types     = ['Computer', 'NetworkEquipment', 'Peripheral', 'Phone', 'Printer', 'Enclosure', 'PDU', 'Cluster'];
    public $dohistory = true;
 
    static function getTypeName($nb = 0) {
@@ -545,7 +545,11 @@ class PluginAddressingAddressing extends CommonDBTM {
                                    `glpi_ipaddresses`.`name` as ip,
                                    `port`.`mac`";
 
-         if ($type == 'PluginFusioninventoryUnknownDevice') {
+         if ($type == 'PluginFusioninventoryUnknownDevice'
+             || $type == 'Enclosure'
+               || $type == 'PDU'
+             || $type == 'Cluster'
+             || $type == 'Unmanaged') {
             $sql .= " ,0 AS `users_id` ";
          } else {
             $sql .= " ,`dev`.`users_id` ";
@@ -853,8 +857,8 @@ class PluginAddressingAddressing extends CommonDBTM {
          echo "</div>";
 
       } else {
-         echo "<div class='center'>" .
-              "<i class='fas fa-exclamation-triangle fa-4x' style='color:orange'></i><br><br><b>" .
+         echo "<div class='alert alert-important alert-warning d-flex'>";
+         echo " <b>" .
               __('Problem detected with the IP Range', 'addressing') . "</b></div>";
       }
    }
