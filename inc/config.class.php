@@ -45,7 +45,7 @@ class PluginAddressingConfig extends CommonDBTM {
       $system = $this->fields["used_system"];
 
       echo "<div class='center'>";
-      echo "<form method='post' action='".$this->getFormURL()."'>";
+      echo "<form method='post' action='".$this->getSearchURL()."'>";
 
       echo "<table class='tab_cadre_fixe'>";
       echo "<tr><th colspan='4'>".__('System for ping', 'addressing')."</th></tr>";

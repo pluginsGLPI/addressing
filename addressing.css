@@ -63,3 +63,17 @@
    padding: 10px;
    margin: 10px;
 }
+
+.ajax_loader {
+   position: fixed;
+   z-index: 1000;
+   top: 0;
+   left: 0;
+   height: 100%;
+   width: 100%;
+   background: rgba(255, 255, 255, .8) url(./pics/spinner.gif) 50% 50% no-repeat;
+}
+.hidden {
+   display: none;
+}
+
