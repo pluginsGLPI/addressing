@@ -267,7 +267,7 @@ class PluginAddressingReport extends CommonDBTM {
                         echo Search::showItem($output_type, "$reserv ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
                         if (isset($params) && count($params) > 0) {
                            echo Ajax::createIframeModalWindow('reservation'.$rand,
-                                                              $CFG_GLPI["root_doc"] . "/plugins/addressing/ajax/addressing.php?action=showForm&ip=" . $params['ip'] . "&id_addressing=" . $params['id_addressing'] . "&rand=" . $params['rand'],
+                                                              PLUGINADDRESSING_WEBDIR . "/ajax/addressing.php?action=showForm&ip=" . $params['ip'] . "&id_addressing=" . $params['id_addressing'] . "&rand=" . $params['rand'],
                                                               ['title'   => __s('IP reservation', 'addressing'),
                                                                'display' => false]);
                         }
@@ -302,7 +302,7 @@ class PluginAddressingReport extends CommonDBTM {
                               echo Search::showItem($output_type, "$reserv ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
                               if (isset($params) && count($params) > 0) {
                                  echo Ajax::createIframeModalWindow('reservation'.$rand,
-                                                                    $CFG_GLPI["root_doc"] . "/plugins/addressing/ajax/addressing.php?action=showForm&ip=" . $params['ip'] . "&id_addressing=" . $params['id_addressing'] . "&rand=" . $params['rand'],
+                                                                    PLUGINADDRESSING_WEBDIR . "/ajax/addressing.php?action=showForm&ip=" . $params['ip'] . "&id_addressing=" . $params['id_addressing'] . "&rand=" . $params['rand'],
                                                                     ['title'   => __s('IP reservation', 'addressing'),
                                                                      'display' => false]);
                               }
@@ -342,7 +342,7 @@ class PluginAddressingReport extends CommonDBTM {
 <i class='fas fa-clipboard fa-2x pointer' style='color: #d56f15' title='" . __("Reserve IP", 'addressing') . "'></i></a>";
                   if (isset($params) && count($params) > 0) {
                      echo Ajax::createIframeModalWindow('reservation'.$rand,
-                                                        $CFG_GLPI["root_doc"] . "/plugins/addressing/ajax/addressing.php?action=showForm&ip=" . $params['ip'] . "&id_addressing=" . $params['id_addressing'] . "&rand=" . $params['rand'],
+                                                        PLUGINADDRESSING_WEBDIR . "/ajax/addressing.php?action=showForm&ip=" . $params['ip'] . "&id_addressing=" . $params['id_addressing'] . "&rand=" . $params['rand'],
                                                         ['title'   => __s('IP reservation', 'addressing'),
                                                          'display' => false]);
                   }
@@ -435,7 +435,7 @@ class PluginAddressingReport extends CommonDBTM {
 <i class='fas fa-clipboard fa-2x pointer' style='color: #d56f15' title='" . __("Reserve IP", 'addressing') . "'></i></a>";
                               if (isset($params) && count($params) > 0) {
                                  echo Ajax::createIframeModalWindow('reservation'.$rand,
-                                                                    $CFG_GLPI["root_doc"] . "/plugins/addressing/ajax/addressing.php?action=showForm&ip=" . $params['ip'] . "&id_addressing=" . $params['id_addressing'] . "&rand=" . $params['rand'],
+                                                                    PLUGINADDRESSING_WEBDIR . "/ajax/addressing.php?action=showForm&ip=" . $params['ip'] . "&id_addressing=" . $params['id_addressing'] . "&rand=" . $params['rand'],
                                                                     ['title'   => __s('IP reservation', 'addressing'),
                                                                      'display' => false]);
                               }

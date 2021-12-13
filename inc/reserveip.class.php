@@ -168,7 +168,7 @@ class PluginAddressingReserveip extends CommonDBTM {
    function showReservationForm($ip, $id_addressing, $rand) {
       global $CFG_GLPI;
 
-      echo Html::script("/plugins/addressing/addressing.js");
+      echo Html::script(PLUGIN_ADDRESSING_DIR_NOFULL."/addressing.js");
 
       $addressing = new PluginAddressingAddressing();
       $addressing->getFromDB($id_addressing);
@@ -213,19 +213,19 @@ class PluginAddressingReserveip extends CommonDBTM {
 
          $params = ['action' => 'entities_networkip', 'entities_id' => '__VALUE__'];
          Ajax::updateItemOnEvent("dropdown_entities_id" . $rand, 'entities_networkip',
-                                 $CFG_GLPI["root_doc"] . "/plugins/addressing/ajax/addressing.php",
+                                 PLUGINADDRESSING_WEBDIR . "/ajax/addressing.php",
                                  $params);
 
          $params = ['action' => 'entities_location', 'entities_id' => '__VALUE__',
                     'value'  => $addressing->fields["locations_id"]];
          Ajax::updateItemOnEvent("dropdown_entities_id" . $rand, 'entities_location',
-                                 $CFG_GLPI["root_doc"] . "/plugins/addressing/ajax/addressing.php",
+                                 PLUGINADDRESSING_WEBDIR . "/ajax/addressing.php",
                                  $params);
 
          $params = ['action' => 'entities_fqdn', 'entities_id' => '__VALUE__',
                     'value'  => $addressing->fields["fqdns_id"]];
          Ajax::updateItemOnEvent("dropdown_entities_id" . $rand, 'entities_fqdn',
-                                 $CFG_GLPI["root_doc"] . "/plugins/addressing/ajax/addressing.php",
+                                 PLUGINADDRESSING_WEBDIR . "/ajax/addressing.php",
                                  $params);
 
          echo "</td><td></td>";
@@ -250,12 +250,12 @@ class PluginAddressingReserveip extends CommonDBTM {
                <td>";
       $types = PluginAddressingAddressing::dropdownItemtype();
       Dropdown::showFromArray('type', $types,
-                              ['on_change' => "nameIsThere(\"" . $CFG_GLPI['root_doc'] . "\");"]);
+                              ['on_change' => "nameIsThere(\"" .PLUGINADDRESSING_WEBDIR . "\");"]);
       echo "</td><td></td>";
       echo "</tr>";
       echo "<tr class='tab_bg_1'>
                <td>" . __("Name") . " : </td><td>";
-      $option = ['onChange' => "nameIsThere(\"" . $CFG_GLPI['root_doc'] . "\");", 'id' => 'name_reserveip'];
+      $option = ['onChange' => "nameIsThere(\"" . PLUGINADDRESSING_WEBDIR . "\");", 'id' => 'name_reserveip'];
       echo Html::input('name_reserveip', $option);
       echo "</td><td><div style=\"display: none;\" id='nameItem'>";
       echo "<i class='fas fa-exclamation-triangle fa-2x' style='color:orange'></i>&nbsp;";

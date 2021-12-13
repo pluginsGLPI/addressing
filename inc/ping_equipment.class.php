@@ -99,7 +99,7 @@ class PluginAddressingPing_Equipment extends commonDBTM
       echo "</table>";
 
       echo Html::scriptBlock("$(document).on('click', '#ping_ip', function(event) {
-         $('#ping_response').load('" . $CFG_GLPI["root_doc"] . "/plugins/addressing/ajax/ping.php', {
+         $('#ping_response').load('" . PLUGINADDRESSING_WEBDIR . "/ajax/ping.php', {
             'ip': $('#ip').val(),
             'itemtype': '$itemtype',
             'items_id': '$items_id'

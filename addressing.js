@@ -126,7 +126,7 @@ function nameIsThere(params) {
     var typeElm = $('select[name="type"]');
     var divNameItemElm = $('div[id="nameItem"]');
     $.ajax({
-         url: root_doc + '/plugins/addressing/front/addressing.php',
+         url: root_doc + '/front/addressing.php',
          type: "GET",
          dataType: "json",
          data: {

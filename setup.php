@@ -28,9 +28,11 @@
  */
 
 define('PLUGIN_ADDRESSING_VERSION', '3.0.0');
+
 if (!defined("PLUGIN_ADDRESSING_DIR")) {
    define("PLUGIN_ADDRESSING_DIR", Plugin::getPhpDir("addressing"));
    define("PLUGIN_ADDRESSING_DIR_NOFULL", Plugin::getPhpDir("addressing",false));
+   define("PLUGINADDRESSING_WEBDIR", Plugin::getWebDir("addressing"));
 }
 
 // Init the hooks of the plugins -Needed
@@ -65,7 +67,7 @@ function plugin_init_addressing() {
       if (isset($_SESSION['glpiactiveprofile']['interface'])
           && $_SESSION['glpiactiveprofile']['interface'] == 'central') {
          $PLUGIN_HOOKS['add_css']['addressing']        = "addressing.css";
-         $PLUGIN_HOOKS["javascript"]['addressing']     = ["/plugins/addressing/addressing.js"];
+         $PLUGIN_HOOKS["javascript"]['addressing']     = [PLUGIN_ADDRESSING_DIR_NOFULL."/addressing.js"];
          $PLUGIN_HOOKS['add_javascript']['addressing'] = 'addressing.js';
       }
    }

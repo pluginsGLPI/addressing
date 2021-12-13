@@ -41,8 +41,6 @@ class PluginAddressingMenu extends CommonGLPI {
 
       $menu          = [];
       $menu['title'] = self::getMenuName();
-      $menu['page']  = "/plugins/addressing/front/addressing.php";
-
       $menu['title']           = PluginAddressingAddressing::getTypeName(2);
       $menu['page']            = PluginAddressingAddressing::getSearchURL(false);
       $menu['links']['search'] = PluginAddressingAddressing::getSearchURL(false);
@@ -71,7 +69,7 @@ class PluginAddressingMenu extends CommonGLPI {
    }
 
    static function getIcon() {
-      return "fas fa-map-pin";
+      return "ti ti-map-pin";
    }
 
    static function removeRightsFromSession() {
