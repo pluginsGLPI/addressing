@@ -32,7 +32,7 @@ define('PLUGIN_ADDRESSING_VERSION', '3.0.0-rc1');
 if (!defined("PLUGIN_ADDRESSING_DIR")) {
    define("PLUGIN_ADDRESSING_DIR", Plugin::getPhpDir("addressing"));
    define("PLUGIN_ADDRESSING_DIR_NOFULL", Plugin::getPhpDir("addressing",false));
-   define("PLUGINADDRESSING_WEBDIR", Plugin::getWebDir("addressing"));
+   define("PLUGIN_ADDRESSING_WEBDIR", Plugin::getWebDir("addressing"));
 }
 
 // Init the hooks of the plugins -Needed

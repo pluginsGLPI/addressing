@@ -814,7 +814,7 @@ class PluginAddressingAddressing extends CommonDBTM {
                           
                              $('#ajax_loader').show();
                              $.ajax({
-                                url: '" . PLUGINADDRESSING_WEBDIR . "/ajax/updatepinginfo.php',
+                                url: '" . PLUGIN_ADDRESSING_WEBDIR . "/ajax/updatepinginfo.php',
                                    type: 'POST',
                                    data: {'addressing_id' : addressing_id},
                                    success: function(response){

@@ -270,7 +270,7 @@ class PluginAddressingFilter extends CommonDBTM {
             'items_id'   => $item_id,
             'id'         => -1];
          Ajax::updateItemJsCode("viewfilter" . $item_id . "$rand",
-                                PLUGINADDRESSING_WEBDIR . "/ajax/addressing.php",
+                                PLUGIN_ADDRESSING_WEBDIR . "/ajax/addressing.php",
                                 $params);
          echo "};";
          echo "</script>\n";
@@ -363,7 +363,7 @@ class PluginAddressingFilter extends CommonDBTM {
             'items_id'   => $item["id"],
             'id'         => $filter['id']];
          Ajax::updateItemJsCode("viewfilter" . $item["id"] . "$rand",
-                                PLUGINADDRESSING_WEBDIR. "/ajax/addressing.php",
+                                PLUGIN_ADDRESSING_WEBDIR. "/ajax/addressing.php",
                                 $params);
          echo "};";
          echo "</script>\n";

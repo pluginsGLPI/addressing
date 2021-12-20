@@ -213,19 +213,19 @@ class PluginAddressingReserveip extends CommonDBTM {
 
          $params = ['action' => 'entities_networkip', 'entities_id' => '__VALUE__'];
          Ajax::updateItemOnEvent("dropdown_entities_id" . $rand, 'entities_networkip',
-                                 PLUGINADDRESSING_WEBDIR . "/ajax/addressing.php",
+                                 PLUGIN_ADDRESSING_WEBDIR . "/ajax/addressing.php",
                                  $params);
 
          $params = ['action' => 'entities_location', 'entities_id' => '__VALUE__',
                     'value'  => $addressing->fields["locations_id"]];
          Ajax::updateItemOnEvent("dropdown_entities_id" . $rand, 'entities_location',
-                                 PLUGINADDRESSING_WEBDIR . "/ajax/addressing.php",
+                                 PLUGIN_ADDRESSING_WEBDIR . "/ajax/addressing.php",
                                  $params);
 
          $params = ['action' => 'entities_fqdn', 'entities_id' => '__VALUE__',
                     'value'  => $addressing->fields["fqdns_id"]];
          Ajax::updateItemOnEvent("dropdown_entities_id" . $rand, 'entities_fqdn',
-                                 PLUGINADDRESSING_WEBDIR . "/ajax/addressing.php",
+                                 PLUGIN_ADDRESSING_WEBDIR . "/ajax/addressing.php",
                                  $params);
 
          echo "</td><td></td>";
@@ -250,12 +250,12 @@ class PluginAddressingReserveip extends CommonDBTM {
                <td>";
       $types = PluginAddressingAddressing::dropdownItemtype();
       Dropdown::showFromArray('type', $types,
-                              ['on_change' => "nameIsThere(\"" .PLUGINADDRESSING_WEBDIR . "\");"]);
+                              ['on_change' => "nameIsThere(\"" .PLUGIN_ADDRESSING_WEBDIR . "\");"]);
       echo "</td><td></td>";
       echo "</tr>";
       echo "<tr class='tab_bg_1'>
                <td>" . __("Name") . " : </td><td>";
-      $option = ['onChange' => "nameIsThere(\"" . PLUGINADDRESSING_WEBDIR . "\");", 'id' => 'name_reserveip'];
+      $option = ['onChange' => "nameIsThere(\"" . PLUGIN_ADDRESSING_WEBDIR . "\");", 'id' => 'name_reserveip'];
       echo Html::input('name_reserveip', $option);
       echo "</td><td><div style=\"display: none;\" id='nameItem'>";
       echo "<i class='fas fa-exclamation-triangle fa-2x' style='color:orange'></i>&nbsp;";
