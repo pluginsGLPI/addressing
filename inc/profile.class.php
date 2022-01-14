@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  addressing plugin for GLPI
- Copyright (C) 2009-2016 by the addressing Development Team.
+ Copyright (C) 2009-2022 by the addressing Development Team.
 
  https://github.com/pluginsGLPI/addressing
  -------------------------------------------------------------------------
