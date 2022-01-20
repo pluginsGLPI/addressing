@@ -149,7 +149,8 @@ function plugin_addressing_uninstall() {
    $migration = new Migration("2.5.0");
    $tables    = ["glpi_plugin_addressing_addressings",
                  "glpi_plugin_addressing_configs",
-                 "glpi_plugin_addressing_filters"];
+                 "glpi_plugin_addressing_filters",
+                 "glpi_plugin_addressing_pinginfos"];
 
    foreach ($tables as $table) {
       $migration->dropTable($table);
@@ -187,10 +188,10 @@ function plugin_addressing_getDatabaseRelations() {
    $plugin = new Plugin();
 
    if ($plugin->isActivated("addressing")) {
-      return ["glpi_networks" => ["glpi_plugin_addressing_addressings" => "networks_id"],
-         "glpi_fqdns" => ["glpi_plugin_addressing_addressings" => "fqdns_id"],
-         "glpi_locations" => ["glpi_plugin_addressing_addressings" => "locations_id"],
-         "glpi_entities" => ["glpi_plugin_addressing_addressings" => "entities_id"]];
+      return ["glpi_networks"  => ["glpi_plugin_addressing_addressings" => "networks_id"],
+              "glpi_fqdns"     => ["glpi_plugin_addressing_addressings" => "fqdns_id"],
+              "glpi_locations" => ["glpi_plugin_addressing_addressings" => "locations_id"],
+              "glpi_entities"  => ["glpi_plugin_addressing_addressings" => "entities_id"]];
    }
    return [];
 }
@@ -200,21 +201,20 @@ function plugin_addressing_getDatabaseRelations() {
  *
  * @return array
  */
-function plugin_addressing_getAddSearchOptions($itemtype)
-{
+function plugin_addressing_getAddSearchOptions($itemtype) {
 
    $sopt = [];
 
    if (in_array($itemtype, PluginAddressingAddressing::getTypes(true))) {
       if (Session::haveRight("plugin_addressing", READ)) {
-         $sopt[5000]['table'] = 'glpi_plugin_addressing_pinginfos';
-         $sopt[5000]['field'] = 'ping_response';
-         $sopt[5000]['name'] = __('Ping result', 'addressing');
-         $sopt[5000]['forcegroupby'] = true;
-         $sopt[5000]['linkfield'] = 'id';
+         $sopt[5000]['table']         = 'glpi_plugin_addressing_pinginfos';
+         $sopt[5000]['field']         = 'ping_response';
+         $sopt[5000]['name']          = __('Ping result', 'addressing');
+         $sopt[5000]['forcegroupby']  = true;
+         $sopt[5000]['linkfield']     = 'id';
          $sopt[5000]['massiveaction'] = false;
-         $sopt[5000]['joinparams'] = ['beforejoin' => ['table' => 'glpi_plugin_addressing_pinginfos',
-            'joinparams' => ['jointype' => 'itemtype_item']]];
+         $sopt[5000]['joinparams']    = ['beforejoin' => ['table'      => 'glpi_plugin_addressing_pinginfos',
+                                                          'joinparams' => ['jointype' => 'itemtype_item']]];
       }
    }
    return $sopt;
@@ -236,20 +236,20 @@ function plugin_addressing_giveItem($type, $ID, $data, $num) {
    $searchopt =& Search::getOptions($type);
    $table     = $searchopt[$ID]["table"];
    $field     = $searchopt[$ID]["field"];
-   $out = "";
+   $out       = "";
    if (in_array($type, PluginAddressingAddressing::getTypes(true))) {
-         switch ($table . '.' . $field) {
-            case "glpi_plugin_addressing_pinginfos.ping_response" :
-               if ($data[$num][0]['name'] == "1") {
-                  $out .= "<i class=\"fas fa-check-square fa-2x\" style='color: darkgreen'></i><br>".__('Last ping OK', 'addressing');
-               } elseif ($data[$num][0]['name'] == "0") {
-                  $out .= "<i class=\"fas fa-window-close fa-2x\" style='color: darkred'></i><br>".__('Last ping KO', 'addressing');
-               } else {
-                  $out .= "<i class=\"fas fa-question fa-2x\" style='color: orange'></i><br>".__("Ping informations not available", 'addressing');
-               }
-               return $out;
-               break;
-         }
+      switch ($table . '.' . $field) {
+         case "glpi_plugin_addressing_pinginfos.ping_response" :
+            if ($data[$num][0]['name'] == "1") {
+               $out .= "<i class=\"fas fa-check-square fa-2x\" style='color: darkgreen'></i><br>" . __('Last ping OK', 'addressing');
+            } elseif ($data[$num][0]['name'] == "0") {
+               $out .= "<i class=\"fas fa-window-close fa-2x\" style='color: darkred'></i><br>" . __('Last ping KO', 'addressing');
+            } else {
+               $out .= "<i class=\"fas fa-question fa-2x\" style='color: orange'></i><br>" . __("Ping informations not available", 'addressing');
+            }
+            return $out;
+            break;
+      }
    }
    return "";
 }
