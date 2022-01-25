@@ -87,12 +87,12 @@ if (isset($_POST["add"])) {
 } else if (isset($_POST["search"])) {
 
    $addressing->checkGlobal(READ);
-   Html::header(PluginAddressingAddressing::getTypeName(2), '', "tools", "pluginaddressingmenu");
+   Html::header(PluginAddressingAddressing::getTypeName(2), '', "tools", "pluginaddressingaddressing");
    $addressing->display($_POST);
    Html::footer();
 } else {
    $addressing->checkGlobal(READ);
-   Html::header(PluginAddressingAddressing::getTypeName(2), '', "tools", "pluginaddressingmenu");
+   Html::header(PluginAddressingAddressing::getTypeName(2), '', "tools", "pluginaddressingaddressing");
    $addressing->display($_GET);
    Html::footer();
 }

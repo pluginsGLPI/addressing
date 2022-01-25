@@ -48,7 +48,7 @@ function plugin_init_addressing() {
 
    if (Session::getLoginUserID()) {
       if (Session::haveRight('plugin_addressing', READ)) {
-         $PLUGIN_HOOKS["menu_toadd"]['addressing'] = ['tools'  => 'PluginAddressingMenu'];
+         $PLUGIN_HOOKS["menu_toadd"]['addressing'] = ['tools'  => 'PluginAddressingAddressing'];
       }
 
       if (Session::haveRight('plugin_addressing', UPDATE)) {

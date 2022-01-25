@@ -275,7 +275,7 @@ class PluginAddressingFilter extends CommonDBTM {
          echo "};";
          echo "</script>\n";
          echo "<div class='center firstbloc'>" .
-         "<a class='btn btn-primary me-2' href='javascript:viewAddFilter" . $item_id . "$rand();'>";
+         "<a class='submit btn btn-primary me-2' href='javascript:viewAddFilter" . $item_id . "$rand();'>";
          echo __('Add a filter', 'addressing') . "</a></div>\n";
       }
 

@@ -33,7 +33,7 @@ $DBCONNECTION_REQUIRED  = 0;
 
 include ('../../../inc/includes.php');
 
-Html::header(PluginAddressingAddressing::getTypeName(2), '', "tools", "pluginaddressingmenu");
+Html::header(PluginAddressingAddressing::getTypeName(2), '', "tools", "pluginaddressingaddressing");
 
 if (!isset($_GET["start"])) {
    $_GET["start"] = 0;

@@ -39,7 +39,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'isName') {
    }
 } else {
 
-   Html::header(PluginAddressingAddressing::getTypeName(2), '', "tools", "pluginaddressingmenu");
+   Html::header(PluginAddressingAddressing::getTypeName(2), '', "tools", "pluginaddressingaddressing");
 
    $PluginAddressingAddressing = new PluginAddressingAddressing();
 

@@ -36,7 +36,7 @@ if (isset($_POST['add'])) {
    $reserveip->reserveip($_POST);
    Html::back();
 } else {
-   Html::header(PluginAddressingReserveip::getTypeName(), '', "tools", "pluginaddressingmenu");
+   Html::header(PluginAddressingReserveip::getTypeName(), '', "tools", "pluginaddressingaddressing");
    if(filter_var($_REQUEST["ip"], FILTER_VALIDATE_IP)) {
       $reserveip->showReservationForm($_REQUEST["ip"], $_REQUEST["id_addressing"], $_REQUEST['rand']);
    }

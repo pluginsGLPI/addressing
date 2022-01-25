@@ -85,7 +85,7 @@ class PluginAddressingPing_Equipment extends commonDBTM
             echo "<option value='$ip'>$name</option>";
          }
          echo "</select>";
-         echo "&nbsp;<input class='btn btn-primary' type='button' value='" .
+         echo "&nbsp;<input class='submit btn btn-primary' type='button' value='" .
             __s('IP ping', 'addressing') . "' id='ping_ip'>";
          echo "</td>";
          echo "</tr>";

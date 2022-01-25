@@ -40,7 +40,7 @@ if ($plugin->isActivated("addressing")) {
       Html::back();
 
    } else {
-      Html::header(PluginAddressingAddressing::getTypeName(2), '', "tools", "pluginaddressingmenu", "addressing");
+      Html::header(PluginAddressingAddressing::getTypeName(2), '', "tools", "pluginaddressingaddressing", "addressing");
       $PluginAddressingConfig->showForm(1);
       Html::footer();
    }

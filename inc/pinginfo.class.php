@@ -195,7 +195,7 @@ class PluginAddressingPinginfo extends CommonDBTM {
          echo "</td><td colspan='2'>";
 
          $rand = mt_rand();
-         echo "<button form='' class='btn btn-warning' onclick='javascript:viewPingform" . $items_id . "$rand();'>";
+         echo "<button form='' class='submit btn btn-warning' onclick='javascript:viewPingform" . $items_id . "$rand();'>";
          echo "<i class='fas fa-terminal fa-2x' style='color: orange' title='" . _sx('button', 'Manual launch of ping', 'addressing') . "'></i>";
          echo "</button>";
 

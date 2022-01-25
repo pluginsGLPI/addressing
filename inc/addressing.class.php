@@ -46,6 +46,9 @@ class PluginAddressingAddressing extends CommonDBTM {
       return _n('IP Adressing', 'IP Adressing', $nb, 'addressing');
    }
 
+   static function getIcon() {
+      return "ti ti-map-pin";
+   }
 
    /**
     * Actions done when item is deleted from the database
@@ -177,22 +180,22 @@ class PluginAddressingAddressing extends CommonDBTM {
    /**
     * @param $entity
     */
-//   function dropdownSubnet($entity) {
-//      global $DB;
-//
-//      $dbu         = new DbUtils();
-//      $sql         = "SELECT DISTINCT `completename`
-//              FROM `glpi_ipnetworks`" .
-//                     $dbu->getEntitiesRestrictRequest(" WHERE ", "glpi_ipnetworks", "entities_id", $entity);
-//      $networkList = [0 => Dropdown::EMPTY_VALUE];
-//      foreach ($DB->request($sql) as $network) {
-//         $networkList += [$network["completename"] => $network["completename"]];
-//      }
-//      $rand = mt_rand();
-//      $name = "_subnet";
-//      Dropdown::ShowFromArray($name, $networkList, ['rand'      => $rand,
-//                                                    'on_change' => 'plugaddr_ChangeList("dropdown_' . $name . $rand . '");']);
-//   }
+   //   function dropdownSubnet($entity) {
+   //      global $DB;
+   //
+   //      $dbu         = new DbUtils();
+   //      $sql         = "SELECT DISTINCT `completename`
+   //              FROM `glpi_ipnetworks`" .
+   //                     $dbu->getEntitiesRestrictRequest(" WHERE ", "glpi_ipnetworks", "entities_id", $entity);
+   //      $networkList = [0 => Dropdown::EMPTY_VALUE];
+   //      foreach ($DB->request($sql) as $network) {
+   //         $networkList += [$network["completename"] => $network["completename"]];
+   //      }
+   //      $rand = mt_rand();
+   //      $name = "_subnet";
+   //      Dropdown::ShowFromArray($name, $networkList, ['rand'      => $rand,
+   //                                                    'on_change' => 'plugaddr_ChangeList("dropdown_' . $name . $rand . '");']);
+   //   }
 
 
    function post_getEmpty() {
@@ -399,8 +402,8 @@ class PluginAddressingAddressing extends CommonDBTM {
       echo "<td class='center' colspan='3'>";
       Html::textarea(['name'            => 'comment',
                       'value'           => $this->fields["comment"],
-                      'cols'       => 125,
-                      'rows'       => 3,
+                      'cols'            => 125,
+                      'rows'            => 3,
                       'enable_richtext' => false]);
       echo "</td></tr>";
 
@@ -547,7 +550,7 @@ class PluginAddressingAddressing extends CommonDBTM {
 
          if ($type == 'PluginFusioninventoryUnknownDevice'
              || $type == 'Enclosure'
-               || $type == 'PDU'
+             || $type == 'PDU'
              || $type == 'Cluster'
              || $type == 'Unmanaged') {
             $sql .= " ,0 AS `users_id` ";
@@ -777,7 +780,7 @@ class PluginAddressingAddressing extends CommonDBTM {
             echo "</td>";
 
             echo "<td class='center' colspan='4'>";
-            echo "<button form='' type='submit' id='updatePingInfo' class='btn btn-primary me-2 center' name='updatePingInfo' title='" . _sx('button', 'Manual launch of ping', 'addressing') . "'>";
+            echo "<button form='' type='submit' id='updatePingInfo' class='submit btn btn-primary me-2 center' name='updatePingInfo' title='" . _sx('button', 'Manual launch of ping', 'addressing') . "'>";
             echo "<i class='fas fa-spinner' data-hasqtip='0' aria-hidden='true'></i>&nbsp;";
             echo _sx('button', 'Manual launch of ping', 'addressing');
             echo "</button>";
@@ -1016,6 +1019,46 @@ class PluginAddressingAddressing extends CommonDBTM {
          echo "<a class=\"button\"><i class=\"$name fa-fw fas fa-2x fa-toggle-on enabled\"></i></a>";
       } else {
          echo "<a class=\"button\"><i class=\"$name fa-fw fas fa-2x fa-toggle-off disabled\"></i></a>";
+      }
+   }
+
+   static function getMenuContent() {
+
+      $menu                    = [];
+      $menu['title']           = self::getMenuName();
+      $menu['title']           = self::getTypeName(2);
+      $menu['page']            = self::getSearchURL(false);
+      $menu['links']['search'] = self::getSearchURL(false);
+      $menu['links']['lists']  = "";
+      if (Session::haveRight('plugin_addressing', UPDATE)) {
+         $menu['links']['add'] = self::getFormURL(false);
+      }
+
+      if (Session::haveRight(static::$rightname, UPDATE)
+          || Session::haveRight("config", UPDATE)) {
+         //Entry icon in breadcrumb
+         $menu['links']['config'] = PluginAddressingConfig::getSearchURL(false);
+         //Link to config page in admin plugins list
+         $menu['config_page'] = PluginAddressingConfig::getSearchURL(false);
+
+         //Add a fourth level in breadcrumb for configuration page
+         $menu['options']['config']['title']           = __('Setup');
+         $menu['options']['config']['page']            = PluginAddressingConfig::getSearchURL(false);
+         $menu['options']['config']['links']['search'] = self::getSearchURL(false);
+         $menu['options']['config']['links']['add']    = self::getFormURL(false);
+      }
+
+      $menu['icon'] = self::getIcon();
+
+      return $menu;
+   }
+
+   static function removeRightsFromSession() {
+      if (isset($_SESSION['glpimenu']['tools']['types']['PluginAddressingAddressing'])) {
+         unset($_SESSION['glpimenu']['tools']['types']['PluginAddressingAddressing']);
+      }
+      if (isset($_SESSION['glpimenu']['tools']['content']['pluginaddressingaddressing'])) {
+         unset($_SESSION['glpimenu']['tools']['content']['pluginaddressingaddressing']);
       }
    }
 }

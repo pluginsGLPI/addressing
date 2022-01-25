@@ -144,7 +144,6 @@ function plugin_addressing_uninstall() {
    global $DB;
 
    include_once(PLUGIN_ADDRESSING_DIR . "/inc/profile.class.php");
-   include_once(PLUGIN_ADDRESSING_DIR . "/inc/menu.class.php");
 
    $migration = new Migration("2.5.0");
    $tables    = ["glpi_plugin_addressing_addressings",
@@ -172,7 +171,7 @@ function plugin_addressing_uninstall() {
    //Remove rigth from $_SESSION['glpiactiveprofile'] if exists
    PluginAddressingProfile::removeRightsFromSession();
 
-   PluginAddressingMenu::removeRightsFromSession();
+   PluginAddressingAddressing::removeRightsFromSession();
    CronTask::unregister("addressing");
    return true;
 }
