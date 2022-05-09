@@ -191,13 +191,13 @@ class PluginAddressingReserveip extends CommonDBTM {
       $ping_equip = new PluginAddressingPing_Equipment();
       list($message, $error) = $ping_equip->ping($system, $ip);
       if ($error) {
-         echo "<i class='fas fa-check-circle fa-1x' style='color:forestgreen'>&nbsp;";
+         echo "<i class='fas fa-check-circle fa-1x' style='color:forestgreen'></i><span style='color:forestgreen'>&nbsp;";
          echo __('Ping: no response - free IP', 'addressing');
       } else {
-         echo "<i class='fas fa-exclamation-triangle fa-1x' style='color:orange'></i>&nbsp;";
+         echo "<i class='fas fa-exclamation-triangle fa-1x' style='color:orange'></i><span style='color:orange'>&nbsp;";
          echo __('Ping: got a response - used IP', 'addressing');
       }
-
+      echo "</span>";
       echo "</td></tr>";
       $strict_entities = Profile_User::getUserEntities($_SESSION['glpiID'], false);
       if (Session::haveAccessToOneOfEntities($strict_entities)
