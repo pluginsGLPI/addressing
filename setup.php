@@ -27,7 +27,7 @@
  --------------------------------------------------------------------------
  */
 
-define('PLUGIN_ADDRESSING_VERSION', '2.9.1');
+define('PLUGIN_ADDRESSING_VERSION', '2.9.2');
 if (!defined("PLUGIN_ADDRESSING_DIR")) {
    define("PLUGIN_ADDRESSING_DIR", Plugin::getPhpDir("addressing"));
    define("PLUGIN_ADDRESSING_DIR_NOFULL", Plugin::getPhpDir("addressing",false));

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GLPI - Addressing plugin 2.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-26 10:24+0200\n"
+"POT-Creation-Date: 2021-12-07 09:03+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: hook.php:212 inc/ping_equipment.class.php:111 inc/pinginfo.class.php:196
+#: hook.php:212 inc/ping_equipment.class.php:111 inc/pinginfo.class.php:198
 #: inc/report.class.php:143
 msgid "Ping result"
 msgstr ""
@@ -31,12 +31,12 @@ msgstr ""
 msgid "Last ping KO"
 msgstr ""
 
-#: hook.php:248 inc/pinginfo.class.php:181
+#: hook.php:248 inc/pinginfo.class.php:183
 msgid "Ping informations not available"
 msgstr ""
 
-#: setup.php:79 inc/addressing.class.php:47 inc/menu.class.php:37
-#: inc/pinginfo.class.php:44 inc/profile.class.php:108
+#: setup.php:79 inc/addressing.class.php:47 inc/ipcomment.class.php:44
+#: inc/menu.class.php:37 inc/pinginfo.class.php:44 inc/profile.class.php:108
 msgid "IP Adressing"
 msgid_plural "IP Adressing"
 msgstr[0] ""
@@ -122,17 +122,17 @@ msgid "Number of doubles IP"
 msgstr ""
 
 #: inc/addressing.class.php:689 inc/addressing.class.php:739
-#: inc/report.class.php:375 inc/reserveip.class.php:196
+#: inc/report.class.php:382 inc/reserveip.class.php:196
 msgid "Ping: got a response - used IP"
 msgstr ""
 
 #: inc/addressing.class.php:695 inc/addressing.class.php:735
-#: inc/report.class.php:406 inc/reserveip.class.php:193
+#: inc/report.class.php:417 inc/reserveip.class.php:193
 msgid "Ping: no response - free IP"
 msgstr ""
 
 #: inc/addressing.class.php:744 inc/addressing.class.php:746
-#: inc/pinginfo.class.php:206
+#: inc/pinginfo.class.php:208
 msgctxt "button"
 msgid "Manual launch of ping"
 msgstr ""
@@ -193,19 +193,19 @@ msgstr ""
 msgid "Launch ping for each ip report"
 msgstr ""
 
-#: inc/pinginfo.class.php:180 inc/report.class.php:258 inc/report.class.php:384
-#: inc/report.class.php:411
+#: inc/pinginfo.class.php:182 inc/report.class.php:259 inc/report.class.php:391
+#: inc/report.class.php:422
 msgid "Automatic action has not be launched"
 msgstr ""
 
-#: inc/pinginfo.class.php:184 inc/pinginfo.class.php:185
-#: inc/pinginfo.class.php:189 inc/pinginfo.class.php:190
-#: inc/report.class.php:273 inc/report.class.php:283 inc/report.class.php:386
-#: inc/report.class.php:413
+#: inc/pinginfo.class.php:186 inc/pinginfo.class.php:187
+#: inc/pinginfo.class.php:191 inc/pinginfo.class.php:192
+#: inc/report.class.php:274 inc/report.class.php:284 inc/report.class.php:393
+#: inc/report.class.php:424
 msgid "Last ping attempt"
 msgstr ""
 
-#: inc/pinginfo.class.php:187 inc/pinginfo.class.php:192
+#: inc/pinginfo.class.php:189 inc/pinginfo.class.php:194
 msgid "IP"
 msgstr ""
 
@@ -221,7 +221,7 @@ msgstr ""
 msgid "Reservation"
 msgstr ""
 
-#: inc/report.class.php:277 inc/report.class.php:286
+#: inc/report.class.php:278 inc/report.class.php:287
 msgid "Reserved Address"
 msgstr ""
 
