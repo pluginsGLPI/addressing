@@ -37,7 +37,7 @@ function plugin_addressing_install() {
        && !$DB->tableExists("glpi_plugin_addressing")
        && !$DB->tableExists("glpi_plugin_addressing_configs")) {
 
-      $DB->runFile(PLUGIN_ADDRESSING_DIR . "/sql/empty-3.0.0.sql");
+      $DB->runFile(PLUGIN_ADDRESSING_DIR . "/sql/empty-3.0.1.sql");
 
    } else {
 
@@ -93,6 +93,10 @@ function plugin_addressing_install() {
       if (!$DB->tableExists("glpi_plugin_addressing_pinginfos")) {
          $DB->runFile(PLUGIN_ADDRESSING_DIR . "/sql/update-2.9.1.sql");
       }
+       //Version 2.9.2
+       if (!$DB->tableExists("glpi_plugin_addressing_ipcomments")) {
+           $DB->runFile(GLPI_ROOT . "/plugins/addressing/sql/update-3.0.1.sql");
+       }
 
    }
 
