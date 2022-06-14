@@ -294,6 +294,7 @@ class PluginAddressingReport extends CommonDBTM {
                                     echo Search::showItem($output_type, " ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
                                 }
                             } else {
+                               $reserv = "";
                                 $content = __('Success', 'addressing');
                                 echo Search::showItem($output_type, "$content ", $item_num, $row_num);
                                 if ($PluginAddressingAddressing->fields["reserved_ip"] && strstr($line["pname"], "reserv")) {
