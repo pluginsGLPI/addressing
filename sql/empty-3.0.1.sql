@@ -66,14 +66,14 @@ CREATE TABLE `glpi_plugin_addressing_filters` (
 
 CREATE TABLE `glpi_plugin_addressing_ipcomments`
 (
-    `id`                               int(11) NOT NULL auto_increment,
-    `plugin_addressing_addressings_id` int(11) NOT NULL default '0',
-    `ipname`                           varchar(255) collate utf8_unicode_ci default NULL,
-    `comments`                         LONGTEXT collate utf8_unicode_ci,
+    `id`                               int unsigned NOT NULL auto_increment,
+    `plugin_addressing_addressings_id` int unsigned NOT NULL default '0',
+    `ipname`                           varchar(255) collate utf8mb4_unicode_ci default NULL,
+    `comments`                         LONGTEXT collate utf8mb4_unicode_ci,
     PRIMARY KEY (`id`),
     KEY  `plugin_addressing_addressings_id` (`plugin_addressing_addressings_id`),
     KEY  `ipname` (`ipname`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 
 INSERT INTO `glpi_plugin_addressing_configs` VALUES ('1','1','1','1','1','0','0');
 
