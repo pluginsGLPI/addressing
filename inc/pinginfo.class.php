@@ -177,12 +177,12 @@ class PluginAddressingPinginfo extends CommonDBTM {
                $content = "<i class=\"fas fa-check-square fa-2x\" style='color: darkgreen' title='" . __("Last ping attempt", 'addressing') . " : "
                           . Html::convDateTime($ping_date) . "'></i><br>" . __("Last ping attempt", 'addressing') . " : "
                           . Html::convDateTime($ping_date);
-               $content .= "<br>" . _('IP') . "&nbsp;" . $ip = PluginAddressingReport::string2ip(substr($ipname, 2));
+               $content .= "<br>" . __('IP') . "&nbsp;" . $ip = PluginAddressingReport::string2ip(substr($ipname, 2));
             } else {
                $content = "<i class=\"fas fa-window-close fa-2x\" style='color: darkred' title='" . __("Last ping attempt", 'addressing') . " : "
                           . Html::convDateTime($ping_date) . "'></i><br>" . __("Last ping attempt", 'addressing') . " : "
                           . Html::convDateTime($ping_date);
-               $content .= "<br>" . _('IP') . "&nbsp;" . $ip = PluginAddressingReport::string2ip(substr($ipname, 2));
+               $content .= "<br>" . __('IP') . "&nbsp;" . $ip = PluginAddressingReport::string2ip(substr($ipname, 2));
             }
          }
          echo "<table class='tab_cadre_fixe'>";
