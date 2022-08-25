@@ -86,17 +86,18 @@ function plugin_addressing_install() {
       }
 
       //Version 2.5.0
-      if (!$DB->fieldExists("glpi_plugin_addressing_addressings", "locations_id") && !$DB->fieldExists("glpi_plugin_addressing_addressings", "fqdns_id")) {
+      if (!$DB->fieldExists("glpi_plugin_addressing_addressings", "locations_id")
+          && !$DB->fieldExists("glpi_plugin_addressing_addressings", "fqdns_id")) {
          $DB->runFile(PLUGIN_ADDRESSING_DIR . "/sql/update-2.5.0.sql");
       }
       //Version 2.9.1
       if (!$DB->tableExists("glpi_plugin_addressing_pinginfos")) {
          $DB->runFile(PLUGIN_ADDRESSING_DIR . "/sql/update-2.9.1.sql");
       }
-       //Version 2.9.2
-       if (!$DB->tableExists("glpi_plugin_addressing_ipcomments")) {
-           $DB->runFile(PLUGIN_ADDRESSING_DIR . "/sql/update-3.0.1.sql");
-       }
+      //Version 3.0.1
+      if (!$DB->fieldExists("glpi_plugin_addressing_addressings", "vlans_id")) {
+         $DB->runFile(PLUGIN_ADDRESSING_DIR . "/sql/update-3.0.1.sql");
+      }
 
    }
 
@@ -188,10 +189,9 @@ function plugin_addressing_uninstall() {
  */
 function plugin_addressing_getDatabaseRelations() {
 
-   $plugin = new Plugin();
-
-   if ($plugin->isActivated("addressing")) {
+   if (Plugin::isPluginActive("addressing")) {
       return ["glpi_networks"  => ["glpi_plugin_addressing_addressings" => "networks_id"],
+              "glpi_vlans"     => ["glpi_plugin_addressing_addressings" => "vlans_id"],
               "glpi_fqdns"     => ["glpi_plugin_addressing_addressings" => "fqdns_id"],
               "glpi_locations" => ["glpi_plugin_addressing_addressings" => "locations_id"],
               "glpi_entities"  => ["glpi_plugin_addressing_addressings" => "entities_id"]];

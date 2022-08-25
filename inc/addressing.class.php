@@ -110,6 +110,14 @@ class PluginAddressingAddressing extends CommonDBTM {
       ];
 
       $tab[] = [
+         'id'       => '7',
+         'table'    => 'glpi_vlans',
+         'field'    => 'name',
+         'name'     => VLAN::getTypeName(1),
+         'datatype' => 'dropdown'
+      ];
+
+      $tab[] = [
          'id'       => '30',
          'table'    => $this->getTable(),
          'field'    => 'id',
@@ -130,7 +138,7 @@ class PluginAddressingAddressing extends CommonDBTM {
          'table'         => $this->getTable(),
          'field'         => 'begin_ip',
          'name'          => __('First IP', 'addressing'),
-         'nosearch'      => true,
+//         'nosearch'      => true,
          'massiveaction' => false
       ];
 
@@ -139,7 +147,7 @@ class PluginAddressingAddressing extends CommonDBTM {
          'table'         => $this->getTable(),
          'field'         => 'end_ip',
          'name'          => __('Last IP', 'addressing'),
-         'nosearch'      => true,
+//         'nosearch'      => true,
          'massiveaction' => false
       ];
 
@@ -357,17 +365,11 @@ class PluginAddressingAddressing extends CommonDBTM {
 
       echo "<tr class='tab_bg_1'>";
 
-      echo "<td>" . __('Report for the IP Range', 'addressing') . "</td>"; // Mask
+      echo "<td>" . _n('VLAN', 'VLANs', 1). "</td>";
       echo "<td>";
-      echo Html::hidden('begin_ip', ['value' => $this->fields["begin_ip"],
-                                     'id'    => 'plugaddr_ipdeb']);
-      echo Html::hidden('end_ip', ['value' => $this->fields["end_ip"],
-                                   'id'    => 'plugaddr_ipfin']);
-      echo "<div id='plugaddr_range'>-</div>";
-      if ($ID > 0) {
-         $js = "plugaddr_Init(\"" . __('Invalid data !!', 'addressing') . "\");";
-         echo Html::scriptBlock('$(document).ready(function() {' . $js . '});');
-      }
+      Dropdown::show('Vlan', ['name'   => "vlans_id",
+                                  'value'  => $this->fields["vlans_id"],
+                                  'entity' => $this->fields['entities_id']]);
       echo "</td>";
 
       if ($PluginAddressingConfig->fields["reserved_ip"]) {
@@ -383,7 +385,17 @@ class PluginAddressingAddressing extends CommonDBTM {
 
       echo "<tr class='tab_bg_1'>";
 
-      echo "<td colspan='2'>";
+      echo "<td>" . __('Report for the IP Range', 'addressing') . "</td>"; // Mask
+      echo "<td>";
+      echo Html::hidden('begin_ip', ['value' => $this->fields["begin_ip"],
+                                     'id'    => 'plugaddr_ipdeb']);
+      echo Html::hidden('end_ip', ['value' => $this->fields["end_ip"],
+                                   'id'    => 'plugaddr_ipfin']);
+      echo "<div id='plugaddr_range'>-</div>";
+      if ($ID > 0) {
+         $js = "plugaddr_Init(\"" . __('Invalid data !!', 'addressing') . "\");";
+         echo Html::scriptBlock('$(document).ready(function() {' . $js . '});');
+      }
       echo "</td>";
       if ($PluginAddressingConfig->fields["use_ping"]) {
          echo "<td>" . __('Ping free IP', 'addressing') . "</td><td>";
@@ -407,26 +419,8 @@ class PluginAddressingAddressing extends CommonDBTM {
                       'enable_richtext' => false]);
       echo "</td></tr>";
 
-      echo "<tr class='tab_bg_1'><th colspan='4'>" . _n('Filter', 'Filters', 2, 'addressing');
-      echo "&nbsp;";
-      Html::showToolTip(nl2br(__('The display of items depends on these criterias', 'addressing')));
+      echo "<tr class='tab_bg_1'><th colspan='4'>" . _n('Filter', 'Filters', 1, 'addressing');
       echo "</th>";
-
-      echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __('Location') . "</td>";
-      echo "<td>";
-      Dropdown::show('Location', ['name'   => "locations_id",
-                                  'value'  => $this->fields["locations_id"],
-                                  'entity' => $this->fields['entities_id']]);
-      echo "</td>";
-
-      echo "<td>" . FQDN::getTypeName(1) . "</td>";
-      echo "<td>";
-      Dropdown::show('FQDN', ['name'   => "fqdns_id",
-                              'value'  => $this->fields["fqdns_id"],
-                              'entity' => $this->fields['entities_id']]);
-      echo "</td>";
-      echo "</tr>";
 
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __('Network') . "</td>";
@@ -434,9 +428,31 @@ class PluginAddressingAddressing extends CommonDBTM {
       Dropdown::show('Network', ['name'  => "networks_id",
                                  'value' => $this->fields["networks_id"]]);
       echo "</td>";
-      echo "<td colspan='2'>";
+       echo "<td>" . __('Use the networks as filter', 'addressing') . "</td>";
+       echo "<td>";
+       Dropdown::showYesNo("use_as_filter", $this->fields["use_as_filter"]);
+       Html::showToolTip(nl2br(__('The display of items depends on these criterias', 'addressing')));
       echo "</td>";
       echo "</tr>";
+
+       echo "<tr class='tab_bg_1'><th colspan='4'>" . __('Default fields for reservation', 'addressing');
+       echo "</th>";
+
+       echo "<tr class='tab_bg_1'>";
+       echo "<td>" . __('Location') . "</td>";
+       echo "<td>";
+       Dropdown::show('Location', ['name'   => "locations_id",
+                                   'value'  => $this->fields["locations_id"],
+                                   'entity' => $this->fields['entities_id']]);
+       echo "</td>";
+
+       echo "<td>" . FQDN::getTypeName(1) . "</td>";
+       echo "<td>";
+       Dropdown::show('FQDN', ['name'   => "fqdns_id",
+                               'value'  => $this->fields["fqdns_id"],
+                               'entity' => $this->fields['entities_id']]);
+       echo "</td>";
+       echo "</tr>";
 
       $this->showFormButtons($options);
 
@@ -516,7 +532,7 @@ class PluginAddressingAddressing extends CommonDBTM {
          $sql .= " AND `glpi_ipaddresses`.`mainitemtype` = '" . $type_filter . "'";
       }
 
-      if ($this->fields["networks_id"]) {
+      if ($this->fields["use_as_filter"] == 1 && $this->fields["networks_id"]) {
          $sql .= " AND `dev`.`networks_id` = " . $this->fields["networks_id"];
       }
 
@@ -584,7 +600,7 @@ class PluginAddressingAddressing extends CommonDBTM {
             $sql .= " AND `dev`.`is_template` = '0'";
          }
 
-         if ($this->fields["networks_id"]
+         if ($this->fields["use_as_filter"] == 1 && $this->fields["networks_id"]
              && $DB->fieldExists($type::getTable(), 'networks_id')) {
             $sql .= " AND `dev`.`networks_id`= " . $this->fields["networks_id"];
          }

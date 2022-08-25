@@ -34,19 +34,17 @@ if (!defined('GLPI_ROOT')) {
 /**
  * Class PluginAddressingPing_Equipment
  */
-class PluginAddressingPing_Equipment extends commonDBTM
-{
+class PluginAddressingPing_Equipment extends commonDBTM {
 
    static $rightname = "plugin_addressing";
 
-   function showPingForm($itemtype, $items_id)
-   {
+   function showPingForm($itemtype, $items_id) {
       global $DB, $CFG_GLPI;
 
       $obj = new $itemtype();
       $obj->getfromDB($items_id);
       //Html::printCleanArray($obj);
-      $dbu = new DbUtils();
+      $dbu      = new DbUtils();
       $itemtype = $dbu->getItemTypeForTable($obj->getTable());
 
       $list_ip = [];
@@ -86,7 +84,7 @@ class PluginAddressingPing_Equipment extends commonDBTM
          }
          echo "</select>";
          echo "&nbsp;<input class='submit btn btn-primary' type='button' value='" .
-            __s('IP ping', 'addressing') . "' id='ping_ip'>";
+              __s('IP ping', 'addressing') . "' id='ping_ip'>";
          echo "</td>";
          echo "</tr>";
 
@@ -118,10 +116,9 @@ class PluginAddressingPing_Equipment extends commonDBTM
     *
     * @return array
     */
-   function ping($system, $ip, $return = "list")
-   {
+   function ping($system, $ip, $return = "list") {
       $error = 1;
-      $list = '';
+      $list  = '';
       switch ($system) {
          case 0 :
             // linux ping
@@ -223,10 +220,9 @@ class PluginAddressingPing_Equipment extends commonDBTM
     *
     * @return array
     */
-   function getHostnameByPing($system, $ip)
-   {
+   function getHostnameByPing($system, $ip) {
       $error = 1;
-      $list = '';
+      $list  = '';
       switch ($system) {
          case 0 :
             // linux host
@@ -239,47 +235,95 @@ class PluginAddressingPing_Equipment extends commonDBTM
             break;
       }
       $list_str = implode('<br />', $list);
-//      return [$list_str, $error];
+      //      return [$list_str, $error];
       return $list[1];
    }
 
    /**
+    * Show form
+    *
+    * @param type $ip
+    * @param type $id_addressing
+    */
+   function showIPForm($ip) {
+      echo Html::script(PLUGIN_ADDRESSING_DIR_NOFULL . "/addressing.js");
+
+      $config = new PluginAddressingConfig();
+      $config->getFromDB('1');
+      $system = $config->fields["used_system"];
+
+      $ping_equip = new PluginAddressingPing_Equipment();
+      list($message, $error) = $ping_equip->ping($system, $ip);
+
+      echo "<div class='alert alert-warning'>";
+
+      echo "<div class='d-flex'>";
+
+      echo "<div class='me-2'>";
+      if ($error) {
+         echo "<i style='color:forestgreen' class='fas fa-check-circle fa-2x'></i>";
+      } else {
+         echo "<i style='color:orange' class='fas fa-exclamation-triangle fa-2x'></i>";
+      }
+      echo "</div>";
+
+      echo "<div>";
+      echo "<h4>" . _n("IP address", "IP addresses", 1) . " : " . $ip . "</h4>";
+      echo "<div class='text-muted'>";
+
+
+      if ($error) {
+         echo "<span style='color:forestgreen'>&nbsp;";
+         echo __('Ping: no response - free IP', 'addressing');
+      } else {
+         echo "<span style='color:orange'>&nbsp;";
+         echo __('Ping: got a response - used IP', 'addressing');
+      }
+      echo "</span>";
+
+      echo "</div>";
+      echo "</div>";
+      echo "</div>";
+      echo "</div>";
+   }
+
+   /**
     * @param \CommonGLPI $item
-    * @param int $tabnum
-    * @param int $withtemplate
+    * @param int         $tabnum
+    * @param int         $withtemplate
     *
     * @return bool
     */
-//   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
-//   {
-//
-//      $ping = Session::haveRight('plugin_addressing_use_ping_in_equipment', '1');
-//
-//      if ($ping && in_array($item->getType(), PluginAddressingAddressing::getTypes())) {
-//         if ($item->getField('id')) {
-//            $options = ['obj' => $item];
-//
-//            $pingE = new self();
-//            $pingE->showForm($item->getField('id'), $options);
-//         }
-//      }
-//      return true;
-//   }
-//
-//
-//   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
-//   {
-//
-//      $ping = Session::haveRight('plugin_addressing_use_ping_in_equipment', '1');
-//
-//      if ($ping && in_array($item->getType(), PluginAddressingAddressing::getTypes())) {
-//         if ($item->getField('id')) {
-//            return ['1' => __('IP ping', 'addressing')];
-//         }
-//      }
-//      return '';
-//   }
-//
-//
+   //   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
+   //   {
+   //
+   //      $ping = Session::haveRight('plugin_addressing_use_ping_in_equipment', '1');
+   //
+   //      if ($ping && in_array($item->getType(), PluginAddressingAddressing::getTypes())) {
+   //         if ($item->getField('id')) {
+   //            $options = ['obj' => $item];
+   //
+   //            $pingE = new self();
+   //            $pingE->showForm($item->getField('id'), $options);
+   //         }
+   //      }
+   //      return true;
+   //   }
+   //
+   //
+   //   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
+   //   {
+   //
+   //      $ping = Session::haveRight('plugin_addressing_use_ping_in_equipment', '1');
+   //
+   //      if ($ping && in_array($item->getType(), PluginAddressingAddressing::getTypes())) {
+   //         if ($item->getField('id')) {
+   //            return ['1' => __('IP ping', 'addressing')];
+   //         }
+   //      }
+   //      return '';
+   //   }
+   //
+   //
 
 }

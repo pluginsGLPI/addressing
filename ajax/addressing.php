@@ -56,10 +56,20 @@ if (isset($_POST['action']) && $_POST['action'] == 'viewFilter') {
                            'value'  => $_POST["value"],
                            'entity' => $_POST['entities_id']]);
 
+} elseif ($_GET['action'] == 'ping') {
+   Html::popHeader(__s('IP ping', 'addressing'), $_SERVER['PHP_SELF']);
+
+   if(filter_var($_GET["ip"], FILTER_VALIDATE_IP)) {
+      $PluginAddressingPing_Equipment = new PluginAddressingPing_Equipment();
+      $PluginAddressingPing_Equipment->showIPForm($_GET["ip"]);
+   }
+   Html::popFooter();
+
 } else {
    Html::popHeader(__s('IP reservation', 'addressing'), $_SERVER['PHP_SELF']);
-   $PluginAddressingReserveip = new PluginAddressingReserveip();
+
    if(filter_var($_GET["ip"], FILTER_VALIDATE_IP)) {
+      $PluginAddressingReserveip = new PluginAddressingReserveip();
       $PluginAddressingReserveip->showReservationForm($_GET["ip"], $_GET['id_addressing'], $_GET['rand']);
    }
 

@@ -8,3 +8,8 @@ CREATE TABLE `glpi_plugin_addressing_ipcomments`
     KEY  `plugin_addressing_addressings_id` (`plugin_addressing_addressings_id`),
     KEY  `ipname` (`ipname`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+
+ALTER TABLE `glpi_plugin_addressing_addressings`
+    ADD `vlans_id` int unsigned NOT NULL DEFAULT '0';
+ALTER TABLE `glpi_plugin_addressing_addressings`
+    ADD `use_as_filter` tinyint NOT NULL default '0';

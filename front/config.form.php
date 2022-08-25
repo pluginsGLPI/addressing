@@ -29,8 +29,7 @@
 
 include ('../../../inc/includes.php');
 
-$plugin = new Plugin();
-if ($plugin->isActivated("addressing")) {
+if (Plugin::isPluginActive("addressing")) {
    $PluginAddressingConfig = new PluginAddressingConfig();
 
    Session::checkRight("config", UPDATE);
