@@ -518,7 +518,7 @@ class PluginAddressingAddressing extends CommonDBTM {
                      AND `port`.`itemtype` = 'NetworkEquipment')
                LEFT JOIN `glpi_networknames` ON (`port`.`id` =  `glpi_networknames`.`items_id`)
                LEFT JOIN `glpi_ipaddresses` ON (`glpi_ipaddresses`.`items_id` = `glpi_networknames`.`id`)
-               WHERE (`glpi_ipaddresses`.`name` IS NOT NULL AND `glpi_ipaddresses`.`name` != '0.0.0.0' AND `glpi_ipaddresses`.`name` != '') AND `glpi_ipaddresses`.`version` LIKE 4
+               WHERE (`glpi_ipaddresses`.`name` IS NOT NULL AND `glpi_ipaddresses`.`name` != '') AND `glpi_ipaddresses`.`version` LIKE 4
                  AND (INET_ATON(`glpi_ipaddresses`.`name`) BETWEEN '$ipdeb' AND '$ipfin')
                      AND `dev`.`is_deleted` = 0
                      AND `dev`.`is_template` = 0 ";
@@ -579,7 +579,7 @@ class PluginAddressingAddressing extends CommonDBTM {
                                  AND `port`.`itemtype` = '" . $type . "')
                            LEFT JOIN `glpi_networknames` ON (`port`.`id` =  `glpi_networknames`.`items_id`)
                            LEFT JOIN `glpi_ipaddresses` ON (`glpi_ipaddresses`.`items_id` = `glpi_networknames`.`id`)
-                           WHERE (`glpi_ipaddresses`.`name` IS NOT NULL AND `glpi_ipaddresses`.`name` != '0.0.0.0' AND `glpi_ipaddresses`.`name` != '') AND `glpi_ipaddresses`.`version` LIKE 4
+                           WHERE (`glpi_ipaddresses`.`name` IS NOT NULL AND `glpi_ipaddresses`.`name` != '') AND `glpi_ipaddresses`.`version` LIKE 4
                            AND (INET_ATON(`glpi_ipaddresses`.`name`) BETWEEN '$ipdeb' AND '$ipfin')";
          $dbu = new DbUtils();
          if (isset($entities)) {
