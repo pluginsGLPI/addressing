@@ -518,8 +518,8 @@ class PluginAddressingAddressing extends CommonDBTM {
                      AND `port`.`itemtype` = 'NetworkEquipment')
                LEFT JOIN `glpi_networknames` ON (`port`.`id` =  `glpi_networknames`.`items_id`)
                LEFT JOIN `glpi_ipaddresses` ON (`glpi_ipaddresses`.`items_id` = `glpi_networknames`.`id`)
-               WHERE INET_ATON(`glpi_ipaddresses`.`name`) >= '$ipdeb'
-                     AND INET_ATON(`glpi_ipaddresses`.`name`) <= '$ipfin'
+               WHERE (`glpi_ipaddresses`.`name` IS NOT NULL AND `glpi_ipaddresses`.`name` != '0.0.0.0' AND `glpi_ipaddresses`.`name` != '') AND `glpi_ipaddresses`.`version` LIKE 4
+                 AND (INET_ATON(`glpi_ipaddresses`.`name`) BETWEEN '$ipdeb' AND '$ipfin')
                      AND `dev`.`is_deleted` = 0
                      AND `dev`.`is_template` = 0 ";
       $dbu = new DbUtils();
@@ -556,7 +556,7 @@ class PluginAddressingAddressing extends CommonDBTM {
             continue;
          }
          $itemtable = $dbu->getTableForItemType($type);
-         $sql       .= " UNION SELECT `port`.`id`,
+         $sql       .= " UNION (SELECT `port`.`id`,
                                     '" . $type . "' AS `itemtype`,
                                     `port`.`items_id`,
                                    `dev`.`name` AS dname,
@@ -579,8 +579,8 @@ class PluginAddressingAddressing extends CommonDBTM {
                                  AND `port`.`itemtype` = '" . $type . "')
                            LEFT JOIN `glpi_networknames` ON (`port`.`id` =  `glpi_networknames`.`items_id`)
                            LEFT JOIN `glpi_ipaddresses` ON (`glpi_ipaddresses`.`items_id` = `glpi_networknames`.`id`)
-                           WHERE INET_ATON(`glpi_ipaddresses`.`name`) >= '$ipdeb'
-                                 AND INET_ATON(`glpi_ipaddresses`.`name`) <= '$ipfin'";
+                           WHERE (`glpi_ipaddresses`.`name` IS NOT NULL AND `glpi_ipaddresses`.`name` != '0.0.0.0' AND `glpi_ipaddresses`.`name` != '') AND `glpi_ipaddresses`.`version` LIKE 4
+                           AND (INET_ATON(`glpi_ipaddresses`.`name`) BETWEEN '$ipdeb' AND '$ipfin')";
          $dbu = new DbUtils();
          if (isset($entities)) {
             $sql .= $dbu->getEntitiesRestrictRequest(" AND ", "dev", "entities_id", $entities);
@@ -604,7 +604,7 @@ class PluginAddressingAddressing extends CommonDBTM {
              && $DB->fieldExists($type::getTable(), 'networks_id')) {
             $sql .= " AND `dev`.`networks_id`= " . $this->fields["networks_id"];
          }
-         $sql .= " GROUP BY `ip`, `port`.`mac` ";
+         $sql .= " GROUP BY `ip`, `port`.`mac` ORDER BY ipnum)";
       }
       $res = $DB->query($sql);
       if ($res) {

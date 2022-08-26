@@ -680,7 +680,9 @@ class PluginAddressingReport extends CommonDBTM {
                      if ($see_ping_off == 1) {
                         echo $this->displaySearchNewLine($output_type, "ping_on");
                         $rand = mt_rand();
-                        $params = ['ip' => trim($ip),
+                        $params = ['id_addressing' => $PluginAddressingAddressing->getID(),
+                                   'ip' => trim($ip),
+                                   'rand' => $rand,
                                    'width'         => 450,
                                    'height'        => 300,
                                    'dialog_class'  => 'modal-sm'];
@@ -709,7 +711,7 @@ class PluginAddressingReport extends CommonDBTM {
 <i class='fas fa-clipboard fa-2x pointer' style='color: #d56f15' title='" . __("Reserve IP", 'addressing') . "'></i></a>";
                               if (isset($params) && count($params) > 0) {
                                  echo Ajax::createIframeModalWindow('reservation'.$rand,
-                                                                    PLUGIN_ADDRESSING_WEBDIR . "/ajax/addressing.php?action=showForm&ip=" . $params['ip'] . "&id_addressing=" . $params['id_addressing'] . "&rand=" . $params['rand'],
+                                                                    PLUGIN_ADDRESSING_WEBDIR . "/ajax/addressing.php?action=showForm&ip=" . $params['ip'] . "&id_addressing=" . $params['id_addressing'] . "&rand=" . $rand,
                                                                     ['title'   => __s('IP reservation', 'addressing'),
                                                                      'display' => false]);
                               }
