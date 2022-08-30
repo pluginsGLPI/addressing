@@ -113,7 +113,7 @@ class PluginAddressingAddressing extends CommonDBTM {
          'id'       => '7',
          'table'    => 'glpi_vlans',
          'field'    => 'name',
-         'name'     => VLAN::getTypeName(1),
+         'name'     => Vlan::getTypeName(1),
          'datatype' => 'dropdown'
       ];
 
