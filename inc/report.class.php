@@ -287,7 +287,7 @@ class PluginAddressingReport extends CommonDBTM {
                                  echo Ajax::createIframeModalWindow('reservation' . $rand,
                                      PLUGIN_ADDRESSING_WEBDIR . "/ajax/addressing.php?action=showForm&ip=" . $params['ip'] . "&id_addressing=" . $params['id_addressing'] . "&rand=" . $params['rand'],
                                      ['title' => __s('IP reservation', 'addressing'),
-                                         'display' => false]);
+                                         'display' => false, 'reloadonclose' => true]);
                              }
                          } else {
                              $content = __('Unknown');
@@ -344,7 +344,7 @@ class PluginAddressingReport extends CommonDBTM {
                                             PLUGIN_ADDRESSING_WEBDIR . "/ajax/addressing.php?action=showForm&ip=" .
                                             $params['ip'] . "&id_addressing=" . $params['id_addressing'] . "&rand=" . $params['rand'],
                                             ['title' => __s('IP reservation', 'addressing'),
-                                                'display' => false]);
+                                                'display' => false, 'reloadonclose' => true]);
                                     }
                                 }
                             } else {
@@ -478,7 +478,7 @@ class PluginAddressingReport extends CommonDBTM {
                      echo Ajax::createIframeModalWindow('reservation'.$rand,
                                                         PLUGIN_ADDRESSING_WEBDIR . "/ajax/addressing.php?action=showForm&ip=" . $params['ip'] . "&id_addressing=" . $params['id_addressing'] . "&rand=" . $params['rand'],
                                                         ['title'   => __s('IP reservation', 'addressing'),
-                                                         'display' => false]);
+                                                         'display' => false, 'reloadonclose' => true]);
                   }
                } else {
                   $content = "";
@@ -713,7 +713,7 @@ class PluginAddressingReport extends CommonDBTM {
                                  echo Ajax::createIframeModalWindow('reservation'.$rand,
                                                                     PLUGIN_ADDRESSING_WEBDIR . "/ajax/addressing.php?action=showForm&ip=" . $params['ip'] . "&id_addressing=" . $params['id_addressing'] . "&rand=" . $rand,
                                                                     ['title'   => __s('IP reservation', 'addressing'),
-                                                                     'display' => false]);
+                                                                     'display' => false, 'reloadonclose' => true]);
                               }
                            }
                         }

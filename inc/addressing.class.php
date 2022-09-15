@@ -1001,7 +1001,7 @@ class PluginAddressingAddressing extends CommonDBTM {
          $options[$itemtype] = $item->getTypeName($itemtype);
       }
 
-      asort($options);
+//      asort($options);
       return $options;
    }
 
