@@ -154,7 +154,8 @@ function plugin_addressing_uninstall() {
    $tables    = ["glpi_plugin_addressing_addressings",
                  "glpi_plugin_addressing_configs",
                  "glpi_plugin_addressing_filters",
-                 "glpi_plugin_addressing_pinginfos"];
+                 "glpi_plugin_addressing_pinginfos",
+                 "glpi_plugin_addressing_ipcomments"];
 
    foreach ($tables as $table) {
       $migration->dropTable($table);
