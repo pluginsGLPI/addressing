@@ -30,63 +30,66 @@
 define('PLUGIN_ADDRESSING_VERSION', '3.0.1');
 
 if (!defined("PLUGIN_ADDRESSING_DIR")) {
-   define("PLUGIN_ADDRESSING_DIR", Plugin::getPhpDir("addressing"));
-   define("PLUGIN_ADDRESSING_DIR_NOFULL", Plugin::getPhpDir("addressing",false));
-   define("PLUGIN_ADDRESSING_WEBDIR", Plugin::getWebDir("addressing"));
+    define("PLUGIN_ADDRESSING_DIR", Plugin::getPhpDir("addressing"));
+    define("PLUGIN_ADDRESSING_DIR_NOFULL", Plugin::getPhpDir("addressing", false));
+    define("PLUGIN_ADDRESSING_WEBDIR", Plugin::getWebDir("addressing"));
 }
 
 // Init the hooks of the plugins -Needed
-function plugin_init_addressing() {
-   global $PLUGIN_HOOKS;
+function plugin_init_addressing()
+{
+    global $PLUGIN_HOOKS;
 
-   $PLUGIN_HOOKS['csrf_compliant']['addressing'] = true;
+    $PLUGIN_HOOKS['csrf_compliant']['addressing'] = true;
 
-   $PLUGIN_HOOKS['change_profile']['addressing'] = ['PluginAddressingProfile', 'initProfile'];
+    $PLUGIN_HOOKS['change_profile']['addressing'] = ['PluginAddressingProfile', 'initProfile'];
 
-   Plugin::registerClass('PluginAddressingProfile',
-                         ['addtabon' => ['Profile']]);
+    Plugin::registerClass(
+        'PluginAddressingProfile',
+        ['addtabon' => ['Profile']]
+    );
 
-   if (Session::getLoginUserID()) {
-      if (Session::haveRight('plugin_addressing', READ)) {
-         $PLUGIN_HOOKS["menu_toadd"]['addressing'] = ['tools'  => 'PluginAddressingAddressing'];
-      }
+    if (Session::getLoginUserID()) {
+        if (Session::haveRight('plugin_addressing', READ)) {
+            $PLUGIN_HOOKS["menu_toadd"]['addressing'] = ['tools'  => 'PluginAddressingAddressing'];
+        }
 
-      if (Session::haveRight('plugin_addressing', UPDATE)) {
-         $PLUGIN_HOOKS['use_massive_action']['addressing']   = 1;
-      }
+        if (Session::haveRight('plugin_addressing', UPDATE)) {
+            $PLUGIN_HOOKS['use_massive_action']['addressing']   = 1;
+        }
 
-      // Config page
-      if (Session::haveRight("config", UPDATE)) {
-         $PLUGIN_HOOKS['config_page']['addressing']             = 'front/config.php';
-      }
+        // Config page
+        if (Session::haveRight("config", UPDATE)) {
+            $PLUGIN_HOOKS['config_page']['addressing']             = 'front/config.php';
+        }
 
-      $PLUGIN_HOOKS['post_item_form']['addressing'] = ['PluginAddressingPinginfo',
-         'getPingResponseForItem'];
+        $PLUGIN_HOOKS['post_item_form']['addressing'] = ['PluginAddressingPinginfo',
+           'getPingResponseForItem'];
 
-      // Add specific files to add to the header : javascript or css
-      if (isset($_SESSION['glpiactiveprofile']['interface'])
-          && $_SESSION['glpiactiveprofile']['interface'] == 'central') {
-         $PLUGIN_HOOKS['add_css']['addressing']        = "addressing.css";
-         $PLUGIN_HOOKS["javascript"]['addressing']     = [PLUGIN_ADDRESSING_DIR_NOFULL."/addressing.js"];
-         $PLUGIN_HOOKS['add_javascript']['addressing'] = 'addressing.js';
-      }
-   }
+        // Add specific files to add to the header : javascript or css
+        if (isset($_SESSION['glpiactiveprofile']['interface'])
+            && $_SESSION['glpiactiveprofile']['interface'] == 'central') {
+            $PLUGIN_HOOKS['add_css']['addressing']        = "addressing.css";
+            $PLUGIN_HOOKS["javascript"]['addressing']     = [PLUGIN_ADDRESSING_DIR_NOFULL."/addressing.js"];
+            $PLUGIN_HOOKS['add_javascript']['addressing'] = 'addressing.js';
+        }
+    }
 }
 
 
 // Get the name and the version of the plugin - Needed
-function plugin_version_addressing() {
-
-   return [
-      'name'           => _n('IP Adressing', 'IP Adressing', 2, 'addressing'),
-      'version'        => PLUGIN_ADDRESSING_VERSION,
-      'author'         => 'Gilles Portheault, Xavier Caillaud, Remi Collet, Nelly Mahu-Lasson',
-      'license'        => 'GPLv2+',
-      'homepage'       => 'https://github.com/pluginsGLPI/addressing',
-      'requirements'   => [
-         'glpi' => [
-            'min' => '10.0',
-            'max' => '11.0',
-         ]
-      ]];
+function plugin_version_addressing()
+{
+    return [
+       'name'           => _n('IP Adressing', 'IP Adressing', 2, 'addressing'),
+       'version'        => PLUGIN_ADDRESSING_VERSION,
+       'author'         => 'Gilles Portheault, Xavier Caillaud, Remi Collet, Nelly Mahu-Lasson',
+       'license'        => 'GPLv2+',
+       'homepage'       => 'https://github.com/pluginsGLPI/addressing',
+       'requirements'   => [
+          'glpi' => [
+             'min' => '10.0',
+             'max' => '11.0',
+          ]
+       ]];
 }
