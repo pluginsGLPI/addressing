@@ -81,7 +81,7 @@ function plugin_init_addressing()
 function plugin_version_addressing()
 {
     return [
-       'name'           => _n('IP Adressing', 'IP Adressing', 2, 'addressing'),
+       'name'           => _n('IP Addressing', 'IP Addressing', 2, 'addressing'),
        'version'        => PLUGIN_ADDRESSING_VERSION,
        'author'         => 'Gilles Portheault, Xavier Caillaud, Remi Collet, Nelly Mahu-Lasson',
        'license'        => 'GPLv2+',

@@ -108,7 +108,7 @@ class PluginAddressingProfile extends Profile
     {
         if ($item->getType() == 'Profile') {
             if ($item->getField('interface') == 'central') {
-                return _n('IP Adressing', 'IP Adressing', 2, 'addressing');
+                return _n('IP Addressing', 'IP Addressing', 2, 'addressing');
             }
             return '';
         }
