@@ -178,7 +178,7 @@ class PluginAddressingReport extends CommonDBTM {
                   $ping_link = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#ping$rand'>
 <i class='fas fa-terminal fa-1x pointer' style='color: orange' title='" . __("IP ping", 'addressing') . "'></i></a>";
                   echo Search::showItem($output_type, "$ping_link ", $item_num, $row_num, "class='center'");
-                  if (isset($params) && count($params) > 0) {
+                  if (isset($params) && count($params) > 0 && $output_type == Search::HTML_OUTPUT) {
                      echo Ajax::createIframeModalWindow('ping' . $rand,
                                                         PLUGIN_ADDRESSING_WEBDIR . "/ajax/addressing.php?action=ping&ip=" . $params['ip'],
                                                         ['title' => __s('IP ping', 'addressing'),
@@ -283,7 +283,7 @@ class PluginAddressingReport extends CommonDBTM {
                              $reserv = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#reservation$rand'>
 <i class='fas fa-clipboard fa-2x pointer' style='color: #d56f15' title='" . __("Reserve IP", 'addressing') . "'></i></a>";
                              echo Search::showItem($output_type, "$reserv ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
-                             if (isset($params) && count($params) > 0) {
+                             if (isset($params) && count($params) > 0 && $output_type == Search::HTML_OUTPUT) {
                                  echo Ajax::createIframeModalWindow('reservation' . $rand,
                                      PLUGIN_ADDRESSING_WEBDIR . "/ajax/addressing.php?action=showForm&ip=" . $params['ip'] . "&id_addressing=" . $params['id_addressing'] . "&rand=" . $params['rand'],
                                      ['title' => __s('IP reservation', 'addressing'),
@@ -339,7 +339,7 @@ class PluginAddressingReport extends CommonDBTM {
                                     $reserv = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#reservation$rand'>
 <i class='fas fa-clipboard fa-2x pointer' style='color: #d56f15' title='" . __("Reserve IP", 'addressing') . "'></i></a>";
                                     echo Search::showItem($output_type, "$reserv ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
-                                    if (isset($params) && count($params) > 0) {
+                                    if (isset($params) && count($params) > 0 && $output_type == Search::HTML_OUTPUT) {
                                         echo Ajax::createIframeModalWindow('reservation' . $rand,
                                             PLUGIN_ADDRESSING_WEBDIR . "/ajax/addressing.php?action=showForm&ip=" .
                                             $params['ip'] . "&id_addressing=" . $params['id_addressing'] . "&rand=" . $params['rand'],
@@ -447,7 +447,7 @@ class PluginAddressingReport extends CommonDBTM {
                $ping_link = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#ping$rand'>
 <i class='fas fa-terminal fa-1x pointer' style='color: orange' title='" . __("IP ping", 'addressing') . "'></i></a>";
                echo Search::showItem($output_type, "$ping_link ", $item_num, $row_num, "class='center'");
-               if (isset($params) && count($params) > 0) {
+               if (isset($params) && count($params) > 0 && $output_type == Search::HTML_OUTPUT) {
                   echo Ajax::createIframeModalWindow('ping' . $rand,
                                                      PLUGIN_ADDRESSING_WEBDIR . "/ajax/addressing.php?action=ping&ip=" . $params['ip'],
                                                      ['title' => __s('IP ping', 'addressing'),
@@ -474,7 +474,7 @@ class PluginAddressingReport extends CommonDBTM {
                   ];
                   $reserv  = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#reservation$rand'>
 <i class='fas fa-clipboard fa-2x pointer' style='color: #d56f15' title='" . __("Reserve IP", 'addressing') . "'></i></a>";
-                  if (isset($params) && count($params) > 0) {
+                  if (isset($params) && count($params) > 0 && $output_type == Search::HTML_OUTPUT) {
                      echo Ajax::createIframeModalWindow('reservation'.$rand,
                                                         PLUGIN_ADDRESSING_WEBDIR . "/ajax/addressing.php?action=showForm&ip=" . $params['ip'] . "&id_addressing=" . $params['id_addressing'] . "&rand=" . $params['rand'],
                                                         ['title'   => __s('IP reservation', 'addressing'),
@@ -584,7 +584,7 @@ class PluginAddressingReport extends CommonDBTM {
                         $ping_link = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#ping$rand'>
 <i class='fas fa-terminal fa-1x pointer' style='color: orange' title='" . __("IP ping", 'addressing') . "'></i></a>";
                         echo Search::showItem($output_type, "$ping_link ", $item_num, $row_num, "class='center'");
-                        if (isset($params) && count($params) > 0) {
+                        if (isset($params) && count($params) > 0 && $output_type == Search::HTML_OUTPUT) {
                            echo Ajax::createIframeModalWindow('ping' . $rand,
                                                               PLUGIN_ADDRESSING_WEBDIR . "/ajax/addressing.php?action=ping&ip=" . $params['ip'],
                                                               ['title' => __s('IP ping', 'addressing'),
@@ -689,7 +689,7 @@ class PluginAddressingReport extends CommonDBTM {
                         $ping_link = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#ping$rand'>
 <i class='fas fa-terminal fa-1x pointer' style='color: orange' title='" . __("IP ping", 'addressing') . "'></i></a>";
                         echo Search::showItem($output_type, "$ping_link ", $item_num, $row_num, "class='center'");
-                        if (isset($params) && count($params) > 0) {
+                        if (isset($params) && count($params) > 0 && $output_type == Search::HTML_OUTPUT) {
                            echo Ajax::createIframeModalWindow('ping' . $rand,
                                                               PLUGIN_ADDRESSING_WEBDIR . "/ajax/addressing.php?action=ping&ip=" . $params['ip'],
                                                               ['title' => __s('IP ping', 'addressing'),
@@ -709,7 +709,7 @@ class PluginAddressingReport extends CommonDBTM {
                               $rand = mt_rand();
                               $reserv  = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#reservation$rand'>
 <i class='fas fa-clipboard fa-2x pointer' style='color: #d56f15' title='" . __("Reserve IP", 'addressing') . "'></i></a>";
-                              if (isset($params) && count($params) > 0) {
+                              if (isset($params) && count($params) > 0 && $output_type == Search::HTML_OUTPUT) {
                                  echo Ajax::createIframeModalWindow('reservation'.$rand,
                                                                     PLUGIN_ADDRESSING_WEBDIR . "/ajax/addressing.php?action=showForm&ip=" . $params['ip'] . "&id_addressing=" . $params['id_addressing'] . "&rand=" . $rand,
                                                                     ['title'   => __s('IP reservation', 'addressing'),
