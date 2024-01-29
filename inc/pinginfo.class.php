@@ -39,7 +39,7 @@ class PluginAddressingPinginfo extends CommonDBTM {
 
    static function getTypeName($nb = 0) {
 
-      return _n('IP Adressing', 'IP Adressing', $nb, 'addressing');
+      return _n('IP Addressing', 'IP Addressing', $nb, 'addressing');
    }
 
    /**

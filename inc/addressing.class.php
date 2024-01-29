@@ -43,7 +43,7 @@ class PluginAddressingAddressing extends CommonDBTM {
 
    static function getTypeName($nb = 0) {
 
-      return _n('IP Adressing', 'IP Adressing', $nb, 'addressing');
+      return _n('IP Addressing', 'IP Addressing', $nb, 'addressing');
    }
 
    static function getIcon() {
@@ -956,7 +956,7 @@ class PluginAddressingAddressing extends CommonDBTM {
    /**
     * Type than could be linked to a Rack
     *
-    * @param $all boolean, all type, or only allowed ones
+    * @param $all boolean all type, or only allowed ones
     *
     * @return array of types
     **/
@@ -1079,4 +1079,3 @@ class PluginAddressingAddressing extends CommonDBTM {
       }
    }
 }
-
