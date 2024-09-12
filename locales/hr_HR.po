@@ -1,0 +1,239 @@
+# Croatian translation of GLPI - Addressing plugin.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Milo Ivir <mail@milotype.de>, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: GLPI - Addressing plugin 2.1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-02-04 18:01+0100\n"
+"PO-Revision-Date: 2020-02-14 00:30+0100\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 1.8.12\n"
+"Last-Translator: Milo Ivir <mail@milotype.de>\n"
+"Language: hr_HR\n"
+
+#: setup.php:71 inc/addressing.class.php:45 inc/menu.class.php:37
+#: inc/profile.class.php:108
+msgid "IP Adressing"
+msgid_plural "IP Adressing"
+msgstr[0] "IP adresiranje"
+msgstr[1] "IP adresiranje"
+msgstr[2] "IP adresiranje"
+
+#: front/addressing.form.php:52 front/addressing.form.php:82
+msgid "Problem when adding, required fields are not here"
+msgstr "Problem prilikom dodavanja, nedostaju obavezna polja"
+
+#: front/config.form.php:52
+msgid "Please activate the plugin"
+msgstr "Aktiviraj dodatak"
+
+#: inc/addressing.class.php:75 inc/addressing.class.php:277
+#: inc/addressing.class.php:601
+msgid "Ping free Ip"
+msgstr "Ping na slobodnu IP adresu"
+
+#: inc/addressing.class.php:157 inc/addressing.class.php:320
+#: inc/filter.class.php:150
+msgid "Report for the IP Range"
+msgstr "Izvještaj o rasponu IP adresa"
+
+#: inc/addressing.class.php:189 inc/addressing.class.php:291
+#: inc/addressing.class.php:293 inc/addressing.class.php:295
+#: inc/addressing.class.php:297 inc/addressing.class.php:307
+#: inc/addressing.class.php:309 inc/addressing.class.php:311
+#: inc/addressing.class.php:313 inc/addressing.class.php:326
+#: inc/filter.class.php:87 inc/filter.class.php:124 inc/filter.class.php:126
+#: inc/filter.class.php:128 inc/filter.class.php:130 inc/filter.class.php:139
+#: inc/filter.class.php:141 inc/filter.class.php:143 inc/filter.class.php:145
+#: inc/filter.class.php:156
+msgid "Invalid data !!"
+msgstr "Neispravni podaci!"
+
+#: inc/addressing.class.php:203 inc/config.class.php:62
+msgid "Assigned IP"
+msgstr "Dodijeljena IP adresa"
+
+#: inc/addressing.class.php:223 inc/addressing.class.php:610
+#: inc/report.class.php:138
+msgid "Free Ip"
+msgstr "Slobodna IP adresa"
+
+#: inc/addressing.class.php:242 inc/config.class.php:73
+msgid "Same IP"
+msgstr "Ista IP adresa"
+
+#: inc/addressing.class.php:253
+msgid "Select the network"
+msgstr "Odaberi mrežu"
+
+#: inc/addressing.class.php:260 inc/config.class.php:78
+msgid "Reserved IP"
+msgstr "Rezervirana IP adresa"
+
+#: inc/addressing.class.php:271
+msgid "Detected subnet list"
+msgstr "Otkriven popis podmreže"
+
+#: inc/addressing.class.php:288 inc/filter.class.php:121
+#: inc/filter.class.php:247
+msgid "First IP"
+msgstr "Prva IP adresa"
+
+#: inc/addressing.class.php:304 inc/filter.class.php:136
+#: inc/filter.class.php:248
+msgid "Last IP"
+msgstr "Zadnja IP adresa"
+
+#: inc/addressing.class.php:583
+msgid "Number of free ip"
+msgstr "Broj slobodnih IP adresa"
+
+#: inc/addressing.class.php:586
+msgid "Number of reserved ip"
+msgstr "Broj rezerviranih IP adresa"
+
+#: inc/addressing.class.php:589
+msgid "Number of assigned ip (no doubles)"
+msgstr "Broj dodijeljenih IP adresa (bez duplih)"
+
+#: inc/addressing.class.php:592
+msgid "Doubles"
+msgstr "Duple"
+
+#: inc/addressing.class.php:598
+msgid "Red row"
+msgstr "Crveni redak"
+
+#: inc/addressing.class.php:598
+msgid "Same Ip"
+msgstr "Ista IP adresa"
+
+#: inc/addressing.class.php:603 inc/report.class.php:269
+msgid "Ping: got a response - used Ip"
+msgstr "Ping: dobiven odgovor – korištena IP adresa"
+
+#: inc/addressing.class.php:606 inc/report.class.php:274
+msgid "Ping: no response - free Ip"
+msgstr "Ping: nema odgovora – slobodna IP adresa"
+
+#: inc/addressing.class.php:610
+msgid "Blue row"
+msgstr "Plavi redak"
+
+#: inc/addressing.class.php:614
+msgid "Green row"
+msgstr "Zeleni redak"
+
+#: inc/addressing.class.php:614
+msgid "Reserved Ip"
+msgstr "Rezervirana IP adresa"
+
+#: inc/addressing.class.php:654
+msgid "Real free Ip (Ping=KO)"
+msgstr "Stvarno slobodna IP adresa (Ping=KO)"
+
+#: inc/addressing.class.php:663
+msgid "Problem detected with the IP Range"
+msgstr "Otkriven problem s rasponom IP adresa"
+
+#: inc/config.class.php:49
+msgid "System for ping"
+msgstr "Sustav za ping"
+
+#: inc/config.class.php:52
+msgid "Linux ping"
+msgstr "Linux ping"
+
+#: inc/config.class.php:53
+msgid "Windows"
+msgstr "Windows"
+
+#: inc/config.class.php:54
+msgid "Linux fping"
+msgstr "Linux fping"
+
+#: inc/config.class.php:55
+msgid "BSD ping"
+msgstr "BSD ping"
+
+#: inc/config.class.php:56
+msgid "MacOSX ping"
+msgstr "MacOSX ping"
+
+#: inc/config.class.php:60
+msgid "Display"
+msgstr "Prikaz"
+
+#: inc/config.class.php:67
+msgid "Free IP"
+msgstr "Slobodna IP adresa"
+
+#: inc/config.class.php:85
+msgid "Use Ping"
+msgstr "Koristi ping"
+
+#: inc/filter.class.php:43
+msgid "Filter"
+msgid_plural "Filters"
+msgstr[0] "Filtar"
+msgstr[1] "Filtri"
+msgstr[2] "Filtri"
+
+#: inc/filter.class.php:210
+msgid "Add a filter"
+msgstr "Dodaj filtar"
+
+#: inc/ping_equipment.class.php:85 inc/ping_equipment.class.php:192
+msgid "IP ping"
+msgstr "IP ping"
+
+#: inc/ping_equipment.class.php:98
+msgid "Ping"
+msgstr "Ping"
+
+#: inc/ping_equipment.class.php:103
+msgid "Result"
+msgstr "Rezultat"
+
+#: inc/ping_equipment.class.php:117
+msgid "No IP for this equipment"
+msgstr "Nema IP adresa za ovaj uređaj"
+
+#: inc/profile.class.php:44 inc/profile.class.php:74
+msgid "Generate reports"
+msgstr "Izradi izvještaje"
+
+#: inc/profile.class.php:47 inc/profile.class.php:86
+msgid "Use ping on equipment form"
+msgstr "Koristi ping zadan u obrascu uređaja"
+
+#: inc/report.class.php:227
+msgid "Reserved Address"
+msgstr "Rezervirana adresa"
+
+#: inc/reserveip.class.php:142
+msgid "Object's name"
+msgstr "Ime objekta"
+
+#: inc/reserveip.class.php:193
+msgid "Ping: ip address free"
+msgstr "Ping: IP adresa je slobodna"
+
+#: inc/reserveip.class.php:196
+msgid "Ping: not available IP address"
+msgstr "Ping: nije dostupna IP adresa"
+
+#: inc/reserveip.class.php:259
+msgid "Name already in use"
+msgstr "Ime se već koristi"
+
+#: inc/reserveip.class.php:297
+msgid "Validate the reservation"
+msgstr "Provjeri rezervaciju"
