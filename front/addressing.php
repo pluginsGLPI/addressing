@@ -29,19 +29,24 @@
 
 include ('../../../inc/includes.php');
 
+Session::checkLoginUser();
+
+$PluginAddressingAddressing = new PluginAddressingAddressing();
+
 if (isset($_GET['action']) && $_GET['action'] == 'isName') {
-   $item  = new $_GET['type']();
-   $datas = $item->find(['name' => ['LIKE', $_GET['name']]]);
-   if (count($datas) > 0) {
-      echo json_encode(true);
-   } else {
-      echo json_encode(false);
-   }
+
+    if ($PluginAddressingAddressing->canView() || Session::haveRight("config", UPDATE)) {
+        $item = new $_GET['type']();
+        $datas = $item->find(['name' => ['LIKE', $_GET['name']]]);
+        if (count($datas) > 0) {
+            echo json_encode(true);
+        } else {
+            echo json_encode(false);
+        }
+    }
 } else {
 
    Html::header(PluginAddressingAddressing::getTypeName(2), '', "tools", "pluginaddressingaddressing");
-
-   $PluginAddressingAddressing = new PluginAddressingAddressing();
 
    if ($PluginAddressingAddressing->canView() || Session::haveRight("config", UPDATE)) {
       Search::show("PluginAddressingAddressing");

@@ -29,6 +29,8 @@
 
 include ('../../../inc/includes.php');
 
+Session::checkLoginUser();
+
 $reserveip = new PluginAddressingReserveip();
 
 if (isset($_POST['add'])) {

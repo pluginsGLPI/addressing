@@ -35,6 +35,8 @@ include ('../../../inc/includes.php');
 
 Html::header(PluginAddressingAddressing::getTypeName(2), '', "tools", "pluginaddressingaddressing");
 
+Session::checkLoginUser();
+
 if (!isset($_GET["start"])) {
    $_GET["start"] = 0;
 }

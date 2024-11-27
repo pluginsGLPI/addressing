@@ -29,7 +29,7 @@
 
 include ('../../../inc/includes.php');
 
-
+Session::checkLoginUser();
 
 $filter = new PluginAddressingFilter();
 
