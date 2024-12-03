@@ -97,7 +97,7 @@ class PluginAddressingFilter extends CommonDBTM {
       echo Html::hidden('plugin_addressing_addressings_id', ['value' => $options['items_id']]);
       echo "<td>" . __('Name') . "</td>";
       echo "<td>";
-      echo Html::input('name', ['value' => $this->fields['name'], 'size' => 40]);
+      echo Html::input('name', ['value' => $this->fields['name'], 'size' => 40, 'required' => '']);
       echo "</td>";
       echo "</tr>";
 
