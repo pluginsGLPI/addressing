@@ -184,18 +184,21 @@ class PluginAddressingReserveip extends CommonDBTM {
                <td>" . _n("IP address", "IP addresses", 1) . "</td>
                <td>" . $ip . "</td>
                <td>";
-      $config = new PluginAddressingConfig();
-      $config->getFromDB('1');
-      $system = $config->fields["used_system"];
+      $ping = $addressing->fields["use_ping"];
+      if ($ping == 1) {
+          $config = new PluginAddressingConfig();
+          $config->getFromDB('1');
+          $system = $config->fields["used_system"];
 
-      $ping_equip = new PluginAddressingPing_Equipment();
-      list($message, $error) = $ping_equip->ping($system, $ip);
-      if ($error) {
-         echo "<i class='fas fa-check-circle fa-1x' style='color:forestgreen'></i><span style='color:forestgreen'>&nbsp;";
-         echo __('Ping: no response - free IP', 'addressing');
-      } else {
-         echo "<i class='fas fa-exclamation-triangle fa-1x' style='color:orange'></i><span style='color:orange'>&nbsp;";
-         echo __('Ping: got a response - used IP', 'addressing');
+          $ping_equip = new PluginAddressingPing_Equipment();
+          list($message, $error) = $ping_equip->ping($system, $ip);
+          if ($error) {
+             echo "<i class='fas fa-check-circle fa-1x' style='color:forestgreen'></i><span style='color:forestgreen'>&nbsp;";
+             echo __('Ping: no response - free IP', 'addressing');
+          } else {
+             echo "<i class='fas fa-exclamation-triangle fa-1x' style='color:orange'></i><span style='color:orange'>&nbsp;";
+             echo __('Ping: got a response - used IP', 'addressing');
+          }
       }
       echo "</span>";
       echo "</td></tr>";
