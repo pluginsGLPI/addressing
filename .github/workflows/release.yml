@@ -4,8 +4,7 @@ on:
     # Sequence of patterns matched against refs/tags
     tags:
       - '*.*.*' # Push events to matching ex:20.15.10
-permissions:
-  contents: write
+
 name: Create release with tag
 env:
   TAG_VALUE: ${GITHUB_REF/refs\/tags\//}
