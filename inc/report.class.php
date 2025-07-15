@@ -57,9 +57,9 @@ class PluginAddressingReport extends CommonDBTM {
             $PDF_TABLE .= "<tr nobr=\"true\" $style>";
             break;
 
-         case Search::SYLK_OUTPUT : //sylk
+//         case Search::SYLK_OUTPUT : //sylk
             //       $out="\n";
-            break;
+//            break;
 
          case Search::CSV_OUTPUT : //csv
             //$out="\n";

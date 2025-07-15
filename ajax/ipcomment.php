@@ -32,8 +32,8 @@
 // ----------------------------------------------------------------------
 
 
-include('../../../inc/includes.php');
 
+Session::checkRight('plugin_addressing', UPDATE);
 header("Content-Type: application/json; charset=UTF-8");
 Html::header_nocache();
 
@@ -48,7 +48,7 @@ if (!isset($_POST['ipname'])) {
 
 $addressing_id = $_POST['addressing_id'];
 $ipname        = $_POST['ipname'];
-$content       = Toolbox::addslashes_deep($_POST['contentC']);
+$content       = $_POST['contentC'];
 
 $ipcomment = new PluginAddressingIpcomment();
 if ($ipcomment->getFromDBByCrit(['plugin_addressing_addressings_id' => $addressing_id, 'ipname' => $ipname])) {

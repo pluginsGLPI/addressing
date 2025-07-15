@@ -27,7 +27,6 @@
  --------------------------------------------------------------------------
  */
 
-include ('../../../inc/includes.php');
 
 if (Plugin::isPluginActive("addressing")) {
    $PluginAddressingConfig = new PluginAddressingConfig();
@@ -45,7 +44,7 @@ if (Plugin::isPluginActive("addressing")) {
    }
 
 } else {
-   Html::header(__('Setup'), '', "config", "plugins");
+   Html::header(__('Setup'), '', "config", "plugin");
    echo "<div class='alert alert-important alert-warning d-flex'>";
    echo "<b>".__('Please activate the plugin', 'addressing')."</b></div>";
    Html::footer();

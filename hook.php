@@ -133,6 +133,29 @@ function plugin_addressing_install()
     $migration->dropTable('glpi_plugin_addressing_profiles');
     CronTask::Register(PluginAddressingPinginfo::class, 'UpdatePing', DAY_TIMESTAMP);
 
+    if (!$DB->request([
+        'FROM'   => 'glpi_displaypreferences',
+        'WHERE'  => [
+            'itemtype'  => 'PluginAddressingAddressing',
+            'num'       => 2,
+            'users_id'  => 0,
+            'interface' => 'central'
+        ]
+    ])->count()) {
+        try {
+            $DB->insert('glpi_displaypreferences', [
+                'itemtype'  => 'PluginAddressingAddressing',
+                'num'       => 2,
+                'rank'      => 2,
+                'users_id'  => 0,
+                'interface' => 'central'
+            ]);
+        } catch (Throwable $e) {
+            Toolbox::logDebug('Error when inserting into glpi_displaypreferences : ' . $e->getMessage());
+            return false;
+        }
+    }
+
     return true;
 }
 
@@ -234,7 +257,8 @@ function plugin_addressing_giveItem($type, $ID, $data, $num)
 
     $dbu = new DbUtils();
 
-    $searchopt =& Search::getOptions($type);
+    $options = Search::getOptions($type);
+    $searchopt =& $options;
     $table     = $searchopt[$ID]["table"];
     $field     = $searchopt[$ID]["field"];
     $out       = "";

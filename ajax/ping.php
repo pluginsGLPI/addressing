@@ -33,15 +33,15 @@
 // ----------------------------------------------------------------------
 
 
-include('../../../inc/includes.php');
 
+Session::checkRight('plugin_addressing', UPDATE);
 header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
 
 Session::checkLoginUser();
 
 if (!isset($_POST['ip']) || !filter_var($_POST["ip"], FILTER_VALIDATE_IP)) {
-   exit();
+    	throw new \Glpi\Exception\Http\NotFoundHttpException();
 }
 $ip = $_POST['ip'];
 $itemtype = $_POST['itemtype'];

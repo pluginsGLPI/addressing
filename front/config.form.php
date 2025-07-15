@@ -27,7 +27,7 @@
  --------------------------------------------------------------------------
  */
 
-include ('../../../inc/includes.php');
+
 
 if (Plugin::isPluginActive("addressing")) {
    $PluginAddressingConfig = new PluginAddressingConfig();

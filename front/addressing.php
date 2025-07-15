@@ -27,7 +27,8 @@
  --------------------------------------------------------------------------
  */
 
-include ('../../../inc/includes.php');
+
+use Glpi\Exception\Http\AccessDeniedHttpException;
 
 Session::checkLoginUser();
 
@@ -52,7 +53,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'isName') {
       Search::show("PluginAddressingAddressing");
 
    } else {
-      Html::displayRightError();
+       throw new AccessDeniedHttpException();
    }
 
    Html::footer();

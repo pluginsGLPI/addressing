@@ -215,7 +215,7 @@ class PluginAddressingAddressing extends CommonDBTM {
 
    function showForm($ID, $options = []) {
 
-      Html::requireJs("addressing");
+//      Html::requireJs("addressing");
       $this->initForm($ID, $options);
 
       $options['formoptions']
@@ -606,7 +606,7 @@ class PluginAddressingAddressing extends CommonDBTM {
          }
          $sql .= " GROUP BY `ip`, `port`.`mac` ORDER BY ipnum)";
       }
-      $res = $DB->query($sql);
+      $res = $DB->doQuery($sql);
       if ($res) {
          while ($row = $DB->fetchAssoc($res)) {
             $result["IP" . $row["ipnum"]][] = $row;

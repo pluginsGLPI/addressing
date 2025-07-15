@@ -81,7 +81,7 @@ class PluginAddressingFilter extends CommonDBTM {
          $this->check(-1, CREATE, $options);
       }
 
-      Html::requireJs("addressing");
+//      Html::requireJs("addressing");
 
       $options['formoptions']
             = "onSubmit='return plugaddr_Check(\"".__('Invalid data !!', 'addressing')."\")'";
