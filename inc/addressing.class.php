@@ -891,10 +891,10 @@ class PluginAddressingAddressing extends CommonDBTM {
                              var addressing_id = {$this->getID()};
                              
                             
-                          
+                       
                              $('#ajax_loader').show();
                              $.ajax({
-                                url: '" . PLUGIN_ADDRESSING_WEBDIR . "/ajax/updatepinginfo.php',
+                                url: '/plugins/addressing/ajax/updatepinginfo.php',
                                    type: 'POST',
                                    data: {'addressing_id' : addressing_id},
                                    success: function(response){

@@ -36,6 +36,7 @@ if (!defined("PLUGIN_ADDRESSING_DIR")) {
     define("PLUGIN_ADDRESSING_DIR_NOFULL", Plugin::getPhpDir("addressing", false));
     define("PLUGIN_ADDRESSING_WEBDIR", Plugin::getWebDir("addressing"));
 }
+//var_dump(PLUGIN_ADDRESSING_WEBDIR);exit(); // /plugins/addressing
 
 // Init the hooks of the plugins -Needed
 function plugin_init_addressing()

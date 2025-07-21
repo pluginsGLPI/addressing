@@ -206,7 +206,7 @@ class PluginAddressingPinginfo extends CommonDBTM {
                     'items_id' => $items_id,
                     'itemtype' => $itemtype];
          Ajax::updateItemJsCode("ping_item",
-                                PLUGIN_ADDRESSING_WEBDIR . "/ajax/seePingTab.php",
+                                "/plugins/addressing/ajax/seePingTab.php",
                                 $params);
          echo "};";
          echo "</script>\n";
