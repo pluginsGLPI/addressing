@@ -28,17 +28,19 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access directly to this file");
+    die("Sorry. You can't access directly to this file");
 }
 
 /**
  * Class PluginAddressingPing_Equipment
  */
-class PluginAddressingPing_Equipment extends commonDBTM {
+class PluginAddressingPing_Equipment extends commonDBTM
+{
 
-   static $rightname = "plugin_addressing";
+    static $rightname = "plugin_addressing";
 
-    function showPingForm($itemtype, $items_id) {
+    function showPingForm($itemtype, $items_id)
+    {
         global $DB, $CFG_GLPI;
 
         $obj = new $itemtype();
@@ -144,103 +146,104 @@ class PluginAddressingPing_Equipment extends commonDBTM {
     *
     * @return array
     */
-   function ping($system, $ip, $return = "list") {
-      $error = 1;
-      $list  = '';
-      switch ($system) {
-         case 0 :
-            // linux ping
-            if ($return == "true") {
-               exec("ping -c 1 -w 1 " . $ip, $list);
-            } else {
-               exec("ping -c 1 -w 1 " . $ip, $list, $error);
-            }
-            $nb = count($list);
-            if (isset($nb) && $return == "true") {
-               for ($i = 0; $i < $nb; $i++) {
-                  if (strpos($list[$i], "ttl=") > 0) {
-                     return true;
-                  }
-               }
-            }
-            break;
+    function ping($system, $ip, $return = "list")
+    {
+        $error = 1;
+        $list  = '';
+        switch ($system) {
+            case 0:
+                // linux ping
+                if ($return == "true") {
+                    exec("ping -c 1 -w 1 " . $ip, $list);
+                } else {
+                    exec("ping -c 1 -w 1 " . $ip, $list, $error);
+                }
+                $nb = count($list);
+                if (isset($nb) && $return == "true") {
+                    for ($i = 0; $i < $nb; $i++) {
+                        if (strpos($list[$i], "ttl=") > 0) {
+                              return true;
+                        }
+                    }
+                }
+                break;
 
-         case 1 :
-            //windows
-            if ($return == "true") {
-               exec("ping.exe -n 1 -w 100 -i 64 " . $ip, $list);
-            } else {
-               exec("ping.exe -n 1 -w 100 -i 64 " . $ip, $list, $error);
-            }
-            $nb = count($list);
-            if (isset($nb) && $return == "true") {
-               for ($i = 0; $i < $nb; $i++) {
-                  if (strpos($list[$i], "TTL") > 0) {
-                     return true;
-                  }
-               }
-            }
-            break;
+            case 1:
+               //windows
+                if ($return == "true") {
+                    exec("ping.exe -n 1 -w 100 -i 64 " . $ip, $list);
+                } else {
+                    exec("ping.exe -n 1 -w 100 -i 64 " . $ip, $list, $error);
+                }
+                $nb = count($list);
+                if (isset($nb) && $return == "true") {
+                    for ($i = 0; $i < $nb; $i++) {
+                        if (strpos($list[$i], "TTL") > 0) {
+                             return true;
+                        }
+                    }
+                }
+                break;
 
-         case 2 :
-            //linux fping
-            if ($return == "true") {
-               exec("fping -r1 -c1 -t100 " . $ip, $list);
-            } else {
-               exec("fping -r1 -c1 -t100 " . $ip, $list, $error);
-            }
-            $nb = count($list);
-            if (isset($nb) && $return == "true") {
-               for ($i = 0; $i < $nb; $i++) {
-                  if (strpos($list[$i], "bytes") > 0) {
-                     return true;
-                  }
-               }
-            }
-            break;
+            case 2:
+               //linux fping
+                if ($return == "true") {
+                    exec("fping -r1 -c1 -t100 " . $ip, $list);
+                } else {
+                    exec("fping -r1 -c1 -t100 " . $ip, $list, $error);
+                }
+                $nb = count($list);
+                if (isset($nb) && $return == "true") {
+                    for ($i = 0; $i < $nb; $i++) {
+                        if (strpos($list[$i], "bytes") > 0) {
+                             return true;
+                        }
+                    }
+                }
+                break;
 
-         case 3 :
-            // BSD ping
-            if ($return == "true") {
-               exec("ping -c 1 -W 1 " . $ip, $list);
-            } else {
-               exec("ping -c 1 -W 1 " . $ip, $list, $error);
-            }
-            $nb = count($list);
-            if (isset($nb) && $return == "true") {
-               for ($i = 0; $i < $nb; $i++) {
-                  if (strpos($list[$i], "ttl=") > 0) {
-                     return true;
-                  }
-               }
-            }
-            break;
+            case 3:
+               // BSD ping
+                if ($return == "true") {
+                    exec("ping -c 1 -W 1 " . $ip, $list);
+                } else {
+                    exec("ping -c 1 -W 1 " . $ip, $list, $error);
+                }
+                $nb = count($list);
+                if (isset($nb) && $return == "true") {
+                    for ($i = 0; $i < $nb; $i++) {
+                        if (strpos($list[$i], "ttl=") > 0) {
+                             return true;
+                        }
+                    }
+                }
+                break;
 
-         case 4 :
-            // MacOSX ping
-            if ($return == "true") {
-               exec("ping -c 1 -t 1 " . $ip, $list);
-            } else {
-               exec("ping -c 1 -t 1 " . $ip, $list, $error);
-            }
-            $nb = count($list);
-            if (isset($nb) && $return == "true") {
-               for ($i = 0; $i < $nb; $i++) {
-                  if (strpos($list[$i], "ttl=") > 0) {
-                     return true;
-                  }
-               }
-            }
-            break;
-      }
-      if ($return == "list") {
-         $list_str = implode('<br />', $list);
+            case 4:
+               // MacOSX ping
+                if ($return == "true") {
+                    exec("ping -c 1 -t 1 " . $ip, $list);
+                } else {
+                    exec("ping -c 1 -t 1 " . $ip, $list, $error);
+                }
+                $nb = count($list);
+                if (isset($nb) && $return == "true") {
+                    for ($i = 0; $i < $nb; $i++) {
+                        if (strpos($list[$i], "ttl=") > 0) {
+                             return true;
+                        }
+                    }
+                }
+                break;
+        }
+        if ($return == "list") {
+            $list_str = implode('<br />', $list);
 
-         return [$list_str, $error];
-      } else {
-         return false;
-      }
-   }
+            return [$list_str, $error];
+        } else {
+            return false;
+        }
+    }
 
    /**
     * @param $system
@@ -248,24 +251,25 @@ class PluginAddressingPing_Equipment extends commonDBTM {
     *
     * @return array
     */
-   function getHostnameByPing($system, $ip) {
-      $error = 1;
-      $list  = '';
-      switch ($system) {
-         case 0 :
-            // linux host
-            exec("ping -c 1 -w 1 -a " . $ip, $list, $error);
-            break;
+    function getHostnameByPing($system, $ip)
+    {
+        $error = 1;
+        $list  = '';
+        switch ($system) {
+            case 0:
+                // linux host
+                exec("ping -c 1 -w 1 -a " . $ip, $list, $error);
+                break;
 
-         case 1 :
-            //windows
-            exec("ping.exe -n 1 -w 100 -i 64 -a " . $ip, $list, $error);
-            break;
-      }
-      $list_str = implode('<br />', $list);
-      //      return [$list_str, $error];
-      return $list[1];
-   }
+            case 1:
+               //windows
+                exec("ping.exe -n 1 -w 100 -i 64 -a " . $ip, $list, $error);
+                break;
+        }
+        $list_str = implode('<br />', $list);
+       //      return [$list_str, $error];
+        return $list[1];
+    }
 
    /**
     * Show form
@@ -273,47 +277,48 @@ class PluginAddressingPing_Equipment extends commonDBTM {
     * @param type $ip
     * @param type $id_addressing
     */
-   function showIPForm($ip) {
-      echo Html::script(PLUGIN_ADDRESSING_DIR_NOFULL . "/addressing.js");
+    function showIPForm($ip)
+    {
+        echo Html::script(PLUGIN_ADDRESSING_DIR_NOFULL . "/addressing.js");
 
-      $config = new PluginAddressingConfig();
-      $config->getFromDB('1');
-      $system = $config->fields["used_system"];
+        $config = new PluginAddressingConfig();
+        $config->getFromDB('1');
+        $system = $config->fields["used_system"];
 
-      $ping_equip = new PluginAddressingPing_Equipment();
-      list($message, $error) = $ping_equip->ping($system, $ip);
+        $ping_equip = new PluginAddressingPing_Equipment();
+        list($message, $error) = $ping_equip->ping($system, $ip);
 
-      echo "<div class='alert alert-warning'>";
+        echo "<div class='alert alert-warning'>";
 
-      echo "<div class='d-flex'>";
+        echo "<div class='d-flex'>";
 
-      echo "<div class='me-2'>";
-      if ($error) {
-         echo "<i style='color:forestgreen' class='fas fa-check-circle fa-2x'></i>";
-      } else {
-         echo "<i style='color:orange' class='fas fa-exclamation-triangle fa-2x'></i>";
-      }
-      echo "</div>";
+        echo "<div class='me-2'>";
+        if ($error) {
+            echo "<i style='color:forestgreen' class='fas fa-check-circle fa-2x'></i>";
+        } else {
+            echo "<i style='color:orange' class='fas fa-exclamation-triangle fa-2x'></i>";
+        }
+        echo "</div>";
 
-      echo "<div>";
-      echo "<h4>" . _n("IP address", "IP addresses", 1) . " : " . $ip . "</h4>";
-      echo "<div class='text-muted'>";
+        echo "<div>";
+        echo "<h4>" . _n("IP address", "IP addresses", 1) . " : " . $ip . "</h4>";
+        echo "<div class='text-muted'>";
 
 
-      if ($error) {
-         echo "<span style='color:forestgreen'>&nbsp;";
-         echo __('Ping: no response - free IP', 'addressing');
-      } else {
-         echo "<span style='color:orange'>&nbsp;";
-         echo __('Ping: got a response - used IP', 'addressing');
-      }
-      echo "</span>";
+        if ($error) {
+            echo "<span style='color:forestgreen'>&nbsp;";
+            echo __('Ping: no response - free IP', 'addressing');
+        } else {
+            echo "<span style='color:orange'>&nbsp;";
+            echo __('Ping: got a response - used IP', 'addressing');
+        }
+        echo "</span>";
 
-      echo "</div>";
-      echo "</div>";
-      echo "</div>";
-      echo "</div>";
-   }
+        echo "</div>";
+        echo "</div>";
+        echo "</div>";
+        echo "</div>";
+    }
 
    /**
     * @param \CommonGLPI $item
@@ -353,5 +358,4 @@ class PluginAddressingPing_Equipment extends commonDBTM {
    //   }
    //
    //
-
 }
