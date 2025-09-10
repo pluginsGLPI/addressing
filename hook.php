@@ -98,21 +98,21 @@ function plugin_addressing_install()
     if ($update) {
         $query_  = "SELECT *
                   FROM `glpi_plugin_addressing_profiles` ";
-        $result_ = $DB->query($query_);
+        $result_ = $DB->doQuery($query_);
 
         if ($DB->numrows($result_) > 0) {
             while ($data = $DB->fetchArray($result_)) {
                 $query  = "UPDATE `glpi_plugin_addressing_profiles`
                       SET `profiles_id` = '" . $data["id"] . "'
                       WHERE `id` = '" . $data["id"] . "'";
-                $result = $DB->query($query);
+                $result = $DB->doQuery($query);
             }
         }
 
         if ($DB->fieldExists("glpi_plugin_addressing_profiles", "name")) {
             $query  = "ALTER TABLE `glpi_plugin_addressing_profiles`
                     DROP `name` ";
-            $result = $DB->query($query);
+            $result = $DB->doQuery($query);
         }
 
         Plugin::migrateItemType(
@@ -132,6 +132,29 @@ function plugin_addressing_install()
     $migration = new Migration("2.5.0");
     $migration->dropTable('glpi_plugin_addressing_profiles');
     CronTask::Register(PluginAddressingPinginfo::class, 'UpdatePing', DAY_TIMESTAMP);
+
+    if (!$DB->request([
+        'FROM'   => 'glpi_displaypreferences',
+        'WHERE'  => [
+            'itemtype'  => 'PluginAddressingAddressing',
+            'num'       => 2,
+            'users_id'  => 0,
+            'interface' => 'central'
+        ]
+    ])->count()) {
+        try {
+            $DB->insert('glpi_displaypreferences', [
+                'itemtype'  => 'PluginAddressingAddressing',
+                'num'       => 2,
+                'rank'      => 2,
+                'users_id'  => 0,
+                'interface' => 'central'
+            ]);
+        } catch (Throwable $e) {
+            Toolbox::logDebug('Error when inserting into glpi_displaypreferences : ' . $e->getMessage());
+            return false;
+        }
+    }
 
     return true;
 }
@@ -234,7 +257,8 @@ function plugin_addressing_giveItem($type, $ID, $data, $num)
 
     $dbu = new DbUtils();
 
-    $searchopt =& Search::getOptions($type);
+    $options = Search::getOptions($type);
+    $searchopt =& $options;
     $table     = $searchopt[$ID]["table"];
     $field     = $searchopt[$ID]["field"];
     $out       = "";

@@ -27,12 +27,13 @@
  --------------------------------------------------------------------------
  */
 
+use Glpi\Plugin\Hooks;
+
 define('PLUGIN_ADDRESSING_VERSION', '3.0.3');
 
 if (!defined("PLUGIN_ADDRESSING_DIR")) {
     define("PLUGIN_ADDRESSING_DIR", Plugin::getPhpDir("addressing"));
     define("PLUGIN_ADDRESSING_DIR_NOFULL", Plugin::getPhpDir("addressing", false));
-    define("PLUGIN_ADDRESSING_WEBDIR", Plugin::getWebDir("addressing"));
 }
 
 // Init the hooks of the plugins -Needed
@@ -69,9 +70,8 @@ function plugin_init_addressing()
         // Add specific files to add to the header : javascript or css
         if (isset($_SESSION['glpiactiveprofile']['interface'])
             && $_SESSION['glpiactiveprofile']['interface'] == 'central') {
-            $PLUGIN_HOOKS['add_css']['addressing']        = "addressing.css";
-            $PLUGIN_HOOKS["javascript"]['addressing']     = [PLUGIN_ADDRESSING_DIR_NOFULL."/addressing.js"];
-            $PLUGIN_HOOKS['add_javascript']['addressing'] = 'addressing.js';
+            $PLUGIN_HOOKS[Hooks::ADD_CSS]['addressing']        = "addressing.css";
+            $PLUGIN_HOOKS[Hooks::ADD_JAVASCRIPT]['addressing'] = 'addressing.js';
         }
     }
 }
@@ -88,8 +88,8 @@ function plugin_version_addressing()
        'homepage'       => 'https://github.com/pluginsGLPI/addressing',
        'requirements'   => [
           'glpi' => [
-             'min' => '10.0',
-             'max' => '11.0',
+             'min' => '11.0',
+             'max' => '12.0',
           ]
        ]];
 }

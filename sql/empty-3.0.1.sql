@@ -79,8 +79,8 @@ CREATE TABLE `glpi_plugin_addressing_ipcomments`
 
 INSERT INTO `glpi_plugin_addressing_configs` VALUES ('1','1','1','1','1','0','0');
 
-INSERT INTO `glpi_displaypreferences` VALUES (NULL,'PluginAddressingAddressing',2,2,0);
-INSERT INTO `glpi_displaypreferences` VALUES (NULL,'PluginAddressingAddressing',3,6,0);
-INSERT INTO `glpi_displaypreferences` VALUES (NULL,'PluginAddressingAddressing',4,5,0);
-INSERT INTO `glpi_displaypreferences` VALUES (NULL,'PluginAddressingAddressing',1000,3,0);
-INSERT INTO `glpi_displaypreferences` VALUES (NULL,'PluginAddressingAddressing',1001,4,0);
+INSERT INTO `glpi_displaypreferences` VALUES (NULL,'PluginAddressingAddressing',2,2,0,'central');
+INSERT INTO `glpi_displaypreferences` VALUES (NULL,'PluginAddressingAddressing',3,6,0,'central');
+INSERT INTO `glpi_displaypreferences` VALUES (NULL,'PluginAddressingAddressing',4,5,0,'central');
+INSERT INTO `glpi_displaypreferences` VALUES (NULL,'PluginAddressingAddressing',1000,3,0,'central');
+INSERT INTO `glpi_displaypreferences` VALUES (NULL,'PluginAddressingAddressing',1001,4,0,'central');

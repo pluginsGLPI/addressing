@@ -104,11 +104,15 @@ class PluginAddressingProfile extends Profile
         echo "</div>";
     }
 
+    static function getIcon() {
+        return PluginAddressingAddressing::getIcon();
+    }
+
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
         if ($item->getType() == 'Profile') {
             if ($item->getField('interface') == 'central') {
-                return _n('IP Addressing', 'IP Addressing', 2, 'addressing');
+                return self::createTabEntry(_n('IP Addressing', 'IP Addressing', 2, 'addressing'));
             }
             return '';
         }

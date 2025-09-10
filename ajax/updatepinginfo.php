@@ -32,8 +32,8 @@
 // ----------------------------------------------------------------------
 
 
-include('../../../inc/includes.php');
 
+Session::checkRight('plugin_addressing', UPDATE);
 header("Content-Type: application/json; charset=UTF-8");
 Html::header_nocache();
 

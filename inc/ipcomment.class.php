@@ -28,7 +28,7 @@
  */
 
 if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access directly to this file");
+    die("Sorry. You can't access directly to this file");
 }
 
 /**
@@ -36,17 +36,11 @@ if (!defined('GLPI_ROOT')) {
  */
 class PluginAddressingIpcomment extends CommonDBTM
 {
-   static $rightname = "plugin_addressing";
+    static $rightname = "plugin_addressing";
 
-   static function getTypeName($nb = 0)
-   {
+    static function getTypeName($nb = 0)
+    {
 
-      return _n('IP Addressing', 'IP Addressing', $nb, 'addressing');
-   }
-
-
-
-
-
-
+        return _n('IP Addressing', 'IP Addressing', $nb, 'addressing');
+    }
 }
