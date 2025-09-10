@@ -38,79 +38,107 @@ class PluginAddressingPing_Equipment extends commonDBTM {
 
    static $rightname = "plugin_addressing";
 
-   function showPingForm($itemtype, $items_id) {
-      global $DB, $CFG_GLPI;
+    function showPingForm($itemtype, $items_id) {
+        global $DB, $CFG_GLPI;
 
-      $obj = new $itemtype();
-      $obj->getfromDB($items_id);
-      //Html::printCleanArray($obj);
-      $dbu      = new DbUtils();
-      $itemtype = $dbu->getItemTypeForTable($obj->getTable());
+        $obj = new $itemtype();
+        $obj->getFromDB($items_id);
 
-      $list_ip = [];
+        $dbu      = new DbUtils();
+        $itemtype = $dbu->getItemTypeForTable($obj->getTable());
 
-      $query = "SELECT `glpi_networknames`.`name`, `glpi_ipaddresses`.`name` as ip, `glpi_networkports`.`items_id`
-               FROM `glpi_networkports` 
-               LEFT JOIN `" . $obj->getTable() . "` ON (`glpi_networkports`.`items_id` = `" . $obj->getTable() . "`.`id`
-                              AND `glpi_networkports`.`itemtype` = '" . $itemtype . "')
-               LEFT JOIN `glpi_networknames` ON (`glpi_networkports`.`id` =  `glpi_networknames`.`items_id`)
-               LEFT JOIN `glpi_ipaddresses` ON (`glpi_ipaddresses`.`items_id` = `glpi_networknames`.`id`)
-                WHERE `" . $obj->getTable() . "`.`id` = '" . $obj->fields['id'] . "'";
+        $list_ip = [];
 
-      $res = $DB->doQuery($query);
-      while ($row = $DB->fetchArray($res)) {
-         if ($row['ip'] != '') {
-            $port = $row['ip'];
-            if ($row['name'] != '') {
-               $port = $row['name'] . " ($port)";
+        $request = $DB->request([
+            'SELECT' => [
+                'glpi_networknames'  => 'name',
+                'glpi_ipaddresses'   => 'name AS ip',
+                'glpi_networkports'  => 'items_id'
+            ],
+            'FROM' => 'glpi_networkports',
+            'LEFT JOIN' => [
+                $obj->getTable() => [
+                    'ON' => [
+                        'glpi_networkports' => 'items_id',
+                        $obj->getTable()    => 'id',
+                        ['AND' => [
+                            'glpi_networkports.itemtype' => $itemtype
+                        ]]
+                    ]
+                ],
+                'glpi_networknames' => [
+                    'ON' => [
+                        'glpi_networkports'  => 'id',
+                        'glpi_networknames'  => 'items_id'
+                    ]
+                ],
+                'glpi_ipaddresses' => [
+                    'ON' => [
+                        'glpi_ipaddresses' => 'items_id',
+                        'glpi_networknames' => 'id'
+                    ]
+                ]
+            ],
+            'WHERE' => [
+                $obj->getTable() . '.id' => $obj->fields['id']
+            ]
+        ]);
+
+        foreach ($request as $row) {
+            if (!empty($row['ip'])) {
+                $port = $row['ip'];
+                if (!empty($row['name'])) {
+                    $port = $row['name'] . " ($port)";
+                }
+                $list_ip[$row['ip']] = $port;
             }
-            $list_ip[$row['ip']] = $port;
-         }
-      }
-      echo "<table class='tab_cadre_fixe'><tr class='tab_bg_2 left'>";
-      echo "<tr><th colspan='3'>" . __('IP ping', 'addressing') . "</th>";
-      echo "<th>";
-      echo "<i class='fas fa-times-circle fa-1x' onclick='$(\"#ping_item\").hide();'></i>";
-      echo "</tr>";
+        }
 
-      if (count($list_ip) > 0) {
-         echo "<tr class='tab_bg_1'>";
-         echo "<td>" . __('IP') . " : </td>";
-         echo "<td colspan='3'>";
-         echo "<select style='width:200px' class='form-select' id='ip'>";
-         echo "<option>" . Dropdown::EMPTY_VALUE . "</option>";
-         foreach ($list_ip as $ip => $name) {
-            echo "<option value='$ip'>$name</option>";
-         }
-         echo "</select>";
-         echo "&nbsp;<input class='submit btn btn-primary' type='button' value='" .
-              __s('IP ping', 'addressing') . "' id='ping_ip'>";
-         echo "</td>";
-         echo "</tr>";
+        echo "<table class='tab_cadre_fixe'><tr class='tab_bg_2 left'>";
+        echo "<tr><th colspan='3'>" . __('IP ping', 'addressing') . "</th>";
+        echo "<th>";
+        echo "<i class='fas fa-times-circle fa-1x' onclick='$(\"#ping_item\").hide();'></i>";
+        echo "</tr>";
 
-         echo "<tr class='tab_bg_1'>";
-         echo "<td>" . __('Ping result', 'addressing') . " : </td>";
-         echo "<td colspan='3'>";
-         echo "<div id='ping_response' class='plugin_addressing_ping_equipment'></div>";
-         echo "</td></tr>";
-      }
-      echo "</table>";
+        if (count($list_ip) > 0) {
+            echo "<tr class='tab_bg_1'>";
+            echo "<td>" . __('IP') . " : </td>";
+            echo "<td colspan='3'>";
+            echo "<select style='width:200px' class='form-select' id='ip'>";
+            echo "<option>" . Dropdown::EMPTY_VALUE . "</option>";
+            foreach ($list_ip as $ip => $name) {
+                echo "<option value='$ip'>$name</option>";
+            }
+            echo "</select>";
+            echo "&nbsp;<input class='submit btn btn-primary' type='button' value='" .
+                __s('IP ping', 'addressing') . "' id='ping_ip'>";
+            echo "</td>";
+            echo "</tr>";
 
-      echo Html::scriptBlock("$(document).on('click', '#ping_ip', function(event) {
-         $('#ping_response').load('/plugins/addressing/ajax/ping.php', {
-            'ip': $('#ip').val(),
-            'itemtype': '$itemtype',
-            'items_id': '$items_id'
-         })
-      });");
+            echo "<tr class='tab_bg_1'>";
+            echo "<td>" . __('Ping result', 'addressing') . " : </td>";
+            echo "<td colspan='3'>";
+            echo "<div id='ping_response' class='plugin_addressing_ping_equipment'></div>";
+            echo "</td></tr>";
+        }
+        echo "</table>";
 
-      if (count($list_ip) == 0) {
-         echo __('No IP for this equipment', 'addressing');
-      }
-   }
+        echo Html::scriptBlock("$(document).on('click', '#ping_ip', function(event) {
+      $('#ping_response').load('/plugins/addressing/ajax/ping.php', {
+         'ip': $('#ip').val(),
+         'itemtype': '$itemtype',
+         'items_id': '$items_id'
+      })
+   });");
+
+        if (count($list_ip) == 0) {
+            echo __('No IP for this equipment', 'addressing');
+        }
+    }
 
 
-   /**
+
+    /**
     * @param $system
     * @param $ip
     *
