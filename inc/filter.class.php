@@ -57,7 +57,7 @@ class PluginAddressingFilter extends CommonDBTM
 
     static function getIcon()
     {
-        return PluginAddressingAddressing::getIcon();
+        return "ti ti-filter";
     }
 
     function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)

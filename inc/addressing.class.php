@@ -973,7 +973,8 @@ class PluginAddressingAddressing extends CommonDBTM
 
     function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
-        return [self::createTabEntry(Report::getTypeName(1))];
+        $icon = 'ti ti-message-report';
+        return [self::createTabEntry(Report::getTypeName(1),0,null,$icon)];
     }
 
    //Massive Action
