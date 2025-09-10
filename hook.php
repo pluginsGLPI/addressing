@@ -98,21 +98,21 @@ function plugin_addressing_install()
     if ($update) {
         $query_  = "SELECT *
                   FROM `glpi_plugin_addressing_profiles` ";
-        $result_ = $DB->query($query_);
+        $result_ = $DB->doQuery($query_);
 
         if ($DB->numrows($result_) > 0) {
             while ($data = $DB->fetchArray($result_)) {
                 $query  = "UPDATE `glpi_plugin_addressing_profiles`
                       SET `profiles_id` = '" . $data["id"] . "'
                       WHERE `id` = '" . $data["id"] . "'";
-                $result = $DB->query($query);
+                $result = $DB->doQuery($query);
             }
         }
 
         if ($DB->fieldExists("glpi_plugin_addressing_profiles", "name")) {
             $query  = "ALTER TABLE `glpi_plugin_addressing_profiles`
                     DROP `name` ";
-            $result = $DB->query($query);
+            $result = $DB->doQuery($query);
         }
 
         Plugin::migrateItemType(

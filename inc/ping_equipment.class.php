@@ -57,7 +57,7 @@ class PluginAddressingPing_Equipment extends commonDBTM {
                LEFT JOIN `glpi_ipaddresses` ON (`glpi_ipaddresses`.`items_id` = `glpi_networknames`.`id`)
                 WHERE `" . $obj->getTable() . "`.`id` = '" . $obj->fields['id'] . "'";
 
-      $res = $DB->query($query);
+      $res = $DB->doQuery($query);
       while ($row = $DB->fetchArray($res)) {
          if ($row['ip'] != '') {
             $port = $row['ip'];

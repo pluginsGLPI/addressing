@@ -368,7 +368,6 @@ class PluginAddressingReport extends CommonDBTM {
                    $comment = new PluginAddressingIpcomment();
                    $comment->getFromDBByCrit(['ipname' => $num, 'plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID()]);
                    $comments = $comment->fields['comments'] ?? '';
-                   $comments = Toolbox::stripslashes_deep($comments);
                    //                  echo Search::showItem($output_type, '<textarea id="comment'.$num.'"
                    //                      rows="5" cols="33">'.$comments.'</textarea>', $item_num, $row_num, "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'");
                    if ($output_type == Search::HTML_OUTPUT) {
@@ -461,7 +460,6 @@ class PluginAddressingReport extends CommonDBTM {
                 $comment = new PluginAddressingIpcomment();
                 $comment->getFromDBByCrit(['ipname' => $num, 'plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID()]);
                 $comments = $comment->fields['comments'] ?? '';
-                $comments = Toolbox::stripslashes_deep($comments);
 
                if ($output_type == Search::HTML_OUTPUT) {
                   $content = "";
@@ -492,7 +490,6 @@ class PluginAddressingReport extends CommonDBTM {
                 $comment = new PluginAddressingIpcomment();
                 $comment->getFromDBByCrit(['ipname' => $num, 'plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID()]);
                 $comments = $comment->fields['comments'] ?? '';
-                $comments = Toolbox::stripslashes_deep($comments);
                 //               echo Search::showItem($output_type, '<textarea id="comment'.$num.'"
                 //                      rows="5" cols="33">'.$comments.'</textarea>', $item_num, $row_num, "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'");
                 if ($output_type == Search::HTML_OUTPUT) {
@@ -624,7 +621,6 @@ class PluginAddressingReport extends CommonDBTM {
                          $comment = new PluginAddressingIpcomment();
                          $comment->getFromDBByCrit(['ipname' => $num, 'plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID()]);
                          $comments = $comment->fields['comments'] ?? '';
-                         $comments = Toolbox::stripslashes_deep($comments);
                          //                        echo Search::showItem($output_type, '<textarea id="comment'.$num.'"
                          //                      rows="5" cols="33">'.$comments.'</textarea>', $item_num, $row_num, "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'");
                          if ($output_type == Search::HTML_OUTPUT) {
@@ -730,7 +726,6 @@ class PluginAddressingReport extends CommonDBTM {
                          $comment->getFromDBByCrit(['ipname' => $num, 'plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID()]);
                          $comments = $comment->fields['comments'] ?? '';
 
-                         $comments = Toolbox::stripslashes_deep($comments);
                          //                        echo Search::showItem($output_type, '<textarea id="comment'.$num.'"
                          //                      rows="5" cols="33">'.$comments.'</textarea>', $item_num, $row_num, "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'");
                          if ($output_type == Search::HTML_OUTPUT) {

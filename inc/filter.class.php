@@ -52,6 +52,10 @@ class PluginAddressingFilter extends CommonDBTM {
       return true;
    }
 
+    static function getIcon() {
+        return PluginAddressingAddressing::getIcon();
+    }
+
    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
       $nb = self::countForItem($item->fields['id']);
       return [self::createTabEntry(self::getTypeName(1), $nb)];
