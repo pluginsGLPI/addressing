@@ -41,7 +41,7 @@ Html::header_nocache();
 Session::checkLoginUser();
 
 if (!isset($_POST['ip']) || !filter_var($_POST["ip"], FILTER_VALIDATE_IP)) {
-    	throw new \Glpi\Exception\Http\NotFoundHttpException();
+        throw new \Glpi\Exception\Http\NotFoundHttpException();
 }
 $ip = $_POST['ip'];
 $itemtype = $_POST['itemtype'];
@@ -61,25 +61,22 @@ $ping_value = $ping_equip->ping($system, $ip, "true");
 $id = 0;
 $ping_date = 0;
 if ($ping_value == false || $ping_value == true) {
-
-   $ping_date = $_SESSION['glpi_currenttime'];
-   if ($pings = $plugin_addressing_pinginfo->find(['itemtype' => $itemtype,
+    $ping_date = $_SESSION['glpi_currenttime'];
+    if ($pings = $plugin_addressing_pinginfo->find(['itemtype' => $itemtype,
       'items_id' => $items_id])) {
-      foreach ($pings as $ping) {
-         $id = $ping['id'];
+        foreach ($pings as $ping) {
+            $id = $ping['id'];
 
-         $plugin_addressing_pinginfo->update(['id' => $id,
+            $plugin_addressing_pinginfo->update(['id' => $id,
             'ping_response' => $ping_value,
             'ping_date' => $ping_date]);
-      }
-   } else {
-
-      $num = "IP".PluginAddressingReport::ip2string($ip);
-      $plugin_addressing_pinginfo->add(['ping_response' => $ping_value,
+        }
+    } else {
+        $num = "IP".PluginAddressingReport::ip2string($ip);
+        $plugin_addressing_pinginfo->add(['ping_response' => $ping_value,
          'ping_date' => $ping_date, 'itemtype' => $itemtype,
          'items_id' => $items_id, 'ipname' => $num]);
-   }
+    }
 }
 
 echo $ping_response = $message;
-

@@ -266,11 +266,20 @@ function plugin_addressing_giveItem($type, $ID, $data, $num)
         switch ($table . '.' . $field) {
             case "glpi_plugin_addressing_pinginfos.ping_response":
                 if ($data[$num][0]['name'] == "1") {
-                    $out .= "<i class=\"fas fa-check-square fa-2x\" style='color: darkgreen'></i><br>" . __('Last ping OK', 'addressing');
+                    $out .= "<i class=\"fas fa-check-square fa-2x\" style='color: darkgreen'></i><br>" . __(
+                        'Last ping OK',
+                        'addressing'
+                    );
                 } elseif ($data[$num][0]['name'] == "0") {
-                    $out .= "<i class=\"fas fa-window-close fa-2x\" style='color: darkred'></i><br>" . __('Last ping KO', 'addressing');
+                    $out .= "<i class=\"fas fa-window-close fa-2x\" style='color: darkred'></i><br>" . __(
+                        'Last ping KO',
+                        'addressing'
+                    );
                 } else {
-                    $out .= "<i class=\"fas fa-question fa-2x\" style='color: orange'></i><br>" . __("Ping informations not available", 'addressing');
+                    $out .= "<i class=\"fas fa-question fa-2x\" style='color: orange'></i><br>" . __(
+                        "Ping informations not available",
+                        'addressing'
+                    );
                 }
                 return $out;
                 break;
@@ -304,8 +313,8 @@ function plugin_addressing_dynamicReport($params)
                 $ipfin  = sprintf("%u", ip2long($addressingFilter->fields['end_ip']));
                 $result = $PluginAddressingAddressing->compute($params["start"], ['ipdeb'       => $ipdeb,
                                                                                   'ipfin'       => $ipfin,
-                                                                                  'entities_id' => $addressingFilter->fields['entities_id'],
-                                                                                  'type_filter' => $addressingFilter->fields['type']]);
+                    'entities_id' => $addressingFilter->fields['entities_id'],
+                    'type_filter' => $addressingFilter->fields['type']]);
             }
         } else {
             $ipdeb  = sprintf("%u", ip2long($PluginAddressingAddressing->fields["begin_ip"]));

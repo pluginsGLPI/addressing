@@ -37,15 +37,15 @@ if (!defined('GLPI_ROOT')) {
 class PluginAddressingFilter extends CommonDBTM
 {
 
-    static $rightname = "plugin_addressing";
+    public static $rightname = "plugin_addressing";
 
-    static function getTypeName($nb = 0)
+    public static function getTypeName($nb = 0)
     {
 
         return _n('Filter', 'Filters', $nb, 'addressing');
     }
 
-    static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
+    public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
     {
         if ($item->getType() == 'PluginAddressingAddressing') {
             if ($tabnum == 0) {
@@ -55,18 +55,18 @@ class PluginAddressingFilter extends CommonDBTM
         return true;
     }
 
-    static function getIcon()
+    public static function getIcon()
     {
         return "ti ti-filter";
     }
 
-    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
+    public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
     {
         $nb = self::countForItem($item->fields['id']);
         return [self::createTabEntry(self::getTypeName(1), $nb)];
     }
 
-    function getForbiddenStandardMassiveAction()
+    public function getForbiddenStandardMassiveAction()
     {
 
         $forbidden = parent::getForbiddenStandardMassiveAction();
@@ -83,7 +83,7 @@ class PluginAddressingFilter extends CommonDBTM
     * @param type $options
     * @return boolean
     */
-    function showForm($ID, $options = [])
+    public function showForm($ID, $options = [])
     {
 
         if ($ID > 0) {
@@ -92,7 +92,7 @@ class PluginAddressingFilter extends CommonDBTM
             $this->check(-1, CREATE, $options);
         }
 
-//      Html::requireJs("addressing");
+    //      Html::requireJs("addressing");
 
         $options['formoptions']
             = "onSubmit='return plugaddr_Check(\"".__('Invalid data !!', 'addressing')."\")'";
@@ -253,7 +253,7 @@ class PluginAddressingFilter extends CommonDBTM
     * @param type $item
     * @param type $options
     */
-    static function showList($item, $options = [])
+    public static function showList($item, $options = [])
     {
         global $CFG_GLPI;
 
@@ -275,7 +275,7 @@ class PluginAddressingFilter extends CommonDBTM
             $style   = "class='tab_cadrehov'";
         }
 
-       //button add filter
+           //button add filter
         if ($canedit) {
             echo "<div id='viewfilter" . $item_id . "$rand'></div>\n";
 
@@ -365,7 +365,7 @@ class PluginAddressingFilter extends CommonDBTM
     * @param type $canedit
     * @param type $rand
     */
-    function showMinimalFilterForm($item, $filter, $canedit, $rand)
+    public function showMinimalFilterForm($item, $filter, $canedit, $rand)
     {
         global $CFG_GLPI;
 
@@ -390,7 +390,7 @@ class PluginAddressingFilter extends CommonDBTM
             echo "</td>";
         }
 
-       //display of data backup
+           //display of data backup
         echo "<td $edit>" . $filter['name'] . "</td>";
         echo "<td $edit>" . Dropdown::getDropdownName('glpi_entities', $filter['entities_id']) . "</td>";
         $types = PluginAddressingAddressing::dropdownItemtype();
@@ -405,7 +405,7 @@ class PluginAddressingFilter extends CommonDBTM
     * @param type $id
     * @param type $value
     */
-    static function dropdownFilters($id, $value)
+    public static function dropdownFilters($id, $value)
     {
         $filter = new self();
         $datas = $filter->find(['plugin_addressing_addressings_id' => $id]);
@@ -422,7 +422,7 @@ class PluginAddressingFilter extends CommonDBTM
     * @param type $item
     * @return type
     */
-    static function countForItem($id)
+    public static function countForItem($id)
     {
         $filter = new self();
         $datas = $filter->find(['plugin_addressing_addressings_id' => $id]);

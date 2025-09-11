@@ -32,69 +32,68 @@
 Session::checkLoginUser();
 
 if (!isset($_GET["id"])) {
-   $_GET["id"] = "";
+    $_GET["id"] = "";
 }
 
 if (isset($_GET["start"])) {
-   $start = $_GET["start"];
+    $start = $_GET["start"];
 } else {
-   $start = 0;
+    $start = 0;
 }
 
 $addressing = new PluginAddressingAddressing();
 
 if (isset($_POST["add"])) {
-   $addressing->check(-1, CREATE, $_POST);
-   if (!empty($_POST["name"])
+    $addressing->check(-1, CREATE, $_POST);
+    if (!empty($_POST["name"])
       && !empty($_POST["begin_ip"])
          && !empty($_POST["end_ip"])) {
-      $newID = $addressing->add($_POST);
-
-   } else {
-      Session::addMessageAfterRedirect(__('Problem when adding, required fields are not here', 'addressing'),
-                                       false, ERROR);
-   }
-   if ($_SESSION['glpibackcreated']) {
-      Html::redirect($addressing->getFormURL()."?id=".$newID);
-   }
-   Html::back();
-
-} else if (isset($_POST["delete"])) {
-   $addressing->check($_POST['id'], DELETE);
-   $addressing->delete($_POST);
-   $addressing->redirectToList();
-
-} else if (isset($_POST["restore"])) {
-   $addressing->check($_POST['id'], PURGE);
-   $addressing->restore($_POST);
-   $addressing->redirectToList();
-
-} else if (isset($_POST["purge"])) {
-   $addressing->check($_POST['id'], PURGE);
-   $addressing->delete($_POST, 1);
-   $addressing->redirectToList();
-
-} else if (isset($_POST["update"])) {
-   $addressing->check($_POST['id'], UPDATE);
-   if (!empty($_POST["name"])
+        $newID = $addressing->add($_POST);
+    } else {
+        Session::addMessageAfterRedirect(
+            __('Problem when adding, required fields are not here', 'addressing'),
+            false,
+            ERROR
+        );
+    }
+    if ($_SESSION['glpibackcreated']) {
+        Html::redirect($addressing->getFormURL()."?id=".$newID);
+    }
+    Html::back();
+} elseif (isset($_POST["delete"])) {
+    $addressing->check($_POST['id'], DELETE);
+    $addressing->delete($_POST);
+    $addressing->redirectToList();
+} elseif (isset($_POST["restore"])) {
+    $addressing->check($_POST['id'], PURGE);
+    $addressing->restore($_POST);
+    $addressing->redirectToList();
+} elseif (isset($_POST["purge"])) {
+    $addressing->check($_POST['id'], PURGE);
+    $addressing->delete($_POST, 1);
+    $addressing->redirectToList();
+} elseif (isset($_POST["update"])) {
+    $addressing->check($_POST['id'], UPDATE);
+    if (!empty($_POST["name"])
       && !empty($_POST["begin_ip"])
          && !empty($_POST["end_ip"])) {
-      $addressing->update($_POST);
-   } else {
-      Session::addMessageAfterRedirect(__('Problem when adding, required fields are not here', 'addressing'),
-                                       false, ERROR);
-   }
-   Html::back();
-
-} else if (isset($_POST["search"])) {
-
-   $addressing->checkGlobal(READ);
-   Html::header(PluginAddressingAddressing::getTypeName(2), '', "tools", "pluginaddressingaddressing");
-   $addressing->display($_POST);
-   Html::footer();
+        $addressing->update($_POST);
+    } else {
+        Session::addMessageAfterRedirect(
+            __('Problem when adding, required fields are not here', 'addressing'),
+            false,
+            ERROR
+        );
+    }
+    Html::back();
+} elseif (isset($_POST["search"])) {
+    $addressing->checkGlobal(READ);
+    Html::header(PluginAddressingAddressing::getTypeName(2), '', "tools", "pluginaddressingaddressing");
+    $addressing->display($_POST);
+    Html::footer();
 } else {
-   $addressing->checkGlobal(READ);
-   Html::header(PluginAddressingAddressing::getTypeName(2), '', "tools", "pluginaddressingaddressing");
-   $addressing->display($_GET);
-   Html::footer();
+    $addressing->checkGlobal(READ);
+    Html::header(PluginAddressingAddressing::getTypeName(2), '', "tools", "pluginaddressingaddressing");
+    $addressing->display($_GET);
+    Html::footer();
 }

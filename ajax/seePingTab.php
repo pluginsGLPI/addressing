@@ -29,18 +29,17 @@
 
 Session::checkRight('plugin_addressing', UPDATE);
 if (strpos($_SERVER['PHP_SELF'], "seePingTab.php")) {
-   header("Content-Type: text/html; charset=UTF-8");
-   Html::header_nocache();
+    header("Content-Type: text/html; charset=UTF-8");
+    Html::header_nocache();
 }
 
 Session::checkLoginUser();
 
 if (isset($_POST['action']) && $_POST['action'] == "viewPingform") {
+    echo Html::scriptBlock("$('#ping_item').show();");
 
-   echo Html::scriptBlock("$('#ping_item').show();");
-
-   $pingE = new PluginAddressingPing_Equipment();
-   $pingE->showPingForm($_POST['itemtype'], $_POST['items_id']);
+    $pingE = new PluginAddressingPing_Equipment();
+    $pingE->showPingForm($_POST['itemtype'], $_POST['items_id']);
 }
 
 $_POST['name'] = "ping_item";

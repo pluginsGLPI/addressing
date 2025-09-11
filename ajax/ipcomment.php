@@ -40,10 +40,10 @@ Html::header_nocache();
 Session::checkLoginUser();
 
 if (!isset($_POST['addressing_id'])) {
-   echo json_encode(0);
+    echo json_encode(0);
 }
 if (!isset($_POST['ipname'])) {
-   echo json_encode(0);
+    echo json_encode(0);
 }
 
 $addressing_id = $_POST['addressing_id'];
@@ -52,11 +52,10 @@ $content       = $_POST['contentC'];
 
 $ipcomment = new PluginAddressingIpcomment();
 if ($ipcomment->getFromDBByCrit(['plugin_addressing_addressings_id' => $addressing_id, 'ipname' => $ipname])) {
-   $ipcomment->update(['id' => $ipcomment->getID(), 'comments' => $content]);
+    $ipcomment->update(['id' => $ipcomment->getID(), 'comments' => $content]);
 } else {
-   $ipcomment->add(['plugin_addressing_addressings_id' => $addressing_id, 'ipname' => $ipname, 'comments' => $content]);
+    $ipcomment->add(['plugin_addressing_addressings_id' => $addressing_id, 'ipname' => $ipname, 'comments' => $content]);
 }
 
 
 echo json_encode(0);
-

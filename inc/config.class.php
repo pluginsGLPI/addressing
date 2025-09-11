@@ -37,9 +37,9 @@ if (!defined('GLPI_ROOT')) {
 class PluginAddressingConfig extends CommonDBTM
 {
 
-    static $rightname = "plugin_addressing";
+    public static $rightname = "plugin_addressing";
 
-    function showForm($ID, $options = [])
+    public function showForm($ID, $options = [])
     {
 
         $this->getFromDB($ID);

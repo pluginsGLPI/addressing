@@ -40,7 +40,7 @@ Html::header_nocache();
 Session::checkLoginUser();
 
 if (!isset($_POST['addressing_id'])) {
-   echo 0;
+    echo 0;
 }
 $addressing_id = $_POST['addressing_id'];
 $old_execution = ini_set("max_execution_time", "0");
@@ -51,4 +51,3 @@ $pingInfo->updateAnAddressing($addressing);
 ini_set("max_execution_time", $old_execution);
 
 echo 1;
-

@@ -34,17 +34,17 @@ Session::checkLoginUser();
 $reserveip = new PluginAddressingReserveip();
 
 if (isset($_POST['add'])) {
-   $reserveip->check(-1, CREATE, $_POST);
-   $reserveip->reserveip($_POST);
+    $reserveip->check(-1, CREATE, $_POST);
+    $reserveip->reserveip($_POST);
     Html::popHeader(PluginAddressingReserveip::getTypeName());
     echo "<div class='alert alert-important alert-info d-flex'>";
     echo __("The address has been reserved", "addressing");
     echo "</div>";
     Html::popFooter();
 } else {
-   Html::header(PluginAddressingReserveip::getTypeName(), '', "tools", "pluginaddressingaddressing");
-   if(filter_var($_REQUEST["ip"], FILTER_VALIDATE_IP)) {
-      $reserveip->showReservationForm($_REQUEST["ip"], $_REQUEST["id_addressing"], $_REQUEST['rand']);
-   }
-   Html::footer();
+    Html::header(PluginAddressingReserveip::getTypeName(), '', "tools", "pluginaddressingaddressing");
+    if (filter_var($_REQUEST["ip"], FILTER_VALIDATE_IP)) {
+        $reserveip->showReservationForm($_REQUEST["ip"], $_REQUEST["id_addressing"], $_REQUEST['rand']);
+    }
+    Html::footer();
 }

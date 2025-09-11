@@ -37,9 +37,9 @@ if (!defined('GLPI_ROOT')) {
 class PluginAddressingPing_Equipment extends commonDBTM
 {
 
-    static $rightname = "plugin_addressing";
+    public static $rightname = "plugin_addressing";
 
-    function showPingForm($itemtype, $items_id)
+    public function showPingForm($itemtype, $items_id)
     {
         global $DB, $CFG_GLPI;
 
@@ -146,7 +146,7 @@ class PluginAddressingPing_Equipment extends commonDBTM
     *
     * @return array
     */
-    function ping($system, $ip, $return = "list")
+    public function ping($system, $ip, $return = "list")
     {
         $error = 1;
         $list  = '';
@@ -251,7 +251,7 @@ class PluginAddressingPing_Equipment extends commonDBTM
     *
     * @return array
     */
-    function getHostnameByPing($system, $ip)
+    public function getHostnameByPing($system, $ip)
     {
         $error = 1;
         $list  = '';
@@ -267,7 +267,7 @@ class PluginAddressingPing_Equipment extends commonDBTM
                 break;
         }
         $list_str = implode('<br />', $list);
-       //      return [$list_str, $error];
+           //      return [$list_str, $error];
         return $list[1];
     }
 
@@ -277,7 +277,7 @@ class PluginAddressingPing_Equipment extends commonDBTM
     * @param type $ip
     * @param type $id_addressing
     */
-    function showIPForm($ip)
+    public function showIPForm($ip)
     {
         echo Html::script(PLUGIN_ADDRESSING_DIR_NOFULL . "/addressing.js");
 
