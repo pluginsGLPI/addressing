@@ -28,6 +28,8 @@
  */
 
 use Glpi\DBAL\QueryExpression;
+use Glpi\DBAL\QuerySubQuery;
+use Glpi\DBAL\QueryUnion;
 
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access directly to this file");
@@ -763,121 +765,159 @@ class PluginAddressingAddressing extends CommonDBTM
             $result["IP" . $ip] = [];
         }
 
-        $sql = "SELECT `port`.`id`,
-                     'NetworkEquipment' AS itemtype,
-                     `dev`.`id` AS on_device,
-                     `dev`.`name` AS dname,
-                     '' AS pname,
-                     `glpi_ipaddresses`.`name` as ip,
-                     `port`.`mac`,
-                     `dev`.`users_id`,
-                     INET_ATON(`glpi_ipaddresses`.`name`) AS ipnum
-               FROM `glpi_networkports` port
-               LEFT JOIN `glpi_networkequipments` dev ON (`port`.`items_id` = `dev`.`id`
-                     AND `port`.`itemtype` = 'NetworkEquipment')
-               LEFT JOIN `glpi_networknames` ON (`port`.`id` =  `glpi_networknames`.`items_id`)
-               LEFT JOIN `glpi_ipaddresses` ON (`glpi_ipaddresses`.`items_id` = `glpi_networknames`.`id`)
-               WHERE (`glpi_ipaddresses`.`name` IS NOT NULL AND `glpi_ipaddresses`.`name` != '') AND `glpi_ipaddresses`.`version` LIKE 4
-                 AND (INET_ATON(`glpi_ipaddresses`.`name`) BETWEEN '$ipdeb' AND '$ipfin')
-                     AND `dev`.`is_deleted` = 0
-                     AND `dev`.`is_template` = 0 ";
         $dbu = new DbUtils();
+        $subqueries = [];
+
+        $where = [
+            'glpi_ipaddresses.name'   => ['!=', ''],
+            'glpi_ipaddresses.version'=> ['LIKE', 4],
+            new QueryExpression("INET_ATON(glpi_ipaddresses.name) BETWEEN $ipdeb AND $ipfin"),
+            'dev.is_deleted'          => 0,
+            'dev.is_template'         => 0
+        ];
+
         if (isset($entities)) {
-            $sql .= $dbu->getEntitiesRestrictRequest(" AND ", "dev", "entities_id", $entities);
+            $where[] = new QueryExpression($dbu->getEntitiesRestrictRequest("", "dev", "entities_id", $entities));
         } else {
-            $sql .= $dbu->getEntitiesRestrictRequest(" AND ", "dev", "entities_id", $this->fields['entities_id']);
+            $where[] = new QueryExpression($dbu->getEntitiesRestrictRequest("", "dev", "entities_id", $this->fields['entities_id']));
         }
         if (isset($type_filter)) {
-            $sql .= " AND `glpi_ipaddresses`.`mainitemtype` = '" . $type_filter . "'";
+            $where['glpi_ipaddresses.mainitemtype'] = $type_filter;
         }
-
         if ($this->fields["use_as_filter"] == 1 && $this->fields["networks_id"]) {
-            $sql .= " AND `dev`.`networks_id` = " . $this->fields["networks_id"];
+            $where['dev.networks_id'] = $this->fields["networks_id"];
         }
 
-        //$ntypes = $CFG_GLPI["networkport_types"];
-        //foreach ($ntypes as $k => $v) {
-        //   if ($v == 'PluginFusioninventoryUnknownDevice') {
-        //      unset($ntypes[$k]);
-        //   }
-        //}
+        $subqueries[] = new QuerySubQuery([
+            'SELECT' => [
+                'port.id',
+                new QueryExpression("'NetworkEquipment' AS itemtype"),
+                'dev.id AS on_device',
+                'dev.name AS dname',
+                new QueryExpression("'' AS pname"),
+                'glpi_ipaddresses.name AS ip',
+                'port.mac',
+                'dev.users_id',
+                new QueryExpression("INET_ATON(glpi_ipaddresses.name) AS ipnum")
+            ],
+            'FROM' => 'glpi_networkports AS port',
+            'LEFT JOIN' => [
+                'glpi_networkequipments AS dev' => [
+                    'ON' => [
+                        'port' => 'items_id',
+                        'dev'  => 'id',
+                        ['AND' => ['port.itemtype' => 'NetworkEquipment']]
+                    ]
+                ],
+                'glpi_networknames' => [
+                    'ON' => [
+                        'port' => 'id',
+                        'glpi_networknames' => 'items_id'
+                    ]
+                ],
+                'glpi_ipaddresses' => [
+                    'ON' => [
+                        'glpi_ipaddresses' => 'items_id',
+                        'glpi_networknames' => 'id'
+                    ]
+                ]
+            ],
+            'WHERE' => $where
+        ]);
+
         if (isset($type_filter)) {
             $types = [$type_filter];
         } else {
             $types = self::getTypes(true);
         }
 
-        $dbu = new DbUtils();
-
         foreach ($types as $type) {
-
             if (!($item = $dbu->getItemForItemtype($type))) {
                 continue;
             }
             $itemtable = $dbu->getTableForItemType($type);
-            $sql       .= " UNION (SELECT `port`.`id`,
-                                    '" . $type . "' AS `itemtype`,
-                                    `port`.`items_id`,
-                                   `dev`.`name` AS dname,
-                                   `port`.`name` AS pname,
-                                   `glpi_ipaddresses`.`name` as ip,
-                                   `port`.`mac`";
-
-            if ($type == 'PluginFusioninventoryUnknownDevice'
-                || $type == 'Enclosure'
-                || $type == 'PDU'
-                || $type == 'Cluster'
-                || $type == 'Unmanaged') {
-                $sql .= " ,0 AS `users_id` ";
-            } else {
-                $sql .= " ,`dev`.`users_id` ";
-            }
-            $sql .= " , INET_ATON(`glpi_ipaddresses`.`name`) AS ipnum ";
-            $sql .= " FROM `glpi_networkports` port
-                           LEFT JOIN `" . $itemtable . "` dev ON (`port`.`items_id` = `dev`.`id`
-                                 AND `port`.`itemtype` = '" . $type . "')
-                           LEFT JOIN `glpi_networknames` ON (`port`.`id` =  `glpi_networknames`.`items_id`)
-                           LEFT JOIN `glpi_ipaddresses` ON (`glpi_ipaddresses`.`items_id` = `glpi_networknames`.`id`)
-                           WHERE (`glpi_ipaddresses`.`name` IS NOT NULL AND `glpi_ipaddresses`.`name` != '') AND `glpi_ipaddresses`.`version` LIKE 4
-                           AND (INET_ATON(`glpi_ipaddresses`.`name`) BETWEEN '$ipdeb' AND '$ipfin')";
-            $dbu = new DbUtils();
+            $where = [
+                'glpi_ipaddresses.name'   => ['!=', ''],
+                'glpi_ipaddresses.version'=> ['LIKE', 4],
+                new QueryExpression("INET_ATON(glpi_ipaddresses.name) BETWEEN $ipdeb AND $ipfin")
+            ];
             if (isset($entities)) {
-                $sql .= $dbu->getEntitiesRestrictRequest(" AND ", "dev", "entities_id", $entities);
+                $where[] = new QueryExpression($dbu->getEntitiesRestrictRequest("", "dev", "entities_id", $entities));
             } else {
-                $sql .= $dbu->getEntitiesRestrictRequest(" AND ", "dev", "entities_id", $this->fields['entities_id']);
+                $where[] = new QueryExpression($dbu->getEntitiesRestrictRequest("", "dev", "entities_id", $this->fields['entities_id']));
             }
-
             if (isset($type_filter)) {
-                $sql .= " AND `glpi_ipaddresses`.`mainitemtype` = '" . $type_filter . "'";
+                $where['glpi_ipaddresses.mainitemtype'] = $type_filter;
             }
-
             if ($item->maybeDeleted()) {
-                $sql .= " AND `dev`.`is_deleted` = '0'";
+                $where['dev.is_deleted'] = 0;
             }
-
             if ($item->maybeTemplate()) {
-                $sql .= " AND `dev`.`is_template` = '0'";
+                $where['dev.is_template'] = 0;
+            }
+            if ($this->fields["use_as_filter"] == 1 && $this->fields["networks_id"] && $DB->fieldExists($type::getTable(), 'networks_id')) {
+                $where['dev.networks_id'] = $this->fields["networks_id"];
             }
 
-            if ($this->fields["use_as_filter"] == 1 && $this->fields["networks_id"]
-                && $DB->fieldExists($type::getTable(), 'networks_id')) {
-                $sql .= " AND `dev`.`networks_id`= " . $this->fields["networks_id"];
+            $select = [
+                'port.id',
+                new QueryExpression("'" . $type . "' AS itemtype"),
+                'port.items_id',
+                'dev.name AS dname',
+                'port.name AS pname',
+                'glpi_ipaddresses.name AS ip',
+                'port.mac'
+            ];
+            if ($type == 'PluginFusioninventoryUnknownDevice' || $type == 'Enclosure' || $type == 'PDU' || $type == 'Cluster' || $type == 'Unmanaged') {
+                $select[] = new QueryExpression("0 AS users_id");
+            } else {
+                $select[] = 'dev.users_id';
             }
-            $sql .= " GROUP BY `ip`, `port`.`mac` ORDER BY ipnum)";
+            $select[] = new QueryExpression("INET_ATON(glpi_ipaddresses.name) AS ipnum");
+
+            $subqueries[] = new QuerySubQuery([
+                'SELECT' => $select,
+                'FROM' => 'glpi_networkports AS port',
+                'LEFT JOIN' => [
+                    $itemtable . ' AS dev' => [
+                        'ON' => [
+                            'port' => 'items_id',
+                            'dev'  => 'id',
+                            ['AND' => ['port.itemtype' => $type]]
+                        ]
+                    ],
+                    'glpi_networknames' => [
+                        'ON' => [
+                            'port'=> 'id',
+                            'glpi_networknames'=> 'items_id'
+                        ]
+                    ],
+                    'glpi_ipaddresses' => [
+                        'ON' => [
+                            'glpi_ipaddresses' => 'items_id',
+                            'glpi_networknames' => 'id'
+                        ]
+                    ]
+                ],
+                'WHERE' => $where,
+                'GROUPBY' => ['ip', 'port.mac'],
+                'ORDER' => 'ipnum'
+            ]);
         }
-        $res = $DB->doQuery($sql);
-        if ($res) {
-            while ($row = $DB->fetchAssoc($res)) {
-                $result["IP" . $row["ipnum"]][] = $row;
-            }
+
+        $union = new QueryUnion($subqueries, false);
+        $req = $DB->request(['FROM' => $union]);
+
+        foreach ($req as $row) {
+            $result["IP" . $row["ipnum"]][] = $row;
         }
+
         foreach ($result as $key => $data) {
             if (count($data) > 1) {
                 foreach ($data as $keyip => $ip) {
                     if (empty($ip['pname'])) {
                         unset($result[$key][$keyip]);
                     }
-
                 }
             }
         }
@@ -890,6 +930,7 @@ class PluginAddressingAddressing extends CommonDBTM
         }
         return $result;
     }
+
     /**
      * @param $params
      */
