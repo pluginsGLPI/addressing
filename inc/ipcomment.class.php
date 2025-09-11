@@ -36,9 +36,9 @@ if (!defined('GLPI_ROOT')) {
  */
 class PluginAddressingIpcomment extends CommonDBTM
 {
-    static $rightname = "plugin_addressing";
+    public static $rightname = "plugin_addressing";
 
-    static function getTypeName($nb = 0)
+    public static function getTypeName($nb = 0)
     {
 
         return _n('IP Addressing', 'IP Addressing', $nb, 'addressing');

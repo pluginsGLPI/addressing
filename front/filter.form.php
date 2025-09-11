@@ -34,16 +34,16 @@ Session::checkLoginUser();
 $filter = new PluginAddressingFilter();
 
 if (isset($_POST['add'])) {
-   $filter->check(-1, CREATE, $_POST);
-   unset($_POST['id']);
-   $filter->add($_POST);
-   Html::back();
-} else if (isset($_POST['update'])) {
-   $filter->check($_POST['id'], UPDATE);
-   $filter->update($_POST);
-   Html::back();
-} else if (isset($_POST["purge"])) {
-   $filter->check($_POST['id'], PURGE);
-   $filter->delete($_POST, 1);
-   Html::back();
+    $filter->check(-1, CREATE, $_POST);
+    unset($_POST['id']);
+    $filter->add($_POST);
+    Html::back();
+} elseif (isset($_POST['update'])) {
+    $filter->check($_POST['id'], UPDATE);
+    $filter->update($_POST);
+    Html::back();
+} elseif (isset($_POST["purge"])) {
+    $filter->check($_POST['id'], PURGE);
+    $filter->delete($_POST, 1);
+    Html::back();
 }

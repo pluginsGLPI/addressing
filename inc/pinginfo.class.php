@@ -36,9 +36,9 @@ if (!defined('GLPI_ROOT')) {
  */
 class PluginAddressingPinginfo extends CommonDBTM
 {
-    static $rightname = "plugin_addressing";
+    public static $rightname = "plugin_addressing";
 
-    static function getTypeName($nb = 0)
+    public static function getTypeName($nb = 0)
     {
 
         return _n('IP Addressing', 'IP Addressing', $nb, 'addressing');
@@ -47,7 +47,7 @@ class PluginAddressingPinginfo extends CommonDBTM
    /**
     * @param $name
     **/
-    static function cronInfo($name)
+    public static function cronInfo($name)
     {
 
         switch ($name) {
@@ -65,7 +65,7 @@ class PluginAddressingPinginfo extends CommonDBTM
     * @param $task for log, if NULL display
     *
     **/
-    static function cronUpdatePing($task = null)
+    public static function cronUpdatePing($task = null)
     {
 
         $cron_status = 1;
@@ -150,7 +150,7 @@ class PluginAddressingPinginfo extends CommonDBTM
         return $ping_response;
     }
 
-    static function getPingResponseForItem($params)
+    public static function getPingResponseForItem($params)
     {
         global $CFG_GLPI;
 
@@ -176,19 +176,39 @@ class PluginAddressingPinginfo extends CommonDBTM
             }
 
             if ($ping_action == 0) {
-                $content = "<i class=\"fas fa-question fa-2x\" style='color: orange' title=\"" . __("Automatic action has not be launched", 'addressing') . "\">
+                $content = "<i class=\"fas fa-question fa-2x\" style='color: orange' title=\"" . __(
+                    "Automatic action has not be launched",
+                    'addressing'
+                ) . "\">
                     </i><br>" . __("Ping informations not available", 'addressing');
             } else {
                 if ($ping_value == 1) {
-                    $content = "<i class=\"fas fa-check-square fa-2x\" style='color: darkgreen' title='" . __("Last ping attempt", 'addressing') . " : "
-                          . Html::convDateTime($ping_date) . "'></i><br>" . __("Last ping attempt", 'addressing') . " : "
+                    $content = "<i class=\"fas fa-check-square fa-2x\" style='color: darkgreen' title='" . __(
+                        "Last ping attempt",
+                        'addressing'
+                    ) . " : "
+                          . Html::convDateTime($ping_date) . "'></i><br>" . __(
+                              "Last ping attempt",
+                              'addressing'
+                          ) . " : "
                           . Html::convDateTime($ping_date);
-                    $content .= "<br>" . __('IP') . "&nbsp;" . $ip = PluginAddressingReport::string2ip(substr($ipname, 2));
+                    $content .= "<br>" . __('IP') . "&nbsp;" . $ip = PluginAddressingReport::string2ip(
+                        substr($ipname, 2)
+                    );
                 } else {
-                    $content = "<i class=\"fas fa-window-close fa-2x\" style='color: darkred' title='" . __("Last ping attempt", 'addressing') . " : "
-                          . Html::convDateTime($ping_date) . "'></i><br>" . __("Last ping attempt", 'addressing') . " : "
+                    $content = "<i class=\"fas fa-window-close fa-2x\" style='color: darkred' title='" . __(
+                        "Last ping attempt",
+                        'addressing'
+                    ) . " : "
+                          . Html::convDateTime($ping_date) . "'></i><br>" . __(
+                              "Last ping attempt",
+                              'addressing'
+                          ) . " : "
                           . Html::convDateTime($ping_date);
-                    $content .= "<br>" . __('IP') . "&nbsp;" . $ip = PluginAddressingReport::string2ip(substr($ipname, 2));
+                    $content .= "<br>" . __('IP') . "&nbsp;" . $ip = PluginAddressingReport::string2ip(substr(
+                        $ipname,
+                        2
+                    ));
                 }
             }
             echo "<table class='tab_cadre_fixe'>";
@@ -202,8 +222,13 @@ class PluginAddressingPinginfo extends CommonDBTM
             echo "</td><td colspan='2'>";
 
             $rand = mt_rand();
-            echo "<button form='' class='submit btn btn-warning' onclick='javascript:viewPingform" . $items_id . "$rand();'>";
-            echo "<i class='fas fa-terminal fa-2x' style='color: orange' title='" . _sx('button', 'Manual launch of ping', 'addressing') . "'></i>";
+            echo "<button form='' class='submit btn btn-warning' 
+            onclick='javascript:viewPingform" . $items_id . "$rand();'>";
+            echo "<i class='fas fa-terminal fa-2x' style='color: orange' title='" . _sx(
+                'button',
+                'Manual launch of ping',
+                'addressing'
+            ) . "'></i>";
             echo "</button>";
 
             echo "<script type='text/javascript' >\n";

@@ -35,7 +35,6 @@ Session::checkLoginUser();
 $PluginAddressingAddressing = new PluginAddressingAddressing();
 
 if (isset($_GET['action']) && $_GET['action'] == 'isName') {
-
     if ($PluginAddressingAddressing->canView() || Session::haveRight("config", UPDATE)) {
         $item = new $_GET['type']();
         $datas = $item->find(['name' => ['LIKE', $_GET['name']]]);
@@ -46,17 +45,13 @@ if (isset($_GET['action']) && $_GET['action'] == 'isName') {
         }
     }
 } else {
+    Html::header(PluginAddressingAddressing::getTypeName(2), '', "tools", "pluginaddressingaddressing");
 
-   Html::header(PluginAddressingAddressing::getTypeName(2), '', "tools", "pluginaddressingaddressing");
+    if ($PluginAddressingAddressing->canView() || Session::haveRight("config", UPDATE)) {
+        Search::show("PluginAddressingAddressing");
+    } else {
+        throw new AccessDeniedHttpException();
+    }
 
-   if ($PluginAddressingAddressing->canView() || Session::haveRight("config", UPDATE)) {
-      Search::show("PluginAddressingAddressing");
-
-   } else {
-       throw new AccessDeniedHttpException();
-   }
-
-   Html::footer();
+    Html::footer();
 }
-
-

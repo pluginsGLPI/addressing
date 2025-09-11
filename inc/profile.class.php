@@ -104,7 +104,8 @@ class PluginAddressingProfile extends Profile
         echo "</div>";
     }
 
-    static function getIcon() {
+    public static function getIcon()
+    {
         return PluginAddressingAddressing::getIcon();
     }
 
@@ -206,7 +207,7 @@ class PluginAddressingProfile extends Profile
         $profiles = $dbu->getAllDataFromTable('glpi_plugin_addressing_profiles');
         foreach ($profiles as $id => $profile) {
             switch ($profile['addressing']) {
-                case 'r' :
+                case 'r':
                     $value = READ;
                     break;
                 case 'w':

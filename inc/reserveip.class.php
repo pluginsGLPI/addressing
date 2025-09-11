@@ -37,9 +37,9 @@ if (!defined('GLPI_ROOT')) {
 class PluginAddressingReserveip extends CommonDBTM
 {
 
-    static $rightname = 'plugin_addressing';
+    public static $rightname = 'plugin_addressing';
 
-    static function getTypeName($nb = 0)
+    public static function getTypeName($nb = 0)
     {
         return __("IP reservation", "addressing");
     }
@@ -54,7 +54,7 @@ class PluginAddressingReserveip extends CommonDBTM
     *
     * @return string
     */
-    function getPortName($ip)
+    public function getPortName($ip)
     {
         return "reserv-" . $ip;
     }
@@ -66,7 +66,7 @@ class PluginAddressingReserveip extends CommonDBTM
     *
     * @return type
     */
-    function reserveip($input = [])
+    public function reserveip($input = [])
     {
 
         if (!$this->checkMandatoryFields($input)) {
@@ -145,7 +145,7 @@ class PluginAddressingReserveip extends CommonDBTM
     *
     * @return boolean
     */
-    function checkMandatoryFields($input)
+    public function checkMandatoryFields($input)
     {
         $msg     = [];
         $checkKo = false;
@@ -178,7 +178,7 @@ class PluginAddressingReserveip extends CommonDBTM
     * @param type $ip
     * @param type $id_addressing
     */
-    function showReservationForm($ip, $id_addressing, $rand)
+    public function showReservationForm($ip, $id_addressing, $rand)
     {
         global $CFG_GLPI;
 
@@ -205,10 +205,12 @@ class PluginAddressingReserveip extends CommonDBTM
         $ping_equip = new PluginAddressingPing_Equipment();
         list($message, $error) = $ping_equip->ping($system, $ip);
         if ($error) {
-            echo "<i class='fas fa-check-circle fa-1x' style='color:forestgreen'></i><span style='color:forestgreen'>&nbsp;";
+            echo "<i class='fas fa-check-circle fa-1x' style='color:forestgreen'></i>
+<span style='color:forestgreen'>&nbsp;";
             echo __('Ping: no response - free IP', 'addressing');
         } else {
-            echo "<i class='fas fa-exclamation-triangle fa-1x' style='color:orange'></i><span style='color:orange'>&nbsp;";
+            echo "<i class='fas fa-exclamation-triangle fa-1x' style='color:orange'></i>
+<span style='color:orange'>&nbsp;";
             echo __('Ping: got a response - used IP', 'addressing');
         }
         echo "</span>";
@@ -331,7 +333,8 @@ class PluginAddressingReserveip extends CommonDBTM
                <td colspan='4' class='center'>";
         echo Html::submit(__("Validate the reservation", 'addressing'), ['name'    => 'add',
                                                                        'class'   => 'btn btn-primary',
-                                                                       'onclick' => "$('#reservation$rand').modal('hide');window.location.reload();return true;"]);
+                                                                       'onclick' => "$('#reservation$rand').modal(
+                                                                       'hide');window.location.reload();return true;"]);
         echo "</td>
             </tr>";
         echo " </table>";
