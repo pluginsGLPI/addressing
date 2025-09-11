@@ -396,7 +396,7 @@ class PluginAddressingReport extends CommonDBTM
                        //                  echo Search::showItem($output_type, '<textarea id="comment'.$num.'"
                        //                      rows="5" cols="33">'.$comments.'</textarea>', $item_num, $row_num, "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'");
                         if ($output_type == Search::HTML_OUTPUT) {
-                            echo Search::showItem($output_type, '<input type="text" id="comment' . $num . '" 
+                            echo Search::showItem($output_type, '<input type="text" id="comment' . $num . '"
                       value="' . $comments . '">', $item_num, $row_num, "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'");
                         } else {
                             echo Search::showItem($output_type, $comments, $item_num, $row_num);
@@ -404,10 +404,10 @@ class PluginAddressingReport extends CommonDBTM
                         if ($output_type == Search::HTML_OUTPUT) {
                             echo Search::showItem($output_type, '<i id="save' . $num . '" class="fas fa-save fa-2x center pointer" style="color:forestgreen"></i>', $item_num, $row_num, "style='background-color:#e0e0e0' class='center' onClick='updateComment$rand()'");
                             echo "<script>
-                    
-                       
+
+
                       function updateComment$rand() {
-                          
+
                           $('#ajax_loader').show();
                           $.ajax({
                              url: '" . $CFG_GLPI["root_doc"] . PLUGIN_ADDRESSING_DIR_NOFULL . "/ajax/ipcomment.php',
@@ -417,26 +417,26 @@ class PluginAddressingReport extends CommonDBTM
                                     addressing_id:" . $PluginAddressingAddressing->getID() . ",
                                     ipname: \"" . $num . "\",
                                     contentC: $('#comment" . $num . "').val(),
-                    
+
                                   },
                                 success: function(response){
                                     $('#save" . $num . "').css('color','');
                                     $('#save" . $num . "').css('color','forestgreen');
                                     $('#ajax_loader').hide();
-                                    
+
                                  },
                                 error: function(xhr, status, error) {
                                    console.log(xhr);
                                    console.log(status);
                                    console.log(error);
-                                 } 
+                                 }
                              });
                        };
-                       
+
                       function updateFA$rand() {
                           $('#save" . $num . "').css('color','');
                           $('#save" . $num . "').css('color','orange');
-    
+
                        };
                      </script>";
                         }
@@ -522,7 +522,7 @@ class PluginAddressingReport extends CommonDBTM
                    //               echo Search::showItem($output_type, '<textarea id="comment'.$num.'"
                    //                      rows="5" cols="33">'.$comments.'</textarea>', $item_num, $row_num, "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'");
                     if ($output_type == Search::HTML_OUTPUT) {
-                        echo Search::showItem($output_type, '<input type="text" id="comment' . $num . '" 
+                        echo Search::showItem($output_type, '<input type="text" id="comment' . $num . '"
                       value="' . $comments . '">', $item_num, $row_num, "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'");
                     } else {
                         echo Search::showItem($output_type, $comments, $item_num, $row_num);
@@ -530,10 +530,10 @@ class PluginAddressingReport extends CommonDBTM
                     if ($output_type == Search::HTML_OUTPUT) {
                         echo Search::showItem($output_type, '<i id="save' . $num . '" class="fas fa-save fa-2x center pointer" style="color:forestgreen"></i>', $item_num, $row_num, "style='background-color:#e0e0e0' class='center' onClick='updateComment$rand()'");
                         echo "<script>
-                    
-                       
+
+
                       function updateComment$rand() {
-                          
+
                           $('#ajax_loader').show();
                           $.ajax({
                              url: '" . $CFG_GLPI["root_doc"] . PLUGIN_ADDRESSING_DIR_NOFULL . "/ajax/ipcomment.php',
@@ -543,26 +543,26 @@ class PluginAddressingReport extends CommonDBTM
                                     addressing_id:" . $PluginAddressingAddressing->getID() . ",
                                     ipname: \"" . $num . "\",
                                     contentC: $('#comment" . $num . "').val(),
-                    
+
                                   },
                                 success: function(response){
                                     $('#save" . $num . "').css('color','');
                                     $('#save" . $num . "').css('color','forestgreen');
                                     $('#ajax_loader').hide();
-                                    
+
                                  },
                                 error: function(xhr, status, error) {
                                    console.log(xhr);
                                    console.log(status);
                                    console.log(error);
-                                 } 
+                                 }
                              });
                        };
-                       
+
                       function updateFA$rand() {
                           $('#save" . $num . "').css('color','');
                           $('#save" . $num . "').css('color','orange');
-    
+
                        };
                      </script>";
                     }
@@ -656,7 +656,7 @@ class PluginAddressingReport extends CommonDBTM
                            //                        echo Search::showItem($output_type, '<textarea id="comment'.$num.'"
                            //                      rows="5" cols="33">'.$comments.'</textarea>', $item_num, $row_num, "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'");
                                 if ($output_type == Search::HTML_OUTPUT) {
-                                    echo Search::showItem($output_type, '<input type="text" id="comment' . $num . '" 
+                                    echo Search::showItem($output_type, '<input type="text" id="comment' . $num . '"
                                  value="' . $comments . '">', $item_num, $row_num, "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'");
                                 } else {
                                     echo Search::showItem($output_type, $comments, $item_num, $row_num);
@@ -665,10 +665,10 @@ class PluginAddressingReport extends CommonDBTM
                                     echo Search::showItem($output_type, '<i id="save' . $num . '" class="fas fa-save fa-2x center pointer" style="color:forestgreen"></i>', $item_num, $row_num, "style='background-color:#e0e0e0' class='center' onClick='updateComment$rand()'");
 
                                     echo "<script>
-                    
-                       
+
+
                       function updateComment$rand() {
-                          
+
                           $('#ajax_loader').show();
                           $.ajax({
                              url: '" . $CFG_GLPI["root_doc"] . PLUGIN_ADDRESSING_DIR_NOFULL . "/ajax/ipcomment.php',
@@ -678,26 +678,26 @@ class PluginAddressingReport extends CommonDBTM
                                     addressing_id:" . $PluginAddressingAddressing->getID() . ",
                                     ipname: \"" . $num . "\",
                                     contentC: $('#comment" . $num . "').val(),
-                    
+
                                   },
                                 success: function(response){
                                     $('#save" . $num . "').css('color','');
                                     $('#save" . $num . "').css('color','forestgreen');
                                     $('#ajax_loader').hide();
-                                    
+
                                  },
                                 error: function(xhr, status, error) {
                                    console.log(xhr);
                                    console.log(status);
                                    console.log(error);
-                                 } 
+                                 }
                              });
                        };
-                       
+
                       function updateFA$rand() {
                           $('#save" . $num . "').css('color','');
                           $('#save" . $num . "').css('color','orange');
-    
+
                        };
                      </script>";
                                 }
@@ -769,7 +769,7 @@ class PluginAddressingReport extends CommonDBTM
                                 //                        echo Search::showItem($output_type, '<textarea id="comment'.$num.'"
                                 //                      rows="5" cols="33">'.$comments.'</textarea>', $item_num, $row_num, "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'");
                                 if ($output_type == Search::HTML_OUTPUT) {
-                                    echo Search::showItem($output_type, '<input type="text" id="comment' . $num . '" 
+                                    echo Search::showItem($output_type, '<input type="text" id="comment' . $num . '"
                       value="' . $comments . '">', $item_num, $row_num, "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'");
                                 } else {
                                     echo Search::showItem($output_type, $comments, $item_num, $row_num);
@@ -778,10 +778,10 @@ class PluginAddressingReport extends CommonDBTM
                                       echo Search::showItem($output_type, '<i id="save' . $num . '" class="fas fa-save fa-2x center pointer" style="color:forestgreen"></i>', $item_num, $row_num, "style='background-color:#e0e0e0' class='center' onClick='updateComment$rand()'");
 
                                       echo "<script>
-                    
-                       
+
+
                       function updateComment$rand() {
-                          
+
                           $('#ajax_loader').show();
                           $.ajax({
                              url: '" . $CFG_GLPI["root_doc"] . PLUGIN_ADDRESSING_DIR_NOFULL . "/ajax/ipcomment.php',
@@ -791,26 +791,26 @@ class PluginAddressingReport extends CommonDBTM
                                     addressing_id:" . $PluginAddressingAddressing->getID() . ",
                                     ipname: \"" . $num . "\",
                                     contentC: $('#comment" . $num . "').val(),
-                    
+
                                   },
                                 success: function(response){
                                     $('#save" . $num . "').css('color','');
                                     $('#save" . $num . "').css('color','forestgreen');
                                     $('#ajax_loader').hide();
-                                    
+
                                  },
                                 error: function(xhr, status, error) {
                                    console.log(xhr);
                                    console.log(status);
                                    console.log(error);
-                                 } 
+                                 }
                              });
                        };
-                       
+
                       function updateFA$rand() {
                           $('#save" . $num . "').css('color','');
                           $('#save" . $num . "').css('color','orange');
-    
+
                        };
                      </script>";
                                 }
