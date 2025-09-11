@@ -115,13 +115,13 @@ function plugin_addressing_install()
             $result = $DB->doQuery($query);
         }
 
-        Plugin::migrateItemType(
-            [5000 => 'PluginAddressingAddressing',
-                                 5001 => 'PluginAddressingReport'],
-            ["glpi_savedsearches", "glpi_savedsearches_users",
-             "glpi_displaypreferences", "glpi_documents_items",
-             "glpi_infocoms", "glpi_logs", "glpi_items_tickets"]
-        );
+//        Plugin::migrateItemType(
+//            [5000 => 'PluginAddressingAddressing',
+//                                 5001 => 'PluginAddressingReport'],
+//            ["glpi_savedsearches", "glpi_savedsearches_users",
+//             "glpi_displaypreferences", "glpi_documents_items",
+//             "glpi_infocoms", "glpi_logs", "glpi_items_tickets"]
+//        );
     }
 
     //0.85 : new profile system

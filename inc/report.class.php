@@ -108,7 +108,7 @@ class PluginAddressingReport extends CommonDBTM
     *
     * @return int
     */
-    public function displayReport(&$result, $PluginAddressingAddressing, $ping_status = [])
+    function displayReport(&$result, $PluginAddressingAddressing, $ping_status = [])
     {
         global $CFG_GLPI;
 
@@ -201,12 +201,9 @@ class PluginAddressingReport extends CommonDBTM
                         if ($line["itemtype"] != 'NetworkEquipment') {
                             if ($item->canView()) {
                                 $output_iddev = "<a href='" . $link . "?id=" . $line["on_device"] . "'>" . $name .
-                                        (empty($name)
-                                        || $_SESSION["glpiis_ids_visible"] ? " (" . $line["on_device"] . ")" : "")
-                                    . "</a>";
+                                        (empty($name) || $_SESSION["glpiis_ids_visible"] ? " (" . $line["on_device"] . ")" : "") . "</a>";
                             } else {
-                                $output_iddev = $name . (empty($name)
-                                    || $_SESSION["glpiis_ids_visible"] ? " (" . $line["on_device"] . ")" : "");
+                                $output_iddev = $name . (empty($name) || $_SESSION["glpiis_ids_visible"] ? " (" . $line["on_device"] . ")" : "");
                             }
                         } else {
                             if ($item->canView()) {
@@ -215,14 +212,10 @@ class PluginAddressingReport extends CommonDBTM
                                 } else {
                                     $linkp = $namep . " - ";
                                 }
-                                $output_iddev = "<a href='" . $link . "?id=" .
-                                    $line["on_device"] . "'>" . $linkp . $name .
-                                        (empty($name)
-                                        || $_SESSION["glpiis_ids_visible"] ?
-                                            " (" . $line["on_device"] . ")" : "") . "</a>";
+                                $output_iddev = "<a href='" . $link . "?id=" . $line["on_device"] . "'>" . $linkp . $name .
+                                        (empty($name) || $_SESSION["glpiis_ids_visible"] ? " (" . $line["on_device"] . ")" : "") . "</a>";
                             } else {
-                                $output_iddev = $namep . " - " . $name . (empty($name)
-                                    || $_SESSION["glpiis_ids_visible"] ? " (" . $line["on_device"] . ")" : "");
+                                $output_iddev = $namep . " - " . $name . (empty($name) || $_SESSION["glpiis_ids_visible"] ? " (" . $line["on_device"] . ")" : "");
                             }
                         }
                         echo Search::showItem($output_type, $output_iddev, $item_num, $row_num);
@@ -267,10 +260,8 @@ class PluginAddressingReport extends CommonDBTM
                         $ping_action = NOT_AVAILABLE;
                         if ($PluginAddressingAddressing->fields["free_ip"] && $ping) {
                             $plugin_addressing_pinginfo = new PluginAddressingPinginfo();
-                            if ($pings = $plugin_addressing_pinginfo->find(
-                                ['plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID(),
-                                'ipname'                           => $num]
-                            )) {
+                            if ($pings = $plugin_addressing_pinginfo->find(['plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID(),
+                                                                     'ipname'                           => $num])) {
                                 foreach ($pings as $ping) {
                                     $ping_value = $ping['ping_response'];
                                     $ping_date  = $ping['ping_date'];
@@ -290,18 +281,9 @@ class PluginAddressingReport extends CommonDBTM
                            //                        'ipname' => $num]);
 
                             if ($ping_action == NOT_AVAILABLE) {
-                                $content = "<i class=\"fas fa-question fa-2x\" style='color: orange' title=\"" . __(
-                                    "Automatic action has not be launched",
-                                    'addressing'
-                                ) . "\"></i>";
+                                $content = "<i class=\"fas fa-question fa-2x\" style='color: orange' title=\"" . __("Automatic action has not be launched", 'addressing') . "\"></i>";
                                 if ($output_type == Search::HTML_OUTPUT) {
-                                    echo Search::showItem(
-                                        $output_type,
-                                        "$content ",
-                                        $item_num,
-                                        $row_num,
-                                        "style='background-color:#e0e0e0' class='center'"
-                                    );
+                                    echo Search::showItem($output_type, "$content ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
                                     $rand = mt_rand();
                                     $params = ['id_addressing' => $PluginAddressingAddressing->getID(),
                                     'ip' => trim($ip),
@@ -311,22 +293,12 @@ class PluginAddressingReport extends CommonDBTM
                                     //                           'height' => 550
                                     ];
                                     $reserv = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#reservation$rand'>
-<i class='fas fa-clipboard fa-2x pointer'
-style='color: #d56f15' 
-title='" . __("Reserve IP", 'addressing') . "'></i></a>";
-                                    echo Search::showItem(
-                                        $output_type,
-                                        "$reserv ",
-                                        $item_num,
-                                        $row_num,
-                                        "style='background-color:#e0e0e0' class='center'"
-                                    );
+<i class='fas fa-clipboard fa-2x pointer' style='color: #d56f15' title='" . __("Reserve IP", 'addressing') . "'></i></a>";
+                                    echo Search::showItem($output_type, "$reserv ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
                                     if (isset($params) && count($params) > 0 && $output_type == Search::HTML_OUTPUT) {
                                         echo Ajax::createIframeModalWindow(
                                             'reservation' . $rand,
-                                            "/plugins/addressing/ajax/addressing.php?action=showForm&ip=" .
-                                            $params['ip']
-                                            . "&id_addressing=" . $params['id_addressing'] . "&rand=" . $params['rand'],
+                                            "/plugins/addressing/ajax/addressing.php?action=showForm&ip=" . $params['ip'] . "&id_addressing=" . $params['id_addressing'] . "&rand=" . $params['rand'],
                                             ['title' => __s('IP reservation', 'addressing'),
                                             'display' => false,
                                             'reloadonclose' => true]
@@ -340,48 +312,20 @@ title='" . __("Reserve IP", 'addressing') . "'></i></a>";
                             } else {
                                 if ($ping_value) {
                                     if ($output_type == Search::HTML_OUTPUT) {
-                                        echo Search::showItem(
-                                            $output_type,
-                                            "<i class=\"fas fa-check-square fa-2x\" 
-                                        style='color: darkgreen' title='" . __(
-                                                "Last ping attempt",
-                                                'addressing'
-                                            ) . " : "
-                                            . Html::convDateTime($ping_date) . "'></i>",
-                                            $item_num,
-                                            $row_num,
-                                            "style='background-color:#e0e0e0' class='center'"
-                                        );
+                                        echo Search::showItem($output_type, "<i class=\"fas fa-check-square fa-2x\" style='color: darkgreen' title='" . __("Last ping attempt", 'addressing') . " : "
+                                        . Html::convDateTime($ping_date) . "'></i>", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
 
-                                        if ($PluginAddressingAddressing->fields["reserved_ip"]
-                                            && strstr($line["pname"], "reserv")) {
-                                              $reserv = "<i class='fas fa-clipboard-check fa-2x' 
-                                              style='color: #d56f15' title='" . __(
-                                                  'Reserved Address',
-                                                  'addressing'
-                                              ) . "'></i>";
-                                              echo Search::showItem(
-                                                  $output_type,
-                                                  "$reserv ",
-                                                  $item_num,
-                                                  $row_num,
-                                                  "style='background-color:#e0e0e0' class='center'"
-                                              );
+                                        if ($PluginAddressingAddressing->fields["reserved_ip"] && strstr($line["pname"], "reserv")) {
+                                              $reserv = "<i class='fas fa-clipboard-check fa-2x' style='color: #d56f15' title='" . __('Reserved Address', 'addressing') . "'></i>";
+                                              echo Search::showItem($output_type, "$reserv ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
                                         } else {
-                                            echo Search::showItem(
-                                                $output_type,
-                                                " ",
-                                                $item_num,
-                                                $row_num,
-                                                "style='background-color:#e0e0e0' class='center'"
-                                            );
+                                            echo Search::showItem($output_type, " ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
                                         }
                                     } else {
                                         $reserv = "";
                                         $content = __('Success', 'addressing');
                                         echo Search::showItem($output_type, "$content ", $item_num, $row_num);
-                                        if ($PluginAddressingAddressing->fields["reserved_ip"]
-                                            && strstr($line["pname"], "reserv")) {
+                                        if ($PluginAddressingAddressing->fields["reserved_ip"] && strstr($line["pname"], "reserv")) {
                                             $reserv = __('Reserved', 'addressing');
                                         }
                                         echo Search::showItem($output_type, $reserv, $item_num, $row_num);
@@ -397,12 +341,10 @@ title='" . __("Reserve IP", 'addressing') . "'></i></a>";
                                             $row_num,
                                             "style='background-color:#e0e0e0' class='center'"
                                         );
-                                        if ($PluginAddressingAddressing->fields["reserved_ip"]
-                                            && strstr($line["pname"], "reserv")) {
+                                        if ($PluginAddressingAddressing->fields["reserved_ip"] && strstr($line["pname"], "reserv")) {
                                             echo Search::showItem(
                                                 $output_type,
-                                                "<i class='fas fa-clipboard-check fa-2x' 
-                                                style='color: #d56f15' title='" .
+                                                "<i class='fas fa-clipboard-check fa-2x' style='color: #d56f15' title='" .
                                                 __('Reserved Address', 'addressing') . "'></i>",
                                                 $item_num,
                                                 $row_num,
@@ -417,27 +359,14 @@ title='" . __("Reserve IP", 'addressing') . "'></i></a>";
                                             //                                 'width' => 1000,
                                             //                                 'height' => 550
                                             ];
-                                            $reserv = "<a href=\"#\" data-bs-toggle='modal' 
-data-bs-target='#reservation$rand'>
-<i class='fas fa-clipboard fa-2x pointer' style='color: #d56f15'
- title='" . __("Reserve IP", 'addressing') . "'>
-</i>
-</a>";
-                                            echo Search::showItem(
-                                                $output_type,
-                                                "$reserv ",
-                                                $item_num,
-                                                $row_num,
-                                                "style='background-color:#e0e0e0' class='center'"
-                                            );
-                                            if (isset($params) && count($params) > 0
-                                                && $output_type == Search::HTML_OUTPUT) {
+                                            $reserv = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#reservation$rand'>
+<i class='fas fa-clipboard fa-2x pointer' style='color: #d56f15' title='" . __("Reserve IP", 'addressing') . "'></i></a>";
+                                            echo Search::showItem($output_type, "$reserv ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
+                                            if (isset($params) && count($params) > 0 && $output_type == Search::HTML_OUTPUT) {
                                                 echo Ajax::createIframeModalWindow(
                                                     'reservation' . $rand,
                                                     "/plugins/addressing/ajax/addressing.php?action=showForm&ip=" .
-                                                    $params['ip'] . "&id_addressing="
-                                                    . $params['id_addressing'] . "&rand="
-                                                    . $params['rand'],
+                                                    $params['ip'] . "&id_addressing=" . $params['id_addressing'] . "&rand=" . $params['rand'],
                                                     ['title' => __s('IP reservation', 'addressing'),
                                                     'display' => false,
                                                     'reloadonclose' => true]
@@ -447,8 +376,7 @@ data-bs-target='#reservation$rand'>
                                     } else {
                                         $content = __('Failed', 'addressing');
                                         echo Search::showItem($output_type, "$content ", $item_num, $row_num);
-                                        if ($PluginAddressingAddressing->fields["reserved_ip"]
-                                            && strstr($line["pname"], "reserv")) {
+                                        if ($PluginAddressingAddressing->fields["reserved_ip"] && strstr($line["pname"], "reserv")) {
                                             $reserv = __('Reserved', 'addressing');
                                         } else {
                                             $reserv = "";
@@ -458,50 +386,28 @@ data-bs-target='#reservation$rand'>
                                 }
                             }
                         } else {
-                            echo Search::showItem(
-                                $output_type,
-                                " ",
-                                $item_num,
-                                $row_num,
-                                "style='background-color:#e0e0e0' class='center'"
-                            );
+                            echo Search::showItem($output_type, " ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
                         }
 
                         $rand    = mt_rand();
                         $comment = new PluginAddressingIpcomment();
-                        $comment->getFromDBByCrit(
-                            ['ipname' => $num,
-                                'plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID()]
-                        );
+                        $comment->getFromDBByCrit(['ipname' => $num, 'plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID()]);
                         $comments = $comment->fields['comments'] ?? '';
                        //                  echo Search::showItem($output_type, '<textarea id="comment'.$num.'"
                        //                      rows="5" cols="33">'.$comments.'</textarea>', $item_num, $row_num, "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'");
                         if ($output_type == Search::HTML_OUTPUT) {
-                            echo Search::showItem(
-                                $output_type,
-                                '<input type="text" id="comment' . $num . '" 
-                      value="' . $comments . '">',
-                                $item_num,
-                                $row_num,
-                                "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'"
-                            );
+                            echo Search::showItem($output_type, '<input type="text" id="comment' . $num . '"
+                      value="' . $comments . '">', $item_num, $row_num, "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'");
                         } else {
                             echo Search::showItem($output_type, $comments, $item_num, $row_num);
                         }
                         if ($output_type == Search::HTML_OUTPUT) {
-                            echo Search::showItem(
-                                $output_type,
-                                '<i id="save' . $num . '" class="fas fa-save fa-2x center pointer" 
-style="color:forestgreen"></i>',
-                                $item_num,
-                                $row_num,
-                                "style='background-color:#e0e0e0' class='center' onClick='updateComment$rand()'"
-                            );
+                            echo Search::showItem($output_type, '<i id="save' . $num . '" class="fas fa-save fa-2x center pointer" style="color:forestgreen"></i>', $item_num, $row_num, "style='background-color:#e0e0e0' class='center' onClick='updateComment$rand()'");
                             echo "<script>
-                    
-                       
+
+
                       function updateComment$rand() {
-                          
+
                           $('#ajax_loader').show();
                           $.ajax({
                              url: '" . $CFG_GLPI["root_doc"] . PLUGIN_ADDRESSING_DIR_NOFULL . "/ajax/ipcomment.php',
@@ -511,26 +417,26 @@ style="color:forestgreen"></i>',
                                     addressing_id:" . $PluginAddressingAddressing->getID() . ",
                                     ipname: \"" . $num . "\",
                                     contentC: $('#comment" . $num . "').val(),
-                    
+
                                   },
                                 success: function(response){
                                     $('#save" . $num . "').css('color','');
                                     $('#save" . $num . "').css('color','forestgreen');
                                     $('#ajax_loader').hide();
-                                    
+
                                  },
                                 error: function(xhr, status, error) {
                                    console.log(xhr);
                                    console.log(status);
                                    console.log(error);
-                                 } 
+                                 }
                              });
                        };
-                       
+
                       function updateFA$rand() {
                           $('#save" . $num . "').css('color','');
                           $('#save" . $num . "').css('color','orange');
-    
+
                        };
                      </script>";
                         }
@@ -578,9 +484,7 @@ style="color:forestgreen"></i>',
 
                     $rand    = mt_rand();
                     $comment = new PluginAddressingIpcomment();
-                    $comment->getFromDBByCrit(
-                        ['ipname' => $num, 'plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID()]
-                    );
+                    $comment->getFromDBByCrit(['ipname' => $num, 'plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID()]);
                     $comments = $comment->fields['comments'] ?? '';
 
                     if ($output_type == Search::HTML_OUTPUT) {
@@ -593,17 +497,11 @@ style="color:forestgreen"></i>',
                              //                                 'height' => 550
                         ];
                         $reserv  = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#reservation$rand'>
-<i class='fas fa-clipboard fa-2x pointer' 
-style='color: #d56f15' 
-title='" . __("Reserve IP", 'addressing') . "'>
-</i></a>";
+<i class='fas fa-clipboard fa-2x pointer' style='color: #d56f15' title='" . __("Reserve IP", 'addressing') . "'></i></a>";
                         if (isset($params) && count($params) > 0 && $output_type == Search::HTML_OUTPUT) {
                             echo Ajax::createIframeModalWindow(
                                 'reservation'.$rand,
-                                "/plugins/addressing/ajax/addressing.php?action=showForm&ip=" .
-                                $params['ip'] . "&id_addressing=" .
-                                $params['id_addressing'] . "&rand=" .
-                                $params['rand'],
+                                "/plugins/addressing/ajax/addressing.php?action=showForm&ip=" . $params['ip'] . "&id_addressing=" . $params['id_addressing'] . "&rand=" . $params['rand'],
                                 ['title'   => __s('IP reservation', 'addressing'),
                                 'display' => false,
                                 'reloadonclose' => true]
@@ -615,48 +513,27 @@ title='" . __("Reserve IP", 'addressing') . "'>
                     }
                     echo Search::showItem($output_type, " ", $item_num, $row_num);
                     echo Search::showItem($output_type, " ", $item_num, $row_num);
-                    echo Search::showItem(
-                        $output_type,
-                        "$reserv ",
-                        $item_num,
-                        $row_num,
-                        "style='background-color:#e0e0e0' class='center'"
-                    );
+                    echo Search::showItem($output_type, "$reserv ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
 
                     $rand    = mt_rand();
                     $comment = new PluginAddressingIpcomment();
-                    $comment->getFromDBByCrit(['ipname' => $num,
-                        'plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID()]);
+                    $comment->getFromDBByCrit(['ipname' => $num, 'plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID()]);
                     $comments = $comment->fields['comments'] ?? '';
                    //               echo Search::showItem($output_type, '<textarea id="comment'.$num.'"
                    //                      rows="5" cols="33">'.$comments.'</textarea>', $item_num, $row_num, "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'");
                     if ($output_type == Search::HTML_OUTPUT) {
-                        echo Search::showItem(
-                            $output_type,
-                            '<input type="text" id="comment' . $num . '" 
-                      value="' . $comments . '">',
-                            $item_num,
-                            $row_num,
-                            "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'"
-                        );
+                        echo Search::showItem($output_type, '<input type="text" id="comment' . $num . '"
+                      value="' . $comments . '">', $item_num, $row_num, "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'");
                     } else {
                         echo Search::showItem($output_type, $comments, $item_num, $row_num);
                     }
                     if ($output_type == Search::HTML_OUTPUT) {
-                        echo Search::showItem(
-                            $output_type,
-                            '<i id="save' .
-                            $num . '" class="fas fa-save fa-2x center pointer" 
-style="color:forestgreen"></i>',
-                            $item_num,
-                            $row_num,
-                            "style='background-color:#e0e0e0' class='center' onClick='updateComment$rand()'"
-                        );
+                        echo Search::showItem($output_type, '<i id="save' . $num . '" class="fas fa-save fa-2x center pointer" style="color:forestgreen"></i>', $item_num, $row_num, "style='background-color:#e0e0e0' class='center' onClick='updateComment$rand()'");
                         echo "<script>
-                    
-                       
+
+
                       function updateComment$rand() {
-                          
+
                           $('#ajax_loader').show();
                           $.ajax({
                              url: '" . $CFG_GLPI["root_doc"] . PLUGIN_ADDRESSING_DIR_NOFULL . "/ajax/ipcomment.php',
@@ -666,26 +543,26 @@ style="color:forestgreen"></i>',
                                     addressing_id:" . $PluginAddressingAddressing->getID() . ",
                                     ipname: \"" . $num . "\",
                                     contentC: $('#comment" . $num . "').val(),
-                    
+
                                   },
                                 success: function(response){
                                     $('#save" . $num . "').css('color','');
                                     $('#save" . $num . "').css('color','forestgreen');
                                     $('#ajax_loader').hide();
-                                    
+
                                  },
                                 error: function(xhr, status, error) {
                                    console.log(xhr);
                                    console.log(status);
                                    console.log(error);
-                                 } 
+                                 }
                              });
                        };
-                       
+
                       function updateFA$rand() {
                           $('#save" . $num . "').css('color','');
                           $('#save" . $num . "').css('color','orange');
-    
+
                        };
                      </script>";
                     }
@@ -696,10 +573,8 @@ style="color:forestgreen"></i>',
                     }
                     $ping_action                = NOT_AVAILABLE;
                     $plugin_addressing_pinginfo = new PluginAddressingPinginfo();
-                    if ($plugin_addressing_pinginfo->getFromDBByCrit(
-                        ['plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID(),
-                        'ipname'                           => $num]
-                    )) {
+                    if ($plugin_addressing_pinginfo->getFromDBByCrit(['plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID(),
+                                                                 'ipname'                           => $num])) {
                         $ping_value  = $plugin_addressing_pinginfo->fields['ping_response'];
                         $ping_action = 1;
                     } else {
@@ -713,10 +588,8 @@ style="color:forestgreen"></i>',
                        //                  $plugin_addressing_pinginfo->add($data);
                     }
 
-                    $plugin_addressing_pinginfo->getFromDBByCrit(
-                        ['plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID(),
-                        'ipname'                           => $num]
-                    );
+                    $plugin_addressing_pinginfo->getFromDBByCrit(['plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID(),
+                                                             'ipname'                           => $num]);
 
                     $content      = "";
                     $reserv       = "";
@@ -734,13 +607,7 @@ style="color:forestgreen"></i>',
                                  'dialog_class'  => 'modal-sm'];
                                 $ping_link = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#ping$rand'>
 <i class='fas fa-terminal fa-1x pointer' style='color: orange' title='" . __("IP ping", 'addressing') . "'></i></a>";
-                                echo Search::showItem(
-                                    $output_type,
-                                    "$ping_link ",
-                                    $item_num,
-                                    $row_num,
-                                    "class='center'"
-                                );
+                                echo Search::showItem($output_type, "$ping_link ", $item_num, $row_num, "class='center'");
                                 if (isset($params) && count($params) > 0 && $output_type == Search::HTML_OUTPUT) {
                                     echo Ajax::createIframeModalWindow(
                                         'ping' . $rand,
@@ -764,16 +631,10 @@ style="color:forestgreen"></i>',
                                 );
                                 if ($output_type == Search::HTML_OUTPUT) {
                                     if ($ping_action == NOT_AVAILABLE) {
-                                        $content = "<i class=\"fas fa-question fa-2x\" 
-                                        style='color: orange' 
-                                        title=\"" . __("Automatic action has not be launched", 'addressing') . "\">
-                                        </i>";
+                                        $content = "<i class=\"fas fa-question fa-2x\" style='color: orange' title=\"" . __("Automatic action has not be launched", 'addressing') . "\"></i>";
                                     } else {
-                                        $content = "<i class=\"fas fa-check-square fa-2x\" 
-                                        style='color: darkgreen' 
-                                        title='" . __("Last ping attempt", 'addressing') . " : "
-                                        . Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']) . "'>
-                                        </i>";
+                                        $content = "<i class=\"fas fa-check-square fa-2x\" style='color: darkgreen' title='" . __("Last ping attempt", 'addressing') . " : "
+                                        . Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']) . "'></i>";
                                     }
                                 } else {
                                     $content = __('Success', 'addressing');
@@ -784,59 +645,30 @@ style="color:forestgreen"></i>',
                                 echo Search::showItem($output_type, " ", $item_num, $row_num);
                                 echo Search::showItem($output_type, " ", $item_num, $row_num);
                                 if ($ping) {
-                                    echo Search::showItem(
-                                        $output_type,
-                                        "$content ",
-                                        $item_num,
-                                        $row_num,
-                                        "style='background-color:#e0e0e0' class='center'"
-                                    );
+                                    echo Search::showItem($output_type, "$content ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
                                 }
-                                echo Search::showItem(
-                                    $output_type,
-                                    "$reserv ",
-                                    $item_num,
-                                    $row_num,
-                                    "style='background-color:#e0e0e0' class='center'"
-                                );
+                                echo Search::showItem($output_type, "$reserv ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
 
                                 $rand    = mt_rand();
                                 $comment = new PluginAddressingIpcomment();
-                                $comment->getFromDBByCrit(
-                                    ['ipname' => $num,
-                                        'plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID()]
-                                );
+                                $comment->getFromDBByCrit(['ipname' => $num, 'plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID()]);
                                 $comments = $comment->fields['comments'] ?? '';
                            //                        echo Search::showItem($output_type, '<textarea id="comment'.$num.'"
                            //                      rows="5" cols="33">'.$comments.'</textarea>', $item_num, $row_num, "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'");
                                 if ($output_type == Search::HTML_OUTPUT) {
-                                    echo Search::showItem(
-                                        $output_type,
-                                        '<input type="text" id="comment' . $num . '" 
-                                 value="' . $comments . '">',
-                                        $item_num,
-                                        $row_num,
-                                        "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'"
-                                    );
+                                    echo Search::showItem($output_type, '<input type="text" id="comment' . $num . '"
+                                 value="' . $comments . '">', $item_num, $row_num, "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'");
                                 } else {
                                     echo Search::showItem($output_type, $comments, $item_num, $row_num);
                                 }
                                 if ($output_type == Search::HTML_OUTPUT) {
-                                    echo Search::showItem(
-                                        $output_type,
-                                        '<i id="save' .
-                                        $num . '" class="fas fa-save fa-2x center pointer" 
-style="color:forestgreen"></i>',
-                                        $item_num,
-                                        $row_num,
-                                        "style='background-color:#e0e0e0' class='center' onClick='updateComment$rand()'"
-                                    );
+                                    echo Search::showItem($output_type, '<i id="save' . $num . '" class="fas fa-save fa-2x center pointer" style="color:forestgreen"></i>', $item_num, $row_num, "style='background-color:#e0e0e0' class='center' onClick='updateComment$rand()'");
 
                                     echo "<script>
-                    
-                       
+
+
                       function updateComment$rand() {
-                          
+
                           $('#ajax_loader').show();
                           $.ajax({
                              url: '" . $CFG_GLPI["root_doc"] . PLUGIN_ADDRESSING_DIR_NOFULL . "/ajax/ipcomment.php',
@@ -846,26 +678,26 @@ style="color:forestgreen"></i>',
                                     addressing_id:" . $PluginAddressingAddressing->getID() . ",
                                     ipname: \"" . $num . "\",
                                     contentC: $('#comment" . $num . "').val(),
-                    
+
                                   },
                                 success: function(response){
                                     $('#save" . $num . "').css('color','');
                                     $('#save" . $num . "').css('color','forestgreen');
                                     $('#ajax_loader').hide();
-                                    
+
                                  },
                                 error: function(xhr, status, error) {
                                    console.log(xhr);
                                    console.log(status);
                                    console.log(error);
-                                 } 
+                                 }
                              });
                        };
-                       
+
                       function updateFA$rand() {
                           $('#save" . $num . "').css('color','');
                           $('#save" . $num . "').css('color','orange');
-    
+
                        };
                      </script>";
                                 }
@@ -883,13 +715,7 @@ style="color:forestgreen"></i>',
                                    'dialog_class'  => 'modal-sm'];
                                 $ping_link = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#ping$rand'>
 <i class='fas fa-terminal fa-1x pointer' style='color: orange' title='" . __("IP ping", 'addressing') . "'></i></a>";
-                                echo Search::showItem(
-                                    $output_type,
-                                    "$ping_link ",
-                                    $item_num,
-                                    $row_num,
-                                    "class='center'"
-                                );
+                                echo Search::showItem($output_type, "$ping_link ", $item_num, $row_num, "class='center'");
                                 if (isset($params) && count($params) > 0 && $output_type == Search::HTML_OUTPUT) {
                                     echo Ajax::createIframeModalWindow(
                                         'ping' . $rand,
@@ -909,29 +735,17 @@ style="color:forestgreen"></i>',
                                  $content = " ";
                                 if ($output_type == Search::HTML_OUTPUT) {
                                     if ($ping_action == NOT_AVAILABLE) {
-                                        $content = "<i class=\"fas fa-question fa-2x\" 
-                                        style='color: orange' title=\"" . __(
-                                            "Automatic action has not be launched",
-                                            'addressing'
-                                        ) . "\"></i>";
+                                        $content = "<i class=\"fas fa-question fa-2x\" style='color: orange' title=\"" . __("Automatic action has not be launched", 'addressing') . "\"></i>";
                                     } else {
-                                        $content = "<i class=\"fas fa-window-close fa-2x\" style='color: darkred' 
-                                        title='" . __("Last ping attempt", 'addressing') . " : "
-                                        . Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']) . "'>
-                                        </i>";
+                                        $content = "<i class=\"fas fa-window-close fa-2x\" style='color: darkred' title='" . __("Last ping attempt", 'addressing') . " : "
+                                        . Html::convDateTime($plugin_addressing_pinginfo->fields['ping_date']) . "'></i>";
                                         $rand = mt_rand();
-                                        $reserv  = "<a href=\"#\" data-bs-toggle='modal' 
-data-bs-target='#reservation$rand'>
-<i class='fas fa-clipboard fa-2x pointer' style='color: #d56f15' 
-title='" . __("Reserve IP", 'addressing') . "'></i></a>";
-                                        if (isset($params) && count($params) > 0
-                                            && $output_type == Search::HTML_OUTPUT) {
+                                        $reserv  = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#reservation$rand'>
+<i class='fas fa-clipboard fa-2x pointer' style='color: #d56f15' title='" . __("Reserve IP", 'addressing') . "'></i></a>";
+                                        if (isset($params) && count($params) > 0 && $output_type == Search::HTML_OUTPUT) {
                                              echo Ajax::createIframeModalWindow(
                                                  'reservation'.$rand,
-                                                 "/plugins/addressing/ajax/addressing.php?action=showForm&ip=" .
-                                                 $params['ip'] . "&id_addressing=" .
-                                                 $params['id_addressing'] . "&rand=" .
-                                                 $rand,
+                                                 "/plugins/addressing/ajax/addressing.php?action=showForm&ip=" . $params['ip'] . "&id_addressing=" . $params['id_addressing'] . "&rand=" . $rand,
                                                  ['title'   => __s('IP reservation', 'addressing'),
                                                  'display' => false,
                                                  'reloadonclose' => true]
@@ -943,60 +757,31 @@ title='" . __("Reserve IP", 'addressing') . "'></i></a>";
                                  echo Search::showItem($output_type, " ", $item_num, $row_num);
                                  echo Search::showItem($output_type, " ", $item_num, $row_num);
                                 if ($ping) {
-                                    echo Search::showItem(
-                                        $output_type,
-                                        "$content ",
-                                        $item_num,
-                                        $row_num,
-                                        "style='background-color:#e0e0e0' class='center'"
-                                    );
+                                    echo Search::showItem($output_type, "$content ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
                                 }
-                                 echo Search::showItem(
-                                     $output_type,
-                                     "$reserv ",
-                                     $item_num,
-                                     $row_num,
-                                     "style='background-color:#e0e0e0' class='center'"
-                                 );
+                                 echo Search::showItem($output_type, "$reserv ", $item_num, $row_num, "style='background-color:#e0e0e0' class='center'");
 
                                 $rand    = mt_rand();
                                 $comment = new PluginAddressingIpcomment();
-                                $comment->getFromDBByCrit(
-                                    ['ipname' => $num,
-                                        'plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID()]
-                                );
+                                $comment->getFromDBByCrit(['ipname' => $num, 'plugin_addressing_addressings_id' => $PluginAddressingAddressing->getID()]);
                                 $comments = $comment->fields['comments'] ?? '';
 
                                 //                        echo Search::showItem($output_type, '<textarea id="comment'.$num.'"
                                 //                      rows="5" cols="33">'.$comments.'</textarea>', $item_num, $row_num, "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'");
                                 if ($output_type == Search::HTML_OUTPUT) {
-                                    echo Search::showItem(
-                                        $output_type,
-                                        '<input type="text" id="comment' . $num . '" 
-                      value="' . $comments . '">',
-                                        $item_num,
-                                        $row_num,
-                                        "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'"
-                                    );
+                                    echo Search::showItem($output_type, '<input type="text" id="comment' . $num . '"
+                      value="' . $comments . '">', $item_num, $row_num, "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'");
                                 } else {
                                     echo Search::showItem($output_type, $comments, $item_num, $row_num);
                                 }
                                 if ($output_type == Search::HTML_OUTPUT) {
-                                      echo Search::showItem(
-                                          $output_type,
-                                          '<i id="save' . $num . '" 
-class="fas fa-save fa-2x center pointer" style="color:forestgreen">
-</i>',
-                                          $item_num,
-                                          $row_num,
-                                          "style='background-color:#e0e0e0' class='center' onClick='updateComment$rand()'"
-                                      );
+                                      echo Search::showItem($output_type, '<i id="save' . $num . '" class="fas fa-save fa-2x center pointer" style="color:forestgreen"></i>', $item_num, $row_num, "style='background-color:#e0e0e0' class='center' onClick='updateComment$rand()'");
 
                                       echo "<script>
-                    
-                       
+
+
                       function updateComment$rand() {
-                          
+
                           $('#ajax_loader').show();
                           $.ajax({
                              url: '" . $CFG_GLPI["root_doc"] . PLUGIN_ADDRESSING_DIR_NOFULL . "/ajax/ipcomment.php',
@@ -1006,26 +791,26 @@ class="fas fa-save fa-2x center pointer" style="color:forestgreen">
                                     addressing_id:" . $PluginAddressingAddressing->getID() . ",
                                     ipname: \"" . $num . "\",
                                     contentC: $('#comment" . $num . "').val(),
-                    
+
                                   },
                                 success: function(response){
                                     $('#save" . $num . "').css('color','');
                                     $('#save" . $num . "').css('color','forestgreen');
                                     $('#ajax_loader').hide();
-                                    
+
                                  },
                                 error: function(xhr, status, error) {
                                    console.log(xhr);
                                    console.log(status);
                                    console.log(error);
-                                 } 
+                                 }
                              });
                        };
-                       
+
                       function updateFA$rand() {
                           $('#save" . $num . "').css('color','');
                           $('#save" . $num . "').css('color','orange');
-    
+
                        };
                      </script>";
                                 }
@@ -1057,7 +842,7 @@ class="fas fa-save fa-2x center pointer" style="color:forestgreen">
     *
     * @return string
     */
-    public static function string2ip($s)
+    static function string2ip($s)
     {
         if ($s > PHP_INT_MAX) {
             $s = 2 * PHP_INT_MIN + $s;
@@ -1065,7 +850,7 @@ class="fas fa-save fa-2x center pointer" style="color:forestgreen">
         return long2ip($s);
     }
 
-    public static function ip2string($s)
+    static function ip2string($s)
     {
         if ($s > PHP_INT_MAX) {
             $s = 2 * PHP_INT_MIN + $s;
