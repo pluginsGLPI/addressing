@@ -28,6 +28,9 @@
  */
 
 
+use GlpiPlugin\Addressing\Filter;
+use GlpiPlugin\Addressing\Ping_Equipment;
+use GlpiPlugin\Addressing\Reserveip;
 
 Session::checkLoginUser();
 Session::checkRight('plugin_addressing', UPDATE);
@@ -37,7 +40,7 @@ header("Content-Type: text/html; charset=UTF-8");
 if (isset($_POST['action']) && $_POST['action'] == 'viewFilter') {
     if (isset($_POST['items_id'])
        && isset($_POST["id"])) {
-        $filter = new PluginAddressingFilter();
+        $filter = new Filter();
         $filter->showForm($_POST["id"], ['items_id' => $_POST['items_id']]);
     } else {
         echo __('Access denied');
@@ -56,16 +59,16 @@ if (isset($_POST['action']) && $_POST['action'] == 'viewFilter') {
     Html::popHeader(__s('IP ping', 'addressing'), $_SERVER['PHP_SELF']);
 
     if (filter_var($_GET["ip"], FILTER_VALIDATE_IP)) {
-        $PluginAddressingPing_Equipment = new PluginAddressingPing_Equipment();
-        $PluginAddressingPing_Equipment->showIPForm($_GET["ip"]);
+        $Ping_Equipment = new Ping_Equipment();
+        $Ping_Equipment->showIPForm($_GET["ip"]);
     }
     Html::popFooter();
 } else {
     Html::popHeader(__s('IP reservation', 'addressing'), $_SERVER['PHP_SELF']);
 
     if (filter_var($_GET["ip"], FILTER_VALIDATE_IP)) {
-        $PluginAddressingReserveip = new PluginAddressingReserveip();
-        $PluginAddressingReserveip->showReservationForm($_GET["ip"], $_GET['id_addressing'], $_GET['rand']);
+        $Reserveip = new Reserveip();
+        $Reserveip->showReservationForm($_GET["ip"], $_GET['id_addressing'], $_GET['rand']);
     }
 
     Html::popFooter();

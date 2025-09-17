@@ -27,14 +27,24 @@
  --------------------------------------------------------------------------
  */
 
+namespace GlpiPlugin\Addressing;
+
+use Ajax;
+use CommonDBTM;
+use CommonGLPI;
+use Dropdown;
+use Entity;
+use Html;
+use Session;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }
 
 /**
- * Class PluginAddressingFilter
+ * Class Filter
  */
-class PluginAddressingFilter extends CommonDBTM
+class Filter extends CommonDBTM
 {
 
     public static $rightname = "plugin_addressing";
@@ -47,7 +57,7 @@ class PluginAddressingFilter extends CommonDBTM
 
     public static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
     {
-        if ($item->getType() == 'PluginAddressingAddressing') {
+        if ($item->getType() == Addressing::class) {
             if ($tabnum == 0) {
                 self::showList($_GET);
             }
@@ -99,7 +109,7 @@ class PluginAddressingFilter extends CommonDBTM
         $options['colspan'] = 1;
         $this->showFormHeader($options);
 
-        $addressing = new PluginAddressingAddressing();
+        $addressing = new Addressing();
         $addressing->getFromDB($options['items_id']);
 
         echo "<tr class='tab_bg_1'>";
@@ -122,7 +132,7 @@ class PluginAddressingFilter extends CommonDBTM
         echo "<tr class='tab_bg_1'>
                <td>".__("Type")."</td>
                <td>";
-        $types = PluginAddressingAddressing::dropdownItemtype();
+        $types = Addressing::dropdownItemtype();
         Dropdown::showFromArray(
             'type',
             $types,
@@ -272,7 +282,7 @@ class PluginAddressingFilter extends CommonDBTM
 
         if ($p['readonly']) {
             $canedit = false;
-            $style   = "class='tab_cadrehov'";
+            $style   = "class='tab_cadre_fixe'";
         }
 
            //button add filter
@@ -298,7 +308,7 @@ class PluginAddressingFilter extends CommonDBTM
 
         echo "<div class='spaced'>";
 
-        $nb = PluginAddressingFilter::countForItem($item['id']);
+        $nb = Filter::countForItem($item['id']);
 
         if ($canedit && $nb) {
             Html::openMassiveActionsForm('mass' . $rand);
@@ -393,7 +403,7 @@ class PluginAddressingFilter extends CommonDBTM
            //display of data backup
         echo "<td $edit>" . $filter['name'] . "</td>";
         echo "<td $edit>" . Dropdown::getDropdownName('glpi_entities', $filter['entities_id']) . "</td>";
-        $types = PluginAddressingAddressing::dropdownItemtype();
+        $types = Addressing::dropdownItemtype();
         echo "<td $edit>" . $types[$filter['type']] . "</td>";
         echo "<td $edit>" . $filter['begin_ip'] . "</td>";
         echo "<td $edit>" . $filter['end_ip'] . "</td>";

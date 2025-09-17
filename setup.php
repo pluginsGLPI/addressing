@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @version $Id$
  -------------------------------------------------------------------------
@@ -28,8 +29,11 @@
  */
 
 use Glpi\Plugin\Hooks;
+use GlpiPlugin\Addressing\Addressing;
+use GlpiPlugin\Addressing\Pinginfo;
+use GlpiPlugin\Addressing\Profile;
 
-define('PLUGIN_ADDRESSING_VERSION', '3.0.3');
+define('PLUGIN_ADDRESSING_VERSION', '3.1.0');
 
 if (!defined("PLUGIN_ADDRESSING_DIR")) {
     define("PLUGIN_ADDRESSING_DIR", Plugin::getPhpDir("addressing"));
@@ -43,16 +47,16 @@ function plugin_init_addressing()
 
     $PLUGIN_HOOKS['csrf_compliant']['addressing'] = true;
 
-    $PLUGIN_HOOKS['change_profile']['addressing'] = ['PluginAddressingProfile', 'initProfile'];
+    $PLUGIN_HOOKS['change_profile']['addressing'] = [Profile::class, 'initProfile'];
 
     Plugin::registerClass(
-        'PluginAddressingProfile',
+        Profile::class,
         ['addtabon' => ['Profile']]
     );
 
     if (Session::getLoginUserID()) {
         if (Session::haveRight('plugin_addressing', READ)) {
-            $PLUGIN_HOOKS["menu_toadd"]['addressing'] = ['tools'  => 'PluginAddressingAddressing'];
+            $PLUGIN_HOOKS["menu_toadd"]['addressing'] = ['tools'  => Addressing::class];
         }
 
         if (Session::haveRight('plugin_addressing', UPDATE)) {
@@ -64,8 +68,8 @@ function plugin_init_addressing()
             $PLUGIN_HOOKS['config_page']['addressing']             = 'front/config.php';
         }
 
-        $PLUGIN_HOOKS['post_item_form']['addressing'] = ['PluginAddressingPinginfo',
-           'getPingResponseForItem'];
+        $PLUGIN_HOOKS['post_item_form']['addressing'] = [Pinginfo::class,
+            'getPingResponseForItem'];
 
         // Add specific files to add to the header : javascript or css
         if (isset($_SESSION['glpiactiveprofile']['interface'])
@@ -81,15 +85,15 @@ function plugin_init_addressing()
 function plugin_version_addressing()
 {
     return [
-       'name'           => _n('IP Addressing', 'IP Addressing', 2, 'addressing'),
-       'version'        => PLUGIN_ADDRESSING_VERSION,
-       'author'         => 'Gilles Portheault, Xavier Caillaud, Remi Collet, Nelly Mahu-Lasson',
-       'license'        => 'GPLv2+',
-       'homepage'       => 'https://github.com/pluginsGLPI/addressing',
-       'requirements'   => [
-          'glpi' => [
-             'min' => '11.0',
-             'max' => '12.0',
-          ]
-       ]];
+        'name'           => _n('IP Addressing', 'IP Addressing', 2, 'addressing'),
+        'version'        => PLUGIN_ADDRESSING_VERSION,
+        'author'         => 'Gilles Portheault, Xavier Caillaud, Remi Collet, Nelly Mahu-Lasson',
+        'license'        => 'GPLv2+',
+        'homepage'       => 'https://github.com/pluginsGLPI/addressing',
+        'requirements'   => [
+            'glpi' => [
+                'min' => '11.0',
+                'max' => '12.0',
+            ],
+        ]];
 }

@@ -27,14 +27,23 @@
  --------------------------------------------------------------------------
  */
 
+namespace GlpiPlugin\Addressing;
+
+use Ajax;
+use CommonDBTM;
+use GlpiPlugin\Addressing\Config;
+use GlpiPlugin\Addressing\Report;
+use Html;
+use Session;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }
 
 /**
- * Class PluginAddressingPinginfo
+ * Class Pinginfo
  */
-class PluginAddressingPinginfo extends CommonDBTM
+class Pinginfo extends CommonDBTM
 {
     public static $rightname = "plugin_addressing";
 
@@ -83,7 +92,7 @@ class PluginAddressingPinginfo extends CommonDBTM
     {
         $old_memory           = ini_set("memory_limit", "-1");
         $old_execution        = ini_set("max_execution_time", "0");
-        $addressing           = new PluginAddressingAddressing();
+        $addressing           = new Addressing();
         $addressings          = $addressing->find(['is_deleted' => 0,
                                                  'use_ping'   => 1]);
         $total_ping_responses = 0;
@@ -97,7 +106,7 @@ class PluginAddressingPinginfo extends CommonDBTM
         return $total_ping_responses;
     }
 
-    public function updateAnAddressing(PluginAddressingAddressing $addressing)
+    public function updateAnAddressing(Addressing $addressing)
     {
 
         $ipdeb = sprintf("%u", ip2long($addressing->fields["begin_ip"]));
@@ -106,7 +115,7 @@ class PluginAddressingPinginfo extends CommonDBTM
         $result                     = $addressing->compute(0, ['ipdeb'    => $ipdeb,
                                                              'ipfin'    => $ipfin,
                                                              'entities' => $addressing->fields['entities_id']]);
-        $plugin_addressing_pinginfo = new PluginAddressingPinginfo();
+        $plugin_addressing_pinginfo = new Pinginfo();
         $save = $plugin_addressing_pinginfo->find(['plugin_addressing_addressings_id' => $addressing->getID()]);
         $plugin_addressing_pinginfo->deleteByCriteria(['plugin_addressing_addressings_id' => $addressing->getID()]);
 
@@ -115,25 +124,25 @@ class PluginAddressingPinginfo extends CommonDBTM
         return $ping_responses;
     }
 
-    private function updatePingInfos($result, PluginAddressingAddressing $PluginAddressingAddressing)
+    private function updatePingInfos($result, Addressing $Addressing)
     {
 
        // Get config
-        $PluginAddressingConfig         = new PluginAddressingConfig();
-        $PluginAddressingPing_Equipment = new PluginAddressingPing_Equipment();
-        $PluginAddressingConfig->getFromDB('1');
-        $system = $PluginAddressingConfig->fields["used_system"];
+        $Config         = new Config();
+        $Ping_Equipment = new Ping_Equipment();
+        $Config->getFromDB('1');
+        $system = $Config->fields["used_system"];
 
         $ping_response = 0;
 
-        $plugin_addressing_pinginfo = new PluginAddressingPinginfo();
+        $plugin_addressing_pinginfo = new Pinginfo();
 
         foreach ($result as $num => $lines) {
-            $ip = PluginAddressingReport::string2ip(substr($num, 2));
+            $ip = Report::string2ip(substr($num, 2));
 
-            $ping_value                               = $PluginAddressingPing_Equipment->ping($system, $ip, "true");
+            $ping_value                               = $Ping_Equipment->ping($system, $ip, "true");
             $data                                     = [];
-            $data['plugin_addressing_addressings_id'] = $PluginAddressingAddressing->getID();
+            $data['plugin_addressing_addressings_id'] = $Addressing->getID();
             $data['ipname']                           = $num;
 
             $data['itemtype']      = isset($lines['0']['itemtype']) ? $lines['0']['itemtype'] : "";
@@ -158,10 +167,10 @@ class PluginAddressingPinginfo extends CommonDBTM
         $item       = $params['item'];
 
         if ($ping_right
-          && in_array($item->getType(), PluginAddressingAddressing::getTypes()) && $item->getID() > 0) {
+          && in_array($item->getType(), Addressing::getTypes()) && $item->getID() > 0) {
             $items_id                   = $item->getID();
             $itemtype                   = $item->getType();
-            $plugin_addressing_pinginfo = new PluginAddressingPinginfo();
+            $plugin_addressing_pinginfo = new Pinginfo();
 
             $ping_action = 0;
             $ping_value  = 0;
@@ -192,7 +201,7 @@ class PluginAddressingPinginfo extends CommonDBTM
                               'addressing'
                           ) . " : "
                           . Html::convDateTime($ping_date);
-                    $content .= "<br>" . __('IP') . "&nbsp;" . $ip = PluginAddressingReport::string2ip(
+                    $content .= "<br>" . __('IP') . "&nbsp;" . $ip = Report::string2ip(
                         substr($ipname, 2)
                     );
                 } else {
@@ -205,7 +214,7 @@ class PluginAddressingPinginfo extends CommonDBTM
                               'addressing'
                           ) . " : "
                           . Html::convDateTime($ping_date);
-                    $content .= "<br>" . __('IP') . "&nbsp;" . $ip = PluginAddressingReport::string2ip(substr(
+                    $content .= "<br>" . __('IP') . "&nbsp;" . $ip = Report::string2ip(substr(
                         $ipname,
                         2
                     ));
@@ -222,7 +231,7 @@ class PluginAddressingPinginfo extends CommonDBTM
             echo "</td><td colspan='2'>";
 
             $rand = mt_rand();
-            echo "<button form='' class='submit btn btn-warning' 
+            echo "<button form='' class='submit btn btn-warning'
             onclick='javascript:viewPingform" . $items_id . "$rand();'>";
             echo "<i class='fas fa-terminal fa-2x' style='color: orange' title='" . _sx(
                 'button',

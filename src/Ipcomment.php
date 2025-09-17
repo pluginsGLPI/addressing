@@ -3,7 +3,7 @@
  * @version $Id$
  -------------------------------------------------------------------------
  addressing plugin for GLPI
- Copyright (C) 2009-2022 by the addressing Development Team.
+ Copyright (C) 2009-2016 by the addressing Development Team.
 
  https://github.com/pluginsGLPI/addressing
  -------------------------------------------------------------------------
@@ -26,3 +26,25 @@
  along with addressing. If not, see <http://www.gnu.org/licenses/>.
  --------------------------------------------------------------------------
  */
+
+namespace GlpiPlugin\Addressing;
+
+use CommonDBTM;
+
+if (!defined('GLPI_ROOT')) {
+    die("Sorry. You can't access directly to this file");
+}
+
+/**
+ * Class Ipcomment
+ */
+class Ipcomment extends CommonDBTM
+{
+    public static $rightname = "plugin_addressing";
+
+    public static function getTypeName($nb = 0)
+    {
+
+        return _n('IP Addressing', 'IP Addressing', $nb, 'addressing');
+    }
+}

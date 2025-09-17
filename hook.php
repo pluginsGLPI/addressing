@@ -27,17 +27,21 @@
  --------------------------------------------------------------------------
  */
 
+use GlpiPlugin\Addressing\Addressing;
+use GlpiPlugin\Addressing\Filter;
+use GlpiPlugin\Addressing\Pinginfo;
+use GlpiPlugin\Addressing\Profile;
+use GlpiPlugin\Addressing\Report;
+
 function plugin_addressing_install()
 {
     global $DB;
-
-    include_once(PLUGIN_ADDRESSING_DIR . "/inc/profile.class.php");
 
     $update = false;
     if (!$DB->tableExists("glpi_plugin_addressing_display")
         && !$DB->tableExists("glpi_plugin_addressing")
         && !$DB->tableExists("glpi_plugin_addressing_configs")) {
-        $DB->runFile(PLUGIN_ADDRESSING_DIR . "/sql/empty-3.0.1.sql");
+        $DB->runFile(PLUGIN_ADDRESSING_DIR . "/sql/empty-3.1.0.sql");
     } else {
         if (!$DB->tableExists("glpi_plugin_addressing_profiles")
             && $DB->tableExists("glpi_plugin_addressing_display")
@@ -114,29 +118,21 @@ function plugin_addressing_install()
                     DROP `name` ";
             $result = $DB->doQuery($query);
         }
-
-//        Plugin::migrateItemType(
-//            [5000 => 'PluginAddressingAddressing',
-//                                 5001 => 'PluginAddressingReport'],
-//            ["glpi_savedsearches", "glpi_savedsearches_users",
-//             "glpi_displaypreferences", "glpi_documents_items",
-//             "glpi_infocoms", "glpi_logs", "glpi_items_tickets"]
-//        );
     }
 
     //0.85 : new profile system
-    PluginAddressingProfile::migrateProfiles();
+    Profile::migrateProfiles();
     //Add all rights for current user profile
-    PluginAddressingProfile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
+    Profile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
     //Drop old profile table : not used anymore
     $migration = new Migration("2.5.0");
     $migration->dropTable('glpi_plugin_addressing_profiles');
-    CronTask::Register(PluginAddressingPinginfo::class, 'UpdatePing', DAY_TIMESTAMP);
+    CronTask::Register(Pinginfo::class, 'UpdatePing', DAY_TIMESTAMP);
 
     if (!$DB->request([
         'FROM'   => 'glpi_displaypreferences',
         'WHERE'  => [
-            'itemtype'  => 'PluginAddressingAddressing',
+            'itemtype'  => Addressing::class,
             'num'       => 2,
             'users_id'  => 0,
             'interface' => 'central'
@@ -144,7 +140,7 @@ function plugin_addressing_install()
     ])->count()) {
         try {
             $DB->insert('glpi_displaypreferences', [
-                'itemtype'  => 'PluginAddressingAddressing',
+                'itemtype'  => Addressing::class,
                 'num'       => 2,
                 'rank'      => 2,
                 'users_id'  => 0,
@@ -167,8 +163,6 @@ function plugin_addressing_uninstall()
 {
     global $DB;
 
-    include_once(PLUGIN_ADDRESSING_DIR . "/inc/profile.class.php");
-
     $migration = new Migration("2.5.0");
     $tables    = ["glpi_plugin_addressing_addressings",
                   "glpi_plugin_addressing_configs",
@@ -183,20 +177,20 @@ function plugin_addressing_uninstall()
     $itemtypes = ['DisplayPreference', 'SavedSearch'];
     foreach ($itemtypes as $itemtype) {
         $item = new $itemtype;
-        $item->deleteByCriteria(['itemtype' => 'PluginAddressingAddressing']);
+        $item->deleteByCriteria(['itemtype' => Addressing::class]);
     }
 
     //Delete rights associated with the plugin
     $profileRight = new ProfileRight();
 
-    foreach (PluginAddressingProfile::getAllRights() as $right) {
+    foreach (Profile::getAllRights() as $right) {
         $profileRight->deleteByCriteria(['name' => $right['field']]);
     }
 
     //Remove rigth from $_SESSION['glpiactiveprofile'] if exists
-    PluginAddressingProfile::removeRightsFromSession();
+    Profile::removeRightsFromSession();
 
-    PluginAddressingAddressing::removeRightsFromSession();
+    Profile::removeRightsFromSession();
     CronTask::unregister("addressing");
     return true;
 }
@@ -228,7 +222,7 @@ function plugin_addressing_getAddSearchOptions($itemtype)
 {
     $sopt = [];
 
-    if (in_array($itemtype, PluginAddressingAddressing::getTypes(true))) {
+    if (in_array($itemtype, Addressing::getTypes(true))) {
         if (Session::haveRight("plugin_addressing", READ)) {
             $sopt[5000]['table']         = 'glpi_plugin_addressing_pinginfos';
             $sopt[5000]['field']         = 'ping_response';
@@ -262,7 +256,7 @@ function plugin_addressing_giveItem($type, $ID, $data, $num)
     $table     = $searchopt[$ID]["table"];
     $field     = $searchopt[$ID]["field"];
     $out       = "";
-    if (in_array($type, PluginAddressingAddressing::getTypes(true))) {
+    if (in_array($type, Addressing::getTypes(true))) {
         switch ($table . '.' . $field) {
             case "glpi_plugin_addressing_pinginfos.ping_response":
                 if ($data[$num][0]['name'] == "1") {
@@ -297,32 +291,32 @@ function plugin_addressing_giveItem($type, $ID, $data, $num)
  */
 function plugin_addressing_dynamicReport($params)
 {
-    $PluginAddressingAddressing = new PluginAddressingAddressing();
+    $Addressing = new Addressing();
 
-    if ($params["item_type"] == 'PluginAddressingReport'
+    if ($params["item_type"] == Report::class
         && isset($params["id"])
         && isset($params["display_type"])
-        && $PluginAddressingAddressing->getFromDB($params["id"])) {
-        $PluginAddressingReport = new PluginAddressingReport();
-        $PluginAddressingAddressing->getFromDB($params['id']);
+        && $Addressing->getFromDB($params["id"])) {
+        $Report = new Report();
+        $Addressing->getFromDB($params['id']);
 
-        $addressingFilter = new PluginAddressingFilter();
+        $addressingFilter = new Filter();
         if (isset($params['filter']) && $params['filter'] > 0) {
             if ($addressingFilter->getFromDB($params['filter'])) {
                 $ipdeb  = sprintf("%u", ip2long($addressingFilter->fields['begin_ip']));
                 $ipfin  = sprintf("%u", ip2long($addressingFilter->fields['end_ip']));
-                $result = $PluginAddressingAddressing->compute($params["start"], ['ipdeb'       => $ipdeb,
+                $result = $Addressing->compute($params["start"], ['ipdeb'       => $ipdeb,
                                                                                   'ipfin'       => $ipfin,
                     'entities_id' => $addressingFilter->fields['entities_id'],
                     'type_filter' => $addressingFilter->fields['type']]);
             }
         } else {
-            $ipdeb  = sprintf("%u", ip2long($PluginAddressingAddressing->fields["begin_ip"]));
-            $ipfin  = sprintf("%u", ip2long($PluginAddressingAddressing->fields["end_ip"]));
-            $result = $PluginAddressingAddressing->compute($params["start"], ['ipdeb' => $ipdeb,
+            $ipdeb  = sprintf("%u", ip2long($Addressing->fields["begin_ip"]));
+            $ipfin  = sprintf("%u", ip2long($Addressing->fields["end_ip"]));
+            $result = $Addressing->compute($params["start"], ['ipdeb' => $ipdeb,
                                                                               'ipfin' => $ipfin]);
         }
-        $PluginAddressingReport->displayReport($result, $PluginAddressingAddressing);
+        $Report->displayReport($result, $Addressing);
 
         return true;
     }
@@ -341,7 +335,7 @@ function plugin_addressing_dynamicReport($params)
  */
 function plugin_addressing_addOrderBy($itemtype, $ID, $order, $key)
 {
-    if ($itemtype == "PluginAddressingAddressing"
+    if ($itemtype == Addressing::class
         && ($ID == 1000 || $ID == 1001)) {
         return "ORDER BY INET_ATON(ITEM_$key) $order";
     }
@@ -353,8 +347,8 @@ function plugin_addressing_postinit()
 
     $PLUGIN_HOOKS['item_purge']['addressing'] = [];
 
-    foreach (PluginAddressingAddressing::getTypes() as $type) {
+    foreach (Addressing::getTypes() as $type) {
         $PLUGIN_HOOKS['item_purge']['addressing'][$type]
-           = ['PluginAddressingPinginfo', 'cleanForItem'];
+           = [Pinginfo::class, 'cleanForItem'];
     }
 }

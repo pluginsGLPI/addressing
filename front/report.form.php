@@ -28,12 +28,12 @@
  */
 
 //Options for GLPI 0.71 and newer : need slave db to access the report
+use GlpiPlugin\Addressing\Addressing;
+
 $USEDBREPLICATE         = 1;
 $DBCONNECTION_REQUIRED  = 0;
 
-
-
-Html::header(PluginAddressingAddressing::getTypeName(2), '', "tools", "pluginaddressingaddressing");
+Html::header(Addressing::getTypeName(2), '', "tools", Addressing::class);
 
 Session::checkLoginUser();
 
@@ -45,7 +45,7 @@ if (!isset($_GET["export"])) {
     $_GET["export"] = false;
 }
 
-$addressing = new PluginAddressingAddressing();
+$addressing = new Addressing();
 $addressing->showReport($_GET);
 
 Html::footer();

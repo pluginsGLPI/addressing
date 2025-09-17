@@ -27,24 +27,32 @@
  --------------------------------------------------------------------------
  */
 
+namespace GlpiPlugin\Addressing;
+
+use CommonGLPI;
+use DbUtils;
+use Html;
+use ProfileRight;
+use Session;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }
 
 /**
- * Class PluginAddressingProfile
+ * Class Profile
  */
-class PluginAddressingProfile extends Profile
+class Profile extends \Profile
 {
     public static $rightname = "profile";
 
     public static function getAllRights()
     {
         $rights = [
-            ['itemtype'  => 'PluginAddressingAddressing',
+            ['itemtype'  => Addressing::class,
                   'label'     => __('Generate reports', 'addressing'),
                   'field'     => 'plugin_addressing'],
-            ['itemtype'  => 'PluginAddressingAddressing',
+            ['itemtype'  => Addressing::class,
                   'label'     => __('Use ping on equipment form', 'addressing'),
                   'field'     => 'plugin_addressing_use_ping_in_equipment']];
         return $rights;
@@ -63,15 +71,15 @@ class PluginAddressingProfile extends Profile
         echo "<div class='firstbloc'>";
         if (($canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]))
             && $openform) {
-            $profile = new Profile();
+            $profile = new \Profile();
             echo "<form method='post' action='".$profile->getFormURL()."'>";
         }
 
-        $profile = new Profile();
+        $profile = new \Profile();
         $profile->getFromDB($profiles_id);
 
         $rights = [
-            ['itemtype'  => 'PluginAddressingAddressing',
+            ['itemtype'  => Addressing::class,
                   'label'     => __('Generate reports', 'addressing'),
                   'field'     => 'plugin_addressing']];
 
@@ -106,7 +114,7 @@ class PluginAddressingProfile extends Profile
 
     public static function getIcon()
     {
-        return PluginAddressingAddressing::getIcon();
+        return Addressing::getIcon();
     }
 
     public function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)

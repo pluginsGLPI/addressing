@@ -27,11 +27,11 @@
  --------------------------------------------------------------------------
  */
 
-
+use GlpiPlugin\Addressing\Filter;
 
 Session::checkLoginUser();
 
-$filter = new PluginAddressingFilter();
+$filter = new Filter();
 
 if (isset($_POST['add'])) {
     $filter->check(-1, CREATE, $_POST);

@@ -23,12 +23,13 @@ jobs:
     - name: Update POT
       run: sh tools/extract_template.sh;
 
-
     - name: Commit changes
       uses: EndBug/add-and-commit@v9
       with:
         message: "Update POT"
+
     - name: Push changes
- 
       uses: actions-go/push@master
+      with:
+        commit-message: ''
   

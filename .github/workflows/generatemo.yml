@@ -34,4 +34,6 @@ jobs:
     - name: Push changes
  
       uses: actions-go/push@master
+      with:
+        commit-message: ''
   

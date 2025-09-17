@@ -27,23 +27,25 @@
  --------------------------------------------------------------------------
  */
 
+use GlpiPlugin\Addressing\Addressing;
+use GlpiPlugin\Addressing\Config;
 
 if (Plugin::isPluginActive("addressing")) {
-    $PluginAddressingConfig = new PluginAddressingConfig();
+    $Config = new Config();
 
     Session::checkRight("config", UPDATE);
 
     if (isset($_POST["update"])) {
-        $PluginAddressingConfig->update($_POST);
+        $Config->update($_POST);
         Html::back();
     } else {
-        Html::header(PluginAddressingAddressing::getTypeName(2), '', "tools", "pluginaddressingaddressing", "addressing");
-        $PluginAddressingConfig->showForm(1);
+        Html::header(Addressing::getTypeName(2), '', "tools", Addressing::class, "addressing");
+        $Config->showForm(1);
         Html::footer();
     }
 } else {
     Html::header(__('Setup'), '', "config", "plugin");
     echo "<div class='alert alert-important alert-warning d-flex'>";
-    echo "<b>".__('Please activate the plugin', 'addressing')."</b></div>";
+    echo "<b>" . __('Please activate the plugin', 'addressing') . "</b></div>";
     Html::footer();
 }

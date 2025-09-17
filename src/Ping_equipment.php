@@ -27,14 +27,22 @@
  --------------------------------------------------------------------------
  */
 
+namespace GlpiPlugin\Addressing;
+
+use CommonDBTM;
+use DbUtils;
+use Dropdown;
+use Html;
+use GlpiPlugin\Addressing\Config;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }
 
 /**
- * Class PluginAddressingPing_Equipment
+ * Class Ping_Equipment
  */
-class PluginAddressingPing_Equipment extends commonDBTM
+class Ping_Equipment extends CommonDBTM
 {
 
     public static $rightname = "plugin_addressing";
@@ -281,11 +289,11 @@ class PluginAddressingPing_Equipment extends commonDBTM
     {
         echo Html::script(PLUGIN_ADDRESSING_DIR_NOFULL . "/addressing.js");
 
-        $config = new PluginAddressingConfig();
+        $config = new Config();
         $config->getFromDB('1');
         $system = $config->fields["used_system"];
 
-        $ping_equip = new PluginAddressingPing_Equipment();
+        $ping_equip = new Ping_Equipment();
         list($message, $error) = $ping_equip->ping($system, $ip);
 
         echo "<div class='alert alert-warning'>";
@@ -332,7 +340,7 @@ class PluginAddressingPing_Equipment extends commonDBTM
    //
    //      $ping = Session::haveRight('plugin_addressing_use_ping_in_equipment', '1');
    //
-   //      if ($ping && in_array($item->getType(), PluginAddressingAddressing::getTypes())) {
+   //      if ($ping && in_array($item->getType(), Addressing::getTypes())) {
    //         if ($item->getField('id')) {
    //            $options = ['obj' => $item];
    //
@@ -349,7 +357,7 @@ class PluginAddressingPing_Equipment extends commonDBTM
    //
    //      $ping = Session::haveRight('plugin_addressing_use_ping_in_equipment', '1');
    //
-   //      if ($ping && in_array($item->getType(), PluginAddressingAddressing::getTypes())) {
+   //      if ($ping && in_array($item->getType(), Addressing::getTypes())) {
    //         if ($item->getField('id')) {
    //            return ['1' => __('IP ping', 'addressing')];
    //         }

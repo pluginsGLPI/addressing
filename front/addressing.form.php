@@ -27,7 +27,7 @@
  --------------------------------------------------------------------------
  */
 
-
+use GlpiPlugin\Addressing\Addressing;
 
 Session::checkLoginUser();
 
@@ -35,13 +35,9 @@ if (!isset($_GET["id"])) {
     $_GET["id"] = "";
 }
 
-if (isset($_GET["start"])) {
-    $start = $_GET["start"];
-} else {
-    $start = 0;
-}
+$start = $_GET["start"] ?? 0;
 
-$addressing = new PluginAddressingAddressing();
+$addressing = new Addressing();
 
 if (isset($_POST["add"])) {
     $addressing->check(-1, CREATE, $_POST);
@@ -57,7 +53,7 @@ if (isset($_POST["add"])) {
         );
     }
     if ($_SESSION['glpibackcreated']) {
-        Html::redirect($addressing->getFormURL()."?id=".$newID);
+        Html::redirect($addressing->getFormURL() . "?id=" . $newID);
     }
     Html::back();
 } elseif (isset($_POST["delete"])) {
@@ -88,12 +84,12 @@ if (isset($_POST["add"])) {
     Html::back();
 } elseif (isset($_POST["search"])) {
     $addressing->checkGlobal(READ);
-    Html::header(PluginAddressingAddressing::getTypeName(2), '', "tools", "pluginaddressingaddressing");
+    Html::header(Addressing::getTypeName(2), '', "tools", Addressing::class);
     $addressing->display($_POST);
     Html::footer();
 } else {
     $addressing->checkGlobal(READ);
-    Html::header(PluginAddressingAddressing::getTypeName(2), '', "tools", "pluginaddressingaddressing");
+    Html::header(Addressing::getTypeName(2), '', "tools", Addressing::class);
     $addressing->display($_GET);
     Html::footer();
 }

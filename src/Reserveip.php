@@ -27,14 +27,30 @@
   --------------------------------------------------------------------------
  */
 
+namespace GlpiPlugin\Addressing;
+
+use Ajax;
+use CommonDBTM;
+use Dropdown;
+use Entity;
+use FQDN;
+use Glpi\Event;
+use GlpiPlugin\Addressing\Config;
+use Html;
+use IPNetwork;
+use NetworkPort;
+use Profile_User;
+use Session;
+use State;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }
 
 /**
- * Class PluginAddressingReserveip
+ * Class Reserveip
  */
-class PluginAddressingReserveip extends CommonDBTM
+class Reserveip extends CommonDBTM
 {
 
     public static $rightname = 'plugin_addressing';
@@ -127,7 +143,7 @@ class PluginAddressingReserveip extends CommonDBTM
             $np    = new NetworkPort();
             $newID = $np->add($newinput);
 
-            \Glpi\Event::log(
+            Event::log(
                 $newID,
                 "networkport",
                 5,
@@ -184,10 +200,10 @@ class PluginAddressingReserveip extends CommonDBTM
 
         echo Html::script(PLUGIN_ADDRESSING_DIR_NOFULL."/addressing.js");
 
-        $addressing = new PluginAddressingAddressing();
+        $addressing = new Addressing();
         $addressing->getFromDB($id_addressing);
 
-        $this->forceTable(PluginAddressingAddressing::getTable());
+        $this->forceTable(Addressing::getTable());
         $this->initForm(-1);
         $options['colspan'] = 2;
         $this->showFormHeader($options);
@@ -198,11 +214,11 @@ class PluginAddressingReserveip extends CommonDBTM
                <td>" . _n("IP address", "IP addresses", 1) . "</td>
                <td>" . $ip . "</td>
                <td>";
-        $config = new PluginAddressingConfig();
+        $config = new Config();
         $config->getFromDB('1');
         $system = $config->fields["used_system"];
 
-        $ping_equip = new PluginAddressingPing_Equipment();
+        $ping_equip = new Ping_Equipment();
         list($message, $error) = $ping_equip->ping($system, $ip);
         if ($error) {
             echo "<i class='fas fa-check-circle fa-1x' style='color:forestgreen'></i>
@@ -273,7 +289,7 @@ class PluginAddressingReserveip extends CommonDBTM
         echo "<tr class='tab_bg_1'>
                <td>" . __("Type") . "</td>
                <td>";
-        $types = PluginAddressingAddressing::dropdownItemtype();
+        $types = Addressing::dropdownItemtype();
         Dropdown::showFromArray(
             'type',
             $types,

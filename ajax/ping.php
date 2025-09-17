@@ -32,7 +32,11 @@
 // Purpose of file:
 // ----------------------------------------------------------------------
 
-
+use Glpi\Exception\Http\NotFoundHttpException;
+use GlpiPlugin\Addressing\Config;
+use GlpiPlugin\Addressing\Ping_Equipment;
+use GlpiPlugin\Addressing\Pinginfo;
+use GlpiPlugin\Addressing\Report;
 
 Session::checkRight('plugin_addressing', UPDATE);
 header("Content-Type: text/html; charset=UTF-8");
@@ -41,20 +45,20 @@ Html::header_nocache();
 Session::checkLoginUser();
 
 if (!isset($_POST['ip']) || !filter_var($_POST["ip"], FILTER_VALIDATE_IP)) {
-        throw new \Glpi\Exception\Http\NotFoundHttpException();
+        throw new NotFoundHttpException();
 }
 $ip = $_POST['ip'];
 $itemtype = $_POST['itemtype'];
 $items_id = $_POST['items_id'];
 
-$config = new PluginAddressingConfig();
+$config = new Config();
 $config->getFromDB('1');
 $system = $config->fields["used_system"];
 
-$ping_equip = new PluginAddressingPing_Equipment();
+$ping_equip = new Ping_Equipment();
 list($message, $error) = $ping_equip->ping($system, $ip);
 
-$plugin_addressing_pinginfo = new PluginAddressingPinginfo();
+$plugin_addressing_pinginfo = new Pinginfo();
 
 $ping_value = $ping_equip->ping($system, $ip, "true");
 
@@ -72,7 +76,7 @@ if ($ping_value == false || $ping_value == true) {
             'ping_date' => $ping_date]);
         }
     } else {
-        $num = "IP".PluginAddressingReport::ip2string($ip);
+        $num = "IP".Report::ip2string($ip);
         $plugin_addressing_pinginfo->add(['ping_response' => $ping_value,
          'ping_date' => $ping_date, 'itemtype' => $itemtype,
          'items_id' => $items_id, 'ipname' => $num]);

@@ -27,18 +27,33 @@
  --------------------------------------------------------------------------
  */
 
+namespace GlpiPlugin\Addressing;
+
+use CommonDBTM;
+use CommonGLPI;
+use DbUtils;
+use Dropdown;
+use FQDN;
 use Glpi\DBAL\QueryExpression;
 use Glpi\DBAL\QuerySubQuery;
 use Glpi\DBAL\QueryUnion;
+use Html;
+use MassiveAction;
+use Session;
+use Toolbox;
+use Vlan;
+use GlpiPlugin\Addressing\Config;
+use GlpiPlugin\Addressing\Report;
+
 
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }
 
 /**
- * Class PluginAddressingAddressing
+ * Class Addressing
  */
-class PluginAddressingAddressing extends CommonDBTM
+class Addressing extends CommonDBTM
 {
 
     public static $rightname = "plugin_addressing";
@@ -64,9 +79,9 @@ class PluginAddressingAddressing extends CommonDBTM
      **/
     public function cleanDBonPurge()
     {
-        $temp1 = new PluginAddressingPinginfo();
+        $temp1 = new Pinginfo();
         $temp1->deleteByCriteria(array('plugin_addressing_addressings_id' => $this->fields['id']));
-        $temp2 = new PluginAddressingFilter();
+        $temp2 = new Filter();
         $temp2->deleteByCriteria(array('plugin_addressing_addressings_id' => $this->fields['id']));
     }
 
@@ -177,7 +192,7 @@ class PluginAddressingAddressing extends CommonDBTM
         $ong = [];
         $this->addDefaultFormTab($ong);
         $this->addStandardTab(__CLASS__, $ong, $options);
-        $this->addStandardTab('PluginAddressingFilter', $ong, $options);
+        $this->addStandardTab(Filter::class, $ong, $options);
         $this->addStandardTab('Log', $ong, $options);
         return $ong;
     }
@@ -231,8 +246,8 @@ class PluginAddressingAddressing extends CommonDBTM
             = "onSubmit='return plugaddr_Check(\"" . __('Invalid data !!', 'addressing') . "\")'";
         $this->showFormHeader($options);
 
-        $PluginAddressingConfig = new PluginAddressingConfig();
-        $PluginAddressingConfig->getFromDB('1');
+        $Config = new Config();
+        $Config->getFromDB('1');
 
         echo "<tr class='tab_bg_1'>";
 
@@ -241,7 +256,7 @@ class PluginAddressingAddressing extends CommonDBTM
         echo Html::input('name', ['value' => $this->fields['name'], 'size' => 40]);
         echo "</td>";
 
-        if ($PluginAddressingConfig->fields["alloted_ip"]) {
+        if ($Config->fields["alloted_ip"]) {
             echo "<td>" . __('Assigned IP', 'addressing') . "</td><td>";
             Dropdown::showYesNo('alloted_ip', $this->fields["alloted_ip"]);
             echo "</td>";
@@ -301,7 +316,7 @@ class PluginAddressingAddressing extends CommonDBTM
 
         echo "</td>";
 
-        if ($PluginAddressingConfig->fields["free_ip"]) {
+        if ($Config->fields["free_ip"]) {
             echo "<td>" . __('Free IP', 'addressing') . "</td><td>";
             Dropdown::showYesNo('free_ip', $this->fields["free_ip"]);
             echo "</td>";
@@ -377,7 +392,7 @@ class PluginAddressingAddressing extends CommonDBTM
         ]);
         echo "</td>";
 
-        if ($PluginAddressingConfig->fields["double_ip"]) {
+        if ($Config->fields["double_ip"]) {
             echo "<td>" . __('Same IP', 'addressing') . "</td><td>";
             Dropdown::showYesNo('double_ip', $this->fields["double_ip"]);
             echo "</td>";
@@ -399,7 +414,7 @@ class PluginAddressingAddressing extends CommonDBTM
         ]);
         echo "</td>";
 
-        if ($PluginAddressingConfig->fields["reserved_ip"]) {
+        if ($Config->fields["reserved_ip"]) {
             echo "<td>" . __('Reserved IP', 'addressing') . "</td><td>";
             Dropdown::showYesNo('reserved_ip', $this->fields["reserved_ip"]);
             echo "</td>";
@@ -428,7 +443,7 @@ class PluginAddressingAddressing extends CommonDBTM
             echo Html::scriptBlock('$(document).ready(function() {' . $js . '});');
         }
         echo "</td>";
-        if ($PluginAddressingConfig->fields["use_ping"]) {
+        if ($Config->fields["use_ping"]) {
             echo "<td>" . __('Ping free IP', 'addressing') . "</td><td>";
             Dropdown::showYesNo('use_ping', $this->fields["use_ping"]);
             echo "</td>";
@@ -951,7 +966,7 @@ class PluginAddressingAddressing extends CommonDBTM
     {
         global $CFG_GLPI;
 
-        $PluginAddressingReport = new PluginAddressingReport();
+        $Report = new Report();
 
         // Default values of parameters
         $default_values["start"] = $start = 0;
@@ -966,7 +981,7 @@ class PluginAddressingAddressing extends CommonDBTM
         }
 
         if ($this->getFromDB($id)) {
-            $addressingFilter = new PluginAddressingFilter();
+            $addressingFilter = new Filter();
             if ($filter > 0) {
                 if ($addressingFilter->getFromDB($filter)) {
                     $ipdeb = sprintf("%u", ip2long($addressingFilter->fields['begin_ip']));
@@ -1091,7 +1106,7 @@ class PluginAddressingAddressing extends CommonDBTM
 
             ////////////////////////// research ////////////////////////////////////////////////////////////
             echo "<form method='post' name='filtering_form' id='filtering_form' action='" . Toolbox::getItemTypeFormURL(
-                "PluginAddressingAddressing"
+                Addressing::class
             ) . "?id=$id'>";
             echo "<table class='tab_cadre_fixe'><tr class='tab_bg_2 center'>";
 
@@ -1127,7 +1142,7 @@ class PluginAddressingAddressing extends CommonDBTM
                 echo "</td>";
 
                 echo "<td class='center' colspan='4'>";
-                echo "<button form='' type='submit' id='updatePingInfo' class='submit btn btn-primary me-2 center' 
+                echo "<button form='' type='submit' id='updatePingInfo' class='submit btn btn-primary me-2 center'
                 name='updatePingInfo' title='" . _sx(
                     'button',
                     'Manual launch of ping',
@@ -1140,7 +1155,7 @@ class PluginAddressingAddressing extends CommonDBTM
 
                 echo "</tr>";
             }
-            $filter_list = new PluginAddressingFilter();
+            $filter_list = new Filter();
             $datas = $filter_list->find(['plugin_addressing_addressings_id' => $id]);
             if (count($datas) > 0) {
                 echo "<tr class='tab_bg_1 center'>";
@@ -1148,7 +1163,7 @@ class PluginAddressingAddressing extends CommonDBTM
                 echo _n('Filter', 'Filters', 2, 'addressing');
                 echo "</td>";
                 echo "<td colspan='4'>";
-                PluginAddressingFilter::dropdownFilters($params['id'], $filter);
+                Filter::dropdownFilters($params['id'], $filter);
                 echo "</td>";
             }
             echo "<tr class='tab_bg_1 center'>";
@@ -1199,13 +1214,13 @@ class PluginAddressingAddressing extends CommonDBTM
                 $numrows,
                 self::getFormURL(),
                 $parameters,
-                'PluginAddressingReport'
+                Report::class
             );
 
 
             //////////////////////////liste ips////////////////////////////////////////////////////////////
             $ping_status = [$ping_off, $ping_on];
-            $ping_response = $PluginAddressingReport->displayReport($result, $this, $ping_status);
+            $ping_response = $Report->displayReport($result, $this, $ping_status);
 
             if ($this->fields['use_ping']) {
                 $total_realfreeip = $nbipf - $ping_response;
@@ -1250,7 +1265,7 @@ class PluginAddressingAddressing extends CommonDBTM
         if (Session::haveRight('transfer', READ)
             && Session::isMultiEntitiesMode()
             && $isadmin) {
-            $actions['PluginAddressingAddressing' . MassiveAction::CLASS_ACTION_SEPARATOR . 'transfer'] = __(
+            $actions['GlpiPlugin\Addressing\Addressing' . MassiveAction::CLASS_ACTION_SEPARATOR . 'transfer'] = __(
                 'Transfer'
             );
         }
@@ -1284,7 +1299,7 @@ class PluginAddressingAddressing extends CommonDBTM
             case "transfer":
                 $input = $ma->getInput();
 
-                if ($item->getType() == 'PluginAddressingAddressing') {
+                if ($item->getType() == Addressing::class) {
                     foreach ($ids as $key) {
                         $values["id"] = $key;
                         $values["entities_id"] = $input['entities_id'];
@@ -1335,7 +1350,7 @@ class PluginAddressingAddressing extends CommonDBTM
      * @param $typocrit_id the field widget item id
      * @param value the selected value
      *
-     * @return nothing
+     * @return array
      **/
     public static function dropdownItemtype()
     {
@@ -1405,13 +1420,13 @@ class PluginAddressingAddressing extends CommonDBTM
         if (Session::haveRight(static::$rightname, UPDATE)
             || Session::haveRight("config", UPDATE)) {
             //Entry icon in breadcrumb
-            $menu['links']['config'] = PluginAddressingConfig::getSearchURL(false);
+            $menu['links']['config'] = Config::getSearchURL(false);
             //Link to config page in admin plugins list
-            $menu['config_page'] = PluginAddressingConfig::getSearchURL(false);
+            $menu['config_page'] = Config::getSearchURL(false);
 
             //Add a fourth level in breadcrumb for configuration page
             $menu['options']['config']['title'] = __('Setup');
-            $menu['options']['config']['page'] = PluginAddressingConfig::getSearchURL(false);
+            $menu['options']['config']['page'] = Config::getSearchURL(false);
             $menu['options']['config']['links']['search'] = self::getSearchURL(false);
             $menu['options']['config']['links']['add'] = self::getFormURL(false);
         }
@@ -1423,11 +1438,11 @@ class PluginAddressingAddressing extends CommonDBTM
 
     public static function removeRightsFromSession()
     {
-        if (isset($_SESSION['glpimenu']['tools']['types']['PluginAddressingAddressing'])) {
-            unset($_SESSION['glpimenu']['tools']['types']['PluginAddressingAddressing']);
+        if (isset($_SESSION['glpimenu']['tools']['types'][Addressing::class])) {
+            unset($_SESSION['glpimenu']['tools']['types'][Addressing::class]);
         }
-        if (isset($_SESSION['glpimenu']['tools']['content']['pluginaddressingaddressing'])) {
-            unset($_SESSION['glpimenu']['tools']['content']['pluginaddressingaddressing']);
+        if (isset($_SESSION['glpimenu']['tools']['content'][Addressing::class])) {
+            unset($_SESSION['glpimenu']['tools']['content'][Addressing::class]);
         }
     }
 }

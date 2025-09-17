@@ -27,14 +27,20 @@
  --------------------------------------------------------------------------
  */
 
+namespace GlpiPlugin\Addressing;
+
+use CommonDBTM;
+use Dropdown;
+use Html;
+
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access directly to this file");
 }
 
 /**
- * Class PluginAddressingConfig
+ * Class Config
  */
-class PluginAddressingConfig extends CommonDBTM
+class Config extends CommonDBTM
 {
 
     public static $rightname = "plugin_addressing";
