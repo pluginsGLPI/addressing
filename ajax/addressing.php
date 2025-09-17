@@ -35,43 +35,38 @@ Html::header_nocache();
 header("Content-Type: text/html; charset=UTF-8");
 
 if (isset($_POST['action']) && $_POST['action'] == 'viewFilter') {
-   if (isset($_POST['items_id'])
+    if (isset($_POST['items_id'])
        && isset($_POST["id"])) {
-      $filter = new PluginAddressingFilter();
-      $filter->showForm($_POST["id"], ['items_id' => $_POST['items_id']]);
-   } else {
-      echo __('Access denied');
-   }
-
-} else if (isset($_POST['action']) && $_POST['action'] == 'entities_networkip') {
-   IPNetwork::showIPNetworkProperties($_POST['entities_id']);
-
-} else if (isset($_POST['action']) && $_POST['action'] == 'entities_location') {
-   Dropdown::show('Location', ['name'   => "locations_id",
+        $filter = new PluginAddressingFilter();
+        $filter->showForm($_POST["id"], ['items_id' => $_POST['items_id']]);
+    } else {
+        echo __('Access denied');
+    }
+} elseif (isset($_POST['action']) && $_POST['action'] == 'entities_networkip') {
+    IPNetwork::showIPNetworkProperties($_POST['entities_id']);
+} elseif (isset($_POST['action']) && $_POST['action'] == 'entities_location') {
+    Dropdown::show('Location', ['name'   => "locations_id",
                                'value'  => $_POST["value"],
                                'entity' => $_POST['entities_id']]);
-
-} else if (isset($_POST['action']) && $_POST['action'] == 'entities_fqdn') {
-   Dropdown::show('FQDN', ['name'   => "fqdns_id",
+} elseif (isset($_POST['action']) && $_POST['action'] == 'entities_fqdn') {
+    Dropdown::show('FQDN', ['name'   => "fqdns_id",
                            'value'  => $_POST["value"],
                            'entity' => $_POST['entities_id']]);
-
 } elseif ($_GET['action'] == 'ping') {
-   Html::popHeader(__s('IP ping', 'addressing'), $_SERVER['PHP_SELF']);
+    Html::popHeader(__s('IP ping', 'addressing'), $_SERVER['PHP_SELF']);
 
-   if(filter_var($_GET["ip"], FILTER_VALIDATE_IP)) {
-      $PluginAddressingPing_Equipment = new PluginAddressingPing_Equipment();
-      $PluginAddressingPing_Equipment->showIPForm($_GET["ip"]);
-   }
-   Html::popFooter();
-
+    if (filter_var($_GET["ip"], FILTER_VALIDATE_IP)) {
+        $PluginAddressingPing_Equipment = new PluginAddressingPing_Equipment();
+        $PluginAddressingPing_Equipment->showIPForm($_GET["ip"]);
+    }
+    Html::popFooter();
 } else {
-   Html::popHeader(__s('IP reservation', 'addressing'), $_SERVER['PHP_SELF']);
+    Html::popHeader(__s('IP reservation', 'addressing'), $_SERVER['PHP_SELF']);
 
-   if(filter_var($_GET["ip"], FILTER_VALIDATE_IP)) {
-      $PluginAddressingReserveip = new PluginAddressingReserveip();
-      $PluginAddressingReserveip->showReservationForm($_GET["ip"], $_GET['id_addressing'], $_GET['rand']);
-   }
+    if (filter_var($_GET["ip"], FILTER_VALIDATE_IP)) {
+        $PluginAddressingReserveip = new PluginAddressingReserveip();
+        $PluginAddressingReserveip->showReservationForm($_GET["ip"], $_GET['id_addressing'], $_GET['rand']);
+    }
 
-   Html::popFooter();
+    Html::popFooter();
 }

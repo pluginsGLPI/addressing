@@ -38,15 +38,14 @@ Html::header(PluginAddressingAddressing::getTypeName(2), '', "tools", "pluginadd
 Session::checkLoginUser();
 
 if (!isset($_GET["start"])) {
-   $_GET["start"] = 0;
+    $_GET["start"] = 0;
 }
 
 if (!isset($_GET["export"])) {
-   $_GET["export"] = false;
+    $_GET["export"] = false;
 }
 
 $addressing = new PluginAddressingAddressing();
 $addressing->showReport($_GET);
 
 Html::footer();
-

@@ -30,23 +30,21 @@
 
 
 if (Plugin::isPluginActive("addressing")) {
-   $PluginAddressingConfig = new PluginAddressingConfig();
+    $PluginAddressingConfig = new PluginAddressingConfig();
 
-   Session::checkRight("config", UPDATE);
+    Session::checkRight("config", UPDATE);
 
-   if (isset($_POST["update"])) {
-      $PluginAddressingConfig->update($_POST);
-      Html::back();
-
-   } else {
-      Html::header(PluginAddressingAddressing::getTypeName(2), '', "tools", "pluginaddressingaddressing", "addressing");
-      $PluginAddressingConfig->showForm(1);
-      Html::footer();
-   }
-
+    if (isset($_POST["update"])) {
+        $PluginAddressingConfig->update($_POST);
+        Html::back();
+    } else {
+        Html::header(PluginAddressingAddressing::getTypeName(2), '', "tools", "pluginaddressingaddressing", "addressing");
+        $PluginAddressingConfig->showForm(1);
+        Html::footer();
+    }
 } else {
-   Html::header(__('Setup'), '', "config", "plugins");
-   echo "<div class='alert alert-important alert-warning d-flex'>";
-   echo "<b>".__('Please activate the plugin', 'addressing')."</b></div>";
-   Html::footer();
+    Html::header(__('Setup'), '', "config", "plugins");
+    echo "<div class='alert alert-important alert-warning d-flex'>";
+    echo "<b>".__('Please activate the plugin', 'addressing')."</b></div>";
+    Html::footer();
 }
