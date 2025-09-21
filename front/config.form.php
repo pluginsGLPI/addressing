@@ -27,6 +27,7 @@
  --------------------------------------------------------------------------
  */
 
+use GlpiPlugin\Addressing\Addressing;
 use GlpiPlugin\Addressing\Config;
 
 if (Plugin::isPluginActive("addressing")) {
