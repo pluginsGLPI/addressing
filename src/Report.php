@@ -583,9 +583,7 @@ class Report extends CommonDBTM
                     }
                     echo Search::showEndLine($output_type);
                 } else {
-                    if ($output_type == Search::HTML_OUTPUT) {
-                        Html::glpi_flush();
-                    }
+
                     $ping_action                = NOT_AVAILABLE;
                     $plugin_addressing_pinginfo = new Pinginfo();
                     if ($plugin_addressing_pinginfo->getFromDBByCrit(['plugin_addressing_addressings_id' => $Addressing->getID(),
