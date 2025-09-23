@@ -3,7 +3,7 @@ name: "Update locales sources"
 on:
   push:
     branches:
-      - "main"
+      - "master"
 
 jobs:
   push-on-transifex:
