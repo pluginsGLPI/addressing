@@ -316,7 +316,7 @@ function plugin_addressing_dynamicReport($params)
             $result = $Addressing->compute($params["start"], ['ipdeb' => $ipdeb,
                                                                               'ipfin' => $ipfin]);
         }
-        $Report->displayReport($result, $Addressing);
+        $Report->displayReport($result, $Addressing, $params);
 
         return true;
     }
