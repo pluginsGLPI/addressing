@@ -80,7 +80,6 @@ function plugin_init_addressing()
     }
 }
 
-
 // Get the name and the version of the plugin - Needed
 function plugin_version_addressing()
 {
