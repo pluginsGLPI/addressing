@@ -32,7 +32,7 @@
 // ----------------------------------------------------------------------
 
 
-use GlpiPlugin\Addressing\Ipcomment;
+use GlpiPlugin\Addressing\IpComment;
 
 Session::checkRight('plugin_addressing', UPDATE);
 header("Content-Type: application/json; charset=UTF-8");
@@ -51,7 +51,7 @@ $addressing_id = $_POST['addressing_id'];
 $ipname        = $_POST['ipname'];
 $content       = $_POST['contentC'];
 
-$ipcomment = new Ipcomment();
+$ipcomment = new IpComment();
 if ($ipcomment->getFromDBByCrit(['plugin_addressing_addressings_id' => $addressing_id, 'ipname' => $ipname])) {
     $ipcomment->update(['id' => $ipcomment->getID(), 'comments' => $content]);
 } else {

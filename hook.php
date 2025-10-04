@@ -29,7 +29,7 @@
 
 use GlpiPlugin\Addressing\Addressing;
 use GlpiPlugin\Addressing\Filter;
-use GlpiPlugin\Addressing\Pinginfo;
+use GlpiPlugin\Addressing\PingInfo;
 use GlpiPlugin\Addressing\Profile;
 use GlpiPlugin\Addressing\Report;
 
@@ -127,7 +127,7 @@ function plugin_addressing_install()
     //Drop old profile table : not used anymore
     $migration = new Migration("2.5.0");
     $migration->dropTable('glpi_plugin_addressing_profiles');
-    CronTask::Register(Pinginfo::class, 'UpdatePing', DAY_TIMESTAMP);
+    CronTask::Register(PingInfo::class, 'UpdatePing', DAY_TIMESTAMP);
 
     if (!$DB->request([
         'FROM'   => 'glpi_displaypreferences',
@@ -349,6 +349,6 @@ function plugin_addressing_postinit()
 
     foreach (Addressing::getTypes() as $type) {
         $PLUGIN_HOOKS['item_purge']['addressing'][$type]
-           = [Pinginfo::class, 'cleanForItem'];
+           = [PingInfo::class, 'cleanForItem'];
     }
 }

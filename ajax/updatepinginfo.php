@@ -33,7 +33,7 @@
 
 
 use GlpiPlugin\Addressing\Addressing;
-use GlpiPlugin\Addressing\Pinginfo;
+use GlpiPlugin\Addressing\PingInfo;
 
 Session::checkRight('plugin_addressing', UPDATE);
 header("Content-Type: application/json; charset=UTF-8");
@@ -48,7 +48,7 @@ $addressing_id = $_POST['addressing_id'];
 $old_execution = ini_set("max_execution_time", "0");
 $addressing = new Addressing();
 $addressing->getFromDB($addressing_id);
-$pingInfo = new Pinginfo();
+$pingInfo = new PingInfo();
 $pingInfo->updateAnAddressing($addressing);
 ini_set("max_execution_time", $old_execution);
 

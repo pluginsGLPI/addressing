@@ -35,7 +35,7 @@
 use Glpi\Exception\Http\NotFoundHttpException;
 use GlpiPlugin\Addressing\Config;
 use GlpiPlugin\Addressing\Ping_Equipment;
-use GlpiPlugin\Addressing\Pinginfo;
+use GlpiPlugin\Addressing\PingInfo;
 use GlpiPlugin\Addressing\Report;
 
 Session::checkRight('plugin_addressing', UPDATE);
@@ -58,7 +58,7 @@ $system = $config->fields["used_system"];
 $ping_equip = new Ping_Equipment();
 list($message, $error) = $ping_equip->ping($system, $ip);
 
-$plugin_addressing_pinginfo = new Pinginfo();
+$plugin_addressing_pinginfo = new PingInfo();
 
 $ping_value = $ping_equip->ping($system, $ip, "true");
 

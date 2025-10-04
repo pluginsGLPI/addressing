@@ -36,9 +36,9 @@ if (!defined('GLPI_ROOT')) {
 }
 
 /**
- * Class Ipcomment
+ * Class IpComment
  */
-class Ipcomment extends CommonDBTM
+class IpComment extends CommonDBTM
 {
     public static $rightname = "plugin_addressing";
 

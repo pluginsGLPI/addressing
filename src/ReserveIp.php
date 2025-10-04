@@ -48,9 +48,9 @@ if (!defined('GLPI_ROOT')) {
 }
 
 /**
- * Class Reserveip
+ * Class ReserveIp
  */
-class Reserveip extends CommonDBTM
+class ReserveIp extends CommonDBTM
 {
 
     public static $rightname = 'plugin_addressing';

@@ -371,7 +371,7 @@ class Report extends CommonDBTM
                             // Ping
                             $ping_action = NOT_AVAILABLE;
                             if ($Addressing->fields["free_ip"] && $ping) {
-                                $plugin_addressing_pinginfo = new Pinginfo();
+                                $plugin_addressing_pinginfo = new PingInfo();
                                 if ($pings = $plugin_addressing_pinginfo->find([
                                     'plugin_addressing_addressings_id' => $Addressing->getID(),
                                     'ipname' => $num
@@ -579,7 +579,7 @@ class Report extends CommonDBTM
                             }
 
                             $rand = mt_rand();
-                            $comment = new Ipcomment();
+                            $comment = new IpComment();
                             $comment->getFromDBByCrit(
                                 ['ipname' => $num, 'plugin_addressing_addressings_id' => $Addressing->getID()]
                             );
@@ -700,7 +700,7 @@ class Report extends CommonDBTM
                             $current_row[$itemtype . '_' . (++$colnum)] = ['displayname' => " "];
                         }
                         $rand = mt_rand();
-                        $comment = new Ipcomment();
+                        $comment = new IpComment();
                         $comment->getFromDBByCrit(
                             ['ipname' => $num, 'plugin_addressing_addressings_id' => $Addressing->getID()]
                         );
@@ -752,7 +752,7 @@ class Report extends CommonDBTM
                         }
 
                         $rand = mt_rand();
-                        $comment = new Ipcomment();
+                        $comment = new IpComment();
                         $comment->getFromDBByCrit(
                             ['ipname' => $num, 'plugin_addressing_addressings_id' => $Addressing->getID()]
                         );
@@ -818,7 +818,7 @@ class Report extends CommonDBTM
                         $html_output .= $output::showEndLine(false);
                     } else {
                         $ping_action = NOT_AVAILABLE;
-                        $plugin_addressing_pinginfo = new Pinginfo();
+                        $plugin_addressing_pinginfo = new PingInfo();
                         if ($plugin_addressing_pinginfo->getFromDBByCrit([
                             'plugin_addressing_addressings_id' => $Addressing->getID(),
                             'ipname' => $num
@@ -953,7 +953,7 @@ class Report extends CommonDBTM
                                         $current_row[$itemtype . '_' . (++$colnum)] = ['displayname' => $reserv];
                                     }
                                     $rand = mt_rand();
-                                    $comment = new Ipcomment();
+                                    $comment = new IpComment();
                                     $comment->getFromDBByCrit(
                                         ['ipname' => $num, 'plugin_addressing_addressings_id' => $Addressing->getID()]
                                     );
@@ -1139,7 +1139,7 @@ class Report extends CommonDBTM
                                         $current_row[$itemtype . '_' . (++$colnum)] = ['displayname' => $reserv];
                                     }
                                     $rand = mt_rand();
-                                    $comment = new Ipcomment();
+                                    $comment = new IpComment();
                                     $comment->getFromDBByCrit(
                                         ['ipname' => $num, 'plugin_addressing_addressings_id' => $Addressing->getID()]
                                     );

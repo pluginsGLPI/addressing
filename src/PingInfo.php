@@ -41,9 +41,9 @@ if (!defined('GLPI_ROOT')) {
 }
 
 /**
- * Class Pinginfo
+ * Class PingInfo
  */
-class Pinginfo extends CommonDBTM
+class PingInfo extends CommonDBTM
 {
     public static $rightname = "plugin_addressing";
 
@@ -115,7 +115,7 @@ class Pinginfo extends CommonDBTM
         $result                     = $addressing->compute(0, ['ipdeb'    => $ipdeb,
                                                              'ipfin'    => $ipfin,
                                                              'entities' => $addressing->fields['entities_id']]);
-        $plugin_addressing_pinginfo = new Pinginfo();
+        $plugin_addressing_pinginfo = new PingInfo();
         $save = $plugin_addressing_pinginfo->find(['plugin_addressing_addressings_id' => $addressing->getID()]);
         $plugin_addressing_pinginfo->deleteByCriteria(['plugin_addressing_addressings_id' => $addressing->getID()]);
 
@@ -135,7 +135,7 @@ class Pinginfo extends CommonDBTM
 
         $ping_response = 0;
 
-        $plugin_addressing_pinginfo = new Pinginfo();
+        $plugin_addressing_pinginfo = new PingInfo();
 
         foreach ($result as $num => $lines) {
             $ip = Report::string2ip(substr($num, 2));
@@ -170,7 +170,7 @@ class Pinginfo extends CommonDBTM
           && in_array($item->getType(), Addressing::getTypes()) && $item->getID() > 0) {
             $items_id                   = $item->getID();
             $itemtype                   = $item->getType();
-            $plugin_addressing_pinginfo = new Pinginfo();
+            $plugin_addressing_pinginfo = new PingInfo();
 
             $ping_action = 0;
             $ping_value  = 0;

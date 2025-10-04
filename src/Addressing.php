@@ -79,7 +79,7 @@ class Addressing extends CommonDBTM
      **/
     public function cleanDBonPurge()
     {
-        $temp1 = new Pinginfo();
+        $temp1 = new PingInfo();
         $temp1->deleteByCriteria(array('plugin_addressing_addressings_id' => $this->fields['id']));
         $temp2 = new Filter();
         $temp2->deleteByCriteria(array('plugin_addressing_addressings_id' => $this->fields['id']));

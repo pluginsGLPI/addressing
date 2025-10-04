@@ -30,7 +30,7 @@
 
 use GlpiPlugin\Addressing\Filter;
 use GlpiPlugin\Addressing\Ping_Equipment;
-use GlpiPlugin\Addressing\Reserveip;
+use GlpiPlugin\Addressing\ReserveIp;
 
 Session::checkLoginUser();
 Session::checkRight('plugin_addressing', UPDATE);
@@ -67,8 +67,8 @@ if (isset($_POST['action']) && $_POST['action'] == 'viewFilter') {
     Html::popHeader(__s('IP reservation', 'addressing'), $_SERVER['PHP_SELF']);
 
     if (filter_var($_GET["ip"], FILTER_VALIDATE_IP)) {
-        $Reserveip = new Reserveip();
-        $Reserveip->showReservationForm($_GET["ip"], $_GET['id_addressing'], $_GET['rand']);
+        $ReserveIp = new ReserveIp();
+        $ReserveIp->showReservationForm($_GET["ip"], $_GET['id_addressing'], $_GET['rand']);
     }
 
     Html::popFooter();

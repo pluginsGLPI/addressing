@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @version $Id$
  -------------------------------------------------------------------------
@@ -33,7 +34,6 @@ use CommonDBTM;
 use DbUtils;
 use Dropdown;
 use Html;
-use GlpiPlugin\Addressing\Config;
 
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access directly to this file");
@@ -44,7 +44,6 @@ if (!defined('GLPI_ROOT')) {
  */
 class Ping_Equipment extends CommonDBTM
 {
-
     public static $rightname = "plugin_addressing";
 
     public function showPingForm($itemtype, $items_id)
@@ -63,7 +62,7 @@ class Ping_Equipment extends CommonDBTM
             'SELECT' => [
                 'glpi_networknames'  => 'name',
                 'glpi_ipaddresses'   => 'name AS ip',
-                'glpi_networkports'  => 'items_id'
+                'glpi_networkports'  => 'items_id',
             ],
             'FROM' => 'glpi_networkports',
             'LEFT JOIN' => [
@@ -72,26 +71,26 @@ class Ping_Equipment extends CommonDBTM
                         'glpi_networkports' => 'items_id',
                         $obj->getTable()    => 'id',
                         ['AND' => [
-                            'glpi_networkports.itemtype' => $itemtype
-                        ]]
-                    ]
+                            'glpi_networkports.itemtype' => $itemtype,
+                        ]],
+                    ],
                 ],
                 'glpi_networknames' => [
                     'ON' => [
                         'glpi_networkports'  => 'id',
-                        'glpi_networknames'  => 'items_id'
-                    ]
+                        'glpi_networknames'  => 'items_id',
+                    ],
                 ],
                 'glpi_ipaddresses' => [
                     'ON' => [
                         'glpi_ipaddresses' => 'items_id',
-                        'glpi_networknames' => 'id'
-                    ]
-                ]
+                        'glpi_networknames' => 'id',
+                    ],
+                ],
             ],
             'WHERE' => [
-                $obj->getTable() . '.id' => $obj->fields['id']
-            ]
+                $obj->getTable() . '.id' => $obj->fields['id'],
+            ],
         ]);
 
         foreach ($request as $row) {
@@ -120,8 +119,8 @@ class Ping_Equipment extends CommonDBTM
                 echo "<option value='$ip'>$name</option>";
             }
             echo "</select>";
-            echo "&nbsp;<input class='submit btn btn-primary' type='button' value='" .
-                __s('IP ping', 'addressing') . "' id='ping_ip'>";
+            echo "&nbsp;<input class='submit btn btn-primary' type='button' value='"
+                . __s('IP ping', 'addressing') . "' id='ping_ip'>";
             echo "</td>";
             echo "</tr>";
 
@@ -170,14 +169,14 @@ class Ping_Equipment extends CommonDBTM
                 if (isset($nb) && $return == "true") {
                     for ($i = 0; $i < $nb; $i++) {
                         if (strpos($list[$i], "ttl=") > 0) {
-                              return true;
+                            return true;
                         }
                     }
                 }
                 break;
 
             case 1:
-               //windows
+                //windows
                 if ($return == "true") {
                     exec("ping.exe -n 1 -w 100 -i 64 " . $ip, $list);
                 } else {
@@ -187,14 +186,14 @@ class Ping_Equipment extends CommonDBTM
                 if (isset($nb) && $return == "true") {
                     for ($i = 0; $i < $nb; $i++) {
                         if (strpos($list[$i], "TTL") > 0) {
-                             return true;
+                            return true;
                         }
                     }
                 }
                 break;
 
             case 2:
-               //linux fping
+                //linux fping
                 if ($return == "true") {
                     exec("fping -r1 -c1 -t100 " . $ip, $list);
                 } else {
@@ -204,14 +203,14 @@ class Ping_Equipment extends CommonDBTM
                 if (isset($nb) && $return == "true") {
                     for ($i = 0; $i < $nb; $i++) {
                         if (strpos($list[$i], "bytes") > 0) {
-                             return true;
+                            return true;
                         }
                     }
                 }
                 break;
 
             case 3:
-               // BSD ping
+                // BSD ping
                 if ($return == "true") {
                     exec("ping -c 1 -W 1 " . $ip, $list);
                 } else {
@@ -221,14 +220,14 @@ class Ping_Equipment extends CommonDBTM
                 if (isset($nb) && $return == "true") {
                     for ($i = 0; $i < $nb; $i++) {
                         if (strpos($list[$i], "ttl=") > 0) {
-                             return true;
+                            return true;
                         }
                     }
                 }
                 break;
 
             case 4:
-               // MacOSX ping
+                // MacOSX ping
                 if ($return == "true") {
                     exec("ping -c 1 -t 1 " . $ip, $list);
                 } else {
@@ -238,7 +237,7 @@ class Ping_Equipment extends CommonDBTM
                 if (isset($nb) && $return == "true") {
                     for ($i = 0; $i < $nb; $i++) {
                         if (strpos($list[$i], "ttl=") > 0) {
-                             return true;
+                            return true;
                         }
                     }
                 }
@@ -253,12 +252,12 @@ class Ping_Equipment extends CommonDBTM
         }
     }
 
-   /**
-    * @param $system
-    * @param $ip
-    *
-    * @return array
-    */
+    /**
+     * @param $system
+     * @param $ip
+     *
+     * @return array
+     */
     public function getHostnameByPing($system, $ip)
     {
         $error = 1;
@@ -270,21 +269,21 @@ class Ping_Equipment extends CommonDBTM
                 break;
 
             case 1:
-               //windows
+                //windows
                 exec("ping.exe -n 1 -w 100 -i 64 -a " . $ip, $list, $error);
                 break;
         }
         $list_str = implode('<br />', $list);
-           //      return [$list_str, $error];
+        //      return [$list_str, $error];
         return $list[1];
     }
 
-   /**
-    * Show form
-    *
-    * @param type $ip
-    * @param type $id_addressing
-    */
+    /**
+     * Show form
+     *
+     * @param type $ip
+     * @param type $id_addressing
+     */
     public function showIPForm($ip)
     {
         echo Html::script(PLUGIN_ADDRESSING_DIR_NOFULL . "/addressing.js");
@@ -294,7 +293,7 @@ class Ping_Equipment extends CommonDBTM
         $system = $config->fields["used_system"];
 
         $ping_equip = new Ping_Equipment();
-        list($message, $error) = $ping_equip->ping($system, $ip);
+        [$message, $error] = $ping_equip->ping($system, $ip);
 
         echo "<div class='alert alert-warning'>";
 
@@ -328,42 +327,42 @@ class Ping_Equipment extends CommonDBTM
         echo "</div>";
     }
 
-   /**
-    * @param \CommonGLPI $item
-    * @param int         $tabnum
-    * @param int         $withtemplate
-    *
-    * @return bool
-    */
-   //   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
-   //   {
-   //
-   //      $ping = Session::haveRight('plugin_addressing_use_ping_in_equipment', '1');
-   //
-   //      if ($ping && in_array($item->getType(), Addressing::getTypes())) {
-   //         if ($item->getField('id')) {
-   //            $options = ['obj' => $item];
-   //
-   //            $pingE = new self();
-   //            $pingE->showForm($item->getField('id'), $options);
-   //         }
-   //      }
-   //      return true;
-   //   }
-   //
-   //
-   //   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
-   //   {
-   //
-   //      $ping = Session::haveRight('plugin_addressing_use_ping_in_equipment', '1');
-   //
-   //      if ($ping && in_array($item->getType(), Addressing::getTypes())) {
-   //         if ($item->getField('id')) {
-   //            return ['1' => __('IP ping', 'addressing')];
-   //         }
-   //      }
-   //      return '';
-   //   }
-   //
-   //
+    /**
+     * @param \CommonGLPI $item
+     * @param int         $tabnum
+     * @param int         $withtemplate
+     *
+     * @return bool
+     */
+    //   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
+    //   {
+    //
+    //      $ping = Session::haveRight('plugin_addressing_use_ping_in_equipment', '1');
+    //
+    //      if ($ping && in_array($item->getType(), Addressing::getTypes())) {
+    //         if ($item->getField('id')) {
+    //            $options = ['obj' => $item];
+    //
+    //            $pingE = new self();
+    //            $pingE->showForm($item->getField('id'), $options);
+    //         }
+    //      }
+    //      return true;
+    //   }
+    //
+    //
+    //   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
+    //   {
+    //
+    //      $ping = Session::haveRight('plugin_addressing_use_ping_in_equipment', '1');
+    //
+    //      if ($ping && in_array($item->getType(), Addressing::getTypes())) {
+    //         if ($item->getField('id')) {
+    //            return ['1' => __('IP ping', 'addressing')];
+    //         }
+    //      }
+    //      return '';
+    //   }
+    //
+    //
 }

@@ -30,7 +30,7 @@
 
 use Glpi\Plugin\Hooks;
 use GlpiPlugin\Addressing\Addressing;
-use GlpiPlugin\Addressing\Pinginfo;
+use GlpiPlugin\Addressing\PingInfo;
 use GlpiPlugin\Addressing\Profile;
 
 define('PLUGIN_ADDRESSING_VERSION', '3.1.0');
@@ -68,7 +68,7 @@ function plugin_init_addressing()
             $PLUGIN_HOOKS['config_page']['addressing']             = 'front/config.php';
         }
 
-        $PLUGIN_HOOKS['post_item_form']['addressing'] = [Pinginfo::class,
+        $PLUGIN_HOOKS['post_item_form']['addressing'] = [PingInfo::class,
             'getPingResponseForItem'];
 
         // Add specific files to add to the header : javascript or css
