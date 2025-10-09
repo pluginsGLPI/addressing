@@ -2,10 +2,10 @@
 Plugin addressing for GLPI
 
 Ce plugin est sur Transifex - Aidez-nous à le traduire :
-https://www.transifex.com/infotelGLPI/GLPI_addressing
+[https://www.transifex.com/infotelGLPI/GLPI_addressing](https://explore.transifex.com/pluginsGLPI/glpi-plugin-addressing/)
 
 This plugin is on Transifex - Help us to translate :
-https://www.transifex.com/infotelGLPI/GLPI_addressing
+[https://www.transifex.com/infotelGLPI/GLPI_addressing](https://explore.transifex.com/pluginsGLPI/glpi-plugin-addressing/)
 
 ## Français
 
