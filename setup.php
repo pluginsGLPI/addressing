@@ -33,7 +33,7 @@ use GlpiPlugin\Addressing\Addressing;
 use GlpiPlugin\Addressing\PingInfo;
 use GlpiPlugin\Addressing\Profile;
 
-define('PLUGIN_ADDRESSING_VERSION', '3.1.0');
+define('PLUGIN_ADDRESSING_VERSION', '3.1.1');
 
 if (!defined("PLUGIN_ADDRESSING_DIR")) {
     define("PLUGIN_ADDRESSING_DIR", Plugin::getPhpDir("addressing"));

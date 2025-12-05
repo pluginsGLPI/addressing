@@ -97,6 +97,80 @@ function plugin_addressing_install()
         if (!$DB->fieldExists("glpi_plugin_addressing_addressings", "vlans_id")) {
             $DB->runFile(PLUGIN_ADDRESSING_DIR . "/sql/update-3.0.1.sql");
         }
+
+        $DB->runFile(PLUGIN_ADDRESSING_DIR . "/sql/update-3.1.1.sql");
+    }
+
+    //DisplayPreferences Migration
+    $classes = ['PluginAddressingAddressing' => Addressing::class];
+
+    foreach ($classes as $old => $new) {
+        $displayusers = $DB->request([
+            'SELECT' => [
+                'users_id'
+            ],
+            'DISTINCT' => true,
+            'FROM' => 'glpi_displaypreferences',
+            'WHERE' => [
+                'itemtype' => $old,
+            ],
+        ]);
+
+        if (count($displayusers) > 0) {
+            foreach ($displayusers as $displayuser) {
+                $iterator = $DB->request([
+                    'SELECT' => [
+                        'num',
+                        'id'
+                    ],
+                    'FROM' => 'glpi_displaypreferences',
+                    'WHERE' => [
+                        'itemtype' => $old,
+                        'users_id' => $displayuser['users_id'],
+                        'interface' => 'central'
+                    ],
+                ]);
+
+                if (count($iterator) > 0) {
+                    foreach ($iterator as $data) {
+                        $iterator2 = $DB->request([
+                            'SELECT' => [
+                                'id'
+                            ],
+                            'FROM' => 'glpi_displaypreferences',
+                            'WHERE' => [
+                                'itemtype' => $new,
+                                'users_id' => $displayuser['users_id'],
+                                'num' => $data['num'],
+                                'interface' => 'central'
+                            ],
+                        ]);
+                        if (count($iterator2) > 0) {
+                            foreach ($iterator2 as $dataid) {
+                                $query = $DB->buildDelete(
+                                    'glpi_displaypreferences',
+                                    [
+                                        'id' => $dataid['id'],
+                                    ]
+                                );
+                                $DB->doQuery($query);
+                            }
+                        } else {
+                            $query = $DB->buildUpdate(
+                                'glpi_displaypreferences',
+                                [
+                                    'itemtype' => $new,
+                                ],
+                                [
+                                    'id' => $data['id'],
+                                ]
+                            );
+                            $DB->doQuery($query);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     if ($update) {
@@ -128,29 +202,6 @@ function plugin_addressing_install()
     $migration = new Migration("2.5.0");
     $migration->dropTable('glpi_plugin_addressing_profiles');
     CronTask::Register(PingInfo::class, 'UpdatePing', DAY_TIMESTAMP);
-
-    if (!$DB->request([
-        'FROM'   => 'glpi_displaypreferences',
-        'WHERE'  => [
-            'itemtype'  => Addressing::class,
-            'num'       => 2,
-            'users_id'  => 0,
-            'interface' => 'central'
-        ]
-    ])->count()) {
-        try {
-            $DB->insert('glpi_displaypreferences', [
-                'itemtype'  => Addressing::class,
-                'num'       => 2,
-                'rank'      => 2,
-                'users_id'  => 0,
-                'interface' => 'central'
-            ]);
-        } catch (Throwable $e) {
-            Toolbox::logDebug('Error when inserting into glpi_displaypreferences : ' . $e->getMessage());
-            return false;
-        }
-    }
 
     return true;
 }
