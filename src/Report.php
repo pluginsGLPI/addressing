@@ -185,8 +185,9 @@ class Report extends CommonDBTM
 //        $row_num       = 1;
 
         // Column headers
-        $html_output .= $output::showHeader($end_display - $start + 1, $nbcols);
-
+        if ($is_html_output) {
+            $html_output .= $output::showHeader($end_display - $start + 1, $nbcols);
+        }
         if (!$is_html_output) {
             $headers[] = __('IP');
             $headers[] = __('Connected to');
