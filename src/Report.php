@@ -228,7 +228,9 @@ class Report extends CommonDBTM
                 $item_num = 1;
                 $colnum = 0;
                 $i++;
-                $html_output .= $output::showNewLine($i % 2 === 1);
+                if ($is_html_output) {
+                    $html_output .= $output::showNewLine($i % 2 === 1);
+                }
                 $ip = self::string2ip(substr($num, 2));
 
                 if (count($lines)) {
@@ -244,15 +246,17 @@ class Report extends CommonDBTM
                             $name = $line["dname"];
                             $namep = $line["pname"];
                             // IP
-                            if ($Addressing->fields["reserved_ip"] && strstr(
-                                    $line["pname"],
-                                    "reserv"
-                                )) {
-                                $html_output .= $output::showNewLine("reserved");
-                            } else {
-                                $html_output .= $output::showNewLine(
-                                    (count($lines) > 1 ? "double" : $row_num % 2)
-                                );
+                            if ($is_html_output) {
+                                if ($Addressing->fields["reserved_ip"] && strstr(
+                                        $line["pname"],
+                                        "reserv"
+                                    )) {
+                                    $html_output .= $output::showNewLine("reserved");
+                                } else {
+                                    $html_output .= $output::showNewLine(
+                                        (count($lines) > 1 ? "double" : $row_num % 2)
+                                    );
+                                }
                             }
                             $rand = mt_rand();
                             $params = [
@@ -484,7 +488,9 @@ class Report extends CommonDBTM
                                         } else {
                                             $reserv = "";
                                             $content = __('Success', 'addressing');
-                                            $html_output .= $output::showItem($content, $item_num, $row_num);
+                                            if ($is_html_output) {
+                                                $html_output .= $output::showItem($content, $item_num, $row_num);
+                                            }
                                             if ($Addressing->fields["reserved_ip"] && strstr(
                                                     $line["pname"],
                                                     "reserv"
@@ -645,7 +651,9 @@ class Report extends CommonDBTM
                             //          rows="5" cols="33"></textarea></td>';
                             // End
                             $rows[$row_num] = $current_row;
-                            $html_output .= $output::showEndLine(false);
+                            if ($is_html_output) {
+                                $html_output .= $output::showEndLine(false);
+                            }
                         }
                     }
                 } elseif ($Addressing->fields["free_ip"]) {
@@ -664,7 +672,9 @@ class Report extends CommonDBTM
                     ];
 
                     if (!$ping) {
-                        $html_output .= $output::showNewLine("free");
+                        if ($is_html_output) {
+                            $html_output .= $output::showNewLine("free");
+                        }
                         $rand = mt_rand();
                         $params = [
                             'ip' => trim($ip),
@@ -677,7 +687,9 @@ class Report extends CommonDBTM
                                 "IP ping",
                                 'addressing'
                             ) . "'></i></a>";
-                        $html_output .= $output::showItem("$ping_link ", $item_num, $row_num, "class='center'");
+                        if ($is_html_output) {
+                            $html_output .= $output::showItem("$ping_link ", $item_num, $row_num, "class='center'");
+                        }
                         if (isset($params) && count($params) > 0 && $is_html_output) {
                             echo Ajax::createIframeModalWindow(
                                 'ping' . $rand,
@@ -816,7 +828,9 @@ class Report extends CommonDBTM
                             $current_row[$itemtype . '_' . (++$colnum)] = ['displayname' => ""];
                         }
                         $rows[$row_num] = $current_row;
-                        $html_output .= $output::showEndLine(false);
+                        if ($is_html_output) {
+                            $html_output .= $output::showEndLine(false);
+                        }
                     } else {
                         $ping_action = NOT_AVAILABLE;
                         $plugin_addressing_pinginfo = new PingInfo();
@@ -850,7 +864,9 @@ class Report extends CommonDBTM
                             if ($ping_value) {
                                 if ($see_ping_on == 1) {
                                     $ping_response++;
-                                    $html_output .= $output::showNewLine("ping_off");
+                                    if ($is_html_output) {
+                                        $html_output .= $output::showNewLine("ping_off");
+                                    }
                                     $rand = mt_rand();
                                     $params = [
                                         'ip' => trim($ip),
@@ -1017,11 +1033,15 @@ class Report extends CommonDBTM
                                     } else {
                                         $current_row[$itemtype . '_' . (++$colnum)] = ['displayname' => " "];
                                     }
-                                    $html_output .= $output::showEndLine(false);
+                                    if ($is_html_output) {
+                                        $html_output .= $output::showEndLine(false);
+                                    }
                                 }
                             } else {
                                 if ($see_ping_off == 1) {
-                                    $html_output .= $output::showNewLine("ping_on");
+                                    if ($is_html_output) {
+                                        $html_output .= $output::showNewLine("ping_on");
+                                    }
                                     $rand = mt_rand();
                                     $params = [
                                         'id_addressing' => $Addressing->getID(),
@@ -1202,8 +1222,9 @@ class Report extends CommonDBTM
                                                };
                                              </script>";
                                     }
-
-                                    $html_output .= $output::showEndLine(false);
+                                    if ($is_html_output) {
+                                        $html_output .= $output::showEndLine(false);
+                                    }
                                 }
                             }
                         }
