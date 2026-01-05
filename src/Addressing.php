@@ -1208,12 +1208,23 @@ class Addressing extends CommonDBTM
             $numrows = count($result);
             //         $numrows = 1 + ip2long($this->fields['end_ip']) - ip2long($this->fields['begin_ip']);
             $result = array_slice($result, $start, $_SESSION["glpilist_limit"]);
-            $parameters = "id=$id&amp;ping_on=$ping_on&amp;ping_off=$ping_off&amp;filter=$filter&amp;seeallotedip=$alloted&amp;seedoubleip=$doubles&amp;seereservedip=$reserved&amp;seefreeip=$free";
+
             Html::printPager(
                 $start,
                 $numrows,
                 self::getFormURL(),
-                $parameters,
+                Toolbox::append_params(
+                    [
+                        'id'    => $id,
+                        'ping_on'    => $ping_on,
+                        'ping_off' => $ping_off,
+                        'filter' => $filter,
+                        'seeallotedip' => $alloted,
+                        'seedoubleip' => $doubles,
+                        'seereservedip' => $reserved,
+                        'seefreeip' => $free,
+                    ]
+                ),
                 Report::class
             );
 
