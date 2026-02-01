@@ -1215,8 +1215,8 @@ class Addressing extends CommonDBTM
                 self::getFormURL(),
                 Toolbox::append_params(
                     [
-                        'id'    => $id,
-                        'ping_on'    => $ping_on,
+                        'id' => $id,
+                        'ping_on' => $ping_on,
                         'ping_off' => $ping_off,
                         'filter' => $filter,
                         'seeallotedip' => $alloted,
