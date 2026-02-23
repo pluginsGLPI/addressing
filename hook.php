@@ -311,17 +311,17 @@ function plugin_addressing_giveItem($type, $ID, $data, $num)
         switch ($table . '.' . $field) {
             case "glpi_plugin_addressing_pinginfos.ping_response":
                 if ($data[$num][0]['name'] == "1") {
-                    $out .= "<i class=\"fas fa-check-square fa-2x\" style='color: darkgreen'></i><br>" . __(
+                    $out .= "<i class=\"ti ti-square-check\" style='color: darkgreen;font-size: 2em;'></i><br>" . __(
                         'Last ping OK',
                         'addressing'
                     );
                 } elseif ($data[$num][0]['name'] == "0") {
-                    $out .= "<i class=\"fas fa-window-close fa-2x\" style='color: darkred'></i><br>" . __(
+                    $out .= "<i class=\"ti ti-square-x\" style='color: darkred;font-size: 2em;'></i><br>" . __(
                         'Last ping KO',
                         'addressing'
                     );
                 } else {
-                    $out .= "<i class=\"fas fa-question fa-2x\" style='color: orange'></i><br>" . __(
+                    $out .= "<i class=\"ti ti-question\" style='color: orange;font-size: 2em;'></i><br>" . __(
                         "Ping informations not available",
                         'addressing'
                     );

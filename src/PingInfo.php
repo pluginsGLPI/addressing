@@ -185,14 +185,14 @@ class PingInfo extends CommonDBTM
             }
 
             if ($ping_action == 0) {
-                $content = "<i class=\"fas fa-question fa-2x\" style='color: orange' title=\"" . __(
+                $content = "<i class=\"ti ti-question\" style='color: orange;font-size: 2em;' title=\"" . __(
                     "Automatic action has not be launched",
                     'addressing'
                 ) . "\">
                     </i><br>" . __("Ping informations not available", 'addressing');
             } else {
                 if ($ping_value == 1) {
-                    $content = "<i class=\"fas fa-check-square fa-2x\" style='color: darkgreen' title='" . __(
+                    $content = "<i class=\"ti ti-square-check\" style='color: darkgreen;font-size: 2em;' title='" . __(
                         "Last ping attempt",
                         'addressing'
                     ) . " : "
@@ -205,7 +205,7 @@ class PingInfo extends CommonDBTM
                         substr($ipname, 2)
                     );
                 } else {
-                    $content = "<i class=\"fas fa-window-close fa-2x\" style='color: darkred' title='" . __(
+                    $content = "<i class=\"ti ti-square-x\" style='color: darkred;font-size: 2em;' title='" . __(
                         "Last ping attempt",
                         'addressing'
                     ) . " : "
@@ -233,7 +233,7 @@ class PingInfo extends CommonDBTM
             $rand = mt_rand();
             echo "<button form='' class='submit btn btn-warning'
             onclick='javascript:viewPingform" . $items_id . "$rand();'>";
-            echo "<i class='fas fa-terminal fa-2x' style='color: orange' title='" . _sx(
+            echo "<i class='ti ti-terminal-2' style='color: orange;font-size:2em;' title='" . _sx(
                 'button',
                 'Manual launch of ping',
                 'addressing'

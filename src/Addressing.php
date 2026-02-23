@@ -886,17 +886,17 @@ class Addressing extends CommonDBTM
                 $where['dev.networks_id'] = $this->fields["networks_id"];
             }
 
+            $addtype = addslashes($type);
             $select = [
                 'port.id',
-                new QueryExpression("'" . $type . "' AS itemtype"),
+                new QueryExpression("'" . $addtype . "' AS itemtype"),
                 'port.items_id',
                 'dev.name AS dname',
                 'port.name AS pname',
-                'glpi_ipaddresses.name AS ip',
+                'glpi_ipaddresses.name AS ipaddr',
                 'port.mac'
             ];
-            if ($type == 'PluginFusioninventoryUnknownDevice'
-                || $type == 'Enclosure' || $type == 'PDU' || $type == 'Cluster' || $type == 'Unmanaged') {
+            if ($type == 'Enclosure' || $type == 'PDU' || $type == 'Cluster' || $type == 'Unmanaged') {
                 $select[] = new QueryExpression("0 AS users_id");
             } else {
                 $select[] = 'dev.users_id';
@@ -928,7 +928,7 @@ class Addressing extends CommonDBTM
                     ]
                 ],
                 'WHERE' => $where,
-                'GROUPBY' => ['ip', 'port.mac'],
+                'GROUPBY' => ['ipaddr', 'port.mac'],
                 'ORDER' => 'ipnum'
             ]);
         }
@@ -1148,7 +1148,7 @@ class Addressing extends CommonDBTM
                     'Manual launch of ping',
                     'addressing'
                 ) . "'>";
-                echo "<i class='fas fa-spinner' data-hasqtip='0' aria-hidden='true'></i>&nbsp;";
+                echo "<i class='ti ti-refresh' data-hasqtip='0' aria-hidden='true'></i>&nbsp;";
                 echo _sx('button', 'Manual launch of ping', 'addressing');
                 echo "</button>";
                 echo "</td>";
@@ -1335,12 +1335,14 @@ class Addressing extends CommonDBTM
      **/
     public static function getTypes($all = false)
     {
+        global $CFG_GLPI;
+
         if ($all) {
-            return self::$types;
+            return $CFG_GLPI['networkport_types'];
         }
 
         // Only allowed types
-        $types = self::$types;
+        $types = $CFG_GLPI['networkport_types'];
 
         foreach ($types as $key => $type) {
             if (!class_exists($type)) {
@@ -1352,6 +1354,7 @@ class Addressing extends CommonDBTM
                 unset($types[$key]);
             }
         }
+
         return $types;
     }
 
@@ -1368,11 +1371,11 @@ class Addressing extends CommonDBTM
         //Add definition : display dropdown
         $types = self::getTypes();
 
-        //      $options[0] = Dropdown::EMPTY_VALUE;
+        $options = [];
 
         foreach ($types as $itemtype) {
             $item = new $itemtype();
-            $options[$itemtype] = $item->getTypeName($itemtype);
+            $options[$itemtype] = $item->getTypeName(1);
         }
 
 //      asort($options);

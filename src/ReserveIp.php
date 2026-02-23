@@ -221,11 +221,11 @@ class ReserveIp extends CommonDBTM
         $ping_equip = new Ping_Equipment();
         list($message, $error) = $ping_equip->ping($system, $ip);
         if ($error) {
-            echo "<i class='fas fa-check-circle fa-1x' style='color:forestgreen'></i>
+            echo "<i class='ti ti-circle-check' style='color:forestgreen'></i>
 <span style='color:forestgreen'>&nbsp;";
             echo __('Ping: no response - free IP', 'addressing');
         } else {
-            echo "<i class='fas fa-exclamation-triangle fa-1x' style='color:orange'></i>
+            echo "<i class='ti ti-alert-triangle' style='color:orange'></i>
 <span style='color:orange'>&nbsp;";
             echo __('Ping: got a response - used IP', 'addressing');
         }
@@ -302,7 +302,7 @@ class ReserveIp extends CommonDBTM
         $option = ['onChange' => "nameIsThere(\"" . '/plugins/addressing' . "\");", 'id' => 'name_reserveip'];
         echo Html::input('name_reserveip', $option);
         echo "</td><td><div style=\"display: none;\" id='nameItem'>";
-        echo "<i class='fas fa-exclamation-triangle fa-2x' style='color:orange'></i>&nbsp;";
+        echo "<i class='ti ti-alert-triangle' style='color:orange;font-size: 2em;'></i>&nbsp;";
         echo __('Name already in use', 'addressing');
         echo "</div></td>
             </tr>";

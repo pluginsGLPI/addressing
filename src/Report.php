@@ -266,7 +266,7 @@ class Report extends CommonDBTM
                                 'dialog_class' => 'modal-sm'
                             ];
                             $ping_link = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#ping$rand'>";
-                            $ping_link .= "<i class='fas fa-terminal fa-1x pointer' style='color: orange' title='" . __(
+                            $ping_link .= "<i class='ti ti-terminal-2 pointer' style='color: orange' title='" . __(
                                     "IP ping",
                                     'addressing'
                                 ) . "'></i></a>";
@@ -400,7 +400,7 @@ class Report extends CommonDBTM
                                 //                        'ipname' => $num]);
 
                                 if ($ping_action == NOT_AVAILABLE) {
-                                    $content = "<i class=\"fas fa-question fa-2x\" style='color: orange' title=\"" . __(
+                                    $content = "<i class=\"ti ti-question\" style='color: orange;font-size: 2em;' title=\"" . __(
                                             "Automatic action has not be launched",
                                             'addressing'
                                         ) . "\"></i>";
@@ -420,8 +420,8 @@ class Report extends CommonDBTM
                                             //                           'width' => 1000,
                                             //                           'height' => 550
                                         ];
-                                        $reserv = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#reservation$rand'>
-<i class='fas fa-clipboard fa-2x pointer' style='color: #d56f15' title='" . __(
+                                        $reserv = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#reservation$rand'>";
+                                        $reserv .= "<i class='ti ti-clipboard pointer' style='color: #d56f15;font-size: 2em;' title='" . __(
                                                 "Reserve IP",
                                                 'addressing'
                                             ) . "'></i></a>";
@@ -453,7 +453,7 @@ class Report extends CommonDBTM
                                     if ($ping_value) {
                                         if ($is_html_output) {
                                             $html_output .= $output::showItem(
-                                                "<i class=\"fas fa-check-square fa-2x\" style='color: darkgreen' title='" . __(
+                                                "<i class=\"ti ti-square-check\" style='color: darkgreen;font-size: 2em;' title='" . __(
                                                     "Last ping attempt",
                                                     'addressing'
                                                 ) . " : "
@@ -467,7 +467,7 @@ class Report extends CommonDBTM
                                                     $line["pname"],
                                                     "reserv"
                                                 )) {
-                                                $reserv = "<i class='fas fa-clipboard-check fa-2x' style='color: #d56f15' title='" . __(
+                                                $reserv = "<i class='ti ti-clipboard-check' style='color: #d56f15;font-size: 2em;' title='" . __(
                                                         'Reserved Address',
                                                         'addressing'
                                                     ) . "'></i>";
@@ -502,7 +502,7 @@ class Report extends CommonDBTM
                                     } else {
                                         if ($is_html_output) {
                                             $html_output .= $output::showItem(
-                                                "<i class=\"fas fa-window-close fa-2x\" style='color: darkred' title='"
+                                                "<i class=\"ti ti-square-x\" style='color: darkred;font-size: 2em;' title='"
                                                 . __("Last ping attempt", 'addressing') . " : "
                                                 . Html::convDateTime($ping_date) . "'></i>",
                                                 $item_num,
@@ -514,7 +514,7 @@ class Report extends CommonDBTM
                                                     "reserv"
                                                 )) {
                                                 $html_output .= $output::showItem(
-                                                    "<i class='fas fa-clipboard-check fa-2x' style='color: #d56f15' title='"
+                                                    "<i class='ti ti-clipboard-check' style='color: #d56f15;font-size: 2em;' title='"
                                                     . __('Reserved Address', 'addressing') . "'></i>",
                                                     $item_num,
                                                     $row_num,
@@ -530,8 +530,8 @@ class Report extends CommonDBTM
                                                     //                                 'width' => 1000,
                                                     //                                 'height' => 550
                                                 ];
-                                                $reserv = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#reservation$rand'>
-<i class='fas fa-clipboard fa-2x pointer' style='color: #d56f15' title='" . __(
+                                                $reserv = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#reservation$rand'>";
+                                                $reserv .= "<i class='ti ti-clipboard pointer' style='color: #d56f15;font-size: 2em;' title='" . __(
                                                         "Reserve IP",
                                                         'addressing'
                                                     ) . "'></i></a>";
@@ -606,7 +606,7 @@ class Report extends CommonDBTM
                             }
                             if ($is_html_output) {
                                 $html_output .= $output::showItem(
-                                    '<i id="save' . $num . '" class="fas fa-save fa-2x center pointer" style="color:forestgreen"></i>',
+                                    '<i id="save' . $num . '" class="ti ti-save center pointer" style="color:forestgreen;font-size: 2em;"></i>',
                                     $item_num,
                                     $row_num,
                                     "style='background-color:#e0e0e0' class='center' onClick='updateComment$rand()'"
@@ -683,7 +683,7 @@ class Report extends CommonDBTM
                             'dialog_class' => 'modal-sm'
                         ];
                         $ping_link = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#ping$rand'>";
-                        $ping_link .= "<i class='fas fa-terminal fa-1x pointer' style='color: orange' title='" . __(
+                        $ping_link .= "<i class='ti ti-terminal-2 pointer' style='color: orange' title='" . __(
                                 "IP ping",
                                 'addressing'
                             ) . "'></i></a>";
@@ -730,7 +730,7 @@ class Report extends CommonDBTM
                                 //                                 'height' => 550
                             ];
                             $reserv = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#reservation$rand'>";
-                            $reserv .= "<i class='fas fa-clipboard fa-2x pointer' style='color: #d56f15' title='" . __(
+                            $reserv .= "<i class='ti ti-clipboard pointer' style='color: #d56f15;font-size: 2em;' title='" . __(
                                     "Reserve IP",
                                     'addressing'
                                 ) . "'></i></a>";
@@ -785,7 +785,7 @@ class Report extends CommonDBTM
                         }
                         if ($is_html_output) {
                             $html_output .= $output::showItem(
-                                '<i id="save' . $num . '" class="fas fa-save fa-2x center pointer" style="color:forestgreen"></i>',
+                                '<i id="save' . $num . '" class="ti ti-save center pointer" style="color:forestgreen;font-size: 2em;"></i>',
                                 $item_num,
                                 $row_num,
                                 "style='background-color:#e0e0e0' class='center' onClick='updateComment$rand()'"
@@ -875,7 +875,7 @@ class Report extends CommonDBTM
                                         'dialog_class' => 'modal-sm'
                                     ];
                                     $ping_link = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#ping$rand'>";
-                                    $ping_link .= "<i class='fas fa-terminal fa-1x pointer' style='color: orange' title='" . __(
+                                    $ping_link .= "<i class='ti ti-terminal-2 pointer' style='color: orange' title='" . __(
                                             "IP ping",
                                             'addressing'
                                         ) . "'></i></a>";
@@ -920,12 +920,12 @@ class Report extends CommonDBTM
                                     }
                                     if ($is_html_output) {
                                         if ($ping_action == NOT_AVAILABLE) {
-                                            $content = "<i class=\"fas fa-question fa-2x\" style='color: orange' title=\"" . __(
+                                            $content = "<i class=\"ti ti-question\" style='color: orange;font-size: 2em;' title=\"" . __(
                                                     "Automatic action has not be launched",
                                                     'addressing'
                                                 ) . "\"></i>";
                                         } else {
-                                            $content = "<i class=\"fas fa-check-square fa-2x\" style='color: darkgreen' title='" . __(
+                                            $content = "<i class=\"ti ti-square-check\" style='color: darkgreen;font-size: 2em;' title='" . __(
                                                     "Last ping attempt",
                                                     'addressing'
                                                 ) . " : "
@@ -990,7 +990,7 @@ class Report extends CommonDBTM
                                     }
                                     if ($is_html_output) {
                                         $html_output .= $output::showItem(
-                                            '<i id="save' . $num . '" class="fas fa-save fa-2x center pointer" style="color:forestgreen"></i>',
+                                            '<i id="save' . $num . '" class="ti ti-save center pointer" style="color:forestgreen;font-size: 2em;"></i>',
                                             $item_num,
                                             $row_num,
                                             "style='background-color:#e0e0e0' class='center' onClick='updateComment$rand()'"
@@ -1052,7 +1052,7 @@ class Report extends CommonDBTM
                                         'dialog_class' => 'modal-sm'
                                     ];
                                     $ping_link = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#ping$rand'>";
-                                    $ping_link .= "<i class='fas fa-terminal fa-1x pointer' style='color: orange' title='" . __(
+                                    $ping_link .= "<i class='ti ti-terminal-2 pointer' style='color: orange' title='" . __(
                                             "IP ping",
                                             'addressing'
                                         ) . "'></i></a>";
@@ -1095,12 +1095,12 @@ class Report extends CommonDBTM
                                     $content = " ";
                                     if ($is_html_output) {
                                         if ($ping_action == NOT_AVAILABLE) {
-                                            $content = "<i class=\"fas fa-question fa-2x\" style='color: orange' title=\"" . __(
+                                            $content = "<i class=\"ti ti-question\" style='color: orange;font-size: 2em;' title=\"" . __(
                                                     "Automatic action has not be launched",
                                                     'addressing'
                                                 ) . "\"></i>";
                                         } else {
-                                            $content = "<i class=\"fas fa-window-close fa-2x\" style='color: darkred' title='" . __(
+                                            $content = "<i class=\"ti ti-square-x\" style='color: darkred;font-size: 2em;' title='" . __(
                                                     "Last ping attempt",
                                                     'addressing'
                                                 ) . " : "
@@ -1109,7 +1109,7 @@ class Report extends CommonDBTM
                                                 ) . "'></i>";
                                             $rand = mt_rand();
                                             $reserv = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#reservation$rand'>";
-                                            $reserv .= "<i class='fas fa-clipboard fa-2x pointer' style='color: #d56f15' title='" . __(
+                                            $reserv .= "<i class='ti ti-clipboard pointer' style='color: #d56f15;font-size: 2em;' title='" . __(
                                                     "Reserve IP",
                                                     'addressing'
                                                 ) . "'></i></a>";
@@ -1181,7 +1181,7 @@ class Report extends CommonDBTM
                                     }
                                     if ($is_html_output) {
                                         $html_output .= $output::showItem(
-                                            '<i id="save' . $num . '" class="fas fa-save fa-2x center pointer" style="color:forestgreen"></i>',
+                                            '<i id="save' . $num . '" class="ti ti-save center pointer" style="color:forestgreen;font-size: 2em;"></i>',
                                             $item_num,
                                             $row_num,
                                             "style='background-color:#e0e0e0' class='center' onClick='updateComment$rand()'"
