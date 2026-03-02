@@ -45,7 +45,7 @@ if (!defined('GLPI_ROOT')) {
  */
 class PingInfo extends CommonDBTM
 {
-    public static $rightname = "plugin_addressing";
+    public static $rightname = "plugin_addressing_use_ping_in_equipment";
 
     public static function getTypeName($nb = 0)
     {
