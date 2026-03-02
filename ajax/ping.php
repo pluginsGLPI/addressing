@@ -70,10 +70,11 @@ if ($ping_value == false || $ping_value == true) {
       'items_id' => $items_id])) {
         foreach ($pings as $ping) {
             $id = $ping['id'];
-
+            $num = "IP".Report::ip2string($ip);
             $plugin_addressing_pinginfo->update(['id' => $id,
             'ping_response' => $ping_value,
-            'ping_date' => $ping_date]);
+            'ping_date' => $ping_date
+                , 'ipname' => $num]);
         }
     } else {
         $num = "IP".Report::ip2string($ip);

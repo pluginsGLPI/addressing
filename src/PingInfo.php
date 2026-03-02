@@ -161,7 +161,6 @@ class PingInfo extends CommonDBTM
 
     public static function getPingResponseForItem($params)
     {
-        global $CFG_GLPI;
 
         $ping_right = Session::haveRight('plugin_addressing_use_ping_in_equipment', '1');
         $item       = $params['item'];
@@ -233,7 +232,7 @@ class PingInfo extends CommonDBTM
             $rand = mt_rand();
             echo "<button form='' class='submit btn btn-warning'
             onclick='javascript:viewPingform" . $items_id . "$rand();'>";
-            echo "<i class='ti ti-terminal-2' style='color: orange;font-size:2em;' title='" . _sx(
+            echo "<i class='ti ti-terminal-2' style='font-size:2em;' title='" . _sx(
                 'button',
                 'Manual launch of ping',
                 'addressing'

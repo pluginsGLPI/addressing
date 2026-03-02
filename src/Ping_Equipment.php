@@ -48,7 +48,7 @@ class Ping_Equipment extends CommonDBTM
 
     public function showPingForm($itemtype, $items_id)
     {
-        global $DB, $CFG_GLPI;
+        global $DB;
 
         $obj = new $itemtype();
         $obj->getFromDB($items_id);
@@ -133,12 +133,12 @@ class Ping_Equipment extends CommonDBTM
         echo "</table>";
 
         echo Html::scriptBlock("$(document).on('click', '#ping_ip', function(event) {
-      $('#ping_response').load('/plugins/addressing/ajax/ping.php', {
-         'ip': $('#ip').val(),
-         'itemtype': '$itemtype',
-         'items_id': '$items_id'
-      })
-   });");
+                                          $('#ping_response').load('/plugins/addressing/ajax/ping.php', {
+                                             'ip': $('#ip').val(),
+                                             'itemtype': '$itemtype',
+                                             'items_id': '$items_id'
+                                          })
+                                       });");
 
         if (count($list_ip) == 0) {
             echo __('No IP for this equipment', 'addressing');

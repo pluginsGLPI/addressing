@@ -69,6 +69,13 @@
                         __('Reserved IP', 'addressing'),
                         field_options
                     ) }}
+
+                    {{ fields.sliderField(
+                        'use_ping',
+                        config["use_ping"],
+                        __('Use Ping on IP ranges', 'addressing'),
+                        field_options
+                    ) }}
             </div>
 
             <div class="hr-text">
@@ -76,13 +83,6 @@
                 <span>{{ __('System for ping', 'addressing') }}</span>
             </div>
             <div class="row">
-
-                {{ fields.sliderField(
-                    'use_ping',
-                    config["use_ping"],
-                    __('Use Ping', 'addressing'),
-                    field_options
-                ) }}
 
                 {% set tab = {0: __('Linux ping', 'addressing'),
                     1:  __('Windows', 'addressing'),
