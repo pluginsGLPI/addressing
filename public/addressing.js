@@ -1,15 +1,3 @@
-// Display initial values
-function plugaddr_Init(msg) {
-
-    var ipdeb;
-    var ipfin;
-
-    var ipdebstr = document.getElementById("plugaddr_ipdeb").value;
-    var ipfinstr = document.getElementById("plugaddr_ipfin").value;
-
-    document.getElementById("plugaddr_range").innerHTML = "" + ipdebstr + " - " + ipfinstr;
-}
-
 function nameIsThere(params) {
     var root_doc = params;
     var nameElm = $('input[id*="name_reserveip"]');

@@ -27,21 +27,41 @@
  --------------------------------------------------------------------------
  */
 
+use GlpiPlugin\Addressing\Addressing;
 use GlpiPlugin\Addressing\Filter;
 
 Session::checkLoginUser();
 
 $filter = new Filter();
+$addressing = new Addressing();
 
 if (isset($_POST['add'])) {
-    $filter->check(-1, CREATE, $_POST);
-    unset($_POST['id']);
-    $filter->add($_POST);
-    Html::back();
+    if ($addressing->checkip($_POST)) {
+        $_POST['begin_ip'] = (int) $_POST['begin_ip0'] . "." . (int) $_POST['begin_ip1'] . ".";
+        $_POST['begin_ip'] .= (int) $_POST['begin_ip2'] . "." . (int) $_POST['begin_ip3'];
+        $_POST['end_ip'] = (int) $_POST['end_ip0'] . "." . (int) $_POST['end_ip1'] . ".";
+        $_POST['end_ip'] .= (int) $_POST['end_ip2'] . "." . (int) $_POST['end_ip3'];
+        $filter->check(-1, CREATE, $_POST);
+        unset($_POST['id']);
+        $filter->add($_POST);
+        Html::back();
+    } else {
+        Html::back();
+    }
+
 } elseif (isset($_POST['update'])) {
-    $filter->check($_POST['id'], UPDATE);
-    $filter->update($_POST);
-    Html::back();
+
+    if ($addressing->checkip($_POST)) {
+        $_POST['begin_ip'] = (int) $_POST['begin_ip0'] . "." . (int) $_POST['begin_ip1'] . ".";
+        $_POST['begin_ip'] .= (int) $_POST['begin_ip2'] . "." . (int) $_POST['begin_ip3'];
+        $_POST['end_ip'] = (int) $_POST['end_ip0'] . "." . (int) $_POST['end_ip1'] . ".";
+        $_POST['end_ip'] .= (int) $_POST['end_ip2'] . "." . (int) $_POST['end_ip3'];
+        $filter->check($_POST['id'], UPDATE);
+        $filter->update($_POST);
+        Html::back();
+    } else {
+        Html::back();
+    }
 } elseif (isset($_POST["purge"])) {
     $filter->check($_POST['id'], PURGE);
     $filter->delete($_POST, 1);

@@ -1,28 +1,28 @@
 {#
 # -------------------------------------------------------------------------
-# Badges plugin for GLPI
+# Addressing plugin for GLPI
 # -------------------------------------------------------------------------
 #
 # LICENSE
 #
-# This file is part of Badges.
+# This file is part of Addressing.
 #
-# Badges is free software; you can redistribute it and/or modify
+# Addressing is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
 #
-# Badges is distributed in the hope that it will be useful,
+# Addressing is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with Badges. If not, see <http://www.gnu.org/licenses/>.
+# along with Addressing. If not, see <http://www.gnu.org/licenses/>.
 # -------------------------------------------------------------------------
-# @copyright Copyright (C) 2026-2026 by Badges plugin team.
+# @copyright Copyright (C) 2026-2026 by Addressing plugin team.
 # @license   GPLv2 https://www.gnu.org/licenses/gpl-2.0.html
-# @link      https://github.com/InfotelGLPI/Badges
+# @link      https://github.com/InfotelGLPI/Addressing
 # -------------------------------------------------------------------------
 #}
 
@@ -186,13 +186,16 @@
                                 {{ __('Report for the IP Range', 'addressing') }}
                             </label>
                             <div class="col-xxl-7 field-container">
-                                <input type="hidden" name="begin_ip" id="plugaddr_ipdeb" value=" {{ item.fields["begin_ip"] }}"/>
-                                <input type="hidden" name="end_ip" id="plugaddr_ipfin" value=" {{ item.fields["end_ip"] }}"/>
+                                <input type="hidden" name="plugaddr_ipdeb" id="plugaddr_ipdeb" value=" {{ item.fields["begin_ip"] }}"/>
+                                <input type="hidden" name="plugaddr_ipfin" id="plugaddr_ipfin" value=" {{ item.fields["end_ip"] }}"/>
                                 <div id='plugaddr_range'>-</div>
                                 {% if not (item.isNewItem()) %}
                                 <script type='text/javascript'>
                                     $(document).ready(function() {
-                                        plugaddr_Init('{{ __('Invalid data !!', 'addressing') }}');
+                                        var ipdebstr = document.getElementById("plugaddr_ipdeb").value;
+                                        var ipfinstr = document.getElementById("plugaddr_ipfin").value;
+
+                                        document.getElementById("plugaddr_range").innerHTML = "" + ipdebstr + " - " + ipfinstr;
                                     });
                                 </script>
                                 {% endif %}

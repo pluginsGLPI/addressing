@@ -216,29 +216,11 @@ class Addressing extends CommonDBTM
 
     public function showForm($ID, $options = [])
     {
-        //      Html::requireJs("addressing");
+
         $this->initForm($ID, $options);
         $config = new Config();
         $config->getFromDB('1');
 
-//        echo "<td>" . __('Report for the IP Range', 'addressing') . "</td>"; // Mask
-//        echo "<td>";
-//        echo Html::hidden('begin_ip', [
-//            'value' => $this->fields["begin_ip"],
-//            'id' => 'plugaddr_ipdeb',
-//        ]);
-//        echo Html::hidden('end_ip', [
-//            'value' => $this->fields["end_ip"],
-//            'id' => 'plugaddr_ipfin',
-//        ]);
-//        echo "<div id='plugaddr_range'>-</div>";
-//        if ($ID > 0) {
-//            $js = "plugaddr_Init(\"" . __('Invalid data !!', 'addressing') . "\");";
-//            echo Html::scriptBlock('$(document).ready(function() {' . $js . '});');
-//        }
-
-
-        $this->initForm($ID, $options);
         TemplateRenderer::getInstance()->display('@addressing/addressing.html.twig', [
             'item' => $this,
             'params' => $options,
@@ -741,8 +723,6 @@ class Addressing extends CommonDBTM
      */
     public function showReport($params)
     {
-        global $CFG_GLPI;
-
         $Report = new Report();
 
         // Default values of parameters
@@ -952,7 +932,6 @@ class Addressing extends CommonDBTM
 
             Html::closeForm();
 
-
             echo "<script>
                           $('#updatePingInfo').click(function() {
                              var addressing_id = {$this->getID()};
@@ -1146,7 +1125,7 @@ class Addressing extends CommonDBTM
     public static function dropdownItemtype()
     {
         //Add definition : display dropdown
-        $types = self::getTypes();
+        $types = self::getTypes(true);
 
         $options = [];
 

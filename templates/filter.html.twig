@@ -1,0 +1,195 @@
+{#
+# -------------------------------------------------------------------------
+# Addressing plugin for GLPI
+# -------------------------------------------------------------------------
+#
+# LICENSE
+#
+# This file is part of Addressing.
+#
+# Addressing is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# Addressing is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Addressing. If not, see <http://www.gnu.org/licenses/>.
+# -------------------------------------------------------------------------
+# @copyright Copyright (C) 2026-2026 by Addressing plugin team.
+# @license   GPLv2 https://www.gnu.org/licenses/gpl-2.0.html
+# @link      https://github.com/InfotelGLPI/Addressing
+# -------------------------------------------------------------------------
+#}
+
+{% import "components/form/fields_macros.html.twig" as fields %}
+
+{% set field_options = {} %}
+
+{% set bg = "" %}
+{% if item.isDeleted() %}
+    {% set bg = "asset-deleted" %}
+{% endif %}
+
+<div class="asset {{ bg }}">
+    {% include("components/form/header.html.twig") %}
+
+    {% set rand = random() %}
+    {% set params  = params ?? [] %}
+    {% set target       = params['target'] ?? item.getFormURL() %}
+    {% set withtemplate = params['withtemplate'] ?? "" %}
+    {% set item_type = item.getType() %}
+
+    <div class="card-body d-flex">
+        <div class="col-12 flex-column">
+            <div class="d-flex flex-row flex-wrap flex-xl-nowrap">
+                <div class="row flex-row align-items-start flex-grow-1">
+                    <div class="row flex-row">
+
+                        <input type="hidden" name="plugin_addressing_addressings_id" value="{{ params['items_id']  }}"/>
+
+                        {% if item.isField('name') %}
+                            {{ fields.autoNameField(
+                                "name",
+                                item,
+                                __('Name'),
+                                withtemplate
+                            ) }}
+                        {% endif %}
+
+                        {% if item.isField('entities_id') %}
+                            {{ fields.dropdownField(
+                                "Entity",
+                                "entities_id",
+                                item.fields['entities_id'],
+                                "Entity"|itemtype_name
+                            ) }}
+                        {% endif %}
+
+                        {{ fields.dropdownArrayField(
+                            'type',
+                            config["type"],
+                            params['types'],
+                            __('Type'),
+                            field_options
+                        ) }}
+
+                        {% if item.isField('begin_ip') %}
+                            {{ _self.ipField(
+                                'begin_ip',
+                                item.fields['begin_ip'],
+                                __('First IP', 'addressing'),
+                                {'full_width': true}
+                            ) }}
+                        {% endif %}
+
+                        {% if item.isField('end_ip') %}
+                            {{ _self.ipField(
+                                'end_ip',
+                                item.fields['end_ip'],
+                                __('Last IP', 'addressing'),
+                                {'full_width': true}
+                            ) }}
+                        {% endif %}
+
+                        <script type='text/javascript'>
+                            function endip(index) {
+                                if ($('#end_ip' + index).val() == '') {
+                                    if (index == 3) {
+                                        $('#end_ip' + index).val('254');
+                                    } else {
+                                        $('#end_ip' + index).val($('#begin_ip' + index).val());
+                                    }
+                                }
+                            }
+
+                            $(function() {
+                                $("input[name^='end_ip']").focus(function() {
+                                    endip($(this).data('index'));
+                                });
+                            });
+
+                        </script>
+
+                        <div class="form-field row align-items-center col-12 col-sm-6 mb-2">
+                            <label class="col-form-label col-xxl-5 text-xxl-end ">
+                                {{ __('Report for the IP Range', 'addressing') }}
+                            </label>
+                            <div class="col-xxl-7 field-container">
+                                <input type="hidden" name="plugaddr_ipdeb" id="plugaddr_ipdeb" value=" {{ item.fields["begin_ip"] }}"/>
+                                <input type="hidden" name="plugaddr_ipfin" id="plugaddr_ipfin" value=" {{ item.fields["end_ip"] }}"/>
+                                <div id='plugaddr_range'>-</div>
+                                {% if not (item.isNewItem()) %}
+                                <script type='text/javascript'>
+                                    $(document).ready(function() {
+                                        var ipdebstr = document.getElementById("plugaddr_ipdeb").value;
+                                        var ipfinstr = document.getElementById("plugaddr_ipfin").value;
+
+                                        document.getElementById("plugaddr_range").innerHTML = "" + ipdebstr + " - " + ipfinstr;
+                                    });
+                                </script>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                    </div> {# .row #}
+                </div> {# .row #}
+            </div> {# .flex-row #}
+        </div>
+        <div class="col-3 flex-column">
+            <div class="flex-row asset-pictures">
+                {#                {% include("components/form/pictures.html.twig") with {'gallery_type': ''} %} #}
+            </div>
+        </div>
+    </div> {# .card-body #}
+
+    {% include("components/form/buttons.html.twig") %}
+    {#    {% include("components/form/inventory_info.html.twig") %} #}
+
+
+    {% if params['formfooter'] == null %}
+        <div class="card-footer mx-n2 mb-n2 mt-4">
+            {% include("components/form/dates.html.twig") %}
+        </div>
+    {% endif %}
+</div>
+
+{% macro ipField(name, value, label = '', options = {}) %}
+    {% set field %}
+        {% if value|length == 0 %}
+            {% set value = '...' %}
+        {% endif %}
+
+        {% set ipexploded = value|split('.') %}
+        {% for ipnum in ipexploded %}
+            {% if ipnum > 255 %}
+                {% set ipexploded = ipexploded|merge({(loop.index0): ''}) %}
+            {% endif %}
+        {% endfor %}
+
+        <div class="row flex-nowrap">
+            <div class="col-auto">
+                <input type="text" class="form-control" value="{{ ipexploded[0] }}"
+                       name="{{ name }}0" id="{{ name }}0" data-index="0" size="2" maxlength="3">
+            </div>
+            <div class="col-auto">
+                <input type="text" class="form-control" value="{{ ipexploded[1] }}"
+                       name="{{ name }}1" id="{{ name }}1" data-index="1" size="2" maxlength="3">
+            </div>
+            <div class="col-auto">
+                <input type="text" class="form-control" value="{{ ipexploded[2] }}"
+                       name="{{ name }}2" id="{{ name }}2" data-index="2" size="2" maxlength="3" >
+            </div>
+            <div class="col-auto">
+                <input type="text" class="form-control" value="{{ ipexploded[3] }}"
+                       name="{{ name }}3" id="{{ name }}3" data-index="3" size="2" maxlength="3">
+            </div>
+        </div>
+    {% endset %}
+
+    {{ fields.field(name, field, label, options) }}
+{% endmacro %}

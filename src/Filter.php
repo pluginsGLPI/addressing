@@ -34,6 +34,7 @@ use CommonDBTM;
 use CommonGLPI;
 use Dropdown;
 use Entity;
+use Glpi\Application\View\TemplateRenderer;
 use Html;
 use Session;
 
@@ -101,159 +102,16 @@ class Filter extends CommonDBTM
             $this->check(-1, CREATE, $options);
         }
 
-    //      Html::requireJs("addressing");
-
-//        $options['formoptions']
-//            = "onSubmit='return plugaddr_Check(\"".__('Invalid data !!', 'addressing')."\")'";
         $options['colspan'] = 1;
-        $this->showFormHeader($options);
 
-        $addressing = new Addressing();
-        $addressing->getFromDB($options['items_id']);
-
-        echo "<tr class='tab_bg_1'>";
-
-        echo Html::hidden('id', ['value' => $ID]);
-        echo Html::hidden('plugin_addressing_addressings_id', ['value' => $options['items_id']]);
-        echo "<td>" . __('Name') . "</td>";
-        echo "<td>";
-        echo Html::input('name', ['value' => $this->fields['name'], 'size' => 40, 'required' => true]);
-        echo "</td>";
-        echo "</tr>";
-
-        echo "<tr class='tab_bg_1'>";
-        echo "<td>" . __('Entity') . "</td>";
-        echo "<td>";
-        Entity::dropdown(['name' => 'entities_id', 'value' => $this->fields["entities_id"]]);
-        echo "</td>";
-        echo "</tr>";
-
-        echo "<tr class='tab_bg_1'>
-               <td>".__("Type")."</td>
-               <td>";
-        $types = Addressing::dropdownItemtype();
-        Dropdown::showFromArray(
-            'type',
-            $types,
-            ['value' => $this->fields["type"]]
-        );
-        echo "</td>";
-        echo "</tr>";
-
-        echo "<tr class='tab_bg_1'>";
-        echo "<td>".__('First IP', 'addressing')."</td>"; // Subnet
-        echo "<td>";
-        if (empty($this->fields["begin_ip"])) {
-            $this->fields["begin_ip"] = "...";
-        }
-        $ipexploded = explode(".", $this->fields["begin_ip"]);
-        $i = 0;
-        foreach ($ipexploded as $ipnum) {
-            if ($ipnum > 255) {
-                $ipexploded[$i] = '';
-            }
-            $i++;
-        }
-
-        echo Html::input('_ipdeb0', ['value' => $ipexploded[0],
-                                   'id' => 'plugaddr_ipdeb0',
-                                   'size' => 3,
-                                   'maxlength' => 3,
-                                   'class' => 'form-inline']);
-        echo Html::input('_ipdeb1', ['value' => $ipexploded[0],
-                                   'id' => 'plugaddr_ipdeb1',
-                                   'size' => 3,
-                                   'maxlength' => 3,
-                                   'class' => 'form-inline']);
-        echo Html::input('_ipdeb2', ['value' => $ipexploded[0],
-                                   'id' => 'plugaddr_ipdeb2',
-                                   'size' => 3,
-                                   'maxlength' => 3,
-                                   'class' => 'form-inline']);
-        echo Html::input('_ipdeb3', ['value' => $ipexploded[0],
-                                   'id' => 'plugaddr_ipdeb3',
-                                   'size' => 3,
-                                   'maxlength' => 3,
-                                   'class' => 'form-inline']);
-
-        echo "</td>";
-
-        echo "</tr>";
-
-        echo "<tr class='tab_bg_1'>";
-        echo "<td>".__('Last IP', 'addressing')."</td>"; // Mask
-        echo "<td>";
-
-        unset($ipexploded);
-        if (empty($this->fields["end_ip"])) {
-            $this->fields["end_ip"] = "...";
-        }
-        $ipexploded = explode(".", $this->fields["end_ip"]);
-        $j = 0;
-        foreach ($ipexploded as $ipnum) {
-            if ($ipnum > 255) {
-                $ipexploded[$j] = '';
-            }
-            $j++;
-        }
-
-        echo "<script type='text/javascript'>
-      function test(id) {
-         if (document.getElementById('plugaddr_ipfin' + id).value == '') {
-            if (id == 3) {
-               document.getElementById('plugaddr_ipfin' + id).value = '254';
-            } else {
-               document.getElementById('plugaddr_ipfin' + id).value = ".
-         "document.getElementById('plugaddr_ipdeb' + id).value;
-            }
-         }
-      }
-      </script>";
-
-        echo Html::input('_ipfin0', ['value' => $ipexploded[0],
-                                   'id' => 'plugaddr_ipfin0',
-                                   'size' => 3,
-                                   'maxlength' => 3,
-                                   'class' => 'form-inline',
-                                   'onfocus'=>'test(0)']);
-        echo Html::input('_ipfin1', ['value' => $ipexploded[0],
-                                   'id' => 'plugaddr_ipfin1',
-                                   'size' => 3,
-                                   'maxlength' => 3,
-                                   'class' => 'form-inline',
-                                   'onfocus'=>'test(1)']);
-        echo Html::input('_ipfin2', ['value' => $ipexploded[0],
-                                   'id' => 'plugaddr_ipfin2',
-                                   'size' => 3,
-                                   'maxlength' => 3,
-                                   'class' => 'form-inline',
-                                   'onfocus'=>'test(2)']);
-        echo Html::input('_ipfin3', ['value' => $ipexploded[0],
-                                   'id' => 'plugaddr_ipfin3',
-                                   'size' => 3,
-                                   'maxlength' => 3,
-                                   'class' => 'form-inline',
-                                   'onfocus'=>'test(3)']);
-
-        echo "</td>";
-        echo "</tr>";
-
-        echo "<tr class='tab_bg_1'>";
-        echo "<td>".__('Report for the IP Range', 'addressing')."</td>"; // Mask
-        echo "<td>";
-        echo Html::hidden('begin_ip', ['id' => 'plugaddr_ipdeb', 'value' => $this->fields["begin_ip"]]);
-        echo Html::hidden('end_ip', ['id' => 'plugaddr_ipfin', 'value' => $this->fields["end_ip"]]);
-        echo "<div id='plugaddr_range'>-</div>";
-        if ($ID > 0) {
-            $js = "plugaddr_Init(\"".__('Invalid data !!', 'addressing')."\");";
-            echo Html::scriptBlock('$(document).ready(function() {'.$js.'});');
-        }
-        echo "</td>";
-        echo "</tr>";
-
-        $this->showFormButtons($options);
+        $options['types'] = Addressing::dropdownItemtype();
+        TemplateRenderer::getInstance()->display('@addressing/filter.html.twig', [
+            'item' => $this,
+            'params' => $options,
+        ]);
 
         return true;
+
     }
 
    /**
