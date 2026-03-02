@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @version $Id$
   -------------------------------------------------------------------------
@@ -35,7 +36,6 @@ use Dropdown;
 use Entity;
 use FQDN;
 use Glpi\Event;
-use GlpiPlugin\Addressing\Config;
 use Html;
 use IPNetwork;
 use NetworkPort;
@@ -52,7 +52,6 @@ if (!defined('GLPI_ROOT')) {
  */
 class ReserveIp extends CommonDBTM
 {
-
     public static $rightname = 'plugin_addressing';
 
     public static function getTypeName($nb = 0)
@@ -65,23 +64,23 @@ class ReserveIp extends CommonDBTM
         return "glpi_plugin_addressing_addressings";
     }
 
-   /**
-    * @param $ip
-    *
-    * @return string
-    */
+    /**
+     * @param $ip
+     *
+     * @return string
+     */
     public function getPortName($ip)
     {
         return "reserv-" . $ip;
     }
 
-   /**
-    * Show form
-    *
-    * @param type $input
-    *
-    * @return type
-    */
+    /**
+     * Show form
+     *
+     * @param type $input
+     *
+     * @return type
+     */
     public function reserveip($input = [])
     {
 
@@ -89,53 +88,53 @@ class ReserveIp extends CommonDBTM
             return false;
         }
 
-       // Find computer
+        // Find computer
         $item = new $input['type']();
         if (!$item->getFromDBByCrit(["name"        => $input["name_reserveip"],
-                                   "entities_id" => $input['entities_id']])) {
-           // Add computer
+            "entities_id" => $input['entities_id']])) {
+            // Add computer
             $id = $item->add(["name"         => $input["name_reserveip"],
-                           "entities_id"  => $input['entities_id'],
-                           "locations_id" => $input["locations_id"],
-                           "states_id"    => $input["states_id"],
-                           "comment"      => $input["comment"]]);
+                "entities_id"  => $input['entities_id'],
+                "locations_id" => $input["locations_id"],
+                "states_id"    => $input["states_id"],
+                "comment"      => $input["comment"]]);
         } else {
             $id = $item->getID();
-           //update item
+            //update item
             $item->update(["id"           => $id,
-                        "entities_id"  => $input['entities_id'],
-                        "states_id"    => $input["states_id"],
-                        "locations_id" => $input["locations_id"],
-                        "comment"      => $input["comment"]]);
+                "entities_id"  => $input['entities_id'],
+                "states_id"    => $input["states_id"],
+                "locations_id" => $input["locations_id"],
+                "comment"      => $input["comment"]]);
         }
 
-       // Add a new port
+        // Add a new port
         if ($id) {
             switch ($input['type']) {
                 case 'NetworkEquipment':
                     $newinput = [
-                    "itemtype"                 => $input['type'],
-                    "items_id"                 => $id,
-                    "entities_id"              => $_SESSION["glpiactive_entity"],
-                    "name"                     => self::getPortName($input["ip"]),
-                    "instantiation_type"       => "NetworkPortAggregate",
-                    "_create_children"         => 1,
-                    "NetworkName__ipaddresses" => ["-100" => $input["ip"]],
-                    "NetworkName_fqdns_id"     => $input["fqdns_id"],
-                    "mac"                      => $input["mac"],
+                        "itemtype"                 => $input['type'],
+                        "items_id"                 => $id,
+                        "entities_id"              => $_SESSION["glpiactive_entity"],
+                        "name"                     => self::getPortName($input["ip"]),
+                        "instantiation_type"       => "NetworkPortAggregate",
+                        "_create_children"         => 1,
+                        "NetworkName__ipaddresses" => ["-100" => $input["ip"]],
+                        "NetworkName_fqdns_id"     => $input["fqdns_id"],
+                        "mac"                      => $input["mac"],
                     ];
                     break;
                 default:
                     $newinput = [
-                    "itemtype"                 => $input['type'],
-                    "items_id"                 => $id,
-                    "entities_id"              => $_SESSION["glpiactive_entity"],
-                    "name"                     => self::getPortName($input["ip"]),
-                    "instantiation_type"       => "NetworkPortEthernet",
-                    "_create_children"         => 1,
-                    "NetworkName__ipaddresses" => ["-100" => $input["ip"]],
-                    "NetworkName_fqdns_id"     => $input["fqdns_id"],
-                    "mac"                      => $input["mac"],
+                        "itemtype"                 => $input['type'],
+                        "items_id"                 => $id,
+                        "entities_id"              => $_SESSION["glpiactive_entity"],
+                        "name"                     => self::getPortName($input["ip"]),
+                        "instantiation_type"       => "NetworkPortEthernet",
+                        "_create_children"         => 1,
+                        "NetworkName__ipaddresses" => ["-100" => $input["ip"]],
+                        "NetworkName_fqdns_id"     => $input["fqdns_id"],
+                        "mac"                      => $input["mac"],
                     ];
                     break;
             }
@@ -154,20 +153,20 @@ class ReserveIp extends CommonDBTM
         }
     }
 
-   /**
-    * Check mandatory fields
-    *
-    * @param type $input
-    *
-    * @return boolean
-    */
+    /**
+     * Check mandatory fields
+     *
+     * @param type $input
+     *
+     * @return bool
+     */
     public function checkMandatoryFields($input)
     {
         $msg     = [];
         $checkKo = false;
 
         $mandatory_fields = ['name_reserveip' => __("Object's name", 'addressing'),
-                           'ip'   => _n("IP address", "IP addresses", 1)];
+            'ip'   => _n("IP address", "IP addresses", 1)];
 
         foreach ($input as $key => $value) {
             if (isset($mandatory_fields[$key])) {
@@ -188,17 +187,15 @@ class ReserveIp extends CommonDBTM
         return true;
     }
 
-   /**
-    * Show form
-    *
-    * @param type $ip
-    * @param type $id_addressing
-    */
+    /**
+     * Show form
+     *
+     * @param type $ip
+     * @param type $id_addressing
+     */
     public function showReservationForm($ip, $id_addressing, $rand)
     {
-        global $CFG_GLPI;
-
-        echo Html::script(PLUGIN_ADDRESSING_DIR_NOFULL."/addressing.js");
+        echo Html::script(PLUGIN_ADDRESSING_DIR_NOFULL . "/addressing.js");
 
         $addressing = new Addressing();
         $addressing->getFromDB($id_addressing);
@@ -219,7 +216,7 @@ class ReserveIp extends CommonDBTM
         $system = $config->fields["used_system"];
 
         $ping_equip = new Ping_Equipment();
-        list($message, $error) = $ping_equip->ping($system, $ip);
+        [$message, $error] = $ping_equip->ping($system, $ip);
         if ($error) {
             echo "<i class='ti ti-circle-check' style='color:forestgreen'></i>
 <span style='color:forestgreen'>&nbsp;";
@@ -239,9 +236,9 @@ class ReserveIp extends CommonDBTM
                <td>";
 
             $rand = Entity::dropdown(['name'   => 'entities_id',
-                                   'entity' => $_SESSION["glpiactiveentities"],
-                                   'value'  => $addressing->fields['entities_id']
-                                  ]);
+                'entity' => $_SESSION["glpiactiveentities"],
+                'value'  => $addressing->fields['entities_id'],
+            ]);
 
             $params = ['action' => 'entities_networkip', 'entities_id' => '__VALUE__'];
             Ajax::updateItemOnEvent(
@@ -252,7 +249,7 @@ class ReserveIp extends CommonDBTM
             );
 
             $params = ['action' => 'entities_location', 'entities_id' => '__VALUE__',
-                    'value'  => $addressing->fields["locations_id"]];
+                'value'  => $addressing->fields["locations_id"]];
             Ajax::updateItemOnEvent(
                 "dropdown_entities_id" . $rand,
                 'entities_location',
@@ -261,7 +258,7 @@ class ReserveIp extends CommonDBTM
             );
 
             $params = ['action' => 'entities_fqdn', 'entities_id' => '__VALUE__',
-                    'value'  => $addressing->fields["fqdns_id"]];
+                'value'  => $addressing->fields["fqdns_id"]];
             Ajax::updateItemOnEvent(
                 "dropdown_entities_id" . $rand,
                 'entities_fqdn',
@@ -279,8 +276,8 @@ class ReserveIp extends CommonDBTM
                      <td><div id='entities_location'>";
 
         Dropdown::show('Location', ['name'   => "locations_id",
-                                  'value'  => $addressing->fields["locations_id"],
-                                  'entity' => $addressing->fields['entities_id']
+            'value'  => $addressing->fields["locations_id"],
+            'entity' => $addressing->fields['entities_id'],
         ]);
         echo "</div></td><td></td>";
         echo "</tr>";
@@ -293,7 +290,7 @@ class ReserveIp extends CommonDBTM
         Dropdown::showFromArray(
             'type',
             $types,
-            ['on_change' => "nameIsThere(\"" .'/plugins/addressing' . "\");"]
+            ['on_change' => "nameIsThere(\"" . '/plugins/addressing' . "\");"]
         );
         echo "</td><td></td>";
         echo "</tr>";
@@ -324,8 +321,8 @@ class ReserveIp extends CommonDBTM
                <td>" . FQDN::getTypeName(1) . " :</td>
                <td><div id='entities_fqdn'>";
         Dropdown::show('FQDN', ['name'   => "fqdns_id",
-                              'value'  => $addressing->fields["fqdns_id"],
-                              'entity' => $addressing->fields['entities_id']]);
+            'value'  => $addressing->fields["fqdns_id"],
+            'entity' => $addressing->fields['entities_id']]);
         echo "</div></td><td></td></tr>";
 
         echo "<tr class='tab_bg_1'>
@@ -339,17 +336,17 @@ class ReserveIp extends CommonDBTM
                <td>" . __("Comments") . " :</td>
                <td colspan='2'>";
         Html::textarea(['name'            => 'comment',
-                      'cols'       => 75,
-                      'rows'       => 5,
-                      'enable_richtext' => false]);
+            'cols'       => 75,
+            'rows'       => 5,
+            'enable_richtext' => false]);
         echo "</td>
             </tr>";
 
         echo "<tr class='tab_bg_1'>
                <td colspan='4' class='center'>";
         echo Html::submit(__("Validate the reservation", 'addressing'), ['name'    => 'add',
-                                                                       'class'   => 'btn btn-primary',
-                                                                       'onclick' => "$('#reservation$rand').modal(
+            'class'   => 'btn btn-primary',
+            'onclick' => "$('#reservation$rand').modal(
                                                                        'hide');window.location.reload();return true;"]);
         echo "</td>
             </tr>";

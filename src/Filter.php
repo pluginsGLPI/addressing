@@ -88,9 +88,8 @@ class Filter extends CommonDBTM
 
    /**
     * Form of filter
-    * @global type $CFG_GLPI
-    * @param type $ID
-    * @param type $options
+    * @param  $ID
+    * @param  $options
     * @return boolean
     */
     public function showForm($ID, $options = [])
@@ -104,8 +103,8 @@ class Filter extends CommonDBTM
 
     //      Html::requireJs("addressing");
 
-        $options['formoptions']
-            = "onSubmit='return plugaddr_Check(\"".__('Invalid data !!', 'addressing')."\")'";
+//        $options['formoptions']
+//            = "onSubmit='return plugaddr_Check(\"".__('Invalid data !!', 'addressing')."\")'";
         $options['colspan'] = 1;
         $this->showFormHeader($options);
 
@@ -259,13 +258,11 @@ class Filter extends CommonDBTM
 
    /**
     * Filter list
-    * @global type $CFG_GLPI
-    * @param type $item
-    * @param type $options
+    * @param  $item
+    * @param  $options
     */
     public static function showList($item, $options = [])
     {
-        global $CFG_GLPI;
 
         $item_id = $item['id'];
         $rand          = mt_rand();
@@ -369,16 +366,13 @@ class Filter extends CommonDBTM
 
    /**
     * Form of an element
-    * @global type $CFG_GLPI
-    * @param type $item
-    * @param type $filter
-    * @param type $canedit
-    * @param type $rand
+    * @param  $item
+    * @param  $filter
+    * @param  $canedit
+    * @param  $rand
     */
     public function showMinimalFilterForm($item, $filter, $canedit, $rand)
     {
-        global $CFG_GLPI;
-
         $edit = ($canedit ? "style='cursor:pointer' onClick=\"viewEditFilter"
             . $filter["id"] . "$rand();\"" : '');
         echo "<tr class='tab_bg_1' >";
@@ -412,8 +406,8 @@ class Filter extends CommonDBTM
 
    /**
     * Dropdown of filters
-    * @param type $id
-    * @param type $value
+    * @param  $id
+    * @param  $value
     */
     public static function dropdownFilters($id, $value)
     {
@@ -429,8 +423,8 @@ class Filter extends CommonDBTM
 
    /**
     * Count of filters
-    * @param type $item
-    * @return type
+    * @param $item
+    * @return int
     */
     public static function countForItem($id)
     {

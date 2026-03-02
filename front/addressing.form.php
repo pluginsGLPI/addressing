@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @version $Id$
  -------------------------------------------------------------------------
@@ -41,21 +42,29 @@ $addressing = new Addressing();
 
 if (isset($_POST["add"])) {
     $addressing->check(-1, CREATE, $_POST);
-    if (!empty($_POST["name"])
-      && !empty($_POST["begin_ip"])
-         && !empty($_POST["end_ip"])) {
-        $newID = $addressing->add($_POST);
+    if (!empty($_POST["name"])) {
+        if ($addressing->checkip($_POST)) {
+            $_POST['begin_ip'] = (int) $_POST['begin_ip0'] . "." . (int) $_POST['begin_ip1'] . ".";
+            $_POST['begin_ip'] .= (int) $_POST['begin_ip2'] . "." . (int) $_POST['begin_ip3'];
+            $_POST['end_ip'] = (int) $_POST['end_ip0'] . "." . (int) $_POST['end_ip1'] . ".";
+            $_POST['end_ip'] .= (int) $_POST['end_ip2'] . "." . (int) $_POST['end_ip3'];
+            $newID = $addressing->add($_POST);
+            if ($_SESSION['glpibackcreated']) {
+                Html::redirect($addressing->getFormURL() . "?id=" . $newID);
+            }
+            Html::back();
+        } else {
+            Html::back();
+        }
     } else {
         Session::addMessageAfterRedirect(
             __('Problem when adding, required fields are not here', 'addressing'),
             false,
             ERROR
         );
+        Html::back();
     }
-    if ($_SESSION['glpibackcreated']) {
-        Html::redirect($addressing->getFormURL() . "?id=" . $newID);
-    }
-    Html::back();
+
 } elseif (isset($_POST["delete"])) {
     $addressing->check($_POST['id'], DELETE);
     $addressing->delete($_POST);
@@ -70,18 +79,27 @@ if (isset($_POST["add"])) {
     $addressing->redirectToList();
 } elseif (isset($_POST["update"])) {
     $addressing->check($_POST['id'], UPDATE);
-    if (!empty($_POST["name"])
-      && !empty($_POST["begin_ip"])
-         && !empty($_POST["end_ip"])) {
-        $addressing->update($_POST);
+    if (!empty($_POST["name"])) {
+
+        if ($addressing->checkip($_POST)) {
+            $_POST['begin_ip'] = (int) $_POST['begin_ip0'] . "." . (int) $_POST['begin_ip1'] . ".";
+            $_POST['begin_ip'] .= (int) $_POST['begin_ip2'] . "." . (int) $_POST['begin_ip3'];
+            $_POST['end_ip'] = (int) $_POST['end_ip0'] . "." . (int) $_POST['end_ip1'] . ".";
+            $_POST['end_ip'] .= (int) $_POST['end_ip2'] . "." . (int) $_POST['end_ip3'];
+            $addressing->update($_POST);
+            Html::back();
+        } else {
+            Html::back();
+        }
     } else {
         Session::addMessageAfterRedirect(
             __('Problem when adding, required fields are not here', 'addressing'),
             false,
             ERROR
         );
+        Html::back();
     }
-    Html::back();
+
 } elseif (isset($_POST["search"])) {
     $addressing->checkGlobal(READ);
     Html::header(Addressing::getTypeName(2), '', "tools", Addressing::class);

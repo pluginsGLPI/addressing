@@ -63,60 +63,92 @@ class Report extends CommonDBTM
      *
      * @return string
      */
-    public function displaySearchNewLine($type, $odd = false)
+//    public function displaySearchNewLine($type, $odd = false)
+//    {
+//        $out = "";
+//        switch ($type) {
+//            case Search::PDF_OUTPUT_LANDSCAPE: //pdf
+//            case Search::PDF_OUTPUT_PORTRAIT:
+//                global $PDF_TABLE;
+//                $style = "";
+//                if ($odd) {
+//                    $style = " style=\"background-color:#DDDDDD;\" ";
+//                }
+//                $PDF_TABLE .= "<tr nobr=\"true\" $style>";
+//                break;
+//
+//            //         case Search::SYLK_OUTPUT : //sylk
+//            //       $out="\n";
+//            //            break;
+//
+//            case Search::CSV_OUTPUT: //csv
+//                //$out="\n";
+//                break;
+//
+//            default:
+//                $class = " class='tab_bg_2' ";
+//                if ($odd) {
+//                    switch ($odd) {
+//                        case "double": //double
+//                            $class = " class='plugin_addressing_ip_double'";
+//                            break;
+//
+//                        case "free": //free
+//                            $class = " class='plugin_addressing_ip_free'";
+//                            break;
+//
+//                        case "reserved": //free
+//                            $class = " class='plugin_addressing_ip_reserved'";
+//                            break;
+//
+//                        case "ping_on": //ping_on
+//                            $class = " class='plugin_addressing_ping_on'";
+//                            break;
+//
+//                        case "ping_off": //ping_off
+//                            $class = " class='plugin_addressing_ping_off'";
+//                            break;
+//
+//                        default:
+//                            $class = " class='tab_bg_1' ";
+//                    }
+//                }
+//                $out = "<tr $class>";
+//                break;
+//        }
+//        return $out;
+//    }
+
+    public static function showNewLine($odd = false, $is_deleted = false): string
     {
-        $out = "";
-        switch ($type) {
-            case Search::PDF_OUTPUT_LANDSCAPE: //pdf
-            case Search::PDF_OUTPUT_PORTRAIT:
-                global $PDF_TABLE;
-                $style = "";
-                if ($odd) {
-                    $style = " style=\"background-color:#DDDDDD;\" ";
-                }
-                $PDF_TABLE .= "<tr nobr=\"true\" $style>";
-                break;
+        $class = " class='tab_bg_2' ";
+        if ($odd) {
+            switch ($odd) {
+                case "double": //double
+                    $class = " class='plugin_addressing_ip_double'";
+                    break;
 
-            //         case Search::SYLK_OUTPUT : //sylk
-            //       $out="\n";
-            //            break;
+                case "free": //free
+                    $class = " class='plugin_addressing_ip_free'";
+                    break;
 
-            case Search::CSV_OUTPUT: //csv
-                //$out="\n";
-                break;
+                case "reserved": //free
+                    $class = " class='plugin_addressing_ip_reserved'";
+                    break;
 
-            default:
-                $class = " class='tab_bg_2' ";
-                if ($odd) {
-                    switch ($odd) {
-                        case "double": //double
-                            $class = " class='plugin_addressing_ip_double'";
-                            break;
+                case "ping_on": //ping_on
+                    $class = " class='plugin_addressing_ping_on'";
+                    break;
 
-                        case "free": //free
-                            $class = " class='plugin_addressing_ip_free'";
-                            break;
+                case "ping_off": //ping_off
+                    $class = " class='plugin_addressing_ping_off'";
+                    break;
 
-                        case "reserved": //free
-                            $class = " class='plugin_addressing_ip_reserved'";
-                            break;
-
-                        case "ping_on": //ping_on
-                            $class = " class='plugin_addressing_ping_on'";
-                            break;
-
-                        case "ping_off": //ping_off
-                            $class = " class='plugin_addressing_ping_off'";
-                            break;
-
-                        default:
-                            $class = " class='tab_bg_1' ";
-                    }
-                }
-                $out = "<tr $class>";
-                break;
+                default:
+                    $class = " class='tab_bg_1' ";
+            }
         }
-        return $out;
+        return "<tr $class>";
     }
 
 
@@ -201,7 +233,7 @@ class Report extends CommonDBTM
             $headers[] = __('Comments');
         } else {
             $header_num = 1;
-            $html_output .= $output::showNewLine();
+            $html_output .= self::showNewLine();
             $html_output .= $output::showHeaderItem("", $header_num);
             $html_output .= $output::showHeaderItem(__('IP'), $header_num);
             $html_output .= $output::showHeaderItem(__('Connected to'), $header_num);
@@ -229,7 +261,7 @@ class Report extends CommonDBTM
                 $colnum = 0;
                 $i++;
                 if ($is_html_output) {
-                    $html_output .= $output::showNewLine($i % 2 === 1);
+                    $html_output .= self::showNewLine($i % 2 === 1);
                 }
                 $ip = self::string2ip(substr($num, 2));
 
@@ -251,9 +283,9 @@ class Report extends CommonDBTM
                                         $line["pname"],
                                         "reserv"
                                     )) {
-                                    $html_output .= $output::showNewLine("reserved");
+                                    $html_output .= self::showNewLine("reserved");
                                 } else {
-                                    $html_output .= $output::showNewLine(
+                                    $html_output .= self::showNewLine(
                                         (count($lines) > 1 ? "double" : $row_num % 2)
                                     );
                                 }
@@ -673,7 +705,7 @@ class Report extends CommonDBTM
 
                     if (!$ping) {
                         if ($is_html_output) {
-                            $html_output .= $output::showNewLine("free");
+                            $html_output .= self::showNewLine("free");
                         }
                         $rand = mt_rand();
                         $params = [
@@ -865,7 +897,7 @@ class Report extends CommonDBTM
                                 if ($see_ping_on == 1) {
                                     $ping_response++;
                                     if ($is_html_output) {
-                                        $html_output .= $output::showNewLine("ping_off");
+                                        $html_output .= self::showNewLine("ping_off");
                                     }
                                     $rand = mt_rand();
                                     $params = [
@@ -1040,7 +1072,7 @@ class Report extends CommonDBTM
                             } else {
                                 if ($see_ping_off == 1) {
                                     if ($is_html_output) {
-                                        $html_output .= $output::showNewLine("ping_on");
+                                        $html_output .= self::showNewLine("ping_on");
                                     }
                                     $rand = mt_rand();
                                     $params = [
