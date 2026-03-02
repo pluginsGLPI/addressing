@@ -29,13 +29,12 @@
 
 use GlpiPlugin\Addressing\Ping_Equipment;
 
-Session::checkRight('plugin_addressing', UPDATE);
 if (strpos($_SERVER['PHP_SELF'], "seePingTab.php")) {
     header("Content-Type: text/html; charset=UTF-8");
     Html::header_nocache();
 }
 
-Session::checkLoginUser();
+Session::checkRight("plugin_addressing_use_ping_in_equipment", READ);
 
 if (isset($_POST['action']) && $_POST['action'] == "viewPingform") {
     echo Html::scriptBlock("$('#ping_item').show();");

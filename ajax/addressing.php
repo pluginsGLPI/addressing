@@ -32,8 +32,8 @@ use GlpiPlugin\Addressing\Filter;
 use GlpiPlugin\Addressing\Ping_Equipment;
 use GlpiPlugin\Addressing\ReserveIp;
 
-Session::checkLoginUser();
 Session::checkRight('plugin_addressing', UPDATE);
+
 Html::header_nocache();
 header("Content-Type: text/html; charset=UTF-8");
 

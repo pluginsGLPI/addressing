@@ -1,0 +1,99 @@
+{#
+# -------------------------------------------------------------------------
+# Addressing plugin for GLPI
+# -------------------------------------------------------------------------
+#
+# LICENSE
+#
+# This file is part of Addressing.
+#
+# Addressing is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# Addressing is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Addressing. If not, see <http://www.gnu.org/licenses/>.
+# -------------------------------------------------------------------------
+# @copyright Copyright (C) 2026-2026 by Addressing plugin team.
+# @license   GPLv2 https://www.gnu.org/licenses/gpl-2.0.html
+# @link      https://github.com/InfotelGLPI/Addressing
+# -------------------------------------------------------------------------
+#}
+
+{% import "components/form/fields_macros.html.twig" as fields %}
+
+{% set field_options = {} %}
+
+{% set bg = "" %}
+{% if item.isDeleted() %}
+    {% set bg = "asset-deleted" %}
+{% endif %}
+
+<div class="asset {{ bg }}">
+    {% include("components/form/header.html.twig") %}
+
+    {% set rand = random() %}
+    {% set params  = params ?? [] %}
+    {% set target       = params['target'] ?? item.getFormURL() %}
+    {% set withtemplate = params['withtemplate'] ?? "" %}
+
+    <div class="card d-flex flex-wrap">
+        <div class="col-12 flex-column card-body">
+            <div class="d-flex flex-row flex-wrap flex-xl-nowrap">
+                <div class="row flex-row align-items-start flex-grow-1">
+                    <div class="row flex-row">
+
+                        <div class="form-field row align-items-center col-12 col-sm-6 mb-2">
+                            <label class="col-form-label col-xxl-3 text-xxl-end ">
+                                {{ __('Ping result', 'addressing') }}
+                            </label>
+                            <div class="col-xxl-9 field-container">
+                                {{ content |raw }}
+                            </div>
+                        </div>
+
+                        <div class="form-field row align-items-center col-12 col-sm-6 mb-2">
+                            <label class="col-form-label col-xxl-5 text-xxl-end ">
+                                {{ _x('button','Manual launch of ping','addressing') }}
+                            </label>
+                            <div class="col-xxl-7 field-container">
+                                <button form="" class="btn btn-primary btn-sm" type="submit"
+                                        onclick='viewPingform{{ items_id }}{{ rand }}();'>
+                                    <i class='ti ti-terminal-2' style='font-size:2em;'
+                                       title=' {{ _x('button','Manual launch of ping','addressing') }}'></i>
+                                </button>
+                                <script type='text/javascript'>
+                                    function viewPingform{{ items_id }}{{ rand }}() {
+                                        {% do call(['Ajax', 'updateItemJsCode'], [
+                                            'ping_item',
+                                            config('root_doc') ~ '/plugins/addressing/ajax/seePingTab.php',
+                                            {
+                                                action: 'viewPingform',
+                                                items_id: items_id,
+                                                itemtype: itemtype
+                                            }
+                                        ]) %}
+                                    }
+                                </script>
+                            </div>
+                        </div> {# .row #}
+
+                        <div id='ping_item' class="form-field row align-items-center col-12 col-sm-12 mb-2">
+                        </div>
+
+                    </div> {# .row #}
+                </div> {# .flex-row #}
+            </div>
+            <div class="col-3 flex-column">
+                <div class="flex-row asset-pictures">
+                    {#                {% include("components/form/pictures.html.twig") with {'gallery_type': ''} %} #}
+                </div>
+            </div>
+        </div> {# .card-body #}
+    </div>

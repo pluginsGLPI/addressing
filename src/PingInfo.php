@@ -31,6 +31,7 @@ namespace GlpiPlugin\Addressing;
 
 use Ajax;
 use CommonDBTM;
+use Glpi\Application\View\TemplateRenderer;
 use GlpiPlugin\Addressing\Config;
 use GlpiPlugin\Addressing\Report;
 use Html;
@@ -45,7 +46,7 @@ if (!defined('GLPI_ROOT')) {
  */
 class PingInfo extends CommonDBTM
 {
-    public static $rightname = "plugin_addressing_use_ping_in_equipment";
+    public static $rightname = "plugin_addressing";
 
     public static function getTypeName($nb = 0)
     {
@@ -219,47 +220,16 @@ class PingInfo extends CommonDBTM
                     ));
                 }
             }
-            echo "<table class='tab_cadre_fixe'>";
-            echo "<tr class='tab_bg_1'><th colspan='4'>";
-            echo __('Ping result', 'addressing');
-            echo "</th></tr>";
-
-           //$('#ping_item').hide();
-            echo "<tr class='tab_bg_1 center'><td colspan='2'>";
-            echo $content;
-            echo "</td><td colspan='2'>";
 
             $rand = mt_rand();
-            echo "<button form='' class='submit btn btn-warning'
-            onclick='javascript:viewPingform" . $items_id . "$rand();'>";
-            echo "<i class='ti ti-terminal-2' style='font-size:2em;' title='" . _sx(
-                'button',
-                'Manual launch of ping',
-                'addressing'
-            ) . "'></i>";
-            echo "</button>";
 
-            echo "<script type='text/javascript' >\n";
-            echo "function viewPingform" . $items_id . "$rand() {\n";
-            $params = ['action'   => 'viewPingform',
-                    'items_id' => $items_id,
-                    'itemtype' => $itemtype];
-            Ajax::updateItemJsCode(
-                "ping_item",
-                "/plugins/addressing/ajax/seePingTab.php",
-                $params
-            );
-            echo "};";
-            echo "</script>\n";
-
-
-            echo "</td></tr>";
-            echo "<tr class='tab_bg_1 center'><td colspan='4'>";
-            echo "<div id='ping_item'>";
-            include(PLUGIN_ADDRESSING_DIR . "/ajax/seePingTab.php");
-            echo "</div>";
-            echo "</td></tr>";
-            echo "</table>";
+            TemplateRenderer::getInstance()->display('@addressing/pinginfo.html.twig', [
+                'content' => $content,
+                'items_id' => $items_id,
+                'itemtype' => $itemtype,
+                'rand' => $rand,
+                'root_dir' => PLUGIN_ADDRESSING_WEBDIR,
+            ]);
         }
     }
 

@@ -33,11 +33,15 @@ use GlpiPlugin\Addressing\Addressing;
 use GlpiPlugin\Addressing\PingInfo;
 use GlpiPlugin\Addressing\Profile;
 
+global $CFG_GLPI;
+
 define('PLUGIN_ADDRESSING_VERSION', '3.1.2');
 
 if (!defined("PLUGIN_ADDRESSING_DIR")) {
     define("PLUGIN_ADDRESSING_DIR", Plugin::getPhpDir("addressing"));
     define("PLUGIN_ADDRESSING_DIR_NOFULL", Plugin::getPhpDir("addressing", false));
+    $root = $CFG_GLPI['root_doc'] . '/plugins/addressing';
+    define("PLUGIN_ADDRESSING_WEBDIR", $root);
 }
 
 // Init the hooks of the plugins -Needed

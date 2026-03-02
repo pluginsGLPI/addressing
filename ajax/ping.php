@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @version $Id$
  -------------------------------------------------------------------------
@@ -39,14 +40,14 @@ use GlpiPlugin\Addressing\PingInfo;
 use GlpiPlugin\Addressing\Report;
 
 Session::checkRight('plugin_addressing', UPDATE);
+
 header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
 
-Session::checkLoginUser();
-
 if (!isset($_POST['ip']) || !filter_var($_POST["ip"], FILTER_VALIDATE_IP)) {
-        throw new NotFoundHttpException();
+    throw new NotFoundHttpException();
 }
+
 $ip = $_POST['ip'];
 $itemtype = $_POST['itemtype'];
 $items_id = $_POST['items_id'];
@@ -56,7 +57,7 @@ $config->getFromDB('1');
 $system = $config->fields["used_system"];
 
 $ping_equip = new Ping_Equipment();
-list($message, $error) = $ping_equip->ping($system, $ip);
+[$message, $error] = $ping_equip->ping($system, $ip);
 
 $plugin_addressing_pinginfo = new PingInfo();
 
@@ -67,20 +68,19 @@ $ping_date = 0;
 if ($ping_value == false || $ping_value == true) {
     $ping_date = $_SESSION['glpi_currenttime'];
     if ($pings = $plugin_addressing_pinginfo->find(['itemtype' => $itemtype,
-      'items_id' => $items_id])) {
+        'items_id' => $items_id])) {
         foreach ($pings as $ping) {
             $id = $ping['id'];
-            $num = "IP".Report::ip2string($ip);
+            $num = "IP" . Report::ip2string($ip);
             $plugin_addressing_pinginfo->update(['id' => $id,
-            'ping_response' => $ping_value,
-            'ping_date' => $ping_date
-                , 'ipname' => $num]);
+                'ping_response' => $ping_value,
+                'ping_date' => $ping_date, 'ipname' => $num]);
         }
     } else {
-        $num = "IP".Report::ip2string($ip);
+        $num = "IP" . Report::ip2string($ip);
         $plugin_addressing_pinginfo->add(['ping_response' => $ping_value,
-         'ping_date' => $ping_date, 'itemtype' => $itemtype,
-         'items_id' => $items_id, 'ipname' => $num]);
+            'ping_date' => $ping_date, 'itemtype' => $itemtype,
+            'items_id' => $items_id, 'ipname' => $num]);
     }
 }
 

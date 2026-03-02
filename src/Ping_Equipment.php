@@ -106,7 +106,7 @@ class Ping_Equipment extends CommonDBTM
         echo "<table class='tab_cadre_fixe'><tr class='tab_bg_2 left'>";
         echo "<tr><th colspan='3'>" . __('IP ping', 'addressing') . "</th>";
         echo "<th>";
-        echo "<i class='ti ti-circle-x' onclick='$(\"#ping_item\").hide();'></i>";
+        echo "<i class='btn btn-sm btn-light ti ti-circle-x' onclick='$(\"#ping_item\").hide();'></i>";
         echo "</tr>";
 
         if (count($list_ip) > 0) {

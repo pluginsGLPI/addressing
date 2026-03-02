@@ -35,10 +35,9 @@
 use GlpiPlugin\Addressing\IpComment;
 
 Session::checkRight('plugin_addressing', UPDATE);
+
 header("Content-Type: application/json; charset=UTF-8");
 Html::header_nocache();
-
-Session::checkLoginUser();
 
 if (!isset($_POST['addressing_id'])) {
     echo json_encode(0);
