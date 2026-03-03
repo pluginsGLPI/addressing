@@ -1,0 +1,284 @@
+{#
+# -------------------------------------------------------------------------
+# Addressing plugin for GLPI
+# -------------------------------------------------------------------------
+#
+# LICENSE
+#
+# This file is part of Addressing.
+#
+# Addressing is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# Addressing is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Addressing. If not, see <http://www.gnu.org/licenses/>.
+# -------------------------------------------------------------------------
+# @copyright Copyright (C) 2026-2026 by Addressing plugin team.
+# @license   GPLv2 https://www.gnu.org/licenses/gpl-2.0.html
+# @link      https://github.com/InfotelGLPI/Addressing
+# -------------------------------------------------------------------------
+#}
+
+{% import "components/form/fields_macros.html.twig" as fields %}
+
+{% set field_options = {} %}
+
+{% set bg = "" %}
+{% if item.isDeleted() %}
+    {% set bg = "asset-deleted" %}
+{% endif %}
+
+<div class="asset {{ bg }}">
+    {% include("components/form/header.html.twig") %}
+
+    {% set rand_field = rand|default(random()) %}
+    {% set params  = params ?? [] %}
+    {% set target       = params['target'] ?? item.getFormURL() %}
+    {% set withtemplate = params['withtemplate'] ?? "" %}
+    {% set item_type = item.getType() %}
+
+    <br><div class="card-body d-flex">
+        <div class="col-12 flex-column">
+            <div class="d-flex flex-row flex-wrap flex-xl-nowrap">
+                <div class="row flex-row align-items-start flex-grow-1">
+                    <div class="row flex-row">
+                        <input type="hidden" name="plugin_addressing_addressings_id" value="{{ params['items_id']  }}"/>
+                        {% if msg %}
+                            <br>{{ msg | raw }}
+                        {% endif %}
+
+                        {% if entities_rights is defined and entities_rights == true %}
+                            {% if item.isField('entities_id') %}
+                                {{ fields.dropdownField(
+                                    "Entity",
+                                    "entities_id",
+                                    item.fields['entities_id'],
+                                    "Entity"|itemtype_name,
+                                    {
+                                        rand: rand_field,
+                                    }
+                                ) }}
+                            {% endif %}
+
+                            {% do call('Ajax::updateItemOnSelectEvent', [
+                                'dropdown_entities_id' ~ rand,
+                                'entities_networkip',
+                                config('root_doc') ~ '/plugins/addressing/ajax/addressing.php',
+                                {
+                                    action    : 'entities_networkip',
+                                    entities_id    : '__VALUE__',
+                                }
+                            ]) %}
+
+                            {% do call('Ajax::updateItemOnSelectEvent', [
+                                'dropdown_entities_id' ~ rand,
+                                'entities_location',
+                                config('root_doc') ~ '/plugins/addressing/ajax/addressing.php',
+                                {
+                                    action    : 'entities_location',
+                                    entities_id    : '__VALUE__',
+                                    value    : item.fields['locations_id'],
+                                }
+                            ]) %}
+
+                            {% do call('Ajax::updateItemOnSelectEvent', [
+                                'dropdown_entities_id' ~ rand,
+                                'entities_fqdn',
+                                config('root_doc') ~ '/plugins/addressing/ajax/addressing.php',
+                                {
+                                    action    : 'entities_fqdn',
+                                    entities_id    : '__VALUE__',
+                                    value    : item.fields['fqdns_id'],
+                                }
+                            ]) %}
+                        {% endif %}
+
+                        <div class="form-field row align-items-center col-12 col-sm-6 mb-2">
+                            <label class="col-form-label col-xxl-5 text-xxl-end ">
+                                {{ _n("IP address", "IP addresses", 1) }}
+                            </label>
+                            <div class="col-xxl-7 field-container">
+                                {{  params['ip']  }}
+                                <input type="hidden" name="ip" value="{{ params['ip']  }}"/>
+                            </div>
+                        </div>
+
+                        {{ fields.dropdownArrayField(
+                            'type',
+                            config["type"],
+                            params['types'],
+                            __('Type'),
+                        ) }}
+
+
+                        <div class="form-field row align-items-center col-12 col-sm-6 mb-2">
+                            <label class="col-form-label col-xxl-5 text-xxl-end ">
+                                {{ __('Name') }}
+                            </label>
+                            <div class="col-xxl-7 field-container">
+                                <input type="text" name="name_reserveip" id="name_reserveip" onchange="nameIsThere()">
+                            </div>
+                        </div>
+
+                        <script type='text/javascript'>
+                            function nameIsThere() {
+                                var root_doc = '{{ root_addressing }}';
+                                var nameElm = $('input[id*="name_reserveip"]');
+                                var typeElm = $('select[name="type"]');
+                                var divNameUsedItemElm = $('div[id="nameUsedItem"]');
+                                var divNameNotUsedItemElm = $('div[id="nameNotUsedItem"]');
+                                $.ajax({
+                                    url: root_doc + "/ajax/addressing.php",
+                                    type: "GET",
+                                    dataType: "json",
+                                    data: {
+                                        action: 'isName',
+                                        name: (nameElm.length != 0) ? nameElm.val() : '0',
+                                        type: (typeElm.length != 0) ? typeElm.val() : '0',
+                                    },
+                                    success: function (json) {
+                                        if (json) {
+                                            divNameUsedItemElm.show();
+                                            divNameNotUsedItemElm.hide();
+                                        } else {
+                                            divNameUsedItemElm.hide();
+                                            divNameNotUsedItemElm.show();
+                                        }
+                                    }
+                                });
+                            }
+
+                        </script>
+
+                        <div class="alert alert-warning" style="display: none;" id="nameUsedItem">
+                        <i class='ti ti-alert-triangle' style='color:orange;font-size: 2em;'></i>&nbsp;
+                        {{ __('Name already in use', 'addressing') }}
+                        </div>
+
+                        <div class="alert alert-success" style="display: none;" id="nameNotUsedItem">
+                            <i class='ti ti-check' style='color:forestgreen;font-size: 2em;'></i>&nbsp;
+                            {{ __('Ok you can use this name', 'addressing') }}
+                        </div>
+
+                        {% if item.isField('locations_id') %}
+                            <div id='entities_location' class="form-field row align-items-center col-12 col-sm-6  mb-2">
+                                {{ fields.dropdownField(
+                                    "Location",
+                                    "locations_id",
+                                    item.fields['locations_id'],
+                                    "Location"|itemtype_name,
+                                    {
+                                        'entity': item.fields['entities_id'],
+                                    }
+                                ) }}
+                            </div>
+                        {% endif %}
+
+                        <div class="form-field row align-items-center col-12 col-sm-6 mb-2">
+                            <label class="col-form-label col-xxl-5 text-xxl-end ">
+                                {{ __("Status") }}
+                            </label>
+                            <div class="col-xxl-7 field-container">
+                                {% do call('State::dropdown', [item.fields['entities_id']]) %}
+                            </div>
+                        </div>
+
+
+                        {{ fields.textField('mac', '', __("MAC address")) }}
+
+                        {% if item.isField('fqdns_id') %}
+                        <div id='entities_fqdn' class="form-field row align-items-center col-12 col-sm-6  mb-2">
+                            {{ fields.dropdownField(
+                                "FQDN",
+                                "fqdns_id",
+                                item.fields['fqdns_id'],
+                                "FQDN"|itemtype_name,
+                                {
+                                    'entity': item.fields['entities_id'],
+                                }
+                            ) }}
+                        </div>
+                        {% endif %}
+
+                        <div class="form-field row align-items-center col-12 col-sm-6 mb-2">
+                            <label class="col-form-label col-xxl-5 text-xxl-end ">
+                                {{ __("Network") }}
+                            </label>
+                            <div id='entities_networkip' class="col-xxl-7 field-container">
+                                {% do call('IPNetwork::showIPNetworkProperties', [item.fields['entities_id']]) %}
+                            </div>
+                        </div>
+
+                        {% if item.isField('comment') %}
+                            {{ fields.textareaField(
+                                "comment",
+                                item.fields['comment'],
+                                _n('Comment', 'Comments', 2),
+                                {'full_width': true}
+                            ) }}
+                        {% endif %}
+
+                    </div> {# .row #}
+                </div> {# .row #}
+            </div> {# .flex-row #}
+        </div>
+        <div class="col-3 flex-column">
+            <div class="flex-row asset-pictures">
+                {#                {% include("components/form/pictures.html.twig") with {'gallery_type': ''} %} #}
+            </div>
+        </div>
+    </div> {# .card-body #}
+
+    {% include("components/form/buttons.html.twig") %}
+    {#    {% include("components/form/inventory_info.html.twig") %} #}
+
+
+    {% if params['formfooter'] == null %}
+        <div class="card-footer mx-n2 mb-n2 mt-4">
+            {% include("components/form/dates.html.twig") %}
+        </div>
+    {% endif %}
+</div>
+
+{% macro ipField(name, value, label = '', options = {}) %}
+    {% set field %}
+        {% if value|length == 0 %}
+            {% set value = '...' %}
+        {% endif %}
+
+        {% set ipexploded = value|split('.') %}
+        {% for ipnum in ipexploded %}
+            {% if ipnum > 255 %}
+                {% set ipexploded = ipexploded|merge({(loop.index0): ''}) %}
+            {% endif %}
+        {% endfor %}
+
+        <div class="row flex-nowrap">
+            <div class="col-auto">
+                <input type="text" class="form-control" value="{{ ipexploded[0] }}"
+                       name="{{ name }}0" id="{{ name }}0" data-index="0" size="2" maxlength="3">
+            </div>
+            <div class="col-auto">
+                <input type="text" class="form-control" value="{{ ipexploded[1] }}"
+                       name="{{ name }}1" id="{{ name }}1" data-index="1" size="2" maxlength="3">
+            </div>
+            <div class="col-auto">
+                <input type="text" class="form-control" value="{{ ipexploded[2] }}"
+                       name="{{ name }}2" id="{{ name }}2" data-index="2" size="2" maxlength="3" >
+            </div>
+            <div class="col-auto">
+                <input type="text" class="form-control" value="{{ ipexploded[3] }}"
+                       name="{{ name }}3" id="{{ name }}3" data-index="3" size="2" maxlength="3">
+            </div>
+        </div>
+    {% endset %}
+
+    {{ fields.field(name, field, label, options) }}
+{% endmacro %}

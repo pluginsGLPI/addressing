@@ -30,18 +30,12 @@
 
 namespace GlpiPlugin\Addressing;
 
-use Ajax;
 use CommonDBTM;
-use Dropdown;
-use Entity;
-use FQDN;
+use Glpi\Application\View\TemplateRenderer;
 use Glpi\Event;
-use Html;
-use IPNetwork;
 use NetworkPort;
 use Profile_User;
 use Session;
-use State;
 
 if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access directly to this file");
@@ -77,9 +71,9 @@ class ReserveIp extends CommonDBTM
     /**
      * Show form
      *
-     * @param type $input
+     * @param  $input
      *
-     * @return type
+     * @return
      */
     public function reserveip($input = [])
     {
@@ -156,7 +150,7 @@ class ReserveIp extends CommonDBTM
     /**
      * Check mandatory fields
      *
-     * @param type $input
+     * @param  $input
      *
      * @return bool
      */
@@ -190,12 +184,11 @@ class ReserveIp extends CommonDBTM
     /**
      * Show form
      *
-     * @param type $ip
-     * @param type $id_addressing
+     * @param  $ip
+     * @param  $id_addressing
      */
     public function showReservationForm($ip, $id_addressing, $rand)
     {
-        echo Html::script(PLUGIN_ADDRESSING_DIR_NOFULL . "/addressing.js");
 
         $addressing = new Addressing();
         $addressing->getFromDB($id_addressing);
@@ -203,155 +196,46 @@ class ReserveIp extends CommonDBTM
         $this->forceTable(Addressing::getTable());
         $this->initForm(-1);
         $options['colspan'] = 2;
-        $this->showFormHeader($options);
+        $options['no_header'] = true;
+        $options['id_addressing'] = $id_addressing;
+        $options['ip'] = $ip;
 
-        echo Html::hidden('ip', ['value' => $ip]);
-        echo Html::hidden('id_addressing', ['value' => $id_addressing]);
-        echo "<tr class='tab_bg_1'>
-               <td>" . _n("IP address", "IP addresses", 1) . "</td>
-               <td>" . $ip . "</td>
-               <td>";
         $config = new Config();
         $config->getFromDB('1');
         $system = $config->fields["used_system"];
-
         $ping_equip = new Ping_Equipment();
+
+        $msg = "";
         [$message, $error] = $ping_equip->ping($system, $ip);
         if ($error) {
-            echo "<i class='ti ti-circle-check' style='color:forestgreen'></i>
-<span style='color:forestgreen'>&nbsp;";
-            echo __('Ping: no response - free IP', 'addressing');
+            $msg = "<div class='alert alert-success'>";
+            $msg .= "<i class='ti ti-circle-check' style='color:forestgreen'></i>";
+            $msg .= "<span style='color:forestgreen'>&nbsp;";
+            $msg .=  __('Ping: no response - free IP', 'addressing');
+            $msg .= "</span>";
+            $msg .= "</div>";
         } else {
-            echo "<i class='ti ti-alert-triangle' style='color:orange'></i>
-<span style='color:orange'>&nbsp;";
-            echo __('Ping: got a response - used IP', 'addressing');
+            $msg = "<div class='alert alert-warning'>";
+            $msg .=  "<i class='ti ti-alert-triangle' style='color:orange'></i>";
+            $msg .= "<span style='color:orange'>&nbsp;";
+            $msg .=  __('Ping: got a response - used IP', 'addressing');
+            $msg .= "</span>";
+            $msg .= "</div>";
         }
-        echo "</span>";
-        echo "</td></tr>";
+
+        $options['types'] = Addressing::dropdownItemtype();
         $strict_entities = Profile_User::getUserEntities($_SESSION['glpiID'], false);
-        if (Session::haveAccessToOneOfEntities($strict_entities)
-          && Session::canViewAllEntities()) {
-            echo "<tr class='tab_bg_1'>
-               <td>" . __("Entity") . "</td>
-               <td>";
+        $entities_rights = Session::haveAccessToOneOfEntities($strict_entities)
+            && Session::canViewAllEntities();
 
-            $rand = Entity::dropdown(['name'   => 'entities_id',
-                'entity' => $_SESSION["glpiactiveentities"],
-                'value'  => $addressing->fields['entities_id'],
-            ]);
-
-            $params = ['action' => 'entities_networkip', 'entities_id' => '__VALUE__'];
-            Ajax::updateItemOnEvent(
-                "dropdown_entities_id" . $rand,
-                'entities_networkip',
-                "/plugins/addressing/ajax/addressing.php",
-                $params
-            );
-
-            $params = ['action' => 'entities_location', 'entities_id' => '__VALUE__',
-                'value'  => $addressing->fields["locations_id"]];
-            Ajax::updateItemOnEvent(
-                "dropdown_entities_id" . $rand,
-                'entities_location',
-                "/plugins/addressing/ajax/addressing.php",
-                $params
-            );
-
-            $params = ['action' => 'entities_fqdn', 'entities_id' => '__VALUE__',
-                'value'  => $addressing->fields["fqdns_id"]];
-            Ajax::updateItemOnEvent(
-                "dropdown_entities_id" . $rand,
-                'entities_fqdn',
-                "/plugins/addressing/ajax/addressing.php",
-                $params
-            );
-
-            echo "</td><td></td>";
-            echo "</tr>";
-        }
-
-        echo "</td></tr>";
-        echo "<tr class='tab_bg_1'>
-                     <td>" . __("Location") . "</td>
-                     <td><div id='entities_location'>";
-
-        Dropdown::show('Location', ['name'   => "locations_id",
-            'value'  => $addressing->fields["locations_id"],
-            'entity' => $addressing->fields['entities_id'],
+        $entities_rights = true;
+        TemplateRenderer::getInstance()->display('@addressing/reserveip.html.twig', [
+            'item' => $this,
+            'rand' =>  $rand,
+            'msg' => $msg,
+            'params' => $options,
+            'entities_rights' => $entities_rights,
+            'root_addressing' => PLUGIN_ADDRESSING_WEBDIR
         ]);
-        echo "</div></td><td></td>";
-        echo "</tr>";
-
-        echo "</tr>";
-        echo "<tr class='tab_bg_1'>
-               <td>" . __("Type") . "</td>
-               <td>";
-        $types = Addressing::dropdownItemtype();
-        Dropdown::showFromArray(
-            'type',
-            $types,
-            ['on_change' => "nameIsThere(\"" . '/plugins/addressing' . "\");"]
-        );
-        echo "</td><td></td>";
-        echo "</tr>";
-        echo "<tr class='tab_bg_1'>
-               <td>" . __("Name") . " : </td><td>";
-        $option = ['onChange' => "nameIsThere(\"" . '/plugins/addressing' . "\");", 'id' => 'name_reserveip'];
-        echo Html::input('name_reserveip', $option);
-        echo "</td><td><div style=\"display: none;\" id='nameItem'>";
-        echo "<i class='ti ti-alert-triangle' style='color:orange;font-size: 2em;'></i>&nbsp;";
-        echo __('Name already in use', 'addressing');
-        echo "</div></td>
-            </tr>";
-
-        echo "<tr class='tab_bg_1'>
-               <td>" . __("Status") . " : </td>
-               <td>";
-        State::dropdown(['entity' => $addressing->fields["entities_id"]]);
-        echo "</td>
-             <td></td> </tr>";
-
-        echo "<tr class='tab_bg_1'>
-               <td>" . __("MAC address") . " :</td><td>";
-        echo Html::input('mac', ['size' => 40]);
-        echo "</td>
-            <td></td></tr>";
-
-        echo "<tr class='tab_bg_1'>
-               <td>" . FQDN::getTypeName(1) . " :</td>
-               <td><div id='entities_fqdn'>";
-        Dropdown::show('FQDN', ['name'   => "fqdns_id",
-            'value'  => $addressing->fields["fqdns_id"],
-            'entity' => $addressing->fields['entities_id']]);
-        echo "</div></td><td></td></tr>";
-
-        echo "<tr class='tab_bg_1'>
-               <td>" . __("Network") . " :</td>
-               <td><div id='entities_networkip'>";
-        IPNetwork::showIPNetworkProperties($addressing->fields['entities_id']);
-        echo "</div></td>
-            <td></td></tr>";
-
-        echo "<tr class='tab_bg_1'>
-               <td>" . __("Comments") . " :</td>
-               <td colspan='2'>";
-        Html::textarea(['name'            => 'comment',
-            'cols'       => 75,
-            'rows'       => 5,
-            'enable_richtext' => false]);
-        echo "</td>
-            </tr>";
-
-        echo "<tr class='tab_bg_1'>
-               <td colspan='4' class='center'>";
-        echo Html::submit(__("Validate the reservation", 'addressing'), ['name'    => 'add',
-            'class'   => 'btn btn-primary',
-            'onclick' => "$('#reservation$rand').modal(
-                                                                       'hide');window.location.reload();return true;"]);
-        echo "</td>
-            </tr>";
-        echo " </table>";
-
-        Html::closeForm();
     }
 }

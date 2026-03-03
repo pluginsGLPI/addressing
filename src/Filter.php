@@ -96,14 +96,8 @@ class Filter extends CommonDBTM
     public function showForm($ID, $options = [])
     {
 
-        if ($ID > 0) {
-            $this->check($ID, READ);
-        } else {
-            $this->check(-1, CREATE, $options);
-        }
-
+        $this->initForm($ID, $options);
         $options['colspan'] = 1;
-
         $options['types'] = Addressing::dropdownItemtype();
         TemplateRenderer::getInstance()->display('@addressing/filter.html.twig', [
             'item' => $this,

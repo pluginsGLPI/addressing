@@ -48,9 +48,7 @@ class Config extends CommonDBTM
 
     public function showForm($ID, $options = [])
     {
-
-        $this->getFromDB($ID);
-
+        $this->initForm($ID, $options);
         TemplateRenderer::getInstance()->display(
             '@addressing/config.html.twig',
             [

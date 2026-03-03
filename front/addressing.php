@@ -35,24 +35,13 @@ Session::checkLoginUser();
 
 $Addressing = new Addressing();
 
-if (isset($_GET['action']) && $_GET['action'] == 'isName') {
-    if ($Addressing->canView() || Session::haveRight("config", UPDATE)) {
-        $item = new $_GET['type']();
-        $datas = $item->find(['name' => ['LIKE', $_GET['name']]]);
-        if (count($datas) > 0) {
-            echo json_encode(true);
-        } else {
-            echo json_encode(false);
-        }
-    }
+Html::header(Addressing::getTypeName(2), '', "tools", Addressing::class);
+
+if ($Addressing->canView() || Session::haveRight("config", UPDATE)) {
+    Search::show(Addressing::class);
 } else {
-    Html::header(Addressing::getTypeName(2), '', "tools", Addressing::class);
-
-    if ($Addressing->canView() || Session::haveRight("config", UPDATE)) {
-        Search::show(Addressing::class);
-    } else {
-        throw new AccessDeniedHttpException();
-    }
-
-    Html::footer();
+    throw new AccessDeniedHttpException();
 }
+
+Html::footer();
+

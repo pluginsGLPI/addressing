@@ -33,6 +33,7 @@
 
 
 use GlpiPlugin\Addressing\IpComment;
+use function Safe\json_encode;
 
 Session::checkRight('plugin_addressing', UPDATE);
 

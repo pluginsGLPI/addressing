@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @version $Id$
  -------------------------------------------------------------------------
@@ -27,17 +28,25 @@
  --------------------------------------------------------------------------
  */
 
-
 use GlpiPlugin\Addressing\Filter;
 use GlpiPlugin\Addressing\Ping_Equipment;
 use GlpiPlugin\Addressing\ReserveIp;
+use function Safe\json_encode;
 
 Session::checkRight('plugin_addressing', UPDATE);
 
 Html::header_nocache();
 header("Content-Type: text/html; charset=UTF-8");
 
-if (isset($_POST['action']) && $_POST['action'] == 'viewFilter') {
+if (isset($_GET['action']) && $_GET['action'] == 'isName') {
+    $item = new $_GET['type']();
+    $datas = $item->find(['name' => ['LIKE', $_GET['name']]]);
+    if (count($datas) > 0) {
+        echo json_encode(true);
+    } else {
+        echo json_encode(false);
+    }
+} else if (isset($_POST['action']) && $_POST['action'] == 'viewFilter') {
     if (isset($_POST['items_id'])
        && isset($_POST["id"])) {
         $filter = new Filter();
@@ -46,15 +55,19 @@ if (isset($_POST['action']) && $_POST['action'] == 'viewFilter') {
         echo __('Access denied');
     }
 } elseif (isset($_POST['action']) && $_POST['action'] == 'entities_networkip') {
+
     IPNetwork::showIPNetworkProperties($_POST['entities_id']);
 } elseif (isset($_POST['action']) && $_POST['action'] == 'entities_location') {
+
+    echo __('Location');
     Dropdown::show('Location', ['name'   => "locations_id",
-                               'value'  => $_POST["value"],
-                               'entity' => $_POST['entities_id']]);
+        'value'  => $_POST["value"],
+        'entity' => $_POST['entities_id']]);
 } elseif (isset($_POST['action']) && $_POST['action'] == 'entities_fqdn') {
+    echo __('FQDN');
     Dropdown::show('FQDN', ['name'   => "fqdns_id",
-                           'value'  => $_POST["value"],
-                           'entity' => $_POST['entities_id']]);
+        'value'  => $_POST["value"],
+        'entity' => $_POST['entities_id']]);
 } elseif ($_GET['action'] == 'ping') {
     Html::popHeader(__s('IP ping', 'addressing'), $_SERVER['PHP_SELF']);
 
@@ -64,7 +77,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'viewFilter') {
     }
     Html::popFooter();
 } else {
-    Html::popHeader(__s('IP reservation', 'addressing'), $_SERVER['PHP_SELF']);
+    Html::popHeader(ReserveIp::getTypeName());
 
     if (filter_var($_GET["ip"], FILTER_VALIDATE_IP)) {
         $ReserveIp = new ReserveIp();

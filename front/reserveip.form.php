@@ -43,10 +43,4 @@ if (isset($_POST['add'])) {
     echo __("The address has been reserved", "addressing");
     echo "</div>";
     Html::popFooter();
-} else {
-    Html::header(ReserveIp::getTypeName(), '', "tools", Addressing::class);
-    if (filter_var($_REQUEST["ip"], FILTER_VALIDATE_IP)) {
-        $reserveip->showReservationForm($_REQUEST["ip"], $_REQUEST["id_addressing"], $_REQUEST['rand']);
-    }
-    Html::footer();
 }
