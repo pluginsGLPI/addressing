@@ -35,7 +35,7 @@ use GlpiPlugin\Addressing\Profile;
 
 global $CFG_GLPI;
 
-define('PLUGIN_ADDRESSING_VERSION', '3.1.2');
+define('PLUGIN_ADDRESSING_VERSION', '3.2.0');
 
 if (!defined("PLUGIN_ADDRESSING_DIR")) {
     define("PLUGIN_ADDRESSING_DIR", Plugin::getPhpDir("addressing"));
