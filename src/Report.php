@@ -638,7 +638,7 @@ class Report extends CommonDBTM
                             }
                             if ($is_html_output) {
                                 $html_output .= $output::showItem(
-                                    '<i id="save' . $num . '" class="ti ti-save center pointer" style="color:forestgreen;font-size: 2em;"></i>',
+                                    '<i id="save' . $num . '" class="ti ti-device-floppy center pointer" style="color:forestgreen;font-size: 2em;"></i>',
                                     $item_num,
                                     $row_num,
                                     "style='background-color:#e0e0e0' class='center' onClick='updateComment$rand()'"
@@ -817,7 +817,7 @@ class Report extends CommonDBTM
                         }
                         if ($is_html_output) {
                             $html_output .= $output::showItem(
-                                '<i id="save' . $num . '" class="ti ti-save center pointer" style="color:forestgreen;font-size: 2em;"></i>',
+                                '<i id="save' . $num . '" class="ti ti-device-floppy center pointer" style="color:forestgreen;font-size: 2em;"></i>',
                                 $item_num,
                                 $row_num,
                                 "style='background-color:#e0e0e0' class='center' onClick='updateComment$rand()'"
@@ -1022,7 +1022,7 @@ class Report extends CommonDBTM
                                     }
                                     if ($is_html_output) {
                                         $html_output .= $output::showItem(
-                                            '<i id="save' . $num . '" class="ti ti-save center pointer" style="color:forestgreen;font-size: 2em;"></i>',
+                                            '<i id="save' . $num . '" class="ti ti-device-floppy center pointer" style="color:forestgreen;font-size: 2em;"></i>',
                                             $item_num,
                                             $row_num,
                                             "style='background-color:#e0e0e0' class='center' onClick='updateComment$rand()'"
@@ -1213,7 +1213,7 @@ class Report extends CommonDBTM
                                     }
                                     if ($is_html_output) {
                                         $html_output .= $output::showItem(
-                                            '<i id="save' . $num . '" class="ti ti-save center pointer" style="color:forestgreen;font-size: 2em;"></i>',
+                                            '<i id="save' . $num . '" class="ti ti-device-floppy center pointer" style="color:forestgreen;font-size: 2em;"></i>',
                                             $item_num,
                                             $row_num,
                                             "style='background-color:#e0e0e0' class='center' onClick='updateComment$rand()'"
