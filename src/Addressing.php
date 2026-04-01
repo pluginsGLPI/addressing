@@ -1178,7 +1178,6 @@ class Addressing extends CommonDBTM
     public static function getMenuContent()
     {
         $menu = [];
-        $menu['title'] = self::getMenuName();
         $menu['title'] = self::getTypeName(2);
         $menu['page'] = self::getSearchURL(false);
         $menu['links']['search'] = self::getSearchURL(false);
