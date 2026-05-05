@@ -49,9 +49,7 @@ function plugin_init_addressing()
 {
     global $PLUGIN_HOOKS;
 
-    $PLUGIN_HOOKS['csrf_compliant']['addressing'] = true;
-
-    $PLUGIN_HOOKS['change_profile']['addressing'] = [Profile::class, 'initProfile'];
+    $PLUGIN_HOOKS[Hooks::CHANGE_PROFILE]['addressing'] = [Profile::class, 'initProfile'];
 
     Plugin::registerClass(
         Profile::class,
@@ -60,19 +58,19 @@ function plugin_init_addressing()
 
     if (Session::getLoginUserID()) {
         if (Session::haveRight('plugin_addressing', READ)) {
-            $PLUGIN_HOOKS["menu_toadd"]['addressing'] = ['tools'  => Addressing::class];
+            $PLUGIN_HOOKS[Hooks::MENU_TOADD]['addressing'] = ['tools'  => Addressing::class];
         }
 
         if (Session::haveRight('plugin_addressing', UPDATE)) {
-            $PLUGIN_HOOKS['use_massive_action']['addressing']   = 1;
+            $PLUGIN_HOOKS[Hooks::USE_MASSIVE_ACTION]['addressing']   = 1;
         }
 
         // Config page
         if (Session::haveRight("config", UPDATE)) {
-            $PLUGIN_HOOKS['config_page']['addressing']             = 'front/config.php';
+            $PLUGIN_HOOKS[Hooks::CONFIG_PAGE]['addressing']             = 'front/config.php';
         }
 
-        $PLUGIN_HOOKS['post_item_form']['addressing'] = [PingInfo::class,
+        $PLUGIN_HOOKS[Hooks::POST_ITEM_FORM]['addressing'] = [PingInfo::class,
             'getPingResponseForItem'];
 
         // Add specific files to add to the header : javascript or css

@@ -161,9 +161,9 @@ class Ping_Equipment extends CommonDBTM
             case 0:
                 // linux ping
                 if ($return == "true") {
-                    exec("ping -c 1 -w 1 " . $ip, $list);
+                    exec("ping -c 1 -w 1 " . escapeshellarg($ip), $list);
                 } else {
-                    exec("ping -c 1 -w 1 " . $ip, $list, $error);
+                    exec("ping -c 1 -w 1 " . escapeshellarg($ip), $list, $error);
                 }
                 $nb = count($list);
                 if (isset($nb) && $return == "true") {
@@ -178,9 +178,9 @@ class Ping_Equipment extends CommonDBTM
             case 1:
                 //windows
                 if ($return == "true") {
-                    exec("ping.exe -n 1 -w 100 -i 64 " . $ip, $list);
+                    exec("ping.exe -n 1 -w 100 -i 64 " . escapeshellarg($ip), $list);
                 } else {
-                    exec("ping.exe -n 1 -w 100 -i 64 " . $ip, $list, $error);
+                    exec("ping.exe -n 1 -w 100 -i 64 " . escapeshellarg($ip), $list, $error);
                 }
                 $nb = count($list);
                 if (isset($nb) && $return == "true") {
@@ -195,9 +195,9 @@ class Ping_Equipment extends CommonDBTM
             case 2:
                 //linux fping
                 if ($return == "true") {
-                    exec("fping -r1 -c1 -t100 " . $ip, $list);
+                    exec("fping -r1 -c1 -t100 " . escapeshellarg($ip), $list);
                 } else {
-                    exec("fping -r1 -c1 -t100 " . $ip, $list, $error);
+                    exec("fping -r1 -c1 -t100 " . escapeshellarg($ip), $list, $error);
                 }
                 $nb = count($list);
                 if (isset($nb) && $return == "true") {
@@ -212,9 +212,9 @@ class Ping_Equipment extends CommonDBTM
             case 3:
                 // BSD ping
                 if ($return == "true") {
-                    exec("ping -c 1 -W 1 " . $ip, $list);
+                    exec("ping -c 1 -W 1 " . escapeshellarg($ip), $list);
                 } else {
-                    exec("ping -c 1 -W 1 " . $ip, $list, $error);
+                    exec("ping -c 1 -W 1 " . escapeshellarg($ip), $list, $error);
                 }
                 $nb = count($list);
                 if (isset($nb) && $return == "true") {
@@ -229,9 +229,9 @@ class Ping_Equipment extends CommonDBTM
             case 4:
                 // MacOSX ping
                 if ($return == "true") {
-                    exec("ping -c 1 -t 1 " . $ip, $list);
+                    exec("ping -c 1 -t 1 " . escapeshellarg($ip), $list);
                 } else {
-                    exec("ping -c 1 -t 1 " . $ip, $list, $error);
+                    exec("ping -c 1 -t 1 " . escapeshellarg($ip), $list, $error);
                 }
                 $nb = count($list);
                 if (isset($nb) && $return == "true") {
@@ -265,12 +265,12 @@ class Ping_Equipment extends CommonDBTM
         switch ($system) {
             case 0:
                 // linux host
-                exec("ping -c 1 -w 1 -a " . $ip, $list, $error);
+                exec("ping -c 1 -w 1 -a " . escapeshellarg($ip), $list, $error);
                 break;
 
             case 1:
                 //windows
-                exec("ping.exe -n 1 -w 100 -i 64 -a " . $ip, $list, $error);
+                exec("ping.exe -n 1 -w 100 -i 64 -a " . escapeshellarg($ip), $list, $error);
                 break;
         }
         $list_str = implode('<br />', $list);

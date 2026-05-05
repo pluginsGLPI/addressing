@@ -33,9 +33,9 @@ use GlpiPlugin\Addressing\Addressing;
 $USEDBREPLICATE         = 1;
 $DBCONNECTION_REQUIRED  = 0;
 
-Html::header(Addressing::getTypeName(2), '', "tools", Addressing::class);
-
 Session::checkLoginUser();
+
+Html::header(Addressing::getTypeName(2), '', "tools", Addressing::class);
 
 if (!isset($_GET["start"])) {
     $_GET["start"] = 0;

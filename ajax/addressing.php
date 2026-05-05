@@ -39,12 +39,13 @@ Html::header_nocache();
 header("Content-Type: text/html; charset=UTF-8");
 
 if (isset($_GET['action']) && $_GET['action'] == 'isName') {
-    $item = new $_GET['type']();
-    $datas = $item->find(['name' => ['LIKE', $_GET['name']]]);
-    if (count($datas) > 0) {
-        echo json_encode(true);
-    } else {
+    header("Content-Type: application/json; charset=UTF-8");
+    $item = getItemForItemtype($_GET['type'] ?? '');
+    if ($item === false) {
         echo json_encode(false);
+    } else {
+        $datas = $item->find(['name' => ['LIKE', $_GET['name']]]);
+        echo json_encode(count($datas) > 0);
     }
 } else if (isset($_POST['action']) && $_POST['action'] == 'viewFilter') {
     if (isset($_POST['items_id'])

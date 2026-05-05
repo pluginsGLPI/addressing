@@ -27,6 +27,7 @@
  --------------------------------------------------------------------------
  */
 
+use Glpi\Plugin\Hooks;
 use GlpiPlugin\Addressing\Addressing;
 use GlpiPlugin\Addressing\Filter;
 use GlpiPlugin\Addressing\PingInfo;
@@ -396,10 +397,10 @@ function plugin_addressing_postinit()
 {
     global $PLUGIN_HOOKS;
 
-    $PLUGIN_HOOKS['item_purge']['addressing'] = [];
+    $PLUGIN_HOOKS[Hooks::ITEM_PURGE]['addressing'] = [];
 
     foreach (Addressing::getTypes() as $type) {
-        $PLUGIN_HOOKS['item_purge']['addressing'][$type]
+        $PLUGIN_HOOKS[Hooks::ITEM_PURGE]['addressing'][$type]
            = [PingInfo::class, 'cleanForItem'];
     }
 }

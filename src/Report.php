@@ -628,7 +628,7 @@ class Report extends CommonDBTM
                             if ($is_html_output) {
                                 $html_output .= $output::showItem(
                                     '<input type="text" id="comment' . $num . '"
-                      value="' . $comments . '">',
+                      value="' . htmlspecialchars($comments, ENT_QUOTES, 'UTF-8') . '">',
                                     $item_num,
                                     $row_num,
                                     "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'"
@@ -807,7 +807,7 @@ class Report extends CommonDBTM
                         if ($is_html_output) {
                             $html_output .= $output::showItem(
                                 '<input type="text" id="comment' . $num . '"
-                      value="' . $comments . '">',
+                      value="' . htmlspecialchars($comments, ENT_QUOTES, 'UTF-8') . '">',
                                 $item_num,
                                 $row_num,
                                 "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'"
@@ -1203,7 +1203,7 @@ class Report extends CommonDBTM
                                     if ($is_html_output) {
                                         $html_output .= $output::showItem(
                                             '<input type="text" id="comment' . $num . '"
-                      value="' . $comments . '">',
+                      value="' . htmlspecialchars($comments, ENT_QUOTES, 'UTF-8') . '">',
                                             $item_num,
                                             $row_num,
                                             "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'"
