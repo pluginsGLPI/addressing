@@ -73,6 +73,11 @@ function plugin_init_addressing()
         $PLUGIN_HOOKS[Hooks::POST_ITEM_FORM]['addressing'] = [PingInfo::class,
             'getPingResponseForItem'];
 
+        if (class_exists(Addressing::class)) { // only if plugin activated
+            $PLUGIN_HOOKS['plugin_datainjection_populate']['addressing']
+                = 'plugin_datainjection_populate_addressing';
+        }
+
         // Add specific files to add to the header : javascript or css
         if (isset($_SESSION['glpiactiveprofile']['interface'])
             && $_SESSION['glpiactiveprofile']['interface'] == 'central') {
@@ -98,3 +103,4 @@ function plugin_version_addressing()
             ],
         ]];
 }
+

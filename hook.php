@@ -29,6 +29,7 @@
 
 use Glpi\Plugin\Hooks;
 use GlpiPlugin\Addressing\Addressing;
+use GlpiPlugin\Addressing\AddressingInjection;
 use GlpiPlugin\Addressing\Filter;
 use GlpiPlugin\Addressing\PingInfo;
 use GlpiPlugin\Addressing\Profile;
@@ -174,6 +175,78 @@ function plugin_addressing_install()
         }
     }
 
+    // Version 3.2.2 - Migration des IDs de recherche 1000/1001 vers 100/101
+    $num_mapping = [1000 => 100, 1001 => 101];
+
+    $has_old_prefs = $DB->request([
+        'COUNT' => 'cpt',
+        'FROM'  => 'glpi_displaypreferences',
+        'WHERE' => [
+            'itemtype' => Addressing::class,
+            'num'      => array_keys($num_mapping),
+        ],
+    ])->current()['cpt'] > 0;
+
+    if ($has_old_prefs) {
+        foreach ($num_mapping as $old_num => $new_num) {
+            $conflicts = $DB->request([
+                'SELECT' => ['users_id', 'interface'],
+                'FROM'   => 'glpi_displaypreferences',
+                'WHERE'  => [
+                    'itemtype' => Addressing::class,
+                    'num'      => $new_num,
+                ],
+            ]);
+
+            foreach ($conflicts as $conflict) {
+                $DB->delete('glpi_displaypreferences', [
+                    'itemtype'  => Addressing::class,
+                    'num'       => $old_num,
+                    'users_id'  => $conflict['users_id'],
+                    'interface' => $conflict['interface'],
+                ]);
+            }
+
+            $DB->update('glpi_displaypreferences', ['num' => $new_num], [
+                'itemtype' => Addressing::class,
+                'num'      => $old_num,
+            ]);
+        }
+
+        $saved_searches = $DB->request([
+            'FROM'  => 'glpi_savedsearches',
+            'WHERE' => ['itemtype' => Addressing::class],
+        ]);
+
+        foreach ($saved_searches as $saved_search) {
+            parse_str($saved_search['query'], $params);
+            $modified = false;
+
+            if (isset($params['criteria']) && is_array($params['criteria'])) {
+                foreach ($params['criteria'] as &$criterion) {
+                    if (isset($criterion['field']) && isset($num_mapping[(int) $criterion['field']])) {
+                        $criterion['field'] = (string) $num_mapping[(int) $criterion['field']];
+                        $modified = true;
+                    }
+                }
+                unset($criterion);
+            }
+
+            if (isset($params['sort']) && isset($num_mapping[(int) $params['sort']])) {
+                $params['sort'] = (string) $num_mapping[(int) $params['sort']];
+                $modified = true;
+            }
+
+            if ($modified) {
+                $DB->update('glpi_savedsearches', [
+                    'query' => http_build_query($params),
+                ], [
+                    'id' => $saved_search['id'],
+                ]);
+            }
+        }
+    }
+
     if ($update) {
         $query_  = "SELECT *
                   FROM `glpi_plugin_addressing_profiles` ";
@@ -200,7 +273,7 @@ function plugin_addressing_install()
     //Add all rights for current user profile
     Profile::createFirstAccess($_SESSION['glpiactiveprofile']['id']);
     //Drop old profile table : not used anymore
-    $migration = new Migration("2.5.0");
+    $migration = new Migration(PLUGIN_ADDRESSING_VERSION);
     $migration->dropTable('glpi_plugin_addressing_profiles');
     CronTask::Register(PingInfo::class, 'UpdatePing', DAY_TIMESTAMP);
 
@@ -215,7 +288,7 @@ function plugin_addressing_uninstall()
 {
     global $DB;
 
-    $migration = new Migration("2.5.0");
+    $migration = new Migration(PLUGIN_ADDRESSING_VERSION);
     $tables    = ["glpi_plugin_addressing_addressings",
                   "glpi_plugin_addressing_configs",
                   "glpi_plugin_addressing_filters",
@@ -388,7 +461,7 @@ function plugin_addressing_dynamicReport($params)
 function plugin_addressing_addOrderBy($itemtype, $ID, $order, $key)
 {
     if ($itemtype == Addressing::class
-        && ($ID == 1000 || $ID == 1001)) {
+        && ($ID == 100 || $ID == 101)) {
         return "ORDER BY INET_ATON(ITEM_$key) $order";
     }
 }
@@ -403,4 +476,10 @@ function plugin_addressing_postinit()
         $PLUGIN_HOOKS[Hooks::ITEM_PURGE]['addressing'][$type]
            = [PingInfo::class, 'cleanForItem'];
     }
+}
+
+function plugin_datainjection_populate_addressing()
+{
+    global $INJECTABLE_TYPES;
+    $INJECTABLE_TYPES[AddressingInjection::class] = 'addressing';
 }

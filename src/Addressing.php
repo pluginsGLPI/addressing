@@ -155,20 +155,18 @@ class Addressing extends CommonDBTM
         ];
 
         $tab[] = [
-            'id' => '1000',
+            'id' => '100',
             'table' => $this->getTable(),
             'field' => 'begin_ip',
             'name' => __('First IP', 'addressing'),
-            //         'nosearch'      => true,
             'massiveaction' => false,
         ];
 
         $tab[] = [
-            'id' => '1001',
+            'id' => '101',
             'table' => $this->getTable(),
             'field' => 'end_ip',
             'name' => __('Last IP', 'addressing'),
-            //         'nosearch'      => true,
             'massiveaction' => false,
         ];
 
