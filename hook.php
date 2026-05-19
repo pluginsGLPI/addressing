@@ -380,7 +380,7 @@ function plugin_addressing_dynamicReport($params)
 function plugin_addressing_addOrderBy($itemtype, $ID, $order, $key)
 {
     if ($itemtype == "PluginAddressingAddressing"
-        && ($ID == 1000 || $ID == 1001)) {
+        && ($ID == 100 || $ID == 101)) {
         return "ORDER BY INET_ATON(ITEM_$key) $order";
     }
 }
