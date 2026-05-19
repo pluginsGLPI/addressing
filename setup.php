@@ -66,6 +66,9 @@ function plugin_init_addressing()
         $PLUGIN_HOOKS['post_item_form']['addressing'] = ['PluginAddressingPinginfo',
            'getPingResponseForItem'];
 
+        $PLUGIN_HOOKS['plugin_datainjection_populate']['addressing']
+                = 'plugin_datainjection_populate_addressing';
+
         // Add specific files to add to the header : javascript or css
         if (isset($_SESSION['glpiactiveprofile']['interface'])
             && $_SESSION['glpiactiveprofile']['interface'] == 'central') {

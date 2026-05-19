@@ -123,6 +123,77 @@ function plugin_addressing_install()
              "glpi_infocoms", "glpi_logs", "glpi_items_tickets"]
         );
     }
+    
+    // Version 3.0.4 - Migration des IDs de recherche 1000/1001 vers 100/101
+    $num_mapping = [1000 => 100, 1001 => 101];
+
+    $has_old_prefs = $DB->request([
+        'COUNT' => 'cpt',
+        'FROM'  => 'glpi_displaypreferences',
+        'WHERE' => [
+            'itemtype' => 'PluginAddressingAddressing',
+            'num'      => array_keys($num_mapping),
+        ],
+    ])->current()['cpt'] > 0;
+
+    if ($has_old_prefs) {
+        foreach ($num_mapping as $old_num => $new_num) {
+            $conflicts = $DB->request([
+                'SELECT' => ['users_id'],
+                'FROM'   => 'glpi_displaypreferences',
+                'WHERE'  => [
+                    'itemtype' => 'PluginAddressingAddressing',
+                    'num'      => $new_num,
+                ],
+            ]);
+
+            foreach ($conflicts as $conflict) {
+                $DB->delete('glpi_displaypreferences', [
+                    'itemtype'  => 'PluginAddressingAddressing',
+                    'num'       => $old_num,
+                    'users_id'  => $conflict['users_id'],
+                ]);
+            }
+
+            $DB->update('glpi_displaypreferences', ['num' => $new_num], [
+                'itemtype' => 'PluginAddressingAddressing',
+                'num'      => $old_num,
+            ]);
+        }
+
+        $saved_searches = $DB->request([
+            'FROM'  => 'glpi_savedsearches',
+            'WHERE' => ['itemtype' => 'PluginAddressingAddressing'],
+        ]);
+
+        foreach ($saved_searches as $saved_search) {
+            parse_str($saved_search['query'], $params);
+            $modified = false;
+
+            if (isset($params['criteria']) && is_array($params['criteria'])) {
+                foreach ($params['criteria'] as &$criterion) {
+                    if (isset($criterion['field']) && isset($num_mapping[(int) $criterion['field']])) {
+                        $criterion['field'] = (string) $num_mapping[(int) $criterion['field']];
+                        $modified = true;
+                    }
+                }
+                unset($criterion);
+            }
+
+            if (isset($params['sort']) && isset($num_mapping[(int) $params['sort']])) {
+                $params['sort'] = (string) $num_mapping[(int) $params['sort']];
+                $modified = true;
+            }
+
+            if ($modified) {
+                $DB->update('glpi_savedsearches', [
+                    'query' => http_build_query($params),
+                ], [
+                    'id' => $saved_search['id'],
+                ]);
+            }
+        }
+    }
 
     //0.85 : new profile system
     PluginAddressingProfile::migrateProfiles();
@@ -324,4 +395,11 @@ function plugin_addressing_postinit()
         $PLUGIN_HOOKS['item_purge']['addressing'][$type]
            = ['PluginAddressingPinginfo', 'cleanForItem'];
     }
+}
+
+
+function plugin_datainjection_populate_addressing()
+{
+    global $INJECTABLE_TYPES;
+    $INJECTABLE_TYPES['PluginAddressingAddressingInjection'] = 'addressing';
 }
