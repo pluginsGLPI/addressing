@@ -4,8 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Xavier CAILLAUD <thetsmr@gmail.com>, 2025
-# Sebastian Broers, 2025
+# INOUE Daisuke, 2026
 # 
 #, fuzzy
 msgid ""
@@ -14,37 +13,36 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-15 13:40+0200\n"
 "PO-Revision-Date: 2025-09-23 12:17+0000\n"
-"Last-Translator: Sebastian Broers, 2025\n"
-"Language-Team: German (Germany) (https://app.transifex.com/pluginsGLPI/teams/73419/de_DE/)\n"
+"Last-Translator: INOUE Daisuke, 2026\n"
+"Language-Team: Japanese (Japan) (https://app.transifex.com/pluginsGLPI/teams/73419/ja_JP/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: de_DE\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: ja_JP\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: hook.php:215 inc/ping_equipment.class.php:92 inc/pinginfo.class.php:190
 #: inc/report.class.php:141
 msgid "Ping result"
-msgstr "Ping Ergebnis"
+msgstr "PING 結果"
 
 #: hook.php:247
 msgid "Last ping OK"
-msgstr "Letzer Ping ok"
+msgstr "最終 PING OK"
 
 #: hook.php:249
 msgid "Last ping KO"
-msgstr "Letzer Ping KO"
+msgstr "最終 PING KO ( 失敗 )"
 
 #: hook.php:251 inc/pinginfo.class.php:174
 msgid "Ping informations not available"
-msgstr "Ping Informationen sind nicht verfügbar"
+msgstr "PING 情報がありません"
 
 #: setup.php:81 inc/addressing.class.php:46 inc/ipcomment.class.php:44
 #: inc/pinginfo.class.php:42 inc/profile.class.php:108
 msgid "IP Adressing"
 msgid_plural "IP Adressing"
-msgstr[0] "IP Adressierung"
-msgstr[1] "IP Adressierung"
+msgstr[0] "IP 割り当て"
 
 #: ajax/addressing.php:60 inc/ping_equipment.class.php:71
 #: inc/ping_equipment.class.php:87 inc/report.class.php:179
@@ -52,134 +50,133 @@ msgstr[1] "IP Adressierung"
 #: inc/report.class.php:585 inc/report.class.php:590 inc/report.class.php:690
 #: inc/report.class.php:695
 msgid "IP ping"
-msgstr "IP ping"
+msgstr "IP PING"
 
 #: ajax/addressing.php:69 inc/report.class.php:289 inc/report.class.php:346
 #: inc/report.class.php:480 inc/report.class.php:715
 #: inc/reserveip.class.php:42
 msgid "IP reservation"
-msgstr "IP Reservierung"
+msgstr "IP 予約"
 
 #: front/addressing.form.php:52 front/addressing.form.php:82
 msgid "Problem when adding, required fields are not here"
-msgstr "Problem mit hinzufügen, benötigte Felder werden nicht anzegeigt"
+msgstr "追加できません。必要項目が未記入です"
 
 #: front/config.form.php:50 front/config.php:50
 msgid "Please activate the plugin"
-msgstr "Bitte aktivieren Sie das Plugin"
+msgstr "プラグインを有効にしてください"
 
 #: front/reserveip.form.php:39
 msgid "The address has been reserved"
-msgstr "Die Adresse wurde reserviert"
+msgstr "このアドレスは予約済みです"
 
 #: inc/addressing.class.php:92 inc/addressing.class.php:401
 msgid "Ping free IP"
-msgstr "Ping auf freie IP-Adresse"
+msgstr "空き IP に PING"
 
 #: inc/addressing.class.php:140 inc/addressing.class.php:251
 #: inc/filter.class.php:121 inc/filter.class.php:316
 msgid "First IP"
-msgstr "Erste IP"
+msgstr "開始 IP"
 
 #: inc/addressing.class.php:149 inc/addressing.class.php:300
 #: inc/filter.class.php:161 inc/filter.class.php:317
 msgid "Last IP"
-msgstr "Letzte IP"
+msgstr "最終 IP"
 
 #: inc/addressing.class.php:183 inc/addressing.class.php:388
 #: inc/filter.class.php:219
 msgid "Report for the IP Range"
-msgstr "Bericht für den IP-Bereich"
+msgstr "IP 範囲のレポート"
 
 #: inc/addressing.class.php:222 inc/addressing.class.php:396
 #: inc/filter.class.php:87 inc/filter.class.php:225
 msgid "Invalid data !!"
-msgstr "Ungültiger Adressbereich !!"
+msgstr "無効なデータです!!"
 
 #: inc/addressing.class.php:236 inc/addressing.class.php:770
 #: inc/config.class.php:64
 msgid "Assigned IP"
-msgstr "Zugewiesene IP"
+msgstr "割り当て済み IP"
 
 #: inc/addressing.class.php:288 inc/addressing.class.php:751
 #: inc/addressing.class.php:782 inc/config.class.php:69
 msgid "Free IP"
-msgstr "Freie IPs"
+msgstr "空き IP"
 
 #: inc/addressing.class.php:356 inc/addressing.class.php:733
 #: inc/addressing.class.php:774 inc/config.class.php:75
 msgid "Same IP"
-msgstr "Gleiche IP"
+msgstr "重複 IP"
 
 #: inc/addressing.class.php:376 inc/addressing.class.php:754
 #: inc/addressing.class.php:778 inc/config.class.php:80
 msgid "Reserved IP"
-msgstr "Reservierte IP"
+msgstr "予約 IP"
 
 #: inc/addressing.class.php:422 inc/addressing.class.php:812
 #: inc/filter.class.php:43
 msgid "Filter"
 msgid_plural "Filters"
-msgstr[0] "Filter"
-msgstr[1] "Filter"
+msgstr[0] "フィルター"
 
 #: inc/addressing.class.php:431
 msgid "Use the networks as filter"
-msgstr "Verwenden Sie die Netzwerke als Filter"
+msgstr "ネットワークでフィルター"
 
 #: inc/addressing.class.php:434
 msgid "The display of items depends on these criterias"
-msgstr "Die Präsentation der Gegenstände hängt von diesen Kriterien ab"
+msgstr "アイテムの表示はこれらの基準によって決まります"
 
 #: inc/addressing.class.php:438
 msgid "Default fields for reservation"
-msgstr "Standardfelder für Reservierungen"
+msgstr "予約の標準フィールド"
 
 #: inc/addressing.class.php:711
 msgid "Number of free IP"
-msgstr "Anzahl der freien IP-Adressen"
+msgstr "空き IP 数"
 
 #: inc/addressing.class.php:715
 msgid "Number of reserved IP"
-msgstr "Anzahl der reservierten IP-Adressen"
+msgstr "予約 IP 数"
 
 #: inc/addressing.class.php:719
 msgid "Number of assigned IP (no doubles)"
-msgstr "Anzahl der zugewiesen den IP-Adressen (keine Dubletten)"
+msgstr "割り当て済み IP 数 ( 重複なし )"
 
 #: inc/addressing.class.php:723
 msgid "Number of doubles IP"
-msgstr "Anzahl der doppelten IP-Adressen"
+msgstr "重複 IP 数"
 
 #: inc/addressing.class.php:741 inc/addressing.class.php:794
 #: inc/ping_equipment.class.php:280 inc/report.class.php:594
 #: inc/reserveip.class.php:198
 msgid "Ping: got a response - used IP"
-msgstr "Ping: Antwort erhalten – IP schon in Verwendung"
+msgstr "PING : 応答あり - 使用中 IP"
 
 #: inc/addressing.class.php:747 inc/addressing.class.php:790
 #: inc/ping_equipment.class.php:277 inc/report.class.php:699
 #: inc/reserveip.class.php:195
 msgid "Ping: no response - free IP"
-msgstr "Ping: Antwort erhalten – IP ist frei"
+msgstr "PING : 応答なし - 空き IP"
 
 #: inc/addressing.class.php:799 inc/addressing.class.php:801
 #: inc/pinginfo.class.php:200
 msgctxt "button"
 msgid "Manual launch of ping"
-msgstr "Manueller Start des Pings"
+msgstr "PING の手動実行"
 
 #: inc/addressing.class.php:872
 msgid "Real free IP (Ping=KO)"
-msgstr "Echte freie IP (Ping = KO)"
+msgstr "実空き IP ( PING 応答なし )"
 
 #: inc/addressing.class.php:881
 msgid "Problem detected with the IP Range"
-msgstr "Problem mit dem IP-Adressbereich festgestellt"
+msgstr "IP 範囲の認識で問題発生"
 
 #: inc/config.class.php:51
 msgid "System for ping"
-msgstr "Betriebssystem für ping"
+msgstr "PING に使うシステム"
 
 #: inc/config.class.php:54
 msgid "Linux ping"
@@ -203,77 +200,77 @@ msgstr "MacOSX ping"
 
 #: inc/config.class.php:62
 msgid "Display"
-msgstr "Anzeigen"
+msgstr "表示"
 
 #: inc/config.class.php:87
 msgid "Use Ping"
-msgstr "Benutze Ping"
+msgstr "PING の使用"
 
 #: inc/filter.class.php:279
 msgid "Add a filter"
-msgstr "Filter hinzufügen"
+msgstr "フィルター追加"
 
 #: inc/ping_equipment.class.php:108
 msgid "No IP for this equipment"
-msgstr "Dieses Equipment hat keine IP"
+msgstr "この装置には IP なし"
 
 #: inc/pinginfo.class.php:53
 msgid "Launch ping for each ip report"
-msgstr "Starte Ping für jeden IP-Bericht"
+msgstr "各 IP レポートで PING 実行"
 
 #: inc/pinginfo.class.php:173 inc/report.class.php:272
 #: inc/report.class.php:604 inc/report.class.php:705
 msgid "Automatic action has not be launched"
-msgstr "Die automatische Aktion wurde nicht ausgelöst"
+msgstr "自動実行は起動しませんでした"
 
 #: inc/pinginfo.class.php:177 inc/pinginfo.class.php:178
 #: inc/pinginfo.class.php:182 inc/pinginfo.class.php:183
 #: inc/report.class.php:302 inc/report.class.php:323 inc/report.class.php:606
 #: inc/report.class.php:707
 msgid "Last ping attempt"
-msgstr "Letzter Ping-Versuch"
+msgstr "最終 PING 試行"
 
 #: inc/profile.class.php:44 inc/profile.class.php:74
 msgid "Generate reports"
-msgstr "IP Berichte"
+msgstr "レポート生成"
 
 #: inc/profile.class.php:47 inc/profile.class.php:86
 msgid "Use ping on equipment form"
-msgstr "Benutze PING im Equipment Formular"
+msgstr "機器のフォームで PING を使う"
 
 #: inc/report.class.php:143
 msgid "Reservation"
-msgstr "Reservierung"
+msgstr "予約"
 
 #: inc/report.class.php:284 inc/report.class.php:340 inc/report.class.php:476
 #: inc/report.class.php:711
 msgid "Reserve IP"
-msgstr "Reservierte IP-Adresse"
+msgstr "IP を予約"
 
 #: inc/report.class.php:306 inc/report.class.php:328
 msgid "Reserved Address"
-msgstr "Reservierte Adresse"
+msgstr "予約アドレス"
 
 #: inc/report.class.php:313 inc/report.class.php:611
 msgid "Success"
-msgstr "Erfolgreich"
+msgstr "成功"
 
 #: inc/report.class.php:316 inc/report.class.php:354
 msgid "Reserved"
-msgstr "Reserviert"
+msgstr "予約"
 
 #: inc/report.class.php:351
 msgid "Failed"
-msgstr "Fehlgeschlagen"
+msgstr "失敗"
 
 #: inc/reserveip.class.php:142
 msgid "Object's name"
-msgstr "Objektname"
+msgstr "オブジェクト名"
 
 #: inc/reserveip.class.php:262
 msgid "Name already in use"
-msgstr "Name wird schon verwendet"
+msgstr "既存の名前"
 
 #: inc/reserveip.class.php:306
 msgid "Validate the reservation"
-msgstr "Reservierung überprüfen"
+msgstr "予約の検証"
