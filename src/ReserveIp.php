@@ -204,25 +204,26 @@ class ReserveIp extends CommonDBTM
         $config->getFromDB('1');
         $system = $config->fields["used_system"];
         $ping_equip = new Ping_Equipment();
-
+        $ping = $addressing->fields["use_ping"];
         $msg = "";
-        [$message, $error] = $ping_equip->ping($system, $ip);
-        if ($error) {
-            $msg = "<div class='alert alert-success'>";
-            $msg .= "<i class='ti ti-circle-check' style='color:forestgreen'></i>";
-            $msg .= "<span style='color:forestgreen'>&nbsp;";
-            $msg .=  __('Ping: no response - free IP', 'addressing');
-            $msg .= "</span>";
-            $msg .= "</div>";
-        } else {
-            $msg = "<div class='alert alert-warning'>";
-            $msg .=  "<i class='ti ti-alert-triangle' style='color:orange'></i>";
-            $msg .= "<span style='color:orange'>&nbsp;";
-            $msg .=  __('Ping: got a response - used IP', 'addressing');
-            $msg .= "</span>";
-            $msg .= "</div>";
+        if ($ping == 1) {
+            [$message, $error] = $ping_equip->ping($system, $ip);
+            if ($error) {
+                $msg = "<div class='alert alert-success'>";
+                $msg .= "<i class='ti ti-circle-check' style='color:forestgreen'></i>";
+                $msg .= "<span style='color:forestgreen'>&nbsp;";
+                $msg .= __('Ping: no response - free IP', 'addressing');
+                $msg .= "</span>";
+                $msg .= "</div>";
+            } else {
+                $msg = "<div class='alert alert-warning'>";
+                $msg .= "<i class='ti ti-alert-triangle' style='color:orange'></i>";
+                $msg .= "<span style='color:orange'>&nbsp;";
+                $msg .= __('Ping: got a response - used IP', 'addressing');
+                $msg .= "</span>";
+                $msg .= "</div>";
+            }
         }
-
         $options['types'] = Addressing::dropdownItemtype();
         $strict_entities = Profile_User::getUserEntities($_SESSION['glpiID'], false);
         $entities_rights = Session::haveAccessToOneOfEntities($strict_entities)
