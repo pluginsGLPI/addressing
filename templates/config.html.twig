@@ -72,12 +72,13 @@
 
                     {{ fields.sliderField(
                         'use_ping',
-                        config["use_ping"],
+                        is_cloud ? 0 : config["use_ping"],
                         __('Use Ping on IP ranges', 'addressing'),
-                        field_options
+                        field_options|merge({'disabled': is_cloud})
                     ) }}
             </div>
 
+            {% if not is_cloud %}
             <div class="hr-text">
                 <i class="fa-2x ti ti-terminal-2"></i>
                 <span>{{ __('System for ping', 'addressing') }}</span>
@@ -99,6 +100,7 @@
                 ) }}
 
             </div>
+            {% endif %}
 
             <div class="hr mt-3 mb-3"></div>
             <div class="hstack gap-1">

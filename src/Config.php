@@ -49,12 +49,22 @@ class Config extends CommonDBTM
     public function showForm($ID, $options = [])
     {
         $this->initForm($ID, $options);
+        $is_cloud = defined('GLPI_INSTALL_MODE') && GLPI_INSTALL_MODE === 'CLOUD';
         TemplateRenderer::getInstance()->display(
             '@addressing/config.html.twig',
             [
-                'id'                => 1,
-                'config'            => $this->fields,
+                'id'       => 1,
+                'config'   => $this->fields,
+                'is_cloud' => $is_cloud,
             ],
         );
+    }
+
+    public function prepareInputForUpdate($input)
+    {
+        if (defined('GLPI_INSTALL_MODE') && GLPI_INSTALL_MODE === 'CLOUD') {
+            $input['use_ping'] = 0;
+        }
+        return $input;
     }
 }

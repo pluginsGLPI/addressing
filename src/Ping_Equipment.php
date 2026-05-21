@@ -155,6 +155,10 @@ class Ping_Equipment extends CommonDBTM
     */
     public function ping($system, $ip, $return = "list")
     {
+        if (defined('GLPI_INSTALL_MODE') && GLPI_INSTALL_MODE === 'CLOUD') {
+            return $return === "true" ? false : [__('Ping unavailable in cloud mode', 'addressing'), 1];
+        }
+
         $error = 1;
         $list  = '';
         switch ($system) {
@@ -260,6 +264,10 @@ class Ping_Equipment extends CommonDBTM
      */
     public function getHostnameByPing($system, $ip)
     {
+        if (defined('GLPI_INSTALL_MODE') && GLPI_INSTALL_MODE === 'CLOUD') {
+            return '';
+        }
+
         $error = 1;
         $list  = '';
         switch ($system) {
