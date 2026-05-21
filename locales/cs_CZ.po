@@ -1,19 +1,21 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Addressing Development Team
 # This file is distributed under the same license as the GLPI - Addressing plugin package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Amandine Manceau, 2018
-# Ondrej Krejcik <ondra@tachec.org>, 2013
-# Pavel Borecki <pavel.borecki@gmail.com>, 2018
+# Xavier CAILLAUD <thetsmr@gmail.com>, 2025
+# David Stepan <stepand@tiscali.cz>, 2025
+# 
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: GLPI Project - addressing plugin\n"
+"Project-Id-Version: GLPI - Addressing plugin 2.1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-15 13:40+0200\n"
-"PO-Revision-Date: 2012-09-07 11:14+0000\n"
-"Last-Translator: Pavel Borecki <pavel.borecki@gmail.com>, 2018\n"
-"Language-Team: Czech (Czech Republic) (http://www.transifex.com/infotelGLPI/GLPI_addressing/language/cs_CZ/)\n"
+"PO-Revision-Date: 2025-09-23 12:17+0000\n"
+"Last-Translator: David Stepan <stepand@tiscali.cz>, 2025\n"
+"Language-Team: Czech (Czech Republic) (https://app.transifex.com/pluginsGLPI/teams/73419/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -23,19 +25,19 @@ msgstr ""
 #: hook.php:215 inc/ping_equipment.class.php:92 inc/pinginfo.class.php:190
 #: inc/report.class.php:141
 msgid "Ping result"
-msgstr ""
+msgstr "Výsledek pingu"
 
 #: hook.php:247
 msgid "Last ping OK"
-msgstr ""
+msgstr "Poslední ping OK"
 
 #: hook.php:249
 msgid "Last ping KO"
-msgstr ""
+msgstr "Poslední ping KO"
 
 #: hook.php:251 inc/pinginfo.class.php:174
 msgid "Ping informations not available"
-msgstr ""
+msgstr "Informace o pingu nejsou k dispozici"
 
 #: setup.php:81 inc/addressing.class.php:46 inc/ipcomment.class.php:44
 #: inc/pinginfo.class.php:42 inc/profile.class.php:108
@@ -58,7 +60,7 @@ msgstr "IP ping"
 #: inc/report.class.php:480 inc/report.class.php:715
 #: inc/reserveip.class.php:42
 msgid "IP reservation"
-msgstr ""
+msgstr "Rezervace IP adresy"
 
 #: front/addressing.form.php:52 front/addressing.form.php:82
 msgid "Problem when adding, required fields are not here"
@@ -70,11 +72,11 @@ msgstr "Zapněte zásuvný modul"
 
 #: front/reserveip.form.php:39
 msgid "The address has been reserved"
-msgstr ""
+msgstr "Adresa byla rezervována"
 
 #: inc/addressing.class.php:92 inc/addressing.class.php:401
 msgid "Ping free IP"
-msgstr ""
+msgstr "Ping volných adres"
 
 #: inc/addressing.class.php:140 inc/addressing.class.php:251
 #: inc/filter.class.php:121 inc/filter.class.php:316
@@ -127,53 +129,53 @@ msgstr[3] "Filtry"
 
 #: inc/addressing.class.php:431
 msgid "Use the networks as filter"
-msgstr ""
+msgstr "Použijte sítě jako filtr"
 
 #: inc/addressing.class.php:434
 msgid "The display of items depends on these criterias"
-msgstr ""
+msgstr "Zobrazení položek závisí na těchto kritériích"
 
 #: inc/addressing.class.php:438
 msgid "Default fields for reservation"
-msgstr ""
+msgstr "Výchozí pole pro rezervaci"
 
 #: inc/addressing.class.php:711
 msgid "Number of free IP"
-msgstr ""
+msgstr "Počet volných IP adres"
 
 #: inc/addressing.class.php:715
 msgid "Number of reserved IP"
-msgstr ""
+msgstr "Počet obsazených IP adres"
 
 #: inc/addressing.class.php:719
 msgid "Number of assigned IP (no doubles)"
-msgstr ""
+msgstr "Počet přidělených IP adres (bez duplicit)"
 
 #: inc/addressing.class.php:723
 msgid "Number of doubles IP"
-msgstr ""
+msgstr "Počet duplicitních IP adres"
 
 #: inc/addressing.class.php:741 inc/addressing.class.php:794
 #: inc/ping_equipment.class.php:280 inc/report.class.php:594
 #: inc/reserveip.class.php:198
 msgid "Ping: got a response - used IP"
-msgstr ""
+msgstr "Ping: obdržel odpověď - použitá IP adresa"
 
 #: inc/addressing.class.php:747 inc/addressing.class.php:790
 #: inc/ping_equipment.class.php:277 inc/report.class.php:699
 #: inc/reserveip.class.php:195
 msgid "Ping: no response - free IP"
-msgstr ""
+msgstr "Ping: žádná odpověď - volná IP adresa"
 
 #: inc/addressing.class.php:799 inc/addressing.class.php:801
 #: inc/pinginfo.class.php:200
 msgctxt "button"
 msgid "Manual launch of ping"
-msgstr ""
+msgstr "Ruční spuštění pingu"
 
 #: inc/addressing.class.php:872
 msgid "Real free IP (Ping=KO)"
-msgstr ""
+msgstr "Skutečně volná IP adresa (Ping=KO)"
 
 #: inc/addressing.class.php:881
 msgid "Problem detected with the IP Range"
@@ -197,11 +199,11 @@ msgstr "Linuxový fping"
 
 #: inc/config.class.php:57
 msgid "BSD ping"
-msgstr "BSD ping "
+msgstr "BSD ping"
 
 #: inc/config.class.php:58
 msgid "MacOSX ping"
-msgstr "macOS ping"
+msgstr "MacOS ping"
 
 #: inc/config.class.php:62
 msgid "Display"
@@ -221,19 +223,19 @@ msgstr "Žádná IP adresa pro toto zařízení"
 
 #: inc/pinginfo.class.php:53
 msgid "Launch ping for each ip report"
-msgstr ""
+msgstr "Spustit ping pro každý IP report"
 
 #: inc/pinginfo.class.php:173 inc/report.class.php:272
 #: inc/report.class.php:604 inc/report.class.php:705
 msgid "Automatic action has not be launched"
-msgstr ""
+msgstr "Automatická akce nebyla spuštěna"
 
 #: inc/pinginfo.class.php:177 inc/pinginfo.class.php:178
 #: inc/pinginfo.class.php:182 inc/pinginfo.class.php:183
 #: inc/report.class.php:302 inc/report.class.php:323 inc/report.class.php:606
 #: inc/report.class.php:707
 msgid "Last ping attempt"
-msgstr ""
+msgstr "Poslední pokus o ping"
 
 #: inc/profile.class.php:44 inc/profile.class.php:74
 msgid "Generate reports"
@@ -245,28 +247,28 @@ msgstr "Použít ping na formuláři zařízení"
 
 #: inc/report.class.php:143
 msgid "Reservation"
-msgstr ""
+msgstr "Rezervace"
 
 #: inc/report.class.php:284 inc/report.class.php:340 inc/report.class.php:476
 #: inc/report.class.php:711
 msgid "Reserve IP"
-msgstr ""
+msgstr "Rezervovat IP adresu"
 
 #: inc/report.class.php:306 inc/report.class.php:328
 msgid "Reserved Address"
-msgstr "Rezervované adresy"
+msgstr "Rezervované IP adresy"
 
 #: inc/report.class.php:313 inc/report.class.php:611
 msgid "Success"
-msgstr ""
+msgstr "Úspěšné"
 
 #: inc/report.class.php:316 inc/report.class.php:354
 msgid "Reserved"
-msgstr ""
+msgstr "Rezervováno"
 
 #: inc/report.class.php:351
 msgid "Failed"
-msgstr ""
+msgstr "Neúspěšné"
 
 #: inc/reserveip.class.php:142
 msgid "Object's name"

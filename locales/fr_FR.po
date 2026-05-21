@@ -1,20 +1,20 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Addressing Development Team
 # This file is distributed under the same license as the GLPI - Addressing plugin package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Amandine Manceau, 2016
-# cbc5204086c375034e77848ef6290ebe, 2015
-# Xavier CAILLAUD <thetsmr@gmail.com>, 2021-2022
-# Xavier CAILLAUD <thetsmr@gmail.com>, 2016
+# Xavier CAILLAUD <thetsmr@gmail.com>, 2025
+# 
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: GLPI Project - addressing plugin\n"
+"Project-Id-Version: GLPI - Addressing plugin 2.1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-15 13:40+0200\n"
-"PO-Revision-Date: 2012-09-07 11:14+0000\n"
-"Last-Translator: Xavier CAILLAUD <thetsmr@gmail.com>, 2021-2022\n"
-"Language-Team: French (France) (http://www.transifex.com/infotelGLPI/GLPI_addressing/language/fr_FR/)\n"
+"PO-Revision-Date: 2025-09-23 12:17+0000\n"
+"Last-Translator: Xavier CAILLAUD <thetsmr@gmail.com>, 2025\n"
+"Language-Team: French (France) (https://app.transifex.com/pluginsGLPI/teams/73419/fr_FR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"

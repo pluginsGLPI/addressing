@@ -1,20 +1,21 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Addressing Development Team
 # This file is distributed under the same license as the GLPI - Addressing plugin package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Andrei Bernardo Simoni <andrei_simoni@hotmail.com>, 2017
-# Andrei Bernardo Simoni <andrei_simoni@hotmail.com>, 2017
-# Xavier CAILLAUD <thetsmr@gmail.com>, 2012
-# Xavier CAILLAUD <thetsmr@gmail.com>, 2012
+# Xavier CAILLAUD <thetsmr@gmail.com>, 2025
+# Anderson Jesus Queiroz, 2026
+# 
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: GLPI Project - addressing plugin\n"
+"Project-Id-Version: GLPI - Addressing plugin 2.1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-15 13:40+0200\n"
-"PO-Revision-Date: 2012-09-07 11:14+0000\n"
-"Last-Translator: Xavier CAILLAUD <thetsmr@gmail.com>, 2012\n"
-"Language-Team: Portuguese (Brazil) (http://www.transifex.com/infotelGLPI/GLPI_addressing/language/pt_BR/)\n"
+"PO-Revision-Date: 2025-09-23 12:17+0000\n"
+"Last-Translator: Anderson Jesus Queiroz, 2026\n"
+"Language-Team: Portuguese (Brazil) (https://app.transifex.com/pluginsGLPI/teams/73419/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -58,7 +59,7 @@ msgstr "Ping IP"
 #: inc/report.class.php:480 inc/report.class.php:715
 #: inc/reserveip.class.php:42
 msgid "IP reservation"
-msgstr ""
+msgstr "Reservar  IP"
 
 #: front/addressing.form.php:52 front/addressing.form.php:82
 msgid "Problem when adding, required fields are not here"
@@ -70,7 +71,7 @@ msgstr "Por favor, ative o plugin"
 
 #: front/reserveip.form.php:39
 msgid "The address has been reserved"
-msgstr ""
+msgstr "O endereço foi reservado"
 
 #: inc/addressing.class.php:92 inc/addressing.class.php:401
 msgid "Ping free IP"
@@ -126,7 +127,7 @@ msgstr[2] "Filtros"
 
 #: inc/addressing.class.php:431
 msgid "Use the networks as filter"
-msgstr ""
+msgstr "Filtrar redes"
 
 #: inc/addressing.class.php:434
 msgid "The display of items depends on these criterias"
@@ -134,7 +135,7 @@ msgstr "A exibição dos itens depende desses critérios"
 
 #: inc/addressing.class.php:438
 msgid "Default fields for reservation"
-msgstr ""
+msgstr "Campos para reservar "
 
 #: inc/addressing.class.php:711
 msgid "Number of free IP"
@@ -250,6 +251,8 @@ msgstr "Reserva"
 #: inc/report.class.php:711
 msgid "Reserve IP"
 msgstr ""
+"IP reservado\n"
+" "
 
 #: inc/report.class.php:306 inc/report.class.php:328
 msgid "Reserved Address"
@@ -257,15 +260,15 @@ msgstr "Endereço reservado"
 
 #: inc/report.class.php:313 inc/report.class.php:611
 msgid "Success"
-msgstr ""
+msgstr "Ação concluída com sucesso"
 
 #: inc/report.class.php:316 inc/report.class.php:354
 msgid "Reserved"
-msgstr ""
+msgstr "Reservado com sucesso"
 
 #: inc/report.class.php:351
 msgid "Failed"
-msgstr ""
+msgstr "Ação falhou"
 
 #: inc/reserveip.class.php:142
 msgid "Object's name"
