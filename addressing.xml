@@ -195,13 +195,18 @@
       <lang>en_GB</lang>
       <lang>es_AR</lang>
       <lang>es_ES</lang>
+       <lang>fi_FI</lang>
       <lang>fr_FR</lang>
+       <lang>hr_HR</lang>
       <lang>it_IT</lang>
+       <lang>ja_JP</lang>
+       <lang>ko_KR</lang>
       <lang>pl_PL</lang>
       <lang>pt_BR</lang>
       <lang>ro_RO</lang>
       <lang>ru_RU</lang>
       <lang>tr_TR</lang>
+       <lang>zh_CN</lang>
    </langs>
    <license><![CDATA[GPL v2+]]></license>
       <tags>
