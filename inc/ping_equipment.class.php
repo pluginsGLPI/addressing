@@ -50,7 +50,7 @@ class PluginAddressingPing_Equipment extends commonDBTM {
       $list_ip = [];
 
       $query = "SELECT `glpi_networknames`.`name`, `glpi_ipaddresses`.`name` as ip, `glpi_networkports`.`items_id`
-               FROM `glpi_networkports` 
+               FROM `glpi_networkports`
                LEFT JOIN `" . $obj->getTable() . "` ON (`glpi_networkports`.`items_id` = `" . $obj->getTable() . "`.`id`
                               AND `glpi_networkports`.`itemtype` = '" . $itemtype . "')
                LEFT JOIN `glpi_networknames` ON (`glpi_networkports`.`id` =  `glpi_networknames`.`items_id`)
@@ -117,6 +117,11 @@ class PluginAddressingPing_Equipment extends commonDBTM {
     * @return array
     */
    function ping($system, $ip, $return = "list") {
+
+       if (defined('GLPI_INSTALL_MODE') && GLPI_INSTALL_MODE === 'CLOUD') {
+           return $return === "true" ? false : [__('Ping unavailable in cloud mode', 'addressing'), 1];
+       }
+
       $error = 1;
       $list  = '';
       switch ($system) {
@@ -221,6 +226,10 @@ class PluginAddressingPing_Equipment extends commonDBTM {
     * @return array
     */
    function getHostnameByPing($system, $ip) {
+
+       if (defined('GLPI_INSTALL_MODE') && GLPI_INSTALL_MODE === 'CLOUD') {
+           return '';
+       }
       $error = 1;
       $list  = '';
       switch ($system) {
