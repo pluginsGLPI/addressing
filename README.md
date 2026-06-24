@@ -1,11 +1,7 @@
-# addressing
-Plugin addressing for GLPI
+## Addressing plugin for GLPI
 
-Ce plugin est sur Transifex - Aidez-nous à le traduire :
-https://explore.transifex.com/pluginsGLPI/glpi-plugin-addressing/
-
-This plugin is on Transifex - Help us to translate :
-https://explore.transifex.com/pluginsGLPI/glpi-plugin-addressing/
+[![License](https://img.shields.io/badge/License-GNU%20v2-blue.svg?style=flat-square)](https://github.com/pluginsGLPI/addressing/blob/master/LICENSE)
+[![Translate](https://img.shields.io/badge/Translate-Transifex-cyan)](https://explore.transifex.com/pluginsGLPI/glpi-plugin-addressing/)
 
 ## Français
 
