@@ -12,6 +12,8 @@ Ce plugin vous permet créer des rapports IP afin de visualiser les adresses ip 
 > * Ping adresses libres sur divers systèmes.
 > * Export du rapport en pdf, csv, slk
 
+📖 [Documentation complète en français](docs/fr.md)
+
 ## English
 
 This plugin enables you to create IP reports for visualize IP addresses used and free on a given network.
@@ -20,3 +22,5 @@ This plugin enables you to create IP reports for visualize IP addresses used and
 > * Filter with network.
 > * Ping fonction for free ip for many systems.
 > * Report export to pdf, csv, slk
+
+📖 [Full documentation in English](docs/en.md)
