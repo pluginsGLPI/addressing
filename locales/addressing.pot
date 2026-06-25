@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-21 14:26+0000\n"
+"POT-Creation-Date: 2026-06-25 03:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,46 +18,48 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: templates/reserveip.html.twig
-msgid "Name already in use"
+#: templates/pinginfo.html.twig src/Ping_Equipment.php:127 src/Report.php:229
+#: src/Report.php:243 hook.php:354
+msgid "Ping result"
 msgstr ""
 
-#: templates/reserveip.html.twig
-msgid "Ok you can use this name"
+#: templates/pinginfo.html.twig src/Addressing.php:902 src/Addressing.php:906
+msgctxt "button"
+msgid "Manual launch of ping"
 msgstr ""
 
 #: templates/addressing.html.twig templates/config.html.twig
-#: src/Addressing.php:871
+#: src/Addressing.php:870
 msgid "Assigned IP"
 msgstr ""
 
 #: templates/addressing.html.twig templates/filter.html.twig src/Filter.php:192
-#: src/Addressing.php:161 src/Addressing.php:263
+#: src/Addressing.php:160 src/Addressing.php:262
 msgid "First IP"
 msgstr ""
 
 #: templates/addressing.html.twig templates/config.html.twig
-#: src/Addressing.php:845 src/Addressing.php:883
+#: src/Addressing.php:844 src/Addressing.php:882
 msgid "Free IP"
 msgstr ""
 
 #: templates/addressing.html.twig templates/filter.html.twig src/Filter.php:193
-#: src/Addressing.php:169 src/Addressing.php:266
+#: src/Addressing.php:168 src/Addressing.php:265
 msgid "Last IP"
 msgstr ""
 
 #: templates/addressing.html.twig templates/config.html.twig
-#: src/Addressing.php:824 src/Addressing.php:875
+#: src/Addressing.php:823 src/Addressing.php:874
 msgid "Same IP"
 msgstr ""
 
 #: templates/addressing.html.twig templates/config.html.twig
-#: src/Addressing.php:851 src/Addressing.php:879
+#: src/Addressing.php:850 src/Addressing.php:878
 msgid "Reserved IP"
 msgstr ""
 
 #: templates/addressing.html.twig templates/filter.html.twig
-#: src/Addressing.php:202
+#: src/Addressing.php:201
 msgid "Report for the IP Range"
 msgstr ""
 
@@ -65,7 +67,7 @@ msgstr ""
 msgid "Use Ping"
 msgstr ""
 
-#: templates/addressing.html.twig src/Filter.php:56 src/Addressing.php:918
+#: templates/addressing.html.twig src/Filter.php:56 src/Addressing.php:917
 msgid "Filter"
 msgid_plural "Filters"
 msgstr[0] ""
@@ -81,16 +83,6 @@ msgstr ""
 
 #: templates/addressing.html.twig
 msgid "Default fields for reservation"
-msgstr ""
-
-#: templates/pinginfo.html.twig src/Ping_Equipment.php:128 src/Report.php:230
-#: src/Report.php:244 hook.php:354
-msgid "Ping result"
-msgstr ""
-
-#: templates/pinginfo.html.twig src/Addressing.php:903 src/Addressing.php:907
-msgctxt "button"
-msgid "Manual launch of ping"
 msgstr ""
 
 #: templates/config.html.twig
@@ -125,52 +117,81 @@ msgstr ""
 msgid "MacOSX ping"
 msgstr ""
 
-#: src/Profile.php:55
+#: templates/reserveip.html.twig
+msgid "Name already in use"
+msgstr ""
+
+#: templates/reserveip.html.twig
+msgid "Ok you can use this name"
+msgstr ""
+
+#: front/config.php:49 front/config.form.php:49
+msgid "Please activate the plugin"
+msgstr ""
+
+#: front/addressing.form.php:60 front/addressing.form.php:95
+msgid "Problem when adding, required fields are not here"
+msgstr ""
+
+#: front/reserveip.form.php:42
+msgid "The address has been reserved"
+msgstr ""
+
+#: src/Profile.php:54
 msgid "Generate reports"
 msgstr ""
 
-#: src/Profile.php:61
+#: src/Profile.php:60
 msgid "Use ping on equipment form"
 msgstr ""
 
-#: src/Profile.php:81 src/IpComment.php:48 src/PingInfo.php:54
-#: src/Addressing.php:65 setup.php:94
+#: src/Profile.php:80 src/PingInfo.php:54 src/IpComment.php:48
+#: src/Addressing.php:64 setup.php:93
 msgid "IP Addressing"
 msgid_plural "IP Addressing"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/Filter.php:155
-msgid "Add a filter"
+#: src/ReserveIp.php:52 src/Report.php:472 src/Report.php:583
+#: src/Report.php:773 src/Report.php:1154
+msgid "IP reservation"
 msgstr ""
 
-#: src/Ping_Equipment.php:107 src/Ping_Equipment.php:123 src/Report.php:302
-#: src/Report.php:314 src/Report.php:719 src/Report.php:730 src/Report.php:911
-#: src/Report.php:929 src/Report.php:1088 src/Report.php:1106
-#: ajax/addressing.php:73
-msgid "IP ping"
+#: src/ReserveIp.php:161
+msgid "Object's name"
 msgstr ""
 
-#: src/Ping_Equipment.php:144
-msgid "No IP for this equipment"
-msgstr ""
-
-#: src/Ping_Equipment.php:317 src/Addressing.php:840 src/Addressing.php:891
-#: src/Report.php:1114 src/Report.php:1122 src/ReserveIp.php:214
+#: src/ReserveIp.php:214 src/Ping_Equipment.php:324 src/Report.php:1113
+#: src/Report.php:1121 src/Addressing.php:839 src/Addressing.php:890
 msgid "Ping: no response - free IP"
 msgstr ""
 
-#: src/Ping_Equipment.php:320 src/Addressing.php:834 src/Addressing.php:895
-#: src/Report.php:939 src/ReserveIp.php:221
+#: src/ReserveIp.php:221 src/Ping_Equipment.php:327 src/Report.php:938
+#: src/Addressing.php:833 src/Addressing.php:894
 msgid "Ping: got a response - used IP"
+msgstr ""
+
+#: src/Ping_Equipment.php:106 src/Ping_Equipment.php:122 src/Report.php:301
+#: src/Report.php:313 src/Report.php:718 src/Report.php:729 src/Report.php:910
+#: src/Report.php:928 src/Report.php:1087 src/Report.php:1105
+#: ajax/addressing.php:72
+msgid "IP ping"
+msgstr ""
+
+#: src/Ping_Equipment.php:143
+msgid "No IP for this equipment"
+msgstr ""
+
+#: src/Ping_Equipment.php:158
+msgid "Ping unavailable in cloud mode"
 msgstr ""
 
 #: src/PingInfo.php:66
 msgid "Launch ping for each ip report"
 msgstr ""
 
-#: src/PingInfo.php:189 src/Report.php:436 src/Report.php:956
-#: src/Report.php:1131
+#: src/PingInfo.php:189 src/Report.php:435 src/Report.php:955
+#: src/Report.php:1130
 msgid "Automatic action has not be launched"
 msgstr ""
 
@@ -179,86 +200,69 @@ msgid "Ping informations not available"
 msgstr ""
 
 #: src/PingInfo.php:196 src/PingInfo.php:200 src/PingInfo.php:209
-#: src/PingInfo.php:213 src/Report.php:489 src/Report.php:538
-#: src/Report.php:961 src/Report.php:1136
+#: src/PingInfo.php:213 src/Report.php:488 src/Report.php:537
+#: src/Report.php:960 src/Report.php:1135
 msgid "Last ping attempt"
 msgstr ""
 
-#: src/Addressing.php:113
-msgid "Ping free IP"
-msgstr ""
-
-#: src/Addressing.php:261
-msgid "Invalid data !!"
-msgstr ""
-
-#: src/Addressing.php:801
-msgid "Number of free IP"
-msgstr ""
-
-#: src/Addressing.php:805
-msgid "Number of reserved IP"
-msgstr ""
-
-#: src/Addressing.php:809
-msgid "Number of assigned IP (no doubles)"
-msgstr ""
-
-#: src/Addressing.php:813
-msgid "Number of doubles IP"
-msgstr ""
-
-#: src/Addressing.php:994
-msgid "Real free IP (Ping=KO)"
-msgstr ""
-
-#: src/Addressing.php:1002
-msgid "Problem detected with the IP Range"
-msgstr ""
-
-#: src/Report.php:232 src/Report.php:246
+#: src/Report.php:231 src/Report.php:245
 msgid "Reservation"
 msgstr ""
 
-#: src/Report.php:457 src/Report.php:567 src/Report.php:766 src/Report.php:1145
+#: src/Report.php:456 src/Report.php:566 src/Report.php:765 src/Report.php:1144
 msgid "Reserve IP"
 msgstr ""
 
-#: src/Report.php:473 src/Report.php:584 src/Report.php:774 src/Report.php:1155
-#: src/ReserveIp.php:53
-msgid "IP reservation"
-msgstr ""
-
-#: src/Report.php:503 src/Report.php:550
+#: src/Report.php:502 src/Report.php:549
 msgid "Reserved Address"
 msgstr ""
 
-#: src/Report.php:522 src/Report.php:969
+#: src/Report.php:521 src/Report.php:968
 msgid "Success"
 msgstr ""
 
-#: src/Report.php:530 src/Report.php:599
+#: src/Report.php:529 src/Report.php:598
 msgid "Reserved"
 msgstr ""
 
-#: src/Report.php:592
+#: src/Report.php:591
 msgid "Failed"
 msgstr ""
 
-#: src/ReserveIp.php:162
-msgid "Object's name"
+#: src/Filter.php:155
+msgid "Add a filter"
 msgstr ""
 
-#: front/addressing.form.php:61 front/addressing.form.php:96
-msgid "Problem when adding, required fields are not here"
+#: src/Addressing.php:112
+msgid "Ping free IP"
 msgstr ""
 
-#: front/config.form.php:49 front/config.php:49
-msgid "Please activate the plugin"
+#: src/Addressing.php:260
+msgid "Invalid data !!"
 msgstr ""
 
-#: front/reserveip.form.php:43
-msgid "The address has been reserved"
+#: src/Addressing.php:800
+msgid "Number of free IP"
+msgstr ""
+
+#: src/Addressing.php:804
+msgid "Number of reserved IP"
+msgstr ""
+
+#: src/Addressing.php:808
+msgid "Number of assigned IP (no doubles)"
+msgstr ""
+
+#: src/Addressing.php:812
+msgid "Number of doubles IP"
+msgstr ""
+
+#: src/Addressing.php:993
+msgid "Real free IP (Ping=KO)"
+msgstr ""
+
+#: src/Addressing.php:1001
+msgid "Problem detected with the IP Range"
 msgstr ""
 
 #: hook.php:389
