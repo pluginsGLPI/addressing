@@ -1,6 +1,6 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Addressing Development Team
-# This file is distributed under the same license as the GLPI - Addressing plugin package.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
@@ -9,9 +9,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: GLPI - Addressing plugin 2.1.0\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-15 13:40+0200\n"
+"POT-Creation-Date: 2026-06-24 09:26+0200\n"
 "PO-Revision-Date: 2025-09-23 12:17+0000\n"
 "Last-Translator: INOUE Daisuke, 2026\n"
 "Language-Team: Japanese (Japan) (https://app.transifex.com/pluginsGLPI/teams/73419/ja_JP/)\n"
@@ -21,256 +21,273 @@ msgstr ""
 "Language: ja_JP\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: hook.php:215 inc/ping_equipment.class.php:92 inc/pinginfo.class.php:190
-#: inc/report.class.php:141
-msgid "Ping result"
-msgstr "PING 結果"
+#: src/Filter.php:155
+msgid "Add a filter"
+msgstr "フィルター追加"
 
-#: hook.php:247
-msgid "Last ping OK"
-msgstr "最終 PING OK"
-
-#: hook.php:249
-msgid "Last ping KO"
-msgstr "最終 PING KO ( 失敗 )"
-
-#: hook.php:251 inc/pinginfo.class.php:174
-msgid "Ping informations not available"
-msgstr "PING 情報がありません"
-
-#: setup.php:81 inc/addressing.class.php:46 inc/ipcomment.class.php:44
-#: inc/pinginfo.class.php:42 inc/profile.class.php:108
-msgid "IP Adressing"
-msgid_plural "IP Adressing"
-msgstr[0] "IP 割り当て"
-
-#: ajax/addressing.php:60 inc/ping_equipment.class.php:71
-#: inc/ping_equipment.class.php:87 inc/report.class.php:179
-#: inc/report.class.php:184 inc/report.class.php:448 inc/report.class.php:453
-#: inc/report.class.php:585 inc/report.class.php:590 inc/report.class.php:690
-#: inc/report.class.php:695
-msgid "IP ping"
-msgstr "IP PING"
-
-#: ajax/addressing.php:69 inc/report.class.php:289 inc/report.class.php:346
-#: inc/report.class.php:480 inc/report.class.php:715
-#: inc/reserveip.class.php:42
-msgid "IP reservation"
-msgstr "IP 予約"
-
-#: front/addressing.form.php:52 front/addressing.form.php:82
-msgid "Problem when adding, required fields are not here"
-msgstr "追加できません。必要項目が未記入です"
-
-#: front/config.form.php:50 front/config.php:50
-msgid "Please activate the plugin"
-msgstr "プラグインを有効にしてください"
-
-#: front/reserveip.form.php:39
-msgid "The address has been reserved"
-msgstr "このアドレスは予約済みです"
-
-#: inc/addressing.class.php:92 inc/addressing.class.php:401
-msgid "Ping free IP"
-msgstr "空き IP に PING"
-
-#: inc/addressing.class.php:140 inc/addressing.class.php:251
-#: inc/filter.class.php:121 inc/filter.class.php:316
-msgid "First IP"
-msgstr "開始 IP"
-
-#: inc/addressing.class.php:149 inc/addressing.class.php:300
-#: inc/filter.class.php:161 inc/filter.class.php:317
-msgid "Last IP"
-msgstr "最終 IP"
-
-#: inc/addressing.class.php:183 inc/addressing.class.php:388
-#: inc/filter.class.php:219
-msgid "Report for the IP Range"
-msgstr "IP 範囲のレポート"
-
-#: inc/addressing.class.php:222 inc/addressing.class.php:396
-#: inc/filter.class.php:87 inc/filter.class.php:225
-msgid "Invalid data !!"
-msgstr "無効なデータです!!"
-
-#: inc/addressing.class.php:236 inc/addressing.class.php:770
-#: inc/config.class.php:64
+#: src/Addressing.php:870 templates/addressing.html.twig:65
+#: templates/config.html.twig:47
 msgid "Assigned IP"
 msgstr "割り当て済み IP"
 
-#: inc/addressing.class.php:288 inc/addressing.class.php:751
-#: inc/addressing.class.php:782 inc/config.class.php:69
-msgid "Free IP"
-msgstr "空き IP"
+#: src/PingInfo.php:189 src/Report.php:435 src/Report.php:955
+#: src/Report.php:1130
+msgid "Automatic action has not be launched"
+msgstr "自動実行は起動しませんでした"
 
-#: inc/addressing.class.php:356 inc/addressing.class.php:733
-#: inc/addressing.class.php:774 inc/config.class.php:75
-msgid "Same IP"
-msgstr "重複 IP"
+#: templates/addressing.html.twig:228 templates/reserveip.html.twig:222
+msgid "Comment"
+msgid_plural "Comments"
+msgstr[0] ""
 
-#: inc/addressing.class.php:376 inc/addressing.class.php:754
-#: inc/addressing.class.php:778 inc/config.class.php:80
-msgid "Reserved IP"
-msgstr "予約 IP"
+#: templates/addressing.html.twig:267
+msgid "Default fields for reservation"
+msgstr "予約の標準フィールド"
 
-#: inc/addressing.class.php:422 inc/addressing.class.php:812
-#: inc/filter.class.php:43
+#: templates/config.html.twig:41
+msgid "Display"
+msgstr "表示"
+
+#: src/Report.php:591
+msgid "Failed"
+msgstr "失敗"
+
+#: src/Addressing.php:917 src/Filter.php:56 templates/addressing.html.twig:237
 msgid "Filter"
 msgid_plural "Filters"
 msgstr[0] "フィルター"
 
-#: inc/addressing.class.php:431
-msgid "Use the networks as filter"
-msgstr "ネットワークでフィルター"
+#: src/Addressing.php:160 src/Addressing.php:262 src/Filter.php:192
+#: templates/addressing.html.twig:83 templates/filter.html.twig:84
+msgid "First IP"
+msgstr "開始 IP"
 
-#: inc/addressing.class.php:434
-msgid "The display of items depends on these criterias"
-msgstr "アイテムの表示はこれらの基準によって決まります"
+#: src/Addressing.php:844 src/Addressing.php:882
+#: templates/addressing.html.twig:92 templates/config.html.twig:54
+msgid "Free IP"
+msgstr "空き IP"
 
-#: inc/addressing.class.php:438
-msgid "Default fields for reservation"
-msgstr "予約の標準フィールド"
+#: src/Profile.php:54
+msgid "Generate reports"
+msgstr "レポート生成"
 
-#: inc/addressing.class.php:711
-msgid "Number of free IP"
-msgstr "空き IP 数"
+#: setup.php:93 src/Addressing.php:64 src/IpComment.php:48 src/PingInfo.php:54
+#: src/Profile.php:80
+msgid "IP Addressing"
+msgid_plural "IP Addressing"
+msgstr[0] ""
 
-#: inc/addressing.class.php:715
-msgid "Number of reserved IP"
-msgstr "予約 IP 数"
+#: templates/reserveip.html.twig:104
+msgid "IP address"
+msgid_plural "IP addresses"
+msgstr[0] ""
 
-#: inc/addressing.class.php:719
-msgid "Number of assigned IP (no doubles)"
-msgstr "割り当て済み IP 数 ( 重複なし )"
+#: ajax/addressing.php:72 src/Ping_Equipment.php:106
+#: src/Ping_Equipment.php:122 src/Report.php:301 src/Report.php:313
+#: src/Report.php:718 src/Report.php:729 src/Report.php:910 src/Report.php:928
+#: src/Report.php:1087 src/Report.php:1105
+msgid "IP ping"
+msgstr "IP PING"
 
-#: inc/addressing.class.php:723
-msgid "Number of doubles IP"
-msgstr "重複 IP 数"
+#: src/Report.php:472 src/Report.php:583 src/Report.php:773
+#: src/Report.php:1154 src/ReserveIp.php:52
+msgid "IP reservation"
+msgstr "IP 予約"
 
-#: inc/addressing.class.php:741 inc/addressing.class.php:794
-#: inc/ping_equipment.class.php:280 inc/report.class.php:594
-#: inc/reserveip.class.php:198
-msgid "Ping: got a response - used IP"
-msgstr "PING : 応答あり - 使用中 IP"
+#: src/Addressing.php:260
+msgid "Invalid data !!"
+msgstr "無効なデータです!!"
 
-#: inc/addressing.class.php:747 inc/addressing.class.php:790
-#: inc/ping_equipment.class.php:277 inc/report.class.php:699
-#: inc/reserveip.class.php:195
-msgid "Ping: no response - free IP"
-msgstr "PING : 応答なし - 空き IP"
+#: src/Addressing.php:168 src/Addressing.php:265 src/Filter.php:193
+#: templates/addressing.html.twig:110 templates/filter.html.twig:93
+msgid "Last IP"
+msgstr "最終 IP"
 
-#: inc/addressing.class.php:799 inc/addressing.class.php:801
-#: inc/pinginfo.class.php:200
+#: hook.php:394
+msgid "Last ping KO"
+msgstr "最終 PING KO ( 失敗 )"
+
+#: hook.php:389
+msgid "Last ping OK"
+msgstr "最終 PING OK"
+
+#: src/PingInfo.php:196 src/PingInfo.php:200 src/PingInfo.php:209
+#: src/PingInfo.php:213 src/Report.php:488 src/Report.php:537
+#: src/Report.php:960 src/Report.php:1135
+msgid "Last ping attempt"
+msgstr "最終 PING 試行"
+
+#: src/PingInfo.php:66
+msgid "Launch ping for each ip report"
+msgstr "各 IP レポートで PING 実行"
+
+#: templates/reserveip.html.twig:193
+msgid "MAC address"
+msgstr ""
+
+#: src/Addressing.php:902 src/Addressing.php:906
+#: templates/pinginfo.html.twig:62 templates/pinginfo.html.twig:68
 msgctxt "button"
 msgid "Manual launch of ping"
 msgstr "PING の手動実行"
 
-#: inc/addressing.class.php:872
-msgid "Real free IP (Ping=KO)"
-msgstr "実空き IP ( PING 応答なし )"
+#: templates/addressing.html.twig:55 templates/filter.html.twig:58
+#: templates/reserveip.html.twig:122
+msgid "Name"
+msgstr ""
 
-#: inc/addressing.class.php:881
-msgid "Problem detected with the IP Range"
-msgstr "IP 範囲の認識で問題発生"
-
-#: inc/config.class.php:51
-msgid "System for ping"
-msgstr "PING に使うシステム"
-
-#: inc/config.class.php:54
-msgid "Linux ping"
-msgstr "Linux ping"
-
-#: inc/config.class.php:55
-msgid "Windows"
-msgstr "Windows"
-
-#: inc/config.class.php:56
-msgid "Linux fping"
-msgstr "Linux fping"
-
-#: inc/config.class.php:57
-msgid "BSD ping"
-msgstr "BSD ping"
-
-#: inc/config.class.php:58
-msgid "MacOSX ping"
-msgstr "MacOSX ping"
-
-#: inc/config.class.php:62
-msgid "Display"
-msgstr "表示"
-
-#: inc/config.class.php:87
-msgid "Use Ping"
-msgstr "PING の使用"
-
-#: inc/filter.class.php:279
-msgid "Add a filter"
-msgstr "フィルター追加"
-
-#: inc/ping_equipment.class.php:108
-msgid "No IP for this equipment"
-msgstr "この装置には IP なし"
-
-#: inc/pinginfo.class.php:53
-msgid "Launch ping for each ip report"
-msgstr "各 IP レポートで PING 実行"
-
-#: inc/pinginfo.class.php:173 inc/report.class.php:272
-#: inc/report.class.php:604 inc/report.class.php:705
-msgid "Automatic action has not be launched"
-msgstr "自動実行は起動しませんでした"
-
-#: inc/pinginfo.class.php:177 inc/pinginfo.class.php:178
-#: inc/pinginfo.class.php:182 inc/pinginfo.class.php:183
-#: inc/report.class.php:302 inc/report.class.php:323 inc/report.class.php:606
-#: inc/report.class.php:707
-msgid "Last ping attempt"
-msgstr "最終 PING 試行"
-
-#: inc/profile.class.php:44 inc/profile.class.php:74
-msgid "Generate reports"
-msgstr "レポート生成"
-
-#: inc/profile.class.php:47 inc/profile.class.php:86
-msgid "Use ping on equipment form"
-msgstr "機器のフォームで PING を使う"
-
-#: inc/report.class.php:143
-msgid "Reservation"
-msgstr "予約"
-
-#: inc/report.class.php:284 inc/report.class.php:340 inc/report.class.php:476
-#: inc/report.class.php:711
-msgid "Reserve IP"
-msgstr "IP を予約"
-
-#: inc/report.class.php:306 inc/report.class.php:328
-msgid "Reserved Address"
-msgstr "予約アドレス"
-
-#: inc/report.class.php:313 inc/report.class.php:611
-msgid "Success"
-msgstr "成功"
-
-#: inc/report.class.php:316 inc/report.class.php:354
-msgid "Reserved"
-msgstr "予約"
-
-#: inc/report.class.php:351
-msgid "Failed"
-msgstr "失敗"
-
-#: inc/reserveip.class.php:142
-msgid "Object's name"
-msgstr "オブジェクト名"
-
-#: inc/reserveip.class.php:262
+#: templates/reserveip.html.twig:161
 msgid "Name already in use"
 msgstr "既存の名前"
 
-#: inc/reserveip.class.php:306
-msgid "Validate the reservation"
-msgstr "予約の検証"
+#: templates/reserveip.html.twig:211
+msgid "Network"
+msgstr ""
+
+#: src/Ping_Equipment.php:143
+msgid "No IP for this equipment"
+msgstr "この装置には IP なし"
+
+#: src/Addressing.php:808
+msgid "Number of assigned IP (no doubles)"
+msgstr "割り当て済み IP 数 ( 重複なし )"
+
+#: src/Addressing.php:812
+msgid "Number of doubles IP"
+msgstr "重複 IP 数"
+
+#: src/Addressing.php:800
+msgid "Number of free IP"
+msgstr "空き IP 数"
+
+#: src/Addressing.php:804
+msgid "Number of reserved IP"
+msgstr "予約 IP 数"
+
+#: src/ReserveIp.php:161
+msgid "Object's name"
+msgstr "オブジェクト名"
+
+#: templates/reserveip.html.twig:166
+msgid "Ok you can use this name"
+msgstr ""
+
+#: src/Addressing.php:112
+msgid "Ping free IP"
+msgstr "空き IP に PING"
+
+#: hook.php:399 src/PingInfo.php:192
+msgid "Ping informations not available"
+msgstr "PING 情報がありません"
+
+#: hook.php:354 src/Ping_Equipment.php:127 src/Report.php:229
+#: src/Report.php:243 templates/pinginfo.html.twig:53
+msgid "Ping result"
+msgstr "PING 結果"
+
+#: src/Ping_Equipment.php:158
+msgid "Ping unavailable in cloud mode"
+msgstr ""
+
+#: src/Addressing.php:833 src/Addressing.php:894 src/Ping_Equipment.php:327
+#: src/Report.php:938 src/ReserveIp.php:221
+msgid "Ping: got a response - used IP"
+msgstr "PING : 応答あり - 使用中 IP"
+
+#: src/Addressing.php:839 src/Addressing.php:890 src/Ping_Equipment.php:324
+#: src/Report.php:1113 src/Report.php:1121 src/ReserveIp.php:214
+msgid "Ping: no response - free IP"
+msgstr "PING : 応答なし - 空き IP"
+
+#: front/config.form.php:49 front/config.php:49
+msgid "Please activate the plugin"
+msgstr "プラグインを有効にしてください"
+
+#: src/Addressing.php:1001
+msgid "Problem detected with the IP Range"
+msgstr "IP 範囲の認識で問題発生"
+
+#: front/addressing.form.php:60 front/addressing.form.php:95
+msgid "Problem when adding, required fields are not here"
+msgstr "追加できません。必要項目が未記入です"
+
+#: src/Addressing.php:993
+msgid "Real free IP (Ping=KO)"
+msgstr "実空き IP ( PING 応答なし )"
+
+#: src/Addressing.php:201 templates/addressing.html.twig:185
+#: templates/filter.html.twig:119
+msgid "Report for the IP Range"
+msgstr "IP 範囲のレポート"
+
+#: src/Report.php:231 src/Report.php:245
+msgid "Reservation"
+msgstr "予約"
+
+#: src/Report.php:456 src/Report.php:566 src/Report.php:765
+#: src/Report.php:1144
+msgid "Reserve IP"
+msgstr "IP を予約"
+
+#: src/Report.php:529 src/Report.php:598
+msgid "Reserved"
+msgstr "予約"
+
+#: src/Report.php:502 src/Report.php:549
+msgid "Reserved Address"
+msgstr "予約アドレス"
+
+#: src/Addressing.php:850 src/Addressing.php:878
+#: templates/addressing.html.twig:169 templates/config.html.twig:68
+msgid "Reserved IP"
+msgstr "予約 IP"
+
+#: src/Addressing.php:823 src/Addressing.php:874
+#: templates/addressing.html.twig:138 templates/config.html.twig:61
+msgid "Same IP"
+msgstr "重複 IP"
+
+#: templates/config.html.twig:109 templates/profile.html.twig:34
+msgctxt "button"
+msgid "Save"
+msgstr ""
+
+#: templates/reserveip.html.twig:185
+msgid "Status"
+msgstr ""
+
+#: src/Report.php:521 src/Report.php:968
+msgid "Success"
+msgstr "成功"
+
+#: templates/config.html.twig:83 templates/config.html.twig:97
+msgid "System for ping"
+msgstr "PING に使うシステム"
+
+#: front/reserveip.form.php:42
+msgid "The address has been reserved"
+msgstr "このアドレスは予約済みです"
+
+#: templates/addressing.html.twig:258
+msgid "The display of items depends on these criterias"
+msgstr "アイテムの表示はこれらの基準によって決まります"
+
+#: templates/filter.html.twig:76 templates/reserveip.html.twig:116
+msgid "Type"
+msgstr ""
+
+#: templates/addressing.html.twig:210
+msgid "Use Ping"
+msgstr "PING の使用"
+
+#: templates/config.html.twig:75
+msgid "Use Ping on IP ranges"
+msgstr ""
+
+#: src/Profile.php:60
+msgid "Use ping on equipment form"
+msgstr "機器のフォームで PING を使う"
+
+#: templates/addressing.html.twig:257
+msgid "Use the networks as filter"
+msgstr "ネットワークでフィルター"
