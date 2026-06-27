@@ -5,7 +5,7 @@
 The **Addressing** plugin lets you manage and visualise IP address ranges in GLPI.
 It generates reports showing, for every IP in a given network, whether it is assigned, free, reserved or duplicated. It also provides IP reservation, automatic ping checking and report export.
 
-- **License:** GPLv2+
+- **License:** GPLv3+
 - **Repository:** <https://github.com/pluginsGLPI/addressing>
 
 ---

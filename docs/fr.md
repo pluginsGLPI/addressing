@@ -5,7 +5,7 @@
 Le plugin **Addressing** permet de gérer et visualiser des plages d'adresses IP dans GLPI.
 Il génère des rapports indiquant, pour chaque IP d'un réseau donné, si elle est attribuée, libre, réservée ou en doublon. Il offre également la réservation d'IP, le ping automatique et l'export des rapports.
 
-- **Licence :** GPLv2+
+- **Licence :** GPLv3+
 - **Dépôt :** <https://github.com/pluginsGLPI/addressing>
 
 ---
