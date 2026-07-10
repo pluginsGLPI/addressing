@@ -54,6 +54,7 @@ class Config extends CommonDBTM
             '@addressing/config.html.twig',
             [
                 'id'       => 1,
+                'item'     => $this,
                 'config'   => $this->fields,
                 'is_cloud' => $is_cloud,
             ],
