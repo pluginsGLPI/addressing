@@ -49,7 +49,15 @@ if (!isset($_POST['ip']) || !filter_var($_POST["ip"], FILTER_VALIDATE_IP)) {
 
 $ip = $_POST['ip'];
 $itemtype = $_POST['itemtype'];
-$items_id = $_POST['items_id'];
+$items_id = (int) ($_POST['items_id'] ?? 0);
+
+// itemtype/items_id are caller-supplied and drive the PingInfo row written below.
+// Reject unknown classes and any item outside the caller's entity perimeter so the
+// endpoint cannot be used to enumerate or pollute ping data across the entity boundary.
+$item = getItemForItemtype($itemtype);
+if (!($item instanceof CommonDBTM) || !$item->can($items_id, READ)) {
+    throw new NotFoundHttpException();
+}
 
 $config = new Config();
 $config->getFromDB('1');

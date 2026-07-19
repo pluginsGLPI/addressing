@@ -312,9 +312,6 @@ function plugin_addressing_uninstall()
         $profileRight->deleteByCriteria(['name' => $right['field']]);
     }
 
-    //Remove rigth from $_SESSION['glpiactiveprofile'] if exists
-    Profile::removeRightsFromSession();
-
     Profile::removeRightsFromSession();
     CronTask::unregister("addressing");
     return true;

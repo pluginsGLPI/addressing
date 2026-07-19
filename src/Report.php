@@ -274,8 +274,12 @@ class Report extends CommonDBTM
                         foreach ($lines as $line) {
                             $row_num++;
                             $item_num = 1;
-                            $name = $line["dname"];
-                            $namep = $line["pname"];
+                            // Asset/port names are stored raw in DB and rendered through the
+                            // legacy HTMLSearchOutput::showItem(), which emits its value verbatim.
+                            // Escape here so a hostile asset/port name cannot inject markup into
+                            // the report (stored XSS across the entity/right boundary).
+                            $name = htmlspecialchars((string) $line["dname"], ENT_QUOTES, 'UTF-8');
+                            $namep = htmlspecialchars((string) $line["pname"], ENT_QUOTES, 'UTF-8');
                             // IP
                             if ($is_html_output) {
                                 if ($Addressing->fields["reserved_ip"] && strstr(
@@ -359,6 +363,7 @@ class Report extends CommonDBTM
                                     $user->fields["firstname"]
                                 );
 
+                                $username = htmlspecialchars((string) $username, ENT_QUOTES, 'UTF-8');
                                 if ($user->canView()) {
                                     $output_iduser = "<a href='" . $CFG_GLPI["root_doc"] . "/front/user.form.php?id="
                                         . $line["users_id"] . "'>" . $username . "</a>";
@@ -380,11 +385,12 @@ class Report extends CommonDBTM
 
                             // Mac
                             if ($line["id"]) {
+                                $mac = htmlspecialchars((string) $line["mac"], ENT_QUOTES, 'UTF-8');
                                 if ($item->canView()) {
                                     $output_mac = "<a href='" . $CFG_GLPI["root_doc"] . "/front/networkport.form.php?id="
-                                        . $line["id"] . "'>" . $line["mac"] . "</a>";
+                                        . $line["id"] . "'>" . $mac . "</a>";
                                 } else {
-                                    $output_mac = $line["mac"];
+                                    $output_mac = $mac;
                                 }
                                 if ($is_html_output) {
                                     $html_output .= $output::showItem($output_mac, $item_num, $row_num);
@@ -1011,7 +1017,7 @@ class Report extends CommonDBTM
                                     if ($is_html_output) {
                                         $html_output .= $output::showItem(
                                             '<input type="text" id="comment' . $num . '"
-                                 value="' . $comments . '">',
+                                 value="' . htmlspecialchars($comments, ENT_QUOTES, 'UTF-8') . '">',
                                             $item_num,
                                             $row_num,
                                             "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'"

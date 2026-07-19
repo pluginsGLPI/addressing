@@ -46,6 +46,11 @@ if (!isset($_GET["export"])) {
 }
 
 $addressing = new Addressing();
+// checkLoginUser() is not authorization on GLPI 11, and showReport() fetches the
+// record by an arbitrary id. Enforce the plugin READ right AND entity access on the
+// requested record before disclosing its IP report — otherwise any authenticated
+// user could read any entity's asset/IP inventory by incrementing the id.
+$addressing->check((int) ($_GET['id'] ?? 0), READ);
 $addressing->showReport($_GET);
 
 Html::footer();

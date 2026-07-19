@@ -32,6 +32,8 @@
 // ----------------------------------------------------------------------
 
 
+use Glpi\Exception\Http\AccessDeniedHttpException;
+use GlpiPlugin\Addressing\Addressing;
 use GlpiPlugin\Addressing\IpComment;
 use function Safe\json_encode;
 
@@ -40,16 +42,21 @@ Session::checkRight('plugin_addressing', UPDATE);
 header("Content-Type: application/json; charset=UTF-8");
 Html::header_nocache();
 
-if (!isset($_POST['addressing_id'])) {
+if (!isset($_POST['addressing_id'], $_POST['ipname'])) {
     echo json_encode(0);
-}
-if (!isset($_POST['ipname'])) {
-    echo json_encode(0);
+    return;
 }
 
-$addressing_id = $_POST['addressing_id'];
+$addressing_id = (int) $_POST['addressing_id'];
 $ipname        = $_POST['ipname'];
 $content       = $_POST['contentC'];
+
+// The global right is not entity-aware: confirm the caller may act on this
+// addressing range (entity perimeter) before writing an IP comment to it.
+$addressing = new Addressing();
+if ($addressing_id <= 0 || !$addressing->can($addressing_id, UPDATE)) {
+    throw new AccessDeniedHttpException();
+}
 
 $ipcomment = new IpComment();
 if ($ipcomment->getFromDBByCrit(['plugin_addressing_addressings_id' => $addressing_id, 'ipname' => $ipname])) {

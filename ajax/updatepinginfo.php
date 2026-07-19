@@ -32,6 +32,7 @@
 // ----------------------------------------------------------------------
 
 
+use Glpi\Exception\Http\AccessDeniedHttpException;
 use GlpiPlugin\Addressing\Addressing;
 use GlpiPlugin\Addressing\PingInfo;
 
@@ -39,15 +40,20 @@ Session::checkRight('plugin_addressing', UPDATE);
 header("Content-Type: application/json; charset=UTF-8");
 Html::header_nocache();
 
-Session::checkLoginUser();
-
 if (!isset($_POST['addressing_id'])) {
     echo 0;
+    return;
 }
-$addressing_id = $_POST['addressing_id'];
-$old_execution = ini_set("max_execution_time", "0");
+$addressing_id = (int) $_POST['addressing_id'];
+
+// The global right is not entity-aware: confirm the caller may act on this
+// addressing range (entity perimeter) before rewriting its ping information.
 $addressing = new Addressing();
-$addressing->getFromDB($addressing_id);
+if ($addressing_id <= 0 || !$addressing->can($addressing_id, UPDATE)) {
+    throw new AccessDeniedHttpException();
+}
+
+$old_execution = ini_set("max_execution_time", "0");
 $pingInfo = new PingInfo();
 $pingInfo->updateAnAddressing($addressing);
 ini_set("max_execution_time", $old_execution);
