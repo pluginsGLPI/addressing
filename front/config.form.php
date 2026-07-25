@@ -27,6 +27,7 @@
  --------------------------------------------------------------------------
  */
 
+use Glpi\Application\View\TemplateRenderer;
 use GlpiPlugin\Addressing\Addressing;
 use GlpiPlugin\Addressing\Config;
 
@@ -44,8 +45,9 @@ if (Plugin::isPluginActive("addressing")) {
         Html::footer();
     }
 } else {
-    Html::header(__('Setup'), '', "config", "plugins");
-    echo "<div class='alert alert-important alert-warning d-flex'>";
-    echo "<b>".__('Please activate the plugin', 'addressing')."</b></div>";
+    Html::header(__s('Setup'), '', "config", "plugin");
+    TemplateRenderer::getInstance()->display('@addressing/plugin_inactive.html.twig', [
+        'message' => __('Please activate the plugin', 'addressing'),
+    ]);
     Html::footer();
 }

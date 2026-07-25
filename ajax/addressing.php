@@ -27,6 +27,8 @@
  --------------------------------------------------------------------------
  */
 
+use Glpi\Exception\Http\AccessDeniedHttpException;
+use GlpiPlugin\Addressing\Addressing;
 use GlpiPlugin\Addressing\Filter;
 use GlpiPlugin\Addressing\Ping_Equipment;
 use GlpiPlugin\Addressing\ReserveIp;
@@ -39,31 +41,56 @@ header("Content-Type: text/html; charset=UTF-8");
 
 if (isset($_GET['action']) && $_GET['action'] == 'isName') {
     header("Content-Type: application/json; charset=UTF-8");
-    $item = getItemForItemtype($_GET['type'] ?? '');
-    if ($item === false) {
+
+    // type/name are attacker-controlled ($_GET). Restrict the itemtype to the plugin's
+    // supported network port types, require the caller to hold READ on that itemtype and
+    // scope the search to the caller's entities, otherwise this endpoint becomes a
+    // cross-itemtype / cross-entity existence oracle for any authenticated plugin user.
+    $type = $_GET['type'] ?? '';
+    $item = in_array($type, Addressing::getTypes(true), true) ? getItemForItemtype($type) : false;
+
+    if (!($item instanceof CommonDBTM) || !$item->canView()) {
         echo json_encode(false);
     } else {
-        $datas = $item->find(['name' => ['LIKE', $_GET['name']]]);
+        $criteria = ['name' => ['LIKE', $_GET['name'] ?? '']];
+        if ($item->isEntityAssign()) {
+            $criteria = array_merge(
+                $criteria,
+                Session::getEntitiesRestrictCriteria($item->getTable(), '', '', $item->maybeRecursive())
+            );
+        }
+        $datas = $item->find($criteria);
         echo json_encode(count($datas) > 0);
     }
 } else if (isset($_POST['action']) && $_POST['action'] == 'viewFilter') {
     if (isset($_POST['items_id'])
        && isset($_POST["id"])) {
         $filter = new Filter();
+        // 'id' is -1 for the "add" form and a real filter id for the "edit" form:
+        // require CREATE for a new filter, READ for an existing one, entity-aware.
+        $filter_id = (int) $_POST['id'];
+        $filter->check($filter_id, $filter_id > 0 ? READ : CREATE, $_POST);
         $filter->showForm($_POST["id"], ['items_id' => $_POST['items_id']]);
     } else {
-        echo __('Access denied');
+        throw new AccessDeniedHttpException();
     }
 } elseif (isset($_POST['action']) && $_POST['action'] == 'entities_networkip') {
-
+    if (!Session::haveAccessToEntity((int) $_POST['entities_id'])) {
+        throw new AccessDeniedHttpException();
+    }
     IPNetwork::showIPNetworkProperties($_POST['entities_id']);
 } elseif (isset($_POST['action']) && $_POST['action'] == 'entities_location') {
-
+    if (!Session::haveAccessToEntity((int) $_POST['entities_id'])) {
+        throw new AccessDeniedHttpException();
+    }
     echo __('Location');
     Dropdown::show('Location', ['name'   => "locations_id",
         'value'  => $_POST["value"],
         'entity' => $_POST['entities_id']]);
 } elseif (isset($_POST['action']) && $_POST['action'] == 'entities_fqdn') {
+    if (!Session::haveAccessToEntity((int) $_POST['entities_id'])) {
+        throw new AccessDeniedHttpException();
+    }
     echo __('FQDN');
     Dropdown::show('FQDN', ['name'   => "fqdns_id",
         'value'  => $_POST["value"],

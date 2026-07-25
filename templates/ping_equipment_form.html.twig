@@ -1,0 +1,70 @@
+{#
+ -------------------------------------------------------------------------
+ addressing plugin for GLPI
+ Copyright (C) 2016-2026 by the addressing Development Team.
+
+ https://github.com/pluginsGLPI/addressing
+ -------------------------------------------------------------------------
+
+ LICENSE
+
+ This file is part of addressing.
+
+ addressing is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 3 of the License, or
+ (at your option) any later version.
+
+ addressing is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with addressing. If not, see <http://www.gnu.org/licenses/>.
+ --------------------------------------------------------------------------
+ #}
+
+<table class='tab_cadre_fixe'>
+    <tr class='tab_bg_2 left'>
+        <th colspan='3'>{{ __('IP ping', 'addressing') }}</th>
+        <th>
+            <i class='btn btn-sm btn-light ti ti-circle-x' onclick='$("#ping_item").hide();'></i>
+        </th>
+    </tr>
+    {% if list_ip|length > 0 %}
+        <tr class='tab_bg_1'>
+            <td>{{ __('IP') }} : </td>
+            <td colspan='3'>
+                <select style='width:200px' class='form-select' id='ip'>
+                    <option>{{ empty_value }}</option>
+                    {% for ip, label in list_ip %}
+                        <option value="{{ ip }}">{{ label }}</option>
+                    {% endfor %}
+                </select>
+                &nbsp;<input class='submit btn btn-primary' type='button'
+                              value='{{ __('IP ping', 'addressing') }}' id='ping_ip'>
+            </td>
+        </tr>
+        <tr class='tab_bg_1'>
+            <td>{{ __('Ping result', 'addressing') }} : </td>
+            <td colspan='3'>
+                <div id='ping_response' class='plugin_addressing_ping_equipment'></div>
+            </td>
+        </tr>
+    {% endif %}
+</table>
+
+<script type='text/javascript'>
+    $(document).on('click', '#ping_ip', function(event) {
+        $('#ping_response').load('{{ config('root_doc') }}/plugins/addressing/ajax/ping.php', {
+            'ip': $('#ip').val(),
+            'itemtype': '{{ itemtype|e('js') }}',
+            'items_id': {{ items_id }}
+        });
+    });
+</script>
+
+{% if list_ip|length == 0 %}
+    {{ __('No IP for this equipment', 'addressing') }}
+{% endif %}

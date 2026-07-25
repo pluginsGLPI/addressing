@@ -1,0 +1,337 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Parameter \#2 \$force of method CommonDBTM\:\:delete\(\) expects bool, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: front/addressing.form.php
+
+		-
+			message: '#^Parameter \#2 \$force of method CommonDBTM\:\:delete\(\) expects bool, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: front/filter.form.php
+
+		-
+			message: '#^Function plugin_addressing_addOrderBy\(\) should return string but return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: hook.php
+
+		-
+			message: '#^Missing PHPDoc tag @var for global variable \$INJECTABLE_TYPES$#'
+			identifier: glpi.missingGlobalVarType
+			count: 1
+			path: hook.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: hook.php
+
+		-
+			message: '#^Call to an undefined method CommonGLPI\:\:showReport\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Addressing.php
+
+		-
+			message: '#^Comparison operation "\>" between 0 and 0 is always false\.$#'
+			identifier: greater.alwaysFalse
+			count: 1
+			path: src/Addressing.php
+
+		-
+			message: '#^Instantiating an object from an unrestricted dynamic string is forbidden \(see https\://github\.com/glpi\-project/phpstan\-glpi\?tab\=readme\-ov\-file\#forbiddynamicinstantiationrule\)\.$#'
+			identifier: glpi.forbidDynamicInstantiation
+			count: 2
+			path: src/Addressing.php
+
+		-
+			message: '#^Method GlpiPlugin\\Addressing\\Addressing\:\:cleanDBonPurge\(\) has invalid return type GlpiPlugin\\Addressing\\nothing\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Addressing.php
+
+		-
+			message: '#^Method GlpiPlugin\\Addressing\\Addressing\:\:cleanDBonPurge\(\) should return GlpiPlugin\\Addressing\\nothing but return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: src/Addressing.php
+
+		-
+			message: '#^PHPDoc tag @param has invalid value \(value the selected value\)\: Unexpected token "the", expected variable at offset 152 on line 5$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: src/Addressing.php
+
+		-
+			message: '#^PHPDoc tag @throws with type GlpitestSQLError is not subtype of Throwable$#'
+			identifier: throws.notThrowable
+			count: 1
+			path: src/Addressing.php
+
+		-
+			message: '#^Undefined variable\: \$entities$#'
+			identifier: variable.undefined
+			count: 2
+			path: src/Addressing.php
+
+		-
+			message: '#^Undefined variable\: \$type_filter$#'
+			identifier: variable.undefined
+			count: 3
+			path: src/Addressing.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: src/Addressing.php
+
+		-
+			message: '#^Variable \$entities in isset\(\) is never defined\.$#'
+			identifier: isset.variable
+			count: 2
+			path: src/Addressing.php
+
+		-
+			message: '#^Variable \$type_filter in isset\(\) is never defined\.$#'
+			identifier: isset.variable
+			count: 4
+			path: src/Addressing.php
+
+		-
+			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: src/Addressing.php
+
+		-
+			message: '#^PHPDoc tag @param has invalid value \(array\| \$options\)\: Unexpected token "\$options", expected type at offset 152 on line 5$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: src/AddressingInjection.php
+
+		-
+			message: '#^PHPDoc tag @param has invalid value \(array\| \$values\)\: Unexpected token "\$values", expected type at offset 123 on line 4$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: src/AddressingInjection.php
+
+		-
+			message: '#^Method GlpiPlugin\\Addressing\\Config\:\:showForm\(\) should return bool but return statement is missing\.$#'
+			identifier: return.missing
+			count: 1
+			path: src/Config.php
+
+		-
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 2
+			path: src/Config.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between ''TARBALL'' and ''CLOUD'' will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 2
+			path: src/Config.php
+
+		-
+			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: src/Config.php
+
+		-
+			message: '#^Access to an undefined property CommonGLPI\:\:\$fields\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Filter.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: src/Filter.php
+
+		-
+			message: '#^Right side of && is always true\.$#'
+			identifier: booleanAnd.rightAlwaysTrue
+			count: 2
+			path: src/Filter.php
+
+		-
+			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: src/Filter.php
+
+		-
+			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: src/IpComment.php
+
+		-
+			message: '#^Parameter \#2 \$right of static method Session\:\:haveRight\(\) expects int, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/PingInfo.php
+
+		-
+			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: src/PingInfo.php
+
+		-
+			message: '#^Instantiating an object from an unrestricted dynamic string is forbidden \(see https\://github\.com/glpi\-project/phpstan\-glpi\?tab\=readme\-ov\-file\#forbiddynamicinstantiationrule\)\.$#'
+			identifier: glpi.forbidDynamicInstantiation
+			count: 1
+			path: src/Ping_Equipment.php
+
+		-
+			message: '#^Method GlpiPlugin\\Addressing\\Ping_Equipment\:\:getHostnameByPing\(\) should return array but returns string\.$#'
+			identifier: return.type
+			count: 2
+			path: src/Ping_Equipment.php
+
+		-
+			message: '#^Method GlpiPlugin\\Addressing\\Ping_Equipment\:\:ping\(\) should return array but returns false\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Ping_Equipment.php
+
+		-
+			message: '#^Method GlpiPlugin\\Addressing\\Ping_Equipment\:\:ping\(\) should return array but returns true\.$#'
+			identifier: return.type
+			count: 5
+			path: src/Ping_Equipment.php
+
+		-
+			message: '#^PHPDoc tag @param references unknown parameter\: \$id_addressing$#'
+			identifier: parameter.notFound
+			count: 1
+			path: src/Ping_Equipment.php
+
+		-
+			message: '#^Parameter \$ip of method GlpiPlugin\\Addressing\\Ping_Equipment\:\:showIPForm\(\) has invalid type GlpiPlugin\\Addressing\\type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Ping_Equipment.php
+
+		-
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 2
+			path: src/Ping_Equipment.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between ''TARBALL'' and ''CLOUD'' will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 2
+			path: src/Ping_Equipment.php
+
+		-
+			message: '#^Variable \$nb in isset\(\) always exists and is not nullable\.$#'
+			identifier: isset.variable
+			count: 5
+			path: src/Ping_Equipment.php
+
+		-
+			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: src/Ping_Equipment.php
+
+		-
+			message: '#^Call to an undefined method CommonGLPI\:\:getField\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Profile.php
+
+		-
+			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: src/Profile.php
+
+		-
+			message: '#^If condition is always false\.$#'
+			identifier: if.alwaysFalse
+			count: 1
+			path: src/Report.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 2
+			path: src/Report.php
+
+		-
+			message: '#^Instantiating an object from an unrestricted dynamic string is forbidden \(see https\://github\.com/glpi\-project/phpstan\-glpi\?tab\=readme\-ov\-file\#forbiddynamicinstantiationrule\)\.$#'
+			identifier: glpi.forbidDynamicInstantiation
+			count: 1
+			path: src/Report.php
+
+		-
+			message: '#^Parameter \#1 \$odd of static method GlpiPlugin\\Addressing\\Report\:\:showNewLine\(\) expects bool, int\<0, 1\>\|string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Report.php
+
+		-
+			message: '#^Parameter \#1 \$odd of static method GlpiPlugin\\Addressing\\Report\:\:showNewLine\(\) expects bool, string given\.$#'
+			identifier: argument.type
+			count: 4
+			path: src/Report.php
+
+		-
+			message: '#^Right side of && is always true\.$#'
+			identifier: booleanAnd.rightAlwaysTrue
+			count: 4
+			path: src/Report.php
+
+		-
+			message: '#^Static method Glpi\\Search\\Output\\HTMLSearchOutput\:\:showEndLine\(\) invoked with 1 parameter, 0 required\.$#'
+			identifier: arguments.count
+			count: 5
+			path: src/Report.php
+
+		-
+			message: '#^Variable \$params in isset\(\) always exists and is not nullable\.$#'
+			identifier: isset.variable
+			count: 8
+			path: src/Report.php
+
+		-
+			message: '#^Variable \$ping_date might not be defined\.$#'
+			identifier: variable.undefined
+			count: 2
+			path: src/Report.php
+
+		-
+			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: src/Report.php
+
+		-
+			message: '#^Instantiating an object from an unrestricted dynamic string is forbidden \(see https\://github\.com/glpi\-project/phpstan\-glpi\?tab\=readme\-ov\-file\#forbiddynamicinstantiationrule\)\.$#'
+			identifier: glpi.forbidDynamicInstantiation
+			count: 1
+			path: src/ReserveIp.php
+
+		-
+			message: '#^PHPDoc tag @return has invalid value \(\)\: Unexpected token "\\n     ", expected type at offset 71 on line 6$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: src/ReserveIp.php
+
+		-
+			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
+			identifier: glpi.forbidExit
+			count: 1
+			path: src/ReserveIp.php

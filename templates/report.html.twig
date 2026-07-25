@@ -1,0 +1,162 @@
+{#
+ -------------------------------------------------------------------------
+ addressing plugin for GLPI
+ Copyright (C) 2016-2026 by the addressing Development Team.
+
+ https://github.com/pluginsGLPI/addressing
+ -------------------------------------------------------------------------
+
+ LICENSE
+
+ This file is part of addressing.
+
+ addressing is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 3 of the License, or
+ (at your option) any later version.
+
+ addressing is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with addressing. If not, see <http://www.gnu.org/licenses/>.
+ --------------------------------------------------------------------------
+ #}
+
+<div class='spaced'>
+    <table class='tab_cadre_fixe'>
+        <tr class='tab_bg_2 left'>
+            <td class='alert alert-info'>
+                {% if free == 1 %}
+                    {{ __('Number of free IP', 'addressing') }} {{ nbipf }}<br>
+                {% endif %}
+                {% if reserved == 1 %}
+                    {{ __('Number of reserved IP', 'addressing') }} {{ nbipr }}<br>
+                {% endif %}
+                {% if alloted == 1 %}
+                    {{ __('Number of assigned IP (no doubles)', 'addressing') }} {{ nbipt }}<br>
+                {% endif %}
+                {% if doubles == 1 %}
+                    {{ __('Number of doubles IP', 'addressing') }} {{ nbipd }}<br>
+                {% endif %}
+            </td>
+            <td style='padding: 10px;margin: 10px;'>
+                <table class='netport-legend'>
+                    <tr><th colspan='4'>{{ __('Caption') }}</th></tr>
+                    <tr>
+                        {% if doubles == 1 %}
+                            <td class='legend_addressing plugin_addressing_ip_double'>{{ __('Same IP', 'addressing') }}</td>&nbsp;
+                        {% endif %}
+                        {% if use_ping %}
+                            {% if ping_off == 1 %}
+                                <td class='legend_addressing plugin_addressing_ping_off'>{{ __('Ping: got a response - used IP', 'addressing') }}</td>&nbsp;
+                            {% endif %}
+                            {% if ping_on == 1 %}
+                                <td class='legend_addressing plugin_addressing_ping_on'>{{ __('Ping: no response - free IP', 'addressing') }}</td>&nbsp;
+                            {% endif %}
+                        {% else %}
+                            <td class='legend_addressing plugin_addressing_ip_free'>{{ __('Free IP', 'addressing') }}</td>&nbsp;
+                        {% endif %}
+                        {% if reserved == 1 %}
+                            <td class='legend_addressing plugin_addressing_ip_reserved'>{{ __('Reserved IP', 'addressing') }}</td>&nbsp;
+                        {% endif %}
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<form method='post' name='filtering_form' id='filtering_form' action='{{ form_url }}?id={{ id }}'>
+    <table class='tab_cadre_fixe'>
+        <tr class='tab_bg_2 center'>
+            <input type="hidden" name="id" value="{{ id }}">
+
+            <tr class='tab_bg_1 center'>
+                <td>{{ __('Assigned IP', 'addressing') }}</td>
+                <td>{{ switch_alloted|raw }}</td>
+
+                <td>{{ __('Same IP', 'addressing') }}</td>
+                <td>{{ switch_doubles|raw }}</td>
+
+                <td>{{ __('Reserved IP', 'addressing') }}</td>
+                <td>{{ switch_reserved|raw }}</td>
+
+                <td>{{ __('Free IP', 'addressing') }}</td>
+                <td>{{ switch_free|raw }}</td>
+            </tr>
+
+            {% if use_ping %}
+                <tr class='tab_bg_1 center'>
+                    <td>{{ __('Ping: no response - free IP', 'addressing') }}</td>
+                    <td>{{ switch_ping_on|raw }}</td>
+
+                    <td>{{ __('Ping: got a response - used IP', 'addressing') }}</td>
+                    <td>{{ switch_ping_off|raw }}</td>
+
+                    <td class='center' colspan='4'>
+                        <button form='' type='submit' id='updatePingInfo'
+                                class='submit btn btn-primary me-2 center' name='updatePingInfo'
+                                title='{{ _x('button', 'Manual launch of ping', 'addressing') }}'>
+                            <i class='ti ti-refresh' data-hasqtip='0' aria-hidden='true'></i>&nbsp;
+                            {{ _x('button', 'Manual launch of ping', 'addressing') }}
+                        </button>
+                    </td>
+                </tr>
+            {% endif %}
+
+            {% if has_filters %}
+                <tr class='tab_bg_1 center'>
+                    <td colspan='4'>{{ _n('Filter', 'Filters', 2, 'addressing') }}</td>
+                    <td colspan='4'>{{ filter_dropdown|raw }}</td>
+                </tr>
+            {% endif %}
+
+            <tr class='tab_bg_1 center'>
+                <td colspan='8'>{{ search_button|raw }}</td>
+            </tr>
+        </tr>
+    </table>
+
+    {{ close_form|raw }}
+
+    <script type='text/javascript'>
+        $('#updatePingInfo').click(function() {
+            var addressing_id = {{ id }};
+
+            $('#ajax_loader').show();
+            $.ajax({
+                url: '{{ config('root_doc') }}/plugins/addressing/ajax/updatepinginfo.php',
+                type: 'POST',
+                data: {'addressing_id': addressing_id},
+                success: function(response) {
+                    $('#ajax_loader').hide();
+                    if (response == 1) {
+                        document.location.reload();
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr);
+                    console.log(status);
+                    console.log(error);
+                }
+            });
+        });
+    </script>
+
+    <div id='ajax_loader' class="ajax_loader hidden"></div>
+
+    {{ pager_html|raw }}
+
+    {{ report_html|raw }}
+
+    {% if total_realfreeip is not null %}
+        <table class='tab_cadre_fixe'>
+            <tr class='tab_bg_2 center'>
+                <td>{{ __('Real free IP (Ping=KO)', 'addressing') }} {{ total_realfreeip }}</td>
+            </tr>
+        </table>
+    {% endif %}
+</div>

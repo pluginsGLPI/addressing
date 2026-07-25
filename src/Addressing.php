@@ -243,13 +243,11 @@ class Addressing extends CommonDBTM
             if (strstr($num, "begin_ip")) {
                 if ($value > 255 || !is_numeric($value) || strstr($value, ".")) {
                     $count++;
-                    $a_input[$num] = "<span color='#ff0000'>" . $a_input[$num] . "</span>";
                 }
             }
             if (strstr($num, "end_ip")) {
                 if ($value > 255 || !is_numeric($value) || strstr($value, ".")) {
                     $count++;
-                    $a_input[$num] = "<span color='#ff0000'>" . $a_input[$num] . "</span>";
                 }
             }
         }
@@ -257,14 +255,22 @@ class Addressing extends CommonDBTM
         if ($count == '0') {
             return true;
         } else {
+            // The raw octets are attacker-controlled ($_POST) and rendered through
+            // Session::addMessageAfterRedirect(), which outputs its message as raw HTML.
+            // Escape them so an invalid-IP submission cannot inject markup/script into the
+            // error message shown after redirect (reflected XSS).
             Session::addMessageAfterRedirect("<span color='#ff0000'>" . __('Invalid data !!', 'addressing')
                 . "</span><br/>"
                 . __('First IP', 'addressing') . " : "
-                . $a_input['begin_ip0'] . "." . $a_input['begin_ip1'] . "."
-                . $a_input['begin_ip2'] . "." . $a_input['begin_ip3'] . "<br/>"
+                . htmlspecialchars((string) ($a_input['begin_ip0'] ?? ''), ENT_QUOTES, 'UTF-8') . "."
+                . htmlspecialchars((string) ($a_input['begin_ip1'] ?? ''), ENT_QUOTES, 'UTF-8') . "."
+                . htmlspecialchars((string) ($a_input['begin_ip2'] ?? ''), ENT_QUOTES, 'UTF-8') . "."
+                . htmlspecialchars((string) ($a_input['begin_ip3'] ?? ''), ENT_QUOTES, 'UTF-8') . "<br/>"
                 . __('Last IP', 'addressing') . " : "
-                . $a_input['end_ip0'] . "." . $a_input['end_ip1'] . "."
-                . $a_input['end_ip2'] . "." . $a_input['end_ip3'], false, ERROR);
+                . htmlspecialchars((string) ($a_input['end_ip0'] ?? ''), ENT_QUOTES, 'UTF-8') . "."
+                . htmlspecialchars((string) ($a_input['end_ip1'] ?? ''), ENT_QUOTES, 'UTF-8') . "."
+                . htmlspecialchars((string) ($a_input['end_ip2'] ?? ''), ENT_QUOTES, 'UTF-8') . "."
+                . htmlspecialchars((string) ($a_input['end_ip3'] ?? ''), ENT_QUOTES, 'UTF-8'), false, ERROR);
             return false;
         }
     }
@@ -734,272 +740,187 @@ class Addressing extends CommonDBTM
             }
         }
 
-        if ($this->getFromDB($id)) {
-            $addressingFilter = new Filter();
-            if ($filter > 0) {
-                if ($addressingFilter->getFromDB($filter)) {
-                    $ipdeb = sprintf("%u", ip2long($addressingFilter->fields['begin_ip']));
-                    $ipfin = sprintf("%u", ip2long($addressingFilter->fields['end_ip']));
+        if (!$this->getFromDB($id)) {
+            TemplateRenderer::getInstance()->display('@addressing/report_invalid.html.twig');
+            return;
+        }
 
-                    $result = $this->compute($start, [
-                        'ipdeb' => $ipdeb,
-                        'ipfin' => $ipfin,
-                        'entities' => $addressingFilter->fields['entities_id'],
-                        'type_filter' => $addressingFilter->fields['type'],
-                    ]);
-                }
-            } else {
-                $ipdeb = sprintf("%u", ip2long($this->fields["begin_ip"]));
-                $ipfin = sprintf("%u", ip2long($this->fields["end_ip"]));
+        $addressingFilter = new Filter();
+        if ($filter > 0) {
+            if ($addressingFilter->getFromDB($filter)) {
+                $ipdeb = sprintf("%u", ip2long($addressingFilter->fields['begin_ip']));
+                $ipfin = sprintf("%u", ip2long($addressingFilter->fields['end_ip']));
+
                 $result = $this->compute($start, [
                     'ipdeb' => $ipdeb,
                     'ipfin' => $ipfin,
+                    'entities' => $addressingFilter->fields['entities_id'],
+                    'type_filter' => $addressingFilter->fields['type'],
                 ]);
             }
+        } else {
+            $ipdeb = sprintf("%u", ip2long($this->fields["begin_ip"]));
+            $ipfin = sprintf("%u", ip2long($this->fields["end_ip"]));
+            $result = $this->compute($start, [
+                'ipdeb' => $ipdeb,
+                'ipfin' => $ipfin,
+            ]);
+        }
 
-            $nbipf = 0; // ip libres
-            $nbipr = 0; // ip reservees
-            $nbipt = 0; // ip trouvees
-            $nbipd = 0; // doublons
+        $nbipf = 0; // ip libres
+        $nbipr = 0; // ip reservees
+        $nbipt = 0; // ip trouvees
+        $nbipd = 0; // doublons
 
-            foreach ($result as $ip => $lines) {
-                if (count($lines)) {
-                    if (count($lines) > 1) {
-                        $nbipd++;
-                        if (!$this->fields['double_ip']
-                            || (isset($params['seedoubleip']) && $params['seedoubleip'] == 0)) {
-                            unset($result[$ip]);
-                        }
+        foreach ($result as $ip => $lines) {
+            if (count($lines)) {
+                if (count($lines) > 1) {
+                    $nbipd++;
+                    if (!$this->fields['double_ip']
+                        || (isset($params['seedoubleip']) && $params['seedoubleip'] == 0)) {
+                        unset($result[$ip]);
                     }
-                    if ((isset($lines[0]['pname']) && strstr($lines[0]['pname'], "reserv"))) {
-                        $nbipr++;
-                        if (!$this->fields['alloted_ip']
-                            || (isset($params['seereservedip']) && $params['seereservedip'] == 0)) {
-                            unset($result[$ip]);
-                        }
-                    }
-                    $nbipt++;
+                }
+                if ((isset($lines[0]['pname']) && strstr($lines[0]['pname'], "reserv"))) {
+                    $nbipr++;
                     if (!$this->fields['alloted_ip']
-                        || (isset($params['seeallotedip']) && $params['seeallotedip'] == 0)) {
-                        unset($result[$ip]);
-                    }
-                } else {
-                    $nbipf++;
-                    if (!$this->fields['free_ip'] || (isset($params['seefreeip']) && $params['seefreeip'] == 0)) {
+                        || (isset($params['seereservedip']) && $params['seereservedip'] == 0)) {
                         unset($result[$ip]);
                     }
                 }
-            }
-
-            ////title
-            echo "<div class='spaced'>";
-            echo "<table class='tab_cadre_fixe'><tr class='tab_bg_2 left'>";
-            echo "<td class='alert alert-info'>";
-            $free = $params['seefreeip'] ?? $this->fields['free_ip'];
-            if ($free == 1) {
-                echo __('Number of free IP', 'addressing') . " " . $nbipf . "<br>";
-            }
-            $reserved = $params['seereservedip'] ?? $this->fields['reserved_ip'];
-            if ($reserved == 1) {
-                echo __('Number of reserved IP', 'addressing') . " " . $nbipr . "<br>";
-            }
-            $alloted = $params['seeallotedip'] ?? $this->fields['alloted_ip'];
-            if ($alloted == 1) {
-                echo __('Number of assigned IP (no doubles)', 'addressing') . " " . $nbipt . "<br>";
-            }
-            $doubles = $params['seedoubleip'] ?? $this->fields['double_ip'];
-            if ($doubles == 1) {
-                echo __('Number of doubles IP', 'addressing') . " " . $nbipd . "<br>";
-            }
-            echo "</td>";
-            echo "<td style='padding: 10px;margin: 10px;'>";
-
-            echo "<table class='netport-legend'>";
-            echo "<tr><th colspan='4'>" . __('Caption') . "</th></tr>";
-
-            echo "<tr>";
-            if ($doubles == 1) {
-                echo "<td class='legend_addressing plugin_addressing_ip_double'>" . __(
-                    'Same IP',
-                    'addressing'
-                ) . "</td>&nbsp;";
-            }
-            $ping_off = 1;
-            $ping_on = 1;
-            if (isset($this->fields['use_ping']) && $this->fields['use_ping']) {
-                $ping_off = $params['ping_off'] ?? $ping_off;
-                if ($ping_off == 1) {
-                    echo "<td class='legend_addressing plugin_addressing_ping_off'>"
-                        . __('Ping: got a response - used IP', 'addressing')
-                        . "</td>&nbsp;";
-                }
-                $ping_on = $params['ping_on'] ?? $ping_on;
-                if ($ping_on == 1) {
-                    echo "<td class='legend_addressing plugin_addressing_ping_on'>"
-                        . __('Ping: no response - free IP', 'addressing')
-                        . "</td>&nbsp;";
+                $nbipt++;
+                if (!$this->fields['alloted_ip']
+                    || (isset($params['seeallotedip']) && $params['seeallotedip'] == 0)) {
+                    unset($result[$ip]);
                 }
             } else {
-                echo "<td class='legend_addressing plugin_addressing_ip_free'>" . __(
-                    'Free IP',
-                    'addressing'
-                ) . "</td>&nbsp;";
+                $nbipf++;
+                if (!$this->fields['free_ip'] || (isset($params['seefreeip']) && $params['seefreeip'] == 0)) {
+                    unset($result[$ip]);
+                }
             }
-            if ($reserved == 1) {
-                echo "<td class='legend_addressing plugin_addressing_ip_reserved'>" . __(
-                    'Reserved IP',
-                    'addressing'
-                ) . "</td>&nbsp;";
-            }
-            echo "</td></tr>";
-            echo "</table>";
-
-            echo "</td></tr>";
-            echo "</table>";
-            echo "</div>";
-
-            ////////////////////////// research ////////////////////////////////////////////////////////////
-            echo "<form method='post' name='filtering_form' id='filtering_form' action='" . Toolbox::getItemTypeFormURL(
-                Addressing::class
-            ) . "?id=$id'>";
-            echo "<table class='tab_cadre_fixe'><tr class='tab_bg_2 center'>";
-
-            echo Html::hidden('id', ['value' => $id]);
-
-            echo "<tr class='tab_bg_1 center'>";
-            echo "<td>" . __('Assigned IP', 'addressing') . "</td><td>";
-            self::showSwitchField('seeallotedip', $alloted);
-            echo "</td>";
-
-            echo "<td>" . __('Same IP', 'addressing') . "</td><td>";
-            self::showSwitchField('seedoubleip', $doubles);
-            echo "</td>";
-
-            echo "<td>" . __('Reserved IP', 'addressing') . "</td><td>";
-            self::showSwitchField('seereservedip', $reserved);
-            echo "</td>";
-
-            echo "<td>" . __('Free IP', 'addressing') . "</td><td>";
-            self::showSwitchField('seefreeip', $free);
-            echo "</td>";
-
-            echo "</tr>";
-
-            if (isset($this->fields['use_ping']) && $this->fields['use_ping']) {
-                echo "<tr class='tab_bg_1 center'>";
-                echo "<td>" . __('Ping: no response - free IP', 'addressing') . "</td><td>";
-                self::showSwitchField('ping_on', $ping_on);
-                echo "</td>";
-
-                echo "<td>" . __('Ping: got a response - used IP', 'addressing') . "</td><td>";
-                self::showSwitchField('ping_off', $ping_off);
-                echo "</td>";
-
-                echo "<td class='center' colspan='4'>";
-                echo "<button form='' type='submit' id='updatePingInfo' class='submit btn btn-primary me-2 center'
-                name='updatePingInfo' title='" . _sx(
-                    'button',
-                    'Manual launch of ping',
-                    'addressing'
-                ) . "'>";
-                echo "<i class='ti ti-refresh' data-hasqtip='0' aria-hidden='true'></i>&nbsp;";
-                echo _sx('button', 'Manual launch of ping', 'addressing');
-                echo "</button>";
-                echo "</td>";
-
-                echo "</tr>";
-            }
-            $filter_list = new Filter();
-            $datas = $filter_list->find(['plugin_addressing_addressings_id' => $id]);
-            if (count($datas) > 0) {
-                echo "<tr class='tab_bg_1 center'>";
-                echo "<td colspan='4'>";
-                echo _n('Filter', 'Filters', 2, 'addressing');
-                echo "</td>";
-                echo "<td colspan='4'>";
-                Filter::dropdownFilters($params['id'], $filter);
-                echo "</td>";
-            }
-            echo "<tr class='tab_bg_1 center'>";
-            echo "<td colspan='8'>";
-            echo Html::submit(_sx('button', 'Search'), ['name' => 'search', 'class' => 'btn btn-primary me-2']);
-            echo "</td>";
-            echo "</td></tr>";
-            echo "</table>";
-
-            Html::closeForm();
-
-            echo "<script>
-                          $('#updatePingInfo').click(function() {
-                             var addressing_id = {$this->getID()};
-
-
-
-                             $('#ajax_loader').show();
-                             $.ajax({
-                                url: '/plugins/addressing/ajax/updatepinginfo.php',
-                                   type: 'POST',
-                                   data: {'addressing_id' : addressing_id},
-                                   success: function(response){
-                                       $('#ajax_loader').hide();
-                                       if (response == 1) {
-                                          document.location.reload();
-                                       }
-                                    },
-                                   error: function(xhr, status, error) {
-                                      console.log(xhr);
-                                      console.log(status);
-                                      console.log(error);
-                                    }
-                                });
-                          });
-                        </script>";
-
-            echo "<div id='ajax_loader' class=\"ajax_loader hidden\">";
-            echo "</div>";
-
-            $numrows = count($result);
-            //         $numrows = 1 + ip2long($this->fields['end_ip']) - ip2long($this->fields['begin_ip']);
-            $result = array_slice($result, $start, $_SESSION["glpilist_limit"]);
-
-            Html::printPager(
-                $start,
-                $numrows,
-                self::getFormURL(),
-                Toolbox::append_params(
-                    [
-                        'id' => $id,
-                        'ping_on' => $ping_on,
-                        'ping_off' => $ping_off,
-                        'filter' => $filter,
-                        'seeallotedip' => $alloted,
-                        'seedoubleip' => $doubles,
-                        'seereservedip' => $reserved,
-                        'seefreeip' => $free,
-                    ]
-                ),
-                Report::class
-            );
-
-
-            //////////////////////////liste ips////////////////////////////////////////////////////////////
-            $ping_status = [$ping_off, $ping_on];
-            $ping_response = $Report->displayReport($result, $this, $ping_status);
-
-            if ($this->fields['use_ping']) {
-                $total_realfreeip = $nbipf - $ping_response;
-                echo "<table class='tab_cadre_fixe'><tr class='tab_bg_2 center'>";
-                echo "<td>";
-                echo __('Real free IP (Ping=KO)', 'addressing') . " " . $total_realfreeip;
-                echo "</td></tr>";
-                echo "</table>";
-            }
-            echo "</div>";
-        } else {
-            echo "<div class='alert alert-important alert-warning d-flex'>";
-            echo " <b>"
-                . __('Problem detected with the IP Range', 'addressing') . "</b></div>";
         }
+
+        $free     = $params['seefreeip'] ?? $this->fields['free_ip'];
+        $reserved = $params['seereservedip'] ?? $this->fields['reserved_ip'];
+        $alloted  = $params['seeallotedip'] ?? $this->fields['alloted_ip'];
+        $doubles  = $params['seedoubleip'] ?? $this->fields['double_ip'];
+
+        $use_ping = isset($this->fields['use_ping']) && $this->fields['use_ping'];
+        $ping_off = $params['ping_off'] ?? 1;
+        $ping_on  = $params['ping_on'] ?? 1;
+
+        // showSwitchField()/Html::submit()/Html::printPager()/Report::displayReport() are
+        // legacy GLPI/plugin helpers that echo directly; capture their output so it can be
+        // embedded by the Twig template below instead of leaving raw echo in this method.
+        ob_start();
+        self::showSwitchField('seeallotedip', $alloted);
+        $switch_alloted = ob_get_clean();
+
+        ob_start();
+        self::showSwitchField('seedoubleip', $doubles);
+        $switch_doubles = ob_get_clean();
+
+        ob_start();
+        self::showSwitchField('seereservedip', $reserved);
+        $switch_reserved = ob_get_clean();
+
+        ob_start();
+        self::showSwitchField('seefreeip', $free);
+        $switch_free = ob_get_clean();
+
+        $switch_ping_on  = '';
+        $switch_ping_off = '';
+        if ($use_ping) {
+            ob_start();
+            self::showSwitchField('ping_on', $ping_on);
+            $switch_ping_on = ob_get_clean();
+
+            ob_start();
+            self::showSwitchField('ping_off', $ping_off);
+            $switch_ping_off = ob_get_clean();
+        }
+
+        $filter_list = new Filter();
+        $datas = $filter_list->find(['plugin_addressing_addressings_id' => $id]);
+        $filter_dropdown = '';
+        if (count($datas) > 0) {
+            ob_start();
+            Filter::dropdownFilters($params['id'], $filter);
+            $filter_dropdown = ob_get_clean();
+        }
+
+        ob_start();
+        echo Html::submit(_x('button', 'Search'), ['name' => 'search', 'class' => 'btn btn-primary me-2']);
+        $search_button = ob_get_clean();
+
+        // closeForm(false) returns the markup (including the CSRF hidden field) instead
+        // of echoing it, so the Twig template can place it inside the form fragment.
+        $close_form = Html::closeForm(false);
+
+        ob_start();
+        Html::printPager(
+            $start,
+            count($result),
+            self::getFormURL(),
+            Toolbox::append_params(
+                [
+                    'id' => $id,
+                    'ping_on' => $ping_on,
+                    'ping_off' => $ping_off,
+                    'filter' => $filter,
+                    'seeallotedip' => $alloted,
+                    'seedoubleip' => $doubles,
+                    'seereservedip' => $reserved,
+                    'seefreeip' => $free,
+                ]
+            ),
+            Report::class
+        );
+        $pager_html = ob_get_clean();
+
+        $result = array_slice($result, $start, $_SESSION["glpilist_limit"]);
+
+        // Report::displayReport() is a large legacy renderer tightly coupled to GLPI's
+        // SearchEngine/HTMLSearchOutput (it drives HTML/CSV/PDF export for the per-IP
+        // rows). Rewriting it to Twig is out of scope here (see project notes); its
+        // output is captured as-is and embedded by the template.
+        $ping_status = [$ping_off, $ping_on];
+        ob_start();
+        $ping_response = $Report->displayReport($result, $this, $ping_status);
+        $report_html = ob_get_clean();
+
+        $total_realfreeip = null;
+        if ($this->fields['use_ping']) {
+            $total_realfreeip = $nbipf - $ping_response;
+        }
+
+        TemplateRenderer::getInstance()->display('@addressing/report.html.twig', [
+            'id'               => $id,
+            'nbipf'            => $nbipf,
+            'nbipr'            => $nbipr,
+            'nbipt'            => $nbipt,
+            'nbipd'            => $nbipd,
+            'free'             => $free,
+            'reserved'         => $reserved,
+            'alloted'          => $alloted,
+            'doubles'          => $doubles,
+            'use_ping'         => $use_ping,
+            'form_url'         => Toolbox::getItemTypeFormURL(Addressing::class),
+            'switch_alloted'   => $switch_alloted,
+            'switch_doubles'   => $switch_doubles,
+            'switch_reserved'  => $switch_reserved,
+            'switch_free'      => $switch_free,
+            'switch_ping_on'   => $switch_ping_on,
+            'switch_ping_off'  => $switch_ping_off,
+            'has_filters'      => count($datas) > 0,
+            'filter_dropdown'  => $filter_dropdown,
+            'search_button'    => $search_button,
+            'close_form'       => $close_form,
+            'pager_html'       => $pager_html,
+            'report_html'      => $report_html,
+            'total_realfreeip' => $total_realfreeip,
+        ]);
     }
 
 

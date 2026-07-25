@@ -32,6 +32,7 @@ namespace GlpiPlugin\Addressing;
 use CommonDBTM;
 use DbUtils;
 use Dropdown;
+use Glpi\Application\View\TemplateRenderer;
 use Html;
 
 if (!defined('GLPI_ROOT')) {
@@ -49,8 +50,19 @@ class Ping_Equipment extends CommonDBTM
     {
         global $DB;
 
-        $obj = new $itemtype();
-        $obj->getFromDB($items_id);
+        // itemtype/items_id are caller-supplied (ajax/seePingTab.php relays $_POST as-is)
+        // and directly drive which asset's network names/IP addresses get disclosed below.
+        // Restrict itemtype to the plugin's supported network port types and require READ
+        // on the target item before querying/rendering anything about it.
+        $items_id = (int) $items_id;
+        if (!in_array($itemtype, Addressing::getTypes(true), true)) {
+            return;
+        }
+
+        $obj = getItemForItemtype($itemtype);
+        if (!($obj instanceof CommonDBTM) || !$obj->can($items_id, READ)) {
+            return;
+        }
 
         $dbu      = new DbUtils();
         $itemtype = $dbu->getItemTypeForTable($obj->getTable());
@@ -102,49 +114,13 @@ class Ping_Equipment extends CommonDBTM
             }
         }
 
-        echo "<table class='tab_cadre_fixe'><tr class='tab_bg_2 left'>";
-        echo "<tr><th colspan='3'>" . __('IP ping', 'addressing') . "</th>";
-        echo "<th>";
-        echo "<i class='btn btn-sm btn-light ti ti-circle-x' onclick='$(\"#ping_item\").hide();'></i>";
-        echo "</tr>";
-
-        if (count($list_ip) > 0) {
-            echo "<tr class='tab_bg_1'>";
-            echo "<td>" . __('IP') . " : </td>";
-            echo "<td colspan='3'>";
-            echo "<select style='width:200px' class='form-select' id='ip'>";
-            echo "<option>" . Dropdown::EMPTY_VALUE . "</option>";
-            foreach ($list_ip as $ip => $name) {
-                echo "<option value='$ip'>$name</option>";
-            }
-            echo "</select>";
-            echo "&nbsp;<input class='submit btn btn-primary' type='button' value='"
-                . __s('IP ping', 'addressing') . "' id='ping_ip'>";
-            echo "</td>";
-            echo "</tr>";
-
-            echo "<tr class='tab_bg_1'>";
-            echo "<td>" . __('Ping result', 'addressing') . " : </td>";
-            echo "<td colspan='3'>";
-            echo "<div id='ping_response' class='plugin_addressing_ping_equipment'></div>";
-            echo "</td></tr>";
-        }
-        echo "</table>";
-
-        echo Html::scriptBlock("$(document).on('click', '#ping_ip', function(event) {
-                                          $('#ping_response').load('/plugins/addressing/ajax/ping.php', {
-                                             'ip': $('#ip').val(),
-                                             'itemtype': '$itemtype',
-                                             'items_id': '$items_id'
-                                          })
-                                       });");
-
-        if (count($list_ip) == 0) {
-            echo __('No IP for this equipment', 'addressing');
-        }
+        TemplateRenderer::getInstance()->display('@addressing/ping_equipment_form.html.twig', [
+            'list_ip'     => $list_ip,
+            'empty_value' => Dropdown::EMPTY_VALUE,
+            'itemtype'    => $itemtype,
+            'items_id'    => $items_id,
+        ]);
     }
-
-
 
     /**
     * @param $system
@@ -302,74 +278,9 @@ class Ping_Equipment extends CommonDBTM
         $ping_equip = new Ping_Equipment();
         [$message, $error] = $ping_equip->ping($system, $ip);
 
-        echo "<div class='alert alert-warning'>";
-
-        echo "<div class='d-flex'>";
-
-        echo "<div class='me-2'>";
-        if ($error) {
-            echo "<i style='color:forestgreen;font-size: 2em;' class='ti ti-circle-check'></i>";
-        } else {
-            echo "<i style='color:orange;font-size: 2em;' class='ti ti-alert-triangle'></i>";
-        }
-        echo "</div>";
-
-        echo "<div>";
-        echo "<h4>" . _n("IP address", "IP addresses", 1) . " : " . $ip . "</h4>";
-        echo "<div class='text-muted'>";
-
-
-        if ($error) {
-            echo "<span style='color:forestgreen'>&nbsp;";
-            echo __('Ping: no response - free IP', 'addressing');
-        } else {
-            echo "<span style='color:orange'>&nbsp;";
-            echo __('Ping: got a response - used IP', 'addressing');
-        }
-        echo "</span>";
-
-        echo "</div>";
-        echo "</div>";
-        echo "</div>";
-        echo "</div>";
+        TemplateRenderer::getInstance()->display('@addressing/ping_ip_form.html.twig', [
+            'ip'    => $ip,
+            'error' => $error,
+        ]);
     }
-
-    /**
-     * @param \CommonGLPI $item
-     * @param int         $tabnum
-     * @param int         $withtemplate
-     *
-     * @return bool
-     */
-    //   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0)
-    //   {
-    //
-    //      $ping = Session::haveRight('plugin_addressing_use_ping_in_equipment', '1');
-    //
-    //      if ($ping && in_array($item->getType(), Addressing::getTypes())) {
-    //         if ($item->getField('id')) {
-    //            $options = ['obj' => $item];
-    //
-    //            $pingE = new self();
-    //            $pingE->showForm($item->getField('id'), $options);
-    //         }
-    //      }
-    //      return true;
-    //   }
-    //
-    //
-    //   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0)
-    //   {
-    //
-    //      $ping = Session::haveRight('plugin_addressing_use_ping_in_equipment', '1');
-    //
-    //      if ($ping && in_array($item->getType(), Addressing::getTypes())) {
-    //         if ($item->getField('id')) {
-    //            return ['1' => __('IP ping', 'addressing')];
-    //         }
-    //      }
-    //      return '';
-    //   }
-    //
-    //
 }

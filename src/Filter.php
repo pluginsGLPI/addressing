@@ -116,7 +116,11 @@ class Filter extends CommonDBTM
     public static function showList($item, $options = [])
     {
 
-        $item_id = $item['id'];
+        // Cast to int at the source: showList() is reached via displayTabContentForItem()
+        // with $_GET, so $item['id'] is attacker-controlled. It is interpolated into a JS
+        // function name emitted inside a <script> block (rendered |raw in the template); an
+        // int cannot carry a </script> breakout or any XSS payload.
+        $item_id = (int)($item['id'] ?? 0);
         $rand          = mt_rand();
         $p['readonly'] = false;
 
@@ -127,133 +131,104 @@ class Filter extends CommonDBTM
         }
 
         $canedit = Session::haveRightsOr(self::$rightname, [CREATE, UPDATE, PURGE]);
-        $style   = "class='tab_cadre_fixehov'";
 
         if ($p['readonly']) {
             $canedit = false;
-            $style   = "class='tab_cadre_fixe'";
         }
 
-           //button add filter
-        if ($canedit) {
-            echo "<div id='viewfilter" . $item_id . "$rand'></div>\n";
+        $nb = self::countForItem($item_id);
 
-            echo "<script type='text/javascript' >\n";
+        // "Add filter" trigger script; item_id is cast to int above so it is safe to
+        // interpolate into the emitted JS function name.
+        $add_button_script = '';
+        if ($canedit) {
+            ob_start();
             echo "function viewAddFilter" . $item_id . "$rand() {\n";
             $params = ['action' => 'viewFilter',
-            'items_id'   => $item_id,
-            'id'         => -1];
+                'items_id'   => $item_id,
+                'id'         => -1];
             Ajax::updateItemJsCode(
                 "viewfilter" . $item_id . "$rand",
                 "/plugins/addressing/ajax/addressing.php",
                 $params
             );
             echo "};";
-            echo "</script>\n";
-            echo "<div class='center firstbloc'>" .
-            "<a class='submit btn btn-primary me-2' href='javascript:viewAddFilter" . $item_id . "$rand();'>";
-            echo __('Add a filter', 'addressing') . "</a></div>\n";
+            $add_button_script = ob_get_clean();
         }
 
-        echo "<div class='spaced'>";
-
-        $nb = Filter::countForItem($item['id']);
-
+        $massiveactions_top    = '';
+        $massiveactions_bottom = '';
+        $checkall              = '';
+        $close_form            = '';
         if ($canedit && $nb) {
+            ob_start();
             Html::openMassiveActionsForm('mass' . $rand);
             $massiveactionparams = ['num_displayed'  => $nb,
-            'check_items_id' => $item_id,
-            'container'      => 'mass' . $rand
-            ];
+                'check_items_id' => $item_id,
+                'container'      => 'mass' . $rand];
             Html::showMassiveActions($massiveactionparams);
-        }
-        if ($nb) {
-            echo "<table $style>";
-            echo "<tr class='noHover'>" .
-            "<th colspan='" . ($canedit && $nb ? " 6 " : "5") . "'>" . self::getTypeName(2) . "</th>" .
-            "</tr>\n";
+            $massiveactions_top = ob_get_clean();
 
-            $header_begin  = "<tr>";
-            $header_top    = '';
-            $header_bottom = '';
-            $header_end    = '';
+            $checkall = Html::getCheckAllAsCheckbox('mass' . $rand);
 
-            if ($canedit && $nb) {
-                $header_top .= "<th width='10'>";
-                $header_top .= Html::getCheckAllAsCheckbox('mass' . $rand);
-                $header_top .= "</th>";
-                $header_bottom .= "<th width='10'>";
-                $header_bottom .= Html::getCheckAllAsCheckbox('mass' . $rand);
-                $header_bottom .= "</th>";
-            }
-            $header_end .= "<th class='center b'>" . __('Name') . "</th>\n";
-            $header_end .= "<th class='center b'>" . __('Entity') . "</th>\n";
-            $header_end .= "<th class='center b'>" . __('Type') . "</th>\n";
-            $header_end .= "<th class='center b'>" . __('First IP', 'addressing') . "</th>\n";
-            $header_end .= "<th class='center b'>" . __('Last IP', 'addressing') . "</th>\n";
-            $header_end .= "</tr>\n";
-            echo $header_begin . $header_top . $header_end;
-
-           //filters list
-            $filter = new self();
-            $datas = $filter->find(['plugin_addressing_addressings_id' => $item_id]);
-
-            foreach ($datas as $filter_item) {
-                $filter->showMinimalFilterForm($item, $filter_item, $canedit, $rand);
-            }
-
-            if ($nb) {
-                echo $header_begin . $header_bottom . $header_end;
-            }
-            echo "</table>\n";
-        }
-        if ($canedit && $nb) {
+            ob_start();
             $massiveactionparams['ontop'] = false;
             Html::showMassiveActions($massiveactionparams);
-            Html::closeForm();
+            $massiveactions_bottom = ob_get_clean();
+
+            // closeForm(false) returns the markup (including the CSRF hidden field)
+            // instead of echoing it, so it can be placed by the Twig template.
+            $close_form = Html::closeForm(false);
         }
 
-        echo "</div>\n";
-    }
+        $types = Addressing::dropdownItemtype();
+        $filter = new self();
+        $datas = $filter->find(['plugin_addressing_addressings_id' => $item_id]);
 
-   /**
-    * Form of an element
-    * @param  $item
-    * @param  $filter
-    * @param  $canedit
-    * @param  $rand
-    */
-    public function showMinimalFilterForm($item, $filter, $canedit, $rand)
-    {
-        $edit = ($canedit ? "style='cursor:pointer' onClick=\"viewEditFilter"
-            . $filter["id"] . "$rand();\"" : '');
-        echo "<tr class='tab_bg_1' >";
-        if ($canedit) {
-            echo "<td width='10'>";
-            Html::showMassiveActionCheckBox(__CLASS__, $filter["id"]);
-            echo "\n<script type='text/javascript' >\n";
-            echo "function viewEditFilter" . $filter["id"] . "$rand() {\n";
-            $params = ['action' => 'viewFilter',
-              'items_id'   => $item["id"],
-              'id'         => $filter['id']];
+        $rows = [];
+        foreach ($datas as $filter_item) {
+            $checkbox = $canedit ? Html::getMassiveActionCheckBox(__CLASS__, $filter_item['id']) : '';
+
+            ob_start();
+            echo "function viewEditFilter" . $filter_item["id"] . "$rand() {\n";
+            $edit_params = ['action' => 'viewFilter',
+                'items_id'   => $item_id,
+                'id'         => $filter_item['id']];
             Ajax::updateItemJsCode(
-                "viewfilter" . $item["id"] . "$rand",
+                "viewfilter" . $item_id . "$rand",
                 "/plugins/addressing/ajax/addressing.php",
-                $params
+                $edit_params
             );
             echo "};";
-            echo "</script>\n";
-            echo "</td>";
+            $edit_script = ob_get_clean();
+
+            // name/begin_ip/end_ip are stored as submitted by the user; leave them
+            // unescaped here and let the Twig template's auto-escaping handle them
+            // (this is what removes the stored XSS that existed in the legacy echo).
+            $rows[] = [
+                'id'          => $filter_item['id'],
+                'name'        => $filter_item['name'],
+                'entity_name' => Dropdown::getDropdownName('glpi_entities', $filter_item['entities_id']),
+                'type_name'   => $types[$filter_item['type']] ?? '',
+                'begin_ip'    => $filter_item['begin_ip'],
+                'end_ip'      => $filter_item['end_ip'],
+                'checkbox'    => $checkbox,
+                'edit_script' => $edit_script,
+            ];
         }
 
-           //display of data backup
-        echo "<td $edit>" . $filter['name'] . "</td>";
-        echo "<td $edit>" . Dropdown::getDropdownName('glpi_entities', $filter['entities_id']) . "</td>";
-        $types = Addressing::dropdownItemtype();
-        echo "<td $edit>" . $types[$filter['type']] . "</td>";
-        echo "<td $edit>" . $filter['begin_ip'] . "</td>";
-        echo "<td $edit>" . $filter['end_ip'] . "</td>";
-        echo "</tr>\n";
+        TemplateRenderer::getInstance()->display('@addressing/filter_list.html.twig', [
+            'item_id'               => $item_id,
+            'rand'                  => $rand,
+            'canedit'               => $canedit,
+            'nb'                    => $nb,
+            'add_button_script'     => $add_button_script,
+            'massiveactions_top'    => $massiveactions_top,
+            'massiveactions_bottom' => $massiveactions_bottom,
+            'checkall'              => $checkall,
+            'close_form'            => $close_form,
+            'rows'                  => $rows,
+        ]);
     }
 
    /**

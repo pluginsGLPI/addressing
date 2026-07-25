@@ -81,11 +81,30 @@ class ReserveIp extends CommonDBTM
             return false;
         }
 
+        // $input['type'] is fully attacker-controlled ($_POST['type']). Restrict it to the
+        // plugin's supported network port types and enforce the target itemtype's own
+        // CREATE/UPDATE right (and entity access) before writing an asset/NetworkPort on
+        // the caller's behalf. The plugin right checked in front/reserveip.form.php only
+        // gates access to the reservation feature itself, not to the underlying itemtype.
+        if (!in_array($input['type'] ?? '', Addressing::getTypes(true), true)) {
+            return false;
+        }
+
+        $item = getItemForItemtype($input['type']);
+        if (!($item instanceof CommonDBTM)) {
+            return false;
+        }
+
         // Find computer
-        $item = new $input['type']();
         if (!$item->getFromDBByCrit(["name"        => $input["name_reserveip"],
             "entities_id" => $input['entities_id']])) {
             // Add computer
+            if (!$item->can(-1, CREATE, [
+                "name"        => $input["name_reserveip"],
+                "entities_id" => $input['entities_id'],
+            ])) {
+                return false;
+            }
             $id = $item->add(["name"         => $input["name_reserveip"],
                 "entities_id"  => $input['entities_id'],
                 "locations_id" => $input["locations_id"],
@@ -93,6 +112,9 @@ class ReserveIp extends CommonDBTM
                 "comment"      => $input["comment"]]);
         } else {
             $id = $item->getID();
+            if (!$item->can($id, UPDATE)) {
+                return false;
+            }
             //update item
             $item->update(["id"           => $id,
                 "entities_id"  => $input['entities_id'],
@@ -144,6 +166,8 @@ class ReserveIp extends CommonDBTM
                 sprintf(__('%s adds an item'), $_SESSION["glpiname"])
             );
         }
+
+        return true;
     }
 
     /**

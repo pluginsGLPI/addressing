@@ -1,0 +1,11 @@
+.php-cs-fixer.php
+.php-cs-fixer.dist.php
+.php-cs-fixer.cache
+phpstan.neon
+phpstan-baseline.neon
+phpunit.xml
+phpunit.xml.dist
+phpunit.integration.xml
+.phpunit.result.cache
+psalm.xml
+.ignore-release

@@ -27,29 +27,24 @@
  --------------------------------------------------------------------------
  */
 
-use GlpiPlugin\Addressing\Ping_Equipment;
+use PhpCsFixer\Config;
+use PhpCsFixer\Finder;
 
-if (strpos($_SERVER['PHP_SELF'], "seePingTab.php")) {
-    header("Content-Type: text/html; charset=UTF-8");
-    Html::header_nocache();
-}
+$finder = Finder::create()
+    ->in(__DIR__)
+    ->name('*.php')
+    ->exclude('vendor')
+    ->exclude('tests/config')
+    ->ignoreVCSIgnored(true);
 
-Session::checkRight("plugin_addressing_use_ping_in_equipment", READ);
+$config = new Config();
 
-if (isset($_POST['action']) && $_POST['action'] == "viewPingform") {
-    echo Html::scriptBlock("$('#ping_item').show();");
+$rules = [
+    '@PER-CS2.0'                  => true,
+    'trailing_comma_in_multiline' => ['elements' => ['arguments', 'array_destructuring', 'arrays']],
+];
 
-    // itemtype/items_id are caller-supplied and drive which asset's IP/port data gets
-    // disclosed below. Cast items_id to an int (it is otherwise reflected verbatim into
-    // a JS literal further down the call chain) and let Ping_Equipment::showPingForm()
-    // validate the itemtype against a whitelist and check READ on the target item.
-    $itemtype = $_POST['itemtype'] ?? '';
-    $items_id = (int) ($_POST['items_id'] ?? 0);
-
-    $pingE = new Ping_Equipment();
-    $pingE->showPingForm($itemtype, $items_id);
-}
-
-$_POST['name'] = "ping_item";
-$_POST['rand'] = "";
-Ajax::commonDropdownUpdateItem($_POST);
+return $config
+    ->setRules($rules)
+    ->setFinder($finder)
+    ->setUsingCache(false);

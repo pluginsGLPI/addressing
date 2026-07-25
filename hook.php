@@ -415,12 +415,15 @@ function plugin_addressing_dynamicReport($params)
 {
     $Addressing = new Addressing();
 
+    // can() enforces the plugin READ right AND entity access on the requested record,
+    // mirroring front/report.form.php: without it, any user reaching this hook via the
+    // "reports" plugin could read another entity's IP/asset inventory by incrementing id.
     if ($params["item_type"] == Report::class
         && isset($params["id"])
         && isset($params["display_type"])
-        && $Addressing->getFromDB($params["id"])) {
+        && $Addressing->getFromDB($params["id"])
+        && $Addressing->can((int) $params["id"], READ)) {
         $Report = new Report();
-        $Addressing->getFromDB($params['id']);
 
         $addressingFilter = new Filter();
         if (isset($params['filter']) && $params['filter'] > 0) {
