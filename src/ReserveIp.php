@@ -249,10 +249,12 @@ class ReserveIp extends CommonDBTM
         }
         $options['types'] = Addressing::dropdownItemtype();
         $strict_entities = Profile_User::getUserEntities($_SESSION['glpiID'], false);
+        // Only offer the target-entity selector to users who may act across entities.
+        // reserveip() stays authoritative (can(-1, CREATE) / can($id, UPDATE)); this just
+        // keeps the UI from exposing an entity choice a single-entity user cannot use.
         $entities_rights = Session::haveAccessToOneOfEntities($strict_entities)
             && Session::canViewAllEntities();
 
-        $entities_rights = true;
         TemplateRenderer::getInstance()->display('@addressing/reserveip.html.twig', [
             'item' => $this,
             'rand' =>  $rand,
