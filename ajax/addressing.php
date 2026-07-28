@@ -95,20 +95,33 @@ if (isset($_GET['action']) && $_GET['action'] == 'isName') {
     Dropdown::show('FQDN', ['name'   => "fqdns_id",
         'value'  => $_POST["value"],
         'entity' => $_POST['entities_id']]);
-} elseif ($_GET['action'] == 'ping') {
+} elseif (isset($_GET['action']) && $_GET['action'] == 'ping') {
     Html::popHeader(__s('IP ping', 'addressing'), $_SERVER['PHP_SELF']);
 
-    if (filter_var($_GET["ip"], FILTER_VALIDATE_IP)) {
+    $ip = filter_var($_GET['ip'] ?? '', FILTER_VALIDATE_IP);
+    if ($ip !== false) {
         $Ping_Equipment = new Ping_Equipment();
-        $Ping_Equipment->showIPForm($_GET["ip"]);
+        $Ping_Equipment->showIPForm($ip);
     }
     Html::popFooter();
 } else {
+    $id_addressing = (int) ($_GET['id_addressing'] ?? 0);
+    $rand          = (int) ($_GET['rand'] ?? 0);
+    $ip            = filter_var($_GET['ip'] ?? '', FILTER_VALIDATE_IP);
+
+    // The global right is not entity-aware: enforce READ on the target range
+    // (entity perimeter) before disclosing its reservation form or using it as
+    // a server-side ping oracle.
+    $addressing = new Addressing();
+    if (!$addressing->can($id_addressing, READ)) {
+        throw new AccessDeniedHttpException();
+    }
+
     Html::popHeader(ReserveIp::getTypeName());
 
-    if (filter_var($_GET["ip"], FILTER_VALIDATE_IP)) {
+    if ($ip !== false) {
         $ReserveIp = new ReserveIp();
-        $ReserveIp->showReservationForm($_GET["ip"], $_GET['id_addressing'], $_GET['rand']);
+        $ReserveIp->showReservationForm($ip, $id_addressing, $rand);
     }
 
     Html::popFooter();

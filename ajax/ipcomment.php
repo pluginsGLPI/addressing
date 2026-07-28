@@ -49,7 +49,7 @@ if (!isset($_POST['addressing_id'], $_POST['ipname'])) {
 
 $addressing_id = (int) $_POST['addressing_id'];
 $ipname        = $_POST['ipname'];
-$content       = $_POST['contentC'];
+$content       = $_POST['contentC'] ?? '';
 
 // The global right is not entity-aware: confirm the caller may act on this
 // addressing range (entity perimeter) before writing an IP comment to it.
