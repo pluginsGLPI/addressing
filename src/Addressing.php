@@ -82,6 +82,59 @@ class Addressing extends CommonDBTM
         $temp2->deleteByCriteria(['plugin_addressing_addressings_id' => $this->fields['id']]);
     }
 
+    /**
+     * Whether the given IPv4 address falls within this range (begin_ip..end_ip).
+     *
+     * Comparison is done on unsigned 32-bit values so it stays correct above
+     * 127.255.255.255. Returns false for IPv6 or malformed input (fail-closed):
+     * an IPv4 range can never legitimately contain such an address anyway.
+     *
+     * @param string $ip IP already validated by FILTER_VALIDATE_IP.
+     */
+    public function containsIp(string $ip): bool
+    {
+        $ip_long    = ip2long($ip);
+        $begin_long = ip2long((string) ($this->fields['begin_ip'] ?? ''));
+        $end_long   = ip2long((string) ($this->fields['end_ip'] ?? ''));
+
+        if ($ip_long === false || $begin_long === false || $end_long === false) {
+            return false;
+        }
+
+        $ip_u    = (int) sprintf('%u', $ip_long);
+        $begin_u = (int) sprintf('%u', $begin_long);
+        $end_u   = (int) sprintf('%u', $end_long);
+
+        return $ip_u >= $begin_u && $ip_u <= $end_u;
+    }
+
+    /**
+     * Whether the given IP belongs to at least one addressing range the current
+     * user may READ (entity perimeter included).
+     *
+     * Used to constrain the server-side ping so a caller-supplied address cannot
+     * turn the endpoint into an arbitrary internal-network scan oracle: only IPs
+     * inside a range the user is allowed to see may be probed.
+     *
+     * @param string $ip IP already validated by FILTER_VALIDATE_IP.
+     */
+    public static function isIpInReadableRange(string $ip): bool
+    {
+        if (!Session::haveRight(self::$rightname, READ)) {
+            return false;
+        }
+
+        $range = new self();
+        foreach ($range->find(getEntitiesRestrictCriteria(self::getTable())) as $row) {
+            $range->fields = $row;
+            if ($range->containsIp($ip)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function rawSearchOptions()
     {
         $tab[] = [

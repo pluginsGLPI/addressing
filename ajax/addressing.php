@@ -99,7 +99,10 @@ if (isset($_GET['action']) && $_GET['action'] == 'isName') {
     Html::popHeader(__s('IP ping', 'addressing'), $_SERVER['PHP_SELF']);
 
     $ip = filter_var($_GET['ip'] ?? '', FILTER_VALIDATE_IP);
-    if ($ip !== false) {
+    // showIPForm() issues a server-side ping against $ip. Restrict the target to an
+    // IP contained in a range the caller may READ so this cannot be abused as an
+    // arbitrary internal-network scan oracle.
+    if ($ip !== false && Addressing::isIpInReadableRange($ip)) {
         $Ping_Equipment = new Ping_Equipment();
         $Ping_Equipment->showIPForm($ip);
     }
@@ -114,6 +117,13 @@ if (isset($_GET['action']) && $_GET['action'] == 'isName') {
     // a server-side ping oracle.
     $addressing = new Addressing();
     if (!$addressing->can($id_addressing, READ)) {
+        throw new AccessDeniedHttpException();
+    }
+
+    // showReservationForm() pings $ip when the range has use_ping enabled. Require the
+    // target to actually belong to this READ-authorized range so a valid range id
+    // cannot be paired with an arbitrary IP to turn the endpoint into a scan oracle.
+    if ($ip !== false && !$addressing->containsIp($ip)) {
         throw new AccessDeniedHttpException();
     }
 

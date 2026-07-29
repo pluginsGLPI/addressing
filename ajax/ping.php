@@ -59,6 +59,15 @@ if (!($item instanceof CommonDBTM) || !$item->can($items_id, READ)) {
     throw new NotFoundHttpException();
 }
 
+// The ping target is caller-supplied and only format-validated above. Bind it to
+// the READ-authorized item by requiring it to be one of that item's own network
+// port IPs, otherwise this endpoint would let an authenticated user run arbitrary
+// server-side ICMP probes against internal hosts (network scan oracle).
+$item_ips = Ping_Equipment::getItemIpList($item);
+if (!isset($item_ips[$ip])) {
+    throw new NotFoundHttpException();
+}
+
 $config = new Config();
 $config->getFromDB('1');
 $system = $config->fields["used_system"];

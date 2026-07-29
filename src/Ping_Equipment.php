@@ -48,8 +48,6 @@ class Ping_Equipment extends CommonDBTM
 
     public function showPingForm($itemtype, $items_id)
     {
-        global $DB;
-
         // itemtype/items_id are caller-supplied (ajax/seePingTab.php relays $_POST as-is)
         // and directly drive which asset's network names/IP addresses get disclosed below.
         // Restrict itemtype to the plugin's supported network port types and require READ
@@ -63,6 +61,32 @@ class Ping_Equipment extends CommonDBTM
         if (!($obj instanceof CommonDBTM) || !$obj->can($items_id, READ)) {
             return;
         }
+
+        $dbu = new DbUtils();
+
+        TemplateRenderer::getInstance()->display('@addressing/ping_equipment_form.html.twig', [
+            'list_ip'     => self::getItemIpList($obj),
+            'empty_value' => Dropdown::EMPTY_VALUE,
+            'itemtype'    => $dbu->getItemTypeForTable($obj->getTable()),
+            'items_id'    => $items_id,
+        ]);
+    }
+
+    /**
+     * Return the IP addresses attached to an asset's network ports.
+     *
+     * Keyed by IP string (value = display label). Used both to render the ping
+     * tab and to bind a caller-supplied ping target to the item whose READ right
+     * has been checked: the ping endpoint only accepts an IP present in this list,
+     * so it cannot be turned into an arbitrary internal-network scan oracle.
+     *
+     * @param CommonDBTM $obj An item already loaded and READ-authorized by the caller.
+     *
+     * @return array<string,string> Map of IP => label.
+     */
+    public static function getItemIpList(CommonDBTM $obj): array
+    {
+        global $DB;
 
         $dbu      = new DbUtils();
         $itemtype = $dbu->getItemTypeForTable($obj->getTable());
@@ -114,12 +138,7 @@ class Ping_Equipment extends CommonDBTM
             }
         }
 
-        TemplateRenderer::getInstance()->display('@addressing/ping_equipment_form.html.twig', [
-            'list_ip'     => $list_ip,
-            'empty_value' => Dropdown::EMPTY_VALUE,
-            'itemtype'    => $itemtype,
-            'items_id'    => $items_id,
-        ]);
+        return $list_ip;
     }
 
     /**
