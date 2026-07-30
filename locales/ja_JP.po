@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# INOUE Daisuke, 2026
+# Daisuke INOUE, 2026
 # 
 #, fuzzy
 msgid ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-06-24 09:26+0200\n"
 "PO-Revision-Date: 2025-09-23 12:17+0000\n"
-"Last-Translator: INOUE Daisuke, 2026\n"
+"Last-Translator: Daisuke INOUE, 2026\n"
 "Language-Team: Japanese (Japan) (https://app.transifex.com/pluginsGLPI/teams/73419/ja_JP/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -38,7 +38,7 @@ msgstr "自動実行は起動しませんでした"
 #: templates/addressing.html.twig:228 templates/reserveip.html.twig:222
 msgid "Comment"
 msgid_plural "Comments"
-msgstr[0] ""
+msgstr[0] "コメント"
 
 #: templates/addressing.html.twig:267
 msgid "Default fields for reservation"
@@ -75,12 +75,12 @@ msgstr "レポート生成"
 #: src/Profile.php:80
 msgid "IP Addressing"
 msgid_plural "IP Addressing"
-msgstr[0] ""
+msgstr[0] "IP アドレス"
 
 #: templates/reserveip.html.twig:104
 msgid "IP address"
 msgid_plural "IP addresses"
-msgstr[0] ""
+msgstr[0] "IP アドレス"
 
 #: ajax/addressing.php:72 src/Ping_Equipment.php:106
 #: src/Ping_Equipment.php:122 src/Report.php:301 src/Report.php:313
@@ -123,7 +123,7 @@ msgstr "各 IP レポートで PING 実行"
 
 #: templates/reserveip.html.twig:193
 msgid "MAC address"
-msgstr ""
+msgstr "MAC アドレス"
 
 #: src/Addressing.php:902 src/Addressing.php:906
 #: templates/pinginfo.html.twig:62 templates/pinginfo.html.twig:68
@@ -134,7 +134,7 @@ msgstr "PING の手動実行"
 #: templates/addressing.html.twig:55 templates/filter.html.twig:58
 #: templates/reserveip.html.twig:122
 msgid "Name"
-msgstr ""
+msgstr "名前"
 
 #: templates/reserveip.html.twig:161
 msgid "Name already in use"
@@ -142,7 +142,7 @@ msgstr "既存の名前"
 
 #: templates/reserveip.html.twig:211
 msgid "Network"
-msgstr ""
+msgstr "ネットワーク"
 
 #: src/Ping_Equipment.php:143
 msgid "No IP for this equipment"
@@ -170,7 +170,7 @@ msgstr "オブジェクト名"
 
 #: templates/reserveip.html.twig:166
 msgid "Ok you can use this name"
-msgstr ""
+msgstr "OK、この名前は使えます"
 
 #: src/Addressing.php:112
 msgid "Ping free IP"
@@ -187,7 +187,7 @@ msgstr "PING 結果"
 
 #: src/Ping_Equipment.php:158
 msgid "Ping unavailable in cloud mode"
-msgstr ""
+msgstr "クラウド モードでは Ping は使えません"
 
 #: src/Addressing.php:833 src/Addressing.php:894 src/Ping_Equipment.php:327
 #: src/Report.php:938 src/ReserveIp.php:221
@@ -250,11 +250,11 @@ msgstr "重複 IP"
 #: templates/config.html.twig:109 templates/profile.html.twig:34
 msgctxt "button"
 msgid "Save"
-msgstr ""
+msgstr "保存"
 
 #: templates/reserveip.html.twig:185
 msgid "Status"
-msgstr ""
+msgstr "状態"
 
 #: src/Report.php:521 src/Report.php:968
 msgid "Success"
@@ -274,7 +274,7 @@ msgstr "アイテムの表示はこれらの基準によって決まります"
 
 #: templates/filter.html.twig:76 templates/reserveip.html.twig:116
 msgid "Type"
-msgstr ""
+msgstr "型"
 
 #: templates/addressing.html.twig:210
 msgid "Use Ping"
@@ -282,7 +282,7 @@ msgstr "PING の使用"
 
 #: templates/config.html.twig:75
 msgid "Use Ping on IP ranges"
-msgstr ""
+msgstr "IP 範囲で Ping を利用"
 
 #: src/Profile.php:60
 msgid "Use ping on equipment form"
