@@ -798,19 +798,25 @@ class Addressing extends CommonDBTM
             return;
         }
 
+        // Entity isolation on the filter: a filter id is attacker-controllable and
+        // enumerable, so only honour it when it belongs to THIS addressing record and
+        // targets an entity the caller may access. Otherwise fall back to the record's
+        // own range (which already passed can(READ)); never let a cross-entity filter
+        // widen compute()'s entity restriction to leak another entity's IP inventory.
         $addressingFilter = new Filter();
-        if ($filter > 0) {
-            if ($addressingFilter->getFromDB($filter)) {
-                $ipdeb = sprintf("%u", ip2long($addressingFilter->fields['begin_ip']));
-                $ipfin = sprintf("%u", ip2long($addressingFilter->fields['end_ip']));
+        if ($filter > 0
+            && $addressingFilter->getFromDB($filter)
+            && (int) $addressingFilter->fields['plugin_addressing_addressings_id'] === (int) $id
+            && Session::haveAccessToEntity((int) $addressingFilter->fields['entities_id'])) {
+            $ipdeb = sprintf("%u", ip2long($addressingFilter->fields['begin_ip']));
+            $ipfin = sprintf("%u", ip2long($addressingFilter->fields['end_ip']));
 
-                $result = $this->compute($start, [
-                    'ipdeb' => $ipdeb,
-                    'ipfin' => $ipfin,
-                    'entities' => $addressingFilter->fields['entities_id'],
-                    'type_filter' => $addressingFilter->fields['type'],
-                ]);
-            }
+            $result = $this->compute($start, [
+                'ipdeb' => $ipdeb,
+                'ipfin' => $ipfin,
+                'entities' => $addressingFilter->fields['entities_id'],
+                'type_filter' => $addressingFilter->fields['type'],
+            ]);
         } else {
             $ipdeb = sprintf("%u", ip2long($this->fields["begin_ip"]));
             $ipfin = sprintf("%u", ip2long($this->fields["end_ip"]));

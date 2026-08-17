@@ -295,10 +295,6 @@ function plugin_addressing_uninstall()
                   "glpi_plugin_addressing_pinginfos",
                   "glpi_plugin_addressing_ipcomments"];
 
-    foreach ($tables as $table) {
-        $migration->dropTable($table);
-    }
-
     $itemtypes = ['DisplayPreference', 'SavedSearch'];
     foreach ($itemtypes as $itemtype) {
         $item = new $itemtype;
@@ -314,6 +310,11 @@ function plugin_addressing_uninstall()
 
     Profile::removeRightsFromSession();
     CronTask::unregister("addressing");
+
+    foreach ($tables as $table) {
+        $migration->dropTable($table);
+    }
+
     return true;
 }
 
@@ -425,16 +426,22 @@ function plugin_addressing_dynamicReport($params)
         && $Addressing->can((int) $params["id"], READ)) {
         $Report = new Report();
 
+        // Entity isolation on the filter: a filter id is attacker-controllable and
+        // enumerable, so only honour it when it belongs to THIS addressing record and
+        // targets an entity the caller may access. Otherwise fall back to the record's
+        // own range (which already passed can(READ)); never let a cross-entity filter
+        // widen compute()'s entity restriction to leak another entity's IP inventory.
         $addressingFilter = new Filter();
-        if (isset($params['filter']) && $params['filter'] > 0) {
-            if ($addressingFilter->getFromDB($params['filter'])) {
-                $ipdeb  = sprintf("%u", ip2long($addressingFilter->fields['begin_ip']));
-                $ipfin  = sprintf("%u", ip2long($addressingFilter->fields['end_ip']));
-                $result = $Addressing->compute($params["start"], ['ipdeb'       => $ipdeb,
-                                                                                  'ipfin'       => $ipfin,
-                    'entities_id' => $addressingFilter->fields['entities_id'],
-                    'type_filter' => $addressingFilter->fields['type']]);
-            }
+        if (isset($params['filter']) && $params['filter'] > 0
+            && $addressingFilter->getFromDB($params['filter'])
+            && (int) $addressingFilter->fields['plugin_addressing_addressings_id'] === (int) $params["id"]
+            && Session::haveAccessToEntity((int) $addressingFilter->fields['entities_id'])) {
+            $ipdeb  = sprintf("%u", ip2long($addressingFilter->fields['begin_ip']));
+            $ipfin  = sprintf("%u", ip2long($addressingFilter->fields['end_ip']));
+            $result = $Addressing->compute($params["start"], ['ipdeb'       => $ipdeb,
+                                                                              'ipfin'       => $ipfin,
+                'entities_id' => $addressingFilter->fields['entities_id'],
+                'type_filter' => $addressingFilter->fields['type']]);
         } else {
             $ipdeb  = sprintf("%u", ip2long($Addressing->fields["begin_ip"]));
             $ipfin  = sprintf("%u", ip2long($Addressing->fields["end_ip"]));
