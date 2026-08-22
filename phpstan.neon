@@ -22,3 +22,13 @@ parameters:
         - ../../vendor/autoload.php
         - setup.php
     treatPhpDocTypesAsCertain: false
+    ignoreErrors:
+        # GLPI_INSTALL_MODE is a compile-time constant whose value depends on how
+        # GLPI was installed: 'GIT' on a git checkout (local dev), 'TARBALL' on
+        # the CI runner, 'CLOUD' in GLPI cloud. The `=== 'CLOUD'` guards are an
+        # intentional runtime branch (ping disabled in cloud). PHPStan constant-
+        # folds the comparison to always-false and bakes the LOCAL value into the
+        # message, so a baseline generated on a git checkout ('GIT') never matches
+        # the runner ('TARBALL'). Ignore generically on the left-hand value so the
+        # rule is stable across every install mode.
+        - '#^Strict comparison using \=\=\= between ''[A-Z]+'' and ''CLOUD'' will always evaluate to false\.$#'

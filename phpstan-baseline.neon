@@ -139,12 +139,6 @@ parameters:
 			path: src/Config.php
 
 		-
-			message: '#^Strict comparison using \=\=\= between ''GIT'' and ''CLOUD'' will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
-			count: 2
-			path: src/Config.php
-
-		-
 			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
 			identifier: glpi.forbidExit
 			count: 1
@@ -201,12 +195,6 @@ parameters:
 		-
 			message: '#^Result of && is always false\.$#'
 			identifier: booleanAnd.alwaysFalse
-			count: 2
-			path: src/Ping_Equipment.php
-
-		-
-			message: '#^Strict comparison using \=\=\= between ''GIT'' and ''CLOUD'' will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
 			count: 2
 			path: src/Ping_Equipment.php
 
