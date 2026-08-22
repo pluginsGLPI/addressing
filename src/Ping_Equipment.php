@@ -159,9 +159,9 @@ class Ping_Equipment extends CommonDBTM
             case 0:
                 // linux ping
                 if ($return == "true") {
-                    exec("ping -c 1 -w 1 " . escapeshellarg($ip), $list);
+                    exec("ping -n -c 1 -w 1 " . escapeshellarg($ip), $list);
                 } else {
-                    exec("ping -c 1 -w 1 " . escapeshellarg($ip), $list, $error);
+                    exec("ping -n -c 1 -w 1 " . escapeshellarg($ip), $list, $error);
                 }
                 $nb = count($list);
                 if (isset($nb) && $return == "true") {
@@ -210,9 +210,9 @@ class Ping_Equipment extends CommonDBTM
             case 3:
                 // BSD ping
                 if ($return == "true") {
-                    exec("ping -c 1 -W 1 " . escapeshellarg($ip), $list);
+                    exec("ping -n -c 1 -W 1 " . escapeshellarg($ip), $list);
                 } else {
-                    exec("ping -c 1 -W 1 " . escapeshellarg($ip), $list, $error);
+                    exec("ping -n -c 1 -W 1 " . escapeshellarg($ip), $list, $error);
                 }
                 $nb = count($list);
                 if (isset($nb) && $return == "true") {
@@ -227,9 +227,9 @@ class Ping_Equipment extends CommonDBTM
             case 4:
                 // MacOSX ping
                 if ($return == "true") {
-                    exec("ping -c 1 -t 1 " . escapeshellarg($ip), $list);
+                    exec("ping -n -c 1 -t 1 " . escapeshellarg($ip), $list);
                 } else {
-                    exec("ping -c 1 -t 1 " . escapeshellarg($ip), $list, $error);
+                    exec("ping -n -c 1 -t 1 " . escapeshellarg($ip), $list, $error);
                 }
                 $nb = count($list);
                 if (isset($nb) && $return == "true") {
@@ -242,7 +242,14 @@ class Ping_Equipment extends CommonDBTM
                 break;
         }
         if ($return == "list") {
-            $list_str = implode('<br />', $list);
+            // Ping output is external, attacker-influenced data (notably the reverse-DNS
+            // PTR of the target IP on Unix). It is echoed as text/html by ajax/ping.php,
+            // so escape every line before joining with the intended <br /> separators to
+            // prevent reflected XSS; the <br /> tags stay as the only markup emitted.
+            $list_str = implode('<br />', array_map(
+                static fn($line): string => htmlspecialchars((string) $line, ENT_QUOTES, 'UTF-8'),
+                $list,
+            ));
 
             return [$list_str, $error];
         } else {
