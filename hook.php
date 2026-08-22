@@ -1,5 +1,32 @@
 <?php
 
+/**
+ * -------------------------------------------------------------------------
+ * addressing plugin for GLPI
+ * Copyright (C) 2016-2026 by the addressing Development Team.
+ *
+ * https://github.com/pluginsGLPI/addressing
+ * -------------------------------------------------------------------------
+ *
+ * LICENSE
+ *
+ * This file is part of addressing.
+ *
+ * addressing is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * addressing is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with addressing. If not, see <http://www.gnu.org/licenses/>.
+ * --------------------------------------------------------------------------
+ */
+
 /*
  -------------------------------------------------------------------------
  addressing plugin for GLPI
@@ -109,7 +136,7 @@ function plugin_addressing_install()
     foreach ($classes as $old => $new) {
         $displayusers = $DB->request([
             'SELECT' => [
-                'users_id'
+                'users_id',
             ],
             'DISTINCT' => true,
             'FROM' => 'glpi_displaypreferences',
@@ -123,13 +150,13 @@ function plugin_addressing_install()
                 $iterator = $DB->request([
                     'SELECT' => [
                         'num',
-                        'id'
+                        'id',
                     ],
                     'FROM' => 'glpi_displaypreferences',
                     'WHERE' => [
                         'itemtype' => $old,
                         'users_id' => $displayuser['users_id'],
-                        'interface' => 'central'
+                        'interface' => 'central',
                     ],
                 ]);
 
@@ -137,14 +164,14 @@ function plugin_addressing_install()
                     foreach ($iterator as $data) {
                         $iterator2 = $DB->request([
                             'SELECT' => [
-                                'id'
+                                'id',
                             ],
                             'FROM' => 'glpi_displaypreferences',
                             'WHERE' => [
                                 'itemtype' => $new,
                                 'users_id' => $displayuser['users_id'],
                                 'num' => $data['num'],
-                                'interface' => 'central'
+                                'interface' => 'central',
                             ],
                         ]);
                         if (count($iterator2) > 0) {
@@ -153,7 +180,7 @@ function plugin_addressing_install()
                                     'glpi_displaypreferences',
                                     [
                                         'id' => $dataid['id'],
-                                    ]
+                                    ],
                                 );
                                 $DB->doQuery($query);
                             }
@@ -165,7 +192,7 @@ function plugin_addressing_install()
                                 ],
                                 [
                                     'id' => $data['id'],
-                                ]
+                                ],
                             );
                             $DB->doQuery($query);
                         }
@@ -290,14 +317,14 @@ function plugin_addressing_uninstall()
 
     $migration = new Migration(PLUGIN_ADDRESSING_VERSION);
     $tables    = ["glpi_plugin_addressing_addressings",
-                  "glpi_plugin_addressing_configs",
-                  "glpi_plugin_addressing_filters",
-                  "glpi_plugin_addressing_pinginfos",
-                  "glpi_plugin_addressing_ipcomments"];
+        "glpi_plugin_addressing_configs",
+        "glpi_plugin_addressing_filters",
+        "glpi_plugin_addressing_pinginfos",
+        "glpi_plugin_addressing_ipcomments"];
 
     $itemtypes = ['DisplayPreference', 'SavedSearch'];
     foreach ($itemtypes as $itemtype) {
-        $item = new $itemtype;
+        $item = new $itemtype();
         $item->deleteByCriteria(['itemtype' => Addressing::class]);
     }
 
@@ -328,10 +355,10 @@ function plugin_addressing_getDatabaseRelations()
 {
     if (Plugin::isPluginActive("addressing")) {
         return ["glpi_networks"  => ["glpi_plugin_addressing_addressings" => "networks_id"],
-                "glpi_vlans"     => ["glpi_plugin_addressing_addressings" => "vlans_id"],
-                "glpi_fqdns"     => ["glpi_plugin_addressing_addressings" => "fqdns_id"],
-                "glpi_locations" => ["glpi_plugin_addressing_addressings" => "locations_id"],
-                "glpi_entities"  => ["glpi_plugin_addressing_addressings" => "entities_id"]];
+            "glpi_vlans"     => ["glpi_plugin_addressing_addressings" => "vlans_id"],
+            "glpi_fqdns"     => ["glpi_plugin_addressing_addressings" => "fqdns_id"],
+            "glpi_locations" => ["glpi_plugin_addressing_addressings" => "locations_id"],
+            "glpi_entities"  => ["glpi_plugin_addressing_addressings" => "entities_id"]];
     }
     return [];
 }
@@ -354,7 +381,7 @@ function plugin_addressing_getAddSearchOptions($itemtype)
             $sopt[5000]['linkfield']     = 'id';
             $sopt[5000]['massiveaction'] = false;
             $sopt[5000]['joinparams']    = ['beforejoin' => ['table'      => 'glpi_plugin_addressing_pinginfos',
-                                                             'joinparams' => ['jointype' => 'itemtype_item']]];
+                'joinparams' => ['jointype' => 'itemtype_item']]];
         }
     }
     return $sopt;
@@ -375,7 +402,7 @@ function plugin_addressing_giveItem($type, $ID, $data, $num)
     $dbu = new DbUtils();
 
     $options = Search::getOptions($type);
-    $searchopt =& $options;
+    $searchopt = & $options;
     $table     = $searchopt[$ID]["table"];
     $field     = $searchopt[$ID]["field"];
     $out       = "";
@@ -385,17 +412,17 @@ function plugin_addressing_giveItem($type, $ID, $data, $num)
                 if ($data[$num][0]['name'] == "1") {
                     $out .= "<i class=\"ti ti-square-check\" style='color: darkgreen;font-size: 2em;'></i><br>" . __(
                         'Last ping OK',
-                        'addressing'
+                        'addressing',
                     );
                 } elseif ($data[$num][0]['name'] == "0") {
                     $out .= "<i class=\"ti ti-square-x\" style='color: darkred;font-size: 2em;'></i><br>" . __(
                         'Last ping KO',
-                        'addressing'
+                        'addressing',
                     );
                 } else {
                     $out .= "<i class=\"ti ti-question\" style='color: orange;font-size: 2em;'></i><br>" . __(
                         "Ping informations not available",
-                        'addressing'
+                        'addressing',
                     );
                 }
                 return $out;
@@ -439,14 +466,14 @@ function plugin_addressing_dynamicReport($params)
             $ipdeb  = sprintf("%u", ip2long($addressingFilter->fields['begin_ip']));
             $ipfin  = sprintf("%u", ip2long($addressingFilter->fields['end_ip']));
             $result = $Addressing->compute($params["start"], ['ipdeb'       => $ipdeb,
-                                                                              'ipfin'       => $ipfin,
+                'ipfin'       => $ipfin,
                 'entities_id' => $addressingFilter->fields['entities_id'],
                 'type_filter' => $addressingFilter->fields['type']]);
         } else {
             $ipdeb  = sprintf("%u", ip2long($Addressing->fields["begin_ip"]));
             $ipfin  = sprintf("%u", ip2long($Addressing->fields["end_ip"]));
             $result = $Addressing->compute($params["start"], ['ipdeb' => $ipdeb,
-                                                                              'ipfin' => $ipfin]);
+                'ipfin' => $ipfin]);
         }
         $Report->displayReport($result, $Addressing, $params);
 

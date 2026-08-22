@@ -1,30 +1,30 @@
 <?php
 
-/*
- -------------------------------------------------------------------------
- addressing plugin for GLPI
- Copyright (C) 2016-2026 by the addressing Development Team.
-
- https://github.com/pluginsGLPI/addressing
- -------------------------------------------------------------------------
-
- LICENSE
-
- This file is part of addressing.
-
- addressing is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 3 of the License, or
- (at your option) any later version.
-
- addressing is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with addressing. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+/**
+ * -------------------------------------------------------------------------
+ * addressing plugin for GLPI
+ * Copyright (C) 2016-2026 by the addressing Development Team.
+ *
+ * https://github.com/pluginsGLPI/addressing
+ * -------------------------------------------------------------------------
+ *
+ * LICENSE
+ *
+ * This file is part of addressing.
+ *
+ * addressing is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * addressing is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with addressing. If not, see <http://www.gnu.org/licenses/>.
+ * --------------------------------------------------------------------------
  */
 
 namespace GlpiPlugin\Addressing;
@@ -62,61 +62,61 @@ class Report extends CommonDBTM
      *
      * @return string
      */
-//    public function displaySearchNewLine($type, $odd = false)
-//    {
-//        $out = "";
-//        switch ($type) {
-//            case Search::PDF_OUTPUT_LANDSCAPE: //pdf
-//            case Search::PDF_OUTPUT_PORTRAIT:
-//                global $PDF_TABLE;
-//                $style = "";
-//                if ($odd) {
-//                    $style = " style=\"background-color:#DDDDDD;\" ";
-//                }
-//                $PDF_TABLE .= "<tr nobr=\"true\" $style>";
-//                break;
-//
-//            //         case Search::SYLK_OUTPUT : //sylk
-//            //       $out="\n";
-//            //            break;
-//
-//            case Search::CSV_OUTPUT: //csv
-//                //$out="\n";
-//                break;
-//
-//            default:
-//                $class = " class='tab_bg_2' ";
-//                if ($odd) {
-//                    switch ($odd) {
-//                        case "double": //double
-//                            $class = " class='plugin_addressing_ip_double'";
-//                            break;
-//
-//                        case "free": //free
-//                            $class = " class='plugin_addressing_ip_free'";
-//                            break;
-//
-//                        case "reserved": //free
-//                            $class = " class='plugin_addressing_ip_reserved'";
-//                            break;
-//
-//                        case "ping_on": //ping_on
-//                            $class = " class='plugin_addressing_ping_on'";
-//                            break;
-//
-//                        case "ping_off": //ping_off
-//                            $class = " class='plugin_addressing_ping_off'";
-//                            break;
-//
-//                        default:
-//                            $class = " class='tab_bg_1' ";
-//                    }
-//                }
-//                $out = "<tr $class>";
-//                break;
-//        }
-//        return $out;
-//    }
+    //    public function displaySearchNewLine($type, $odd = false)
+    //    {
+    //        $out = "";
+    //        switch ($type) {
+    //            case Search::PDF_OUTPUT_LANDSCAPE: //pdf
+    //            case Search::PDF_OUTPUT_PORTRAIT:
+    //                global $PDF_TABLE;
+    //                $style = "";
+    //                if ($odd) {
+    //                    $style = " style=\"background-color:#DDDDDD;\" ";
+    //                }
+    //                $PDF_TABLE .= "<tr nobr=\"true\" $style>";
+    //                break;
+    //
+    //            //         case Search::SYLK_OUTPUT : //sylk
+    //            //       $out="\n";
+    //            //            break;
+    //
+    //            case Search::CSV_OUTPUT: //csv
+    //                //$out="\n";
+    //                break;
+    //
+    //            default:
+    //                $class = " class='tab_bg_2' ";
+    //                if ($odd) {
+    //                    switch ($odd) {
+    //                        case "double": //double
+    //                            $class = " class='plugin_addressing_ip_double'";
+    //                            break;
+    //
+    //                        case "free": //free
+    //                            $class = " class='plugin_addressing_ip_free'";
+    //                            break;
+    //
+    //                        case "reserved": //free
+    //                            $class = " class='plugin_addressing_ip_reserved'";
+    //                            break;
+    //
+    //                        case "ping_on": //ping_on
+    //                            $class = " class='plugin_addressing_ping_on'";
+    //                            break;
+    //
+    //                        case "ping_off": //ping_off
+    //                            $class = " class='plugin_addressing_ping_off'";
+    //                            break;
+    //
+    //                        default:
+    //                            $class = " class='tab_bg_1' ";
+    //                    }
+    //                }
+    //                $out = "<tr $class>";
+    //                break;
+    //        }
+    //        return $out;
+    //    }
 
     public static function showNewLine($odd = false, $is_deleted = false): string
     {
@@ -204,16 +204,16 @@ class Report extends CommonDBTM
         }
 
         // Set display type for export if define
-//        $output_type = Search::HTML_OUTPUT;
-//
-//        if (isset($_GET["display_type"])) {
-//            $output_type = $_GET["display_type"];
-//        }
+        //        $output_type = Search::HTML_OUTPUT;
+        //
+        //        if (isset($_GET["display_type"])) {
+        //            $output_type = $_GET["display_type"];
+        //        }
 
-//        $header_num    = 1;
-//        $nbcols        = 8;
+        //        $header_num    = 1;
+        //        $nbcols        = 8;
         $ping_response = 0;
-//        $row_num       = 1;
+        //        $row_num       = 1;
 
         // Column headers
         if ($is_html_output) {
@@ -252,7 +252,7 @@ class Report extends CommonDBTM
         $row_num = 0;
         if (!empty($result)) {
             $i = 0;
-//            for ($i = $start; ($i < $numrows) && ($i < $end_display); $i++) {
+            //            for ($i = $start; ($i < $numrows) && ($i < $end_display); $i++) {
             foreach ($result as $num => $lines) {
                 $row_num++;
                 $current_row = [];
@@ -283,13 +283,13 @@ class Report extends CommonDBTM
                             // IP
                             if ($is_html_output) {
                                 if ($Addressing->fields["reserved_ip"] && strstr(
-                                        $line["pname"],
-                                        "reserv"
-                                    )) {
+                                    $line["pname"],
+                                    "reserv",
+                                )) {
                                     $html_output .= self::showNewLine("reserved");
                                 } else {
                                     $html_output .= self::showNewLine(
-                                        (count($lines) > 1 ? "double" : $row_num % 2)
+                                        (count($lines) > 1 ? "double" : $row_num % 2),
                                     );
                                 }
                             }
@@ -298,13 +298,13 @@ class Report extends CommonDBTM
                                 'ip' => trim($ip),
                                 'width' => 450,
                                 'height' => 300,
-                                'dialog_class' => 'modal-sm'
+                                'dialog_class' => 'modal-sm',
                             ];
                             $ping_link = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#ping$rand'>";
                             $ping_link .= "<i class='ti ti-terminal-2 pointer' style='color: orange' title='" . __(
-                                    "IP ping",
-                                    'addressing'
-                                ) . "'></i></a>";
+                                "IP ping",
+                                'addressing',
+                            ) . "'></i></a>";
 
                             if ($is_html_output) {
                                 $html_output .= $output::showItem("$ping_link ", $item_num, $row_num, "class='center'");
@@ -315,8 +315,8 @@ class Report extends CommonDBTM
                                     "/plugins/addressing/ajax/addressing.php?action=ping&ip=" . $params['ip'],
                                     [
                                         'title' => __s('IP ping', 'addressing'),
-                                        'display' => false
-                                    ]
+                                        'display' => false,
+                                    ],
                                 );
                             }
 
@@ -360,7 +360,7 @@ class Report extends CommonDBTM
                                     $user->fields["id"],
                                     $user->fields["name"],
                                     $user->fields["realname"],
-                                    $user->fields["firstname"]
+                                    $user->fields["firstname"],
                                 );
 
                                 $username = htmlspecialchars((string) $username, ENT_QUOTES, 'UTF-8');
@@ -416,7 +416,7 @@ class Report extends CommonDBTM
                                 $plugin_addressing_pinginfo = new PingInfo();
                                 if ($pings = $plugin_addressing_pinginfo->find([
                                     'plugin_addressing_addressings_id' => $Addressing->getID(),
-                                    'ipname' => $num
+                                    'ipname' => $num,
                                 ])) {
                                     foreach ($pings as $ping) {
                                         $ping_value = $ping['ping_response'];
@@ -438,15 +438,15 @@ class Report extends CommonDBTM
 
                                 if ($ping_action == NOT_AVAILABLE) {
                                     $content = "<i class=\"ti ti-question\" style='color: orange;font-size: 2em;' title=\"" . __(
-                                            "Automatic action has not be launched",
-                                            'addressing'
-                                        ) . "\"></i>";
+                                        "Automatic action has not be launched",
+                                        'addressing',
+                                    ) . "\"></i>";
                                     if ($is_html_output) {
                                         $html_output .= $output::showItem(
                                             "$content ",
                                             $item_num,
                                             $row_num,
-                                            "style='background-color:#e0e0e0' class='center'"
+                                            "style='background-color:#e0e0e0' class='center'",
                                         );
                                         $rand = mt_rand();
                                         $params = [
@@ -459,26 +459,26 @@ class Report extends CommonDBTM
                                         ];
                                         $reserv = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#reservation$rand'>";
                                         $reserv .= "<i class='ti ti-clipboard pointer' style='color: #d56f15;font-size: 2em;' title='" . __(
-                                                "Reserve IP",
-                                                'addressing'
-                                            ) . "'></i></a>";
+                                            "Reserve IP",
+                                            'addressing',
+                                        ) . "'></i></a>";
                                         $html_output .= $output::showItem(
                                             "$reserv ",
                                             $item_num,
                                             $row_num,
-                                            "style='background-color:#e0e0e0' class='center'"
+                                            "style='background-color:#e0e0e0' class='center'",
                                         );
                                         if (isset($params) && count(
-                                                $params
-                                            ) > 0 && $is_html_output) {
+                                            $params,
+                                        ) > 0 && $is_html_output) {
                                             echo Ajax::createIframeModalWindow(
                                                 'reservation' . $rand,
                                                 "/plugins/addressing/ajax/addressing.php?action=showForm&ip=" . $params['ip'] . "&id_addressing=" . $params['id_addressing'] . "&rand=" . $params['rand'],
                                                 [
                                                     'title' => __s('IP reservation', 'addressing'),
                                                     'display' => false,
-                                                    'reloadonclose' => true
-                                                ]
+                                                    'reloadonclose' => true,
+                                                ],
                                             );
                                         }
                                     } else {
@@ -492,34 +492,34 @@ class Report extends CommonDBTM
                                             $html_output .= $output::showItem(
                                                 "<i class=\"ti ti-square-check\" style='color: darkgreen;font-size: 2em;' title='" . __(
                                                     "Last ping attempt",
-                                                    'addressing'
+                                                    'addressing',
                                                 ) . " : "
                                                 . Html::convDateTime($ping_date) . "'></i>",
                                                 $item_num,
                                                 $row_num,
-                                                "style='background-color:#e0e0e0' class='center'"
+                                                "style='background-color:#e0e0e0' class='center'",
                                             );
 
                                             if ($Addressing->fields["reserved_ip"] && strstr(
-                                                    $line["pname"],
-                                                    "reserv"
-                                                )) {
+                                                $line["pname"],
+                                                "reserv",
+                                            )) {
                                                 $reserv = "<i class='ti ti-clipboard-check' style='color: #d56f15;font-size: 2em;' title='" . __(
-                                                        'Reserved Address',
-                                                        'addressing'
-                                                    ) . "'></i>";
+                                                    'Reserved Address',
+                                                    'addressing',
+                                                ) . "'></i>";
                                                 $html_output .= $output::showItem(
                                                     $reserv,
                                                     $item_num,
                                                     $row_num,
-                                                    "style='background-color:#e0e0e0' class='center'"
+                                                    "style='background-color:#e0e0e0' class='center'",
                                                 );
                                             } else {
                                                 $html_output .= $output::showItem(
                                                     " ",
                                                     $item_num,
                                                     $row_num,
-                                                    "style='background-color:#e0e0e0' class='center'"
+                                                    "style='background-color:#e0e0e0' class='center'",
                                                 );
                                             }
                                         } else {
@@ -529,9 +529,9 @@ class Report extends CommonDBTM
                                                 $html_output .= $output::showItem($content, $item_num, $row_num);
                                             }
                                             if ($Addressing->fields["reserved_ip"] && strstr(
-                                                    $line["pname"],
-                                                    "reserv"
-                                                )) {
+                                                $line["pname"],
+                                                "reserv",
+                                            )) {
                                                 $reserv = __('Reserved', 'addressing');
                                             }
                                             $current_row[$itemtype . '_' . (++$colnum)] = ['displayname' => $reserv];
@@ -544,18 +544,18 @@ class Report extends CommonDBTM
                                                 . Html::convDateTime($ping_date) . "'></i>",
                                                 $item_num,
                                                 $row_num,
-                                                "style='background-color:#e0e0e0' class='center'"
+                                                "style='background-color:#e0e0e0' class='center'",
                                             );
                                             if ($Addressing->fields["reserved_ip"] && strstr(
-                                                    $line["pname"],
-                                                    "reserv"
-                                                )) {
+                                                $line["pname"],
+                                                "reserv",
+                                            )) {
                                                 $html_output .= $output::showItem(
                                                     "<i class='ti ti-clipboard-check' style='color: #d56f15;font-size: 2em;' title='"
                                                     . __('Reserved Address', 'addressing') . "'></i>",
                                                     $item_num,
                                                     $row_num,
-                                                    "style='background-color:#e0e0e0' class='center'"
+                                                    "style='background-color:#e0e0e0' class='center'",
                                                 );
                                             } else {
                                                 $rand = mt_rand();
@@ -569,18 +569,18 @@ class Report extends CommonDBTM
                                                 ];
                                                 $reserv = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#reservation$rand'>";
                                                 $reserv .= "<i class='ti ti-clipboard pointer' style='color: #d56f15;font-size: 2em;' title='" . __(
-                                                        "Reserve IP",
-                                                        'addressing'
-                                                    ) . "'></i></a>";
+                                                    "Reserve IP",
+                                                    'addressing',
+                                                ) . "'></i></a>";
                                                 $html_output .= $output::showItem(
                                                     "$reserv ",
                                                     $item_num,
                                                     $row_num,
-                                                    "style='background-color:#e0e0e0' class='center'"
+                                                    "style='background-color:#e0e0e0' class='center'",
                                                 );
                                                 if (isset($params) && count(
-                                                        $params
-                                                    ) > 0 && $is_html_output) {
+                                                    $params,
+                                                ) > 0 && $is_html_output) {
                                                     echo Ajax::createIframeModalWindow(
                                                         'reservation' . $rand,
                                                         "/plugins/addressing/ajax/addressing.php?action=showForm&ip="
@@ -588,8 +588,8 @@ class Report extends CommonDBTM
                                                         [
                                                             'title' => __s('IP reservation', 'addressing'),
                                                             'display' => false,
-                                                            'reloadonclose' => true
-                                                        ]
+                                                            'reloadonclose' => true,
+                                                        ],
                                                     );
                                                 }
                                             }
@@ -598,9 +598,9 @@ class Report extends CommonDBTM
                                             $current_row[$itemtype . '_' . (++$colnum)] = ['displayname' => $content];
 
                                             if ($Addressing->fields["reserved_ip"] && strstr(
-                                                    $line["pname"],
-                                                    "reserv"
-                                                )) {
+                                                $line["pname"],
+                                                "reserv",
+                                            )) {
                                                 $reserv = __('Reserved', 'addressing');
                                             } else {
                                                 $reserv = "";
@@ -615,7 +615,7 @@ class Report extends CommonDBTM
                                         " ",
                                         $item_num,
                                         $row_num,
-                                        "style='background-color:#e0e0e0' class='center'"
+                                        "style='background-color:#e0e0e0' class='center'",
                                     );
                                 } else {
                                     $current_row[$itemtype . '_' . (++$colnum)] = ['displayname' => ""];
@@ -625,7 +625,7 @@ class Report extends CommonDBTM
                             $rand = mt_rand();
                             $comment = new IpComment();
                             $comment->getFromDBByCrit(
-                                ['ipname' => $num, 'plugin_addressing_addressings_id' => $Addressing->getID()]
+                                ['ipname' => $num, 'plugin_addressing_addressings_id' => $Addressing->getID()],
                             );
                             $comments = $comment->fields['comments'] ?? '';
                             //                  $html_output .= $output::showItem( '<textarea id="comment'.$num.'"
@@ -636,7 +636,7 @@ class Report extends CommonDBTM
                       value="' . htmlspecialchars($comments, ENT_QUOTES, 'UTF-8') . '">',
                                     $item_num,
                                     $row_num,
-                                    "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'"
+                                    "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'",
                                 );
                             } else {
                                 $current_row[$itemtype . '_' . (++$colnum)] = ['displayname' => $comments];
@@ -646,7 +646,7 @@ class Report extends CommonDBTM
                                     '<i id="save' . $num . '" class="ti ti-device-floppy center pointer" style="color:forestgreen;font-size: 2em;"></i>',
                                     $item_num,
                                     $row_num,
-                                    "style='background-color:#e0e0e0' class='center' onClick='updateComment$rand()'"
+                                    "style='background-color:#e0e0e0' class='center' onClick='updateComment$rand()'",
                                 );
                                 echo "<script>
 
@@ -717,13 +717,13 @@ class Report extends CommonDBTM
                             'ip' => trim($ip),
                             'width' => 450,
                             'height' => 300,
-                            'dialog_class' => 'modal-sm'
+                            'dialog_class' => 'modal-sm',
                         ];
                         $ping_link = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#ping$rand'>";
                         $ping_link .= "<i class='ti ti-terminal-2 pointer' style='color: orange' title='" . __(
-                                "IP ping",
-                                'addressing'
-                            ) . "'></i></a>";
+                            "IP ping",
+                            'addressing',
+                        ) . "'></i></a>";
                         if ($is_html_output) {
                             $html_output .= $output::showItem("$ping_link ", $item_num, $row_num, "class='center'");
                         }
@@ -733,8 +733,8 @@ class Report extends CommonDBTM
                                 "/plugins/addressing/ajax/addressing.php?action=ping&ip=" . $params['ip'],
                                 [
                                     'title' => __s('IP ping', 'addressing'),
-                                    'display' => false
-                                ]
+                                    'display' => false,
+                                ],
                             );
                         }
                         if ($is_html_output) {
@@ -752,7 +752,7 @@ class Report extends CommonDBTM
                         $rand = mt_rand();
                         $comment = new IpComment();
                         $comment->getFromDBByCrit(
-                            ['ipname' => $num, 'plugin_addressing_addressings_id' => $Addressing->getID()]
+                            ['ipname' => $num, 'plugin_addressing_addressings_id' => $Addressing->getID()],
                         );
                         $comments = $comment->fields['comments'] ?? '';
 
@@ -768,9 +768,9 @@ class Report extends CommonDBTM
                             ];
                             $reserv = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#reservation$rand'>";
                             $reserv .= "<i class='ti ti-clipboard pointer' style='color: #d56f15;font-size: 2em;' title='" . __(
-                                    "Reserve IP",
-                                    'addressing'
-                                ) . "'></i></a>";
+                                "Reserve IP",
+                                'addressing',
+                            ) . "'></i></a>";
                             if (isset($params) && count($params) > 0 && $is_html_output) {
                                 echo Ajax::createIframeModalWindow(
                                     'reservation' . $rand,
@@ -778,8 +778,8 @@ class Report extends CommonDBTM
                                     [
                                         'title' => __s('IP reservation', 'addressing'),
                                         'display' => false,
-                                        'reloadonclose' => true
-                                    ]
+                                        'reloadonclose' => true,
+                                    ],
                                 );
                             }
                         } else {
@@ -793,7 +793,7 @@ class Report extends CommonDBTM
                                 "$reserv ",
                                 $item_num,
                                 $row_num,
-                                "style='background-color:#e0e0e0' class='center'"
+                                "style='background-color:#e0e0e0' class='center'",
                             );
                         } else {
                             $current_row[$itemtype . '_' . (++$colnum)] = ['displayname' => " "];
@@ -804,7 +804,7 @@ class Report extends CommonDBTM
                         $rand = mt_rand();
                         $comment = new IpComment();
                         $comment->getFromDBByCrit(
-                            ['ipname' => $num, 'plugin_addressing_addressings_id' => $Addressing->getID()]
+                            ['ipname' => $num, 'plugin_addressing_addressings_id' => $Addressing->getID()],
                         );
                         $comments = $comment->fields['comments'] ?? '';
                         //               $html_output .= $output::showItem( '<textarea id="comment'.$num.'"
@@ -815,7 +815,7 @@ class Report extends CommonDBTM
                       value="' . htmlspecialchars($comments, ENT_QUOTES, 'UTF-8') . '">',
                                 $item_num,
                                 $row_num,
-                                "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'"
+                                "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'",
                             );
                         } else {
                             $current_row[$itemtype . '_' . (++$colnum)] = ['displayname' => $comments];
@@ -825,7 +825,7 @@ class Report extends CommonDBTM
                                 '<i id="save' . $num . '" class="ti ti-device-floppy center pointer" style="color:forestgreen;font-size: 2em;"></i>',
                                 $item_num,
                                 $row_num,
-                                "style='background-color:#e0e0e0' class='center' onClick='updateComment$rand()'"
+                                "style='background-color:#e0e0e0' class='center' onClick='updateComment$rand()'",
                             );
                             echo "<script>
                               function updateComment$rand() {
@@ -873,7 +873,7 @@ class Report extends CommonDBTM
                         $plugin_addressing_pinginfo = new PingInfo();
                         if ($plugin_addressing_pinginfo->getFromDBByCrit([
                             'plugin_addressing_addressings_id' => $Addressing->getID(),
-                            'ipname' => $num
+                            'ipname' => $num,
                         ])) {
                             $ping_value = $plugin_addressing_pinginfo->fields['ping_response'];
                             $ping_action = 1;
@@ -890,7 +890,7 @@ class Report extends CommonDBTM
 
                         $plugin_addressing_pinginfo->getFromDBByCrit([
                             'plugin_addressing_addressings_id' => $Addressing->getID(),
-                            'ipname' => $num
+                            'ipname' => $num,
                         ]);
 
                         $content = "";
@@ -909,19 +909,19 @@ class Report extends CommonDBTM
                                         'ip' => trim($ip),
                                         'width' => 450,
                                         'height' => 300,
-                                        'dialog_class' => 'modal-sm'
+                                        'dialog_class' => 'modal-sm',
                                     ];
                                     $ping_link = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#ping$rand'>";
                                     $ping_link .= "<i class='ti ti-terminal-2 pointer' style='color: orange' title='" . __(
-                                            "IP ping",
-                                            'addressing'
-                                        ) . "'></i></a>";
+                                        "IP ping",
+                                        'addressing',
+                                    ) . "'></i></a>";
                                     if ($is_html_output) {
                                         $html_output .= $output::showItem(
                                             "$ping_link ",
                                             $item_num,
                                             $row_num,
-                                            "class='center'"
+                                            "class='center'",
                                         );
                                     } else {
                                         $current_row[$itemtype . '_' . (++$colnum)] = ['displayname' => $ping_link];
@@ -932,8 +932,8 @@ class Report extends CommonDBTM
                                             "/plugins/addressing/ajax/addressing.php?action=ping&ip=" . $params['ip'],
                                             [
                                                 'title' => __s('IP ping', 'addressing'),
-                                                'display' => false
-                                            ]
+                                                'display' => false,
+                                            ],
                                         );
                                     }
                                     if ($is_html_output) {
@@ -950,7 +950,7 @@ class Report extends CommonDBTM
                                         $html_output .= $output::showItem(
                                             $title,
                                             $item_num,
-                                            $row_num
+                                            $row_num,
                                         );
                                     } else {
                                         $current_row[$itemtype . '_' . (++$colnum)] = ['displayname' => $title];
@@ -958,16 +958,16 @@ class Report extends CommonDBTM
                                     if ($is_html_output) {
                                         if ($ping_action == NOT_AVAILABLE) {
                                             $content = "<i class=\"ti ti-question\" style='color: orange;font-size: 2em;' title=\"" . __(
-                                                    "Automatic action has not be launched",
-                                                    'addressing'
-                                                ) . "\"></i>";
+                                                "Automatic action has not be launched",
+                                                'addressing',
+                                            ) . "\"></i>";
                                         } else {
                                             $content = "<i class=\"ti ti-square-check\" style='color: darkgreen;font-size: 2em;' title='" . __(
-                                                    "Last ping attempt",
-                                                    'addressing'
-                                                ) . " : "
+                                                "Last ping attempt",
+                                                'addressing',
+                                            ) . " : "
                                                 . Html::convDateTime(
-                                                    $plugin_addressing_pinginfo->fields['ping_date']
+                                                    $plugin_addressing_pinginfo->fields['ping_date'],
                                                 ) . "'></i>";
                                         }
                                     } else {
@@ -990,7 +990,7 @@ class Report extends CommonDBTM
                                                 "$content ",
                                                 $item_num,
                                                 $row_num,
-                                                "style='background-color:#e0e0e0' class='center'"
+                                                "style='background-color:#e0e0e0' class='center'",
                                             );
                                         } else {
                                             $current_row[$itemtype . '_' . (++$colnum)] = ['displayname' => $content];
@@ -1001,7 +1001,7 @@ class Report extends CommonDBTM
                                             "$reserv ",
                                             $item_num,
                                             $row_num,
-                                            "style='background-color:#e0e0e0' class='center'"
+                                            "style='background-color:#e0e0e0' class='center'",
                                         );
                                     } else {
                                         $current_row[$itemtype . '_' . (++$colnum)] = ['displayname' => $reserv];
@@ -1009,7 +1009,7 @@ class Report extends CommonDBTM
                                     $rand = mt_rand();
                                     $comment = new IpComment();
                                     $comment->getFromDBByCrit(
-                                        ['ipname' => $num, 'plugin_addressing_addressings_id' => $Addressing->getID()]
+                                        ['ipname' => $num, 'plugin_addressing_addressings_id' => $Addressing->getID()],
                                     );
                                     $comments = $comment->fields['comments'] ?? '';
                                     //                        $html_output .= $output::showItem( '<textarea id="comment'.$num.'"
@@ -1020,7 +1020,7 @@ class Report extends CommonDBTM
                                  value="' . htmlspecialchars($comments, ENT_QUOTES, 'UTF-8') . '">',
                                             $item_num,
                                             $row_num,
-                                            "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'"
+                                            "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'",
                                         );
                                     } else {
                                         $current_row[$itemtype . '_' . (++$colnum)] = ['displayname' => $comments];
@@ -1030,7 +1030,7 @@ class Report extends CommonDBTM
                                             '<i id="save' . $num . '" class="ti ti-device-floppy center pointer" style="color:forestgreen;font-size: 2em;"></i>',
                                             $item_num,
                                             $row_num,
-                                            "style='background-color:#e0e0e0' class='center' onClick='updateComment$rand()'"
+                                            "style='background-color:#e0e0e0' class='center' onClick='updateComment$rand()'",
                                         );
 
                                         echo "<script>
@@ -1086,19 +1086,19 @@ class Report extends CommonDBTM
                                         'rand' => $rand,
                                         'width' => 450,
                                         'height' => 300,
-                                        'dialog_class' => 'modal-sm'
+                                        'dialog_class' => 'modal-sm',
                                     ];
                                     $ping_link = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#ping$rand'>";
                                     $ping_link .= "<i class='ti ti-terminal-2 pointer' style='color: orange' title='" . __(
-                                            "IP ping",
-                                            'addressing'
-                                        ) . "'></i></a>";
+                                        "IP ping",
+                                        'addressing',
+                                    ) . "'></i></a>";
                                     if ($is_html_output) {
                                         $html_output .= $output::showItem(
                                             "$ping_link ",
                                             $item_num,
                                             $row_num,
-                                            "class='center'"
+                                            "class='center'",
                                         );
                                     } else {
                                         $current_row[$itemtype . '_' . (++$colnum)] = ['displayname' => $ping_link];
@@ -1109,8 +1109,8 @@ class Report extends CommonDBTM
                                             "/plugins/addressing/ajax/addressing.php?action=ping&ip=" . $params['ip'],
                                             [
                                                 'title' => __s('IP ping', 'addressing'),
-                                                'display' => false
-                                            ]
+                                                'display' => false,
+                                            ],
                                         );
                                     }
                                     if ($is_html_output) {
@@ -1118,49 +1118,49 @@ class Report extends CommonDBTM
                                         $html_output .= $output::showItem(
                                             __('Ping: no response - free IP', 'addressing'),
                                             $item_num,
-                                            $row_num
+                                            $row_num,
                                         );
                                     } else {
                                         $current_row[$itemtype . '_' . (++$colnum)] = ['displayname' => $ip];
                                         $current_row[$itemtype . '_' . (++$colnum)] = [
                                             'displayname' => __(
                                                 'Ping: no response - free IP',
-                                                'addressing'
-                                            )
+                                                'addressing',
+                                            ),
                                         ];
                                     }
                                     $content = " ";
                                     if ($is_html_output) {
                                         if ($ping_action == NOT_AVAILABLE) {
                                             $content = "<i class=\"ti ti-question\" style='color: orange;font-size: 2em;' title=\"" . __(
-                                                    "Automatic action has not be launched",
-                                                    'addressing'
-                                                ) . "\"></i>";
+                                                "Automatic action has not be launched",
+                                                'addressing',
+                                            ) . "\"></i>";
                                         } else {
                                             $content = "<i class=\"ti ti-square-x\" style='color: darkred;font-size: 2em;' title='" . __(
-                                                    "Last ping attempt",
-                                                    'addressing'
-                                                ) . " : "
+                                                "Last ping attempt",
+                                                'addressing',
+                                            ) . " : "
                                                 . Html::convDateTime(
-                                                    $plugin_addressing_pinginfo->fields['ping_date']
+                                                    $plugin_addressing_pinginfo->fields['ping_date'],
                                                 ) . "'></i>";
                                             $rand = mt_rand();
                                             $reserv = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#reservation$rand'>";
                                             $reserv .= "<i class='ti ti-clipboard pointer' style='color: #d56f15;font-size: 2em;' title='" . __(
-                                                    "Reserve IP",
-                                                    'addressing'
-                                                ) . "'></i></a>";
+                                                "Reserve IP",
+                                                'addressing',
+                                            ) . "'></i></a>";
                                             if (isset($params) && count(
-                                                    $params
-                                                ) > 0 && $is_html_output) {
+                                                $params,
+                                            ) > 0 && $is_html_output) {
                                                 echo Ajax::createIframeModalWindow(
                                                     'reservation' . $rand,
                                                     "/plugins/addressing/ajax/addressing.php?action=showForm&ip=" . $params['ip'] . "&id_addressing=" . $params['id_addressing'] . "&rand=" . $rand,
                                                     [
                                                         'title' => __s('IP reservation', 'addressing'),
                                                         'display' => false,
-                                                        'reloadonclose' => true
-                                                    ]
+                                                        'reloadonclose' => true,
+                                                    ],
                                                 );
                                             }
                                         }
@@ -1180,7 +1180,7 @@ class Report extends CommonDBTM
                                                 "$content ",
                                                 $item_num,
                                                 $row_num,
-                                                "style='background-color:#e0e0e0' class='center'"
+                                                "style='background-color:#e0e0e0' class='center'",
                                             );
                                         } else {
                                             $current_row[$itemtype . '_' . (++$colnum)] = ['displayname' => $content];
@@ -1191,7 +1191,7 @@ class Report extends CommonDBTM
                                             "$reserv ",
                                             $item_num,
                                             $row_num,
-                                            "style='background-color:#e0e0e0' class='center'"
+                                            "style='background-color:#e0e0e0' class='center'",
                                         );
                                     } else {
                                         $current_row[$itemtype . '_' . (++$colnum)] = ['displayname' => $reserv];
@@ -1199,7 +1199,7 @@ class Report extends CommonDBTM
                                     $rand = mt_rand();
                                     $comment = new IpComment();
                                     $comment->getFromDBByCrit(
-                                        ['ipname' => $num, 'plugin_addressing_addressings_id' => $Addressing->getID()]
+                                        ['ipname' => $num, 'plugin_addressing_addressings_id' => $Addressing->getID()],
                                     );
                                     $comments = $comment->fields['comments'] ?? '';
 
@@ -1211,7 +1211,7 @@ class Report extends CommonDBTM
                       value="' . htmlspecialchars($comments, ENT_QUOTES, 'UTF-8') . '">',
                                             $item_num,
                                             $row_num,
-                                            "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'"
+                                            "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'",
                                         );
                                     } else {
                                         $current_row[$itemtype . '_' . (++$colnum)] = ['displayname' => $comments];
@@ -1221,7 +1221,7 @@ class Report extends CommonDBTM
                                             '<i id="save' . $num . '" class="ti ti-device-floppy center pointer" style="color:forestgreen;font-size: 2em;"></i>',
                                             $item_num,
                                             $row_num,
-                                            "style='background-color:#e0e0e0' class='center' onClick='updateComment$rand()'"
+                                            "style='background-color:#e0e0e0' class='center' onClick='updateComment$rand()'",
                                         );
 
                                         echo "<script>

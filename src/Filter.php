@@ -1,30 +1,30 @@
 <?php
 
-/*
- -------------------------------------------------------------------------
- addressing plugin for GLPI
- Copyright (C) 2016-2026 by the addressing Development Team.
-
- https://github.com/pluginsGLPI/addressing
- -------------------------------------------------------------------------
-
- LICENSE
-
- This file is part of addressing.
-
- addressing is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 3 of the License, or
- (at your option) any later version.
-
- addressing is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with addressing. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+/**
+ * -------------------------------------------------------------------------
+ * addressing plugin for GLPI
+ * Copyright (C) 2016-2026 by the addressing Development Team.
+ *
+ * https://github.com/pluginsGLPI/addressing
+ * -------------------------------------------------------------------------
+ *
+ * LICENSE
+ *
+ * This file is part of addressing.
+ *
+ * addressing is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * addressing is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with addressing. If not, see <http://www.gnu.org/licenses/>.
+ * --------------------------------------------------------------------------
  */
 
 namespace GlpiPlugin\Addressing;
@@ -47,7 +47,6 @@ if (!defined('GLPI_ROOT')) {
  */
 class Filter extends CommonDBTM
 {
-
     public static $rightname = "plugin_addressing";
 
     public static function getTypeName($nb = 0)
@@ -87,12 +86,12 @@ class Filter extends CommonDBTM
         return $forbidden;
     }
 
-   /**
-    * Form of filter
-    * @param  $ID
-    * @param  $options
-    * @return boolean
-    */
+    /**
+     * Form of filter
+     * @param  $ID
+     * @param  $options
+     * @return boolean
+     */
     public function showForm($ID, $options = [])
     {
 
@@ -108,11 +107,11 @@ class Filter extends CommonDBTM
 
     }
 
-   /**
-    * Filter list
-    * @param  $item
-    * @param  $options
-    */
+    /**
+     * Filter list
+     * @param  $item
+     * @param  $options
+     */
     public static function showList($item, $options = [])
     {
 
@@ -120,7 +119,7 @@ class Filter extends CommonDBTM
         // with $_GET, so $item['id'] is attacker-controlled. It is interpolated into a JS
         // function name emitted inside a <script> block (rendered |raw in the template); an
         // int cannot carry a </script> breakout or any XSS payload.
-        $item_id = (int)($item['id'] ?? 0);
+        $item_id = (int) ($item['id'] ?? 0);
         $rand          = mt_rand();
         $p['readonly'] = false;
 
@@ -150,7 +149,7 @@ class Filter extends CommonDBTM
             Ajax::updateItemJsCode(
                 "viewfilter" . $item_id . "$rand",
                 "/plugins/addressing/ajax/addressing.php",
-                $params
+                $params,
             );
             echo "};";
             $add_button_script = ob_get_clean();
@@ -197,7 +196,7 @@ class Filter extends CommonDBTM
             Ajax::updateItemJsCode(
                 "viewfilter" . $item_id . "$rand",
                 "/plugins/addressing/ajax/addressing.php",
-                $edit_params
+                $edit_params,
             );
             echo "};";
             $edit_script = ob_get_clean();
@@ -231,11 +230,11 @@ class Filter extends CommonDBTM
         ]);
     }
 
-   /**
-    * Dropdown of filters
-    * @param  $id
-    * @param  $value
-    */
+    /**
+     * Dropdown of filters
+     * @param  $id
+     * @param  $value
+     */
     public static function dropdownFilters($id, $value)
     {
         $filter = new self();
@@ -248,11 +247,11 @@ class Filter extends CommonDBTM
         Dropdown::showFromArray('filter', $filters, ['value' => $value]);
     }
 
-   /**
-    * Count of filters
-    * @param $item
-    * @return int
-    */
+    /**
+     * Count of filters
+     * @param $item
+     * @return int
+     */
     public static function countForItem($id)
     {
         $filter = new self();

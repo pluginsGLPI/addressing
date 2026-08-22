@@ -1,30 +1,30 @@
 <?php
 
-/*
- -------------------------------------------------------------------------
- addressing plugin for GLPI
- Copyright (C) 2016-2026 by the addressing Development Team.
-
- https://github.com/pluginsGLPI/addressing
- -------------------------------------------------------------------------
-
- LICENSE
-
- This file is part of addressing.
-
- addressing is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 3 of the License, or
- (at your option) any later version.
-
- addressing is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with addressing. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+/**
+ * -------------------------------------------------------------------------
+ * addressing plugin for GLPI
+ * Copyright (C) 2016-2026 by the addressing Development Team.
+ *
+ * https://github.com/pluginsGLPI/addressing
+ * -------------------------------------------------------------------------
+ *
+ * LICENSE
+ *
+ * This file is part of addressing.
+ *
+ * addressing is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * addressing is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with addressing. If not, see <http://www.gnu.org/licenses/>.
+ * --------------------------------------------------------------------------
  */
 
 namespace GlpiPlugin\Addressing;
@@ -163,7 +163,7 @@ class ReserveIp extends CommonDBTM
                 5,
                 "inventory",
                 //TRANS: %s is the user login
-                sprintf(__('%s adds an item'), $_SESSION["glpiname"])
+                sprintf(__('%s adds an item'), $_SESSION["glpiname"]),
             );
         }
 
@@ -197,7 +197,7 @@ class ReserveIp extends CommonDBTM
         if ($checkKo) {
             Session::addMessageAfterRedirect(sprintf(
                 __("Mandatory fields are not filled. Please correct: %s"),
-                implode(', ', $msg)
+                implode(', ', $msg),
             ), false, ERROR);
             return false;
         }
@@ -261,7 +261,7 @@ class ReserveIp extends CommonDBTM
             'msg' => $msg,
             'params' => $options,
             'entities_rights' => $entities_rights,
-            'root_addressing' => PLUGIN_ADDRESSING_WEBDIR
+            'root_addressing' => PLUGIN_ADDRESSING_WEBDIR,
         ]);
     }
 }

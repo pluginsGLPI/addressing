@@ -1,30 +1,30 @@
 <?php
 
-/*
- -------------------------------------------------------------------------
- addressing plugin for GLPI
- Copyright (C) 2016-2026 by the addressing Development Team.
-
- https://github.com/pluginsGLPI/addressing
- -------------------------------------------------------------------------
-
- LICENSE
-
- This file is part of addressing.
-
- addressing is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 3 of the License, or
- (at your option) any later version.
-
- addressing is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with addressing. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+/**
+ * -------------------------------------------------------------------------
+ * addressing plugin for GLPI
+ * Copyright (C) 2016-2026 by the addressing Development Team.
+ *
+ * https://github.com/pluginsGLPI/addressing
+ * -------------------------------------------------------------------------
+ *
+ * LICENSE
+ *
+ * This file is part of addressing.
+ *
+ * addressing is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * addressing is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with addressing. If not, see <http://www.gnu.org/licenses/>.
+ * --------------------------------------------------------------------------
  */
 
 namespace GlpiPlugin\Addressing;
@@ -54,27 +54,27 @@ class PingInfo extends CommonDBTM
         return _n('IP Addressing', 'IP Addressing', $nb, 'addressing');
     }
 
-   /**
-    * @param $name
-    **/
+    /**
+     * @param $name
+     **/
     public static function cronInfo($name)
     {
 
         switch ($name) {
             case 'UpdatePing':
                 return [
-               'description' => __('Launch ping for each ip report', 'addressing'),
-            ];
+                    'description' => __('Launch ping for each ip report', 'addressing'),
+                ];
         }
         return [];
     }
 
-   /**
-    * Cron action on addressing : auto ping
-    *
-    * @param $task for log, if NULL display
-    *
-    **/
+    /**
+     * Cron action on addressing : auto ping
+     *
+     * @param $task for log, if NULL display
+     *
+     **/
     public static function cronUpdatePing($task = null)
     {
 
@@ -82,8 +82,8 @@ class PingInfo extends CommonDBTM
         $self        = new self();
         $vol         = $self->updateAllAddressing();
         $task->addVolume($vol);
-       //      $task->log(Dropdown::getDropdownName("glpi_entities",
-       //                                           $entity) . ":  $message\n");
+        //      $task->log(Dropdown::getDropdownName("glpi_entities",
+        //                                           $entity) . ":  $message\n");
 
         return $cron_status;
     }
@@ -95,7 +95,7 @@ class PingInfo extends CommonDBTM
         $old_execution        = ini_set("max_execution_time", "0");
         $addressing           = new Addressing();
         $addressings          = $addressing->find(['is_deleted' => 0,
-                                                 'use_ping'   => 1]);
+            'use_ping'   => 1]);
         $total_ping_responses = 0;
         foreach ($addressings as $addressing_array) {
             $addressing->getFromDB($addressing_array['id']);
@@ -114,8 +114,8 @@ class PingInfo extends CommonDBTM
         $ipfin = sprintf("%u", ip2long($addressing->fields["end_ip"]));
 
         $result                     = $addressing->compute(0, ['ipdeb'    => $ipdeb,
-                                                             'ipfin'    => $ipfin,
-                                                             'entities' => $addressing->fields['entities_id']]);
+            'ipfin'    => $ipfin,
+            'entities' => $addressing->fields['entities_id']]);
         $plugin_addressing_pinginfo = new PingInfo();
         $save = $plugin_addressing_pinginfo->find(['plugin_addressing_addressings_id' => $addressing->getID()]);
         $plugin_addressing_pinginfo->deleteByCriteria(['plugin_addressing_addressings_id' => $addressing->getID()]);
@@ -128,7 +128,7 @@ class PingInfo extends CommonDBTM
     private function updatePingInfos($result, Addressing $Addressing)
     {
 
-       // Get config
+        // Get config
         $Config         = new Config();
         $Ping_Equipment = new Ping_Equipment();
         $Config->getFromDB('1');
@@ -175,7 +175,7 @@ class PingInfo extends CommonDBTM
             $ping_action = 0;
             $ping_value  = 0;
             if ($pings = $plugin_addressing_pinginfo->find(['itemtype' => $itemtype,
-                                                         'items_id' => $items_id])) {
+                'items_id' => $items_id])) {
                 foreach ($pings as $ping) {
                     $ping_value = $ping['ping_response'];
                     $ping_date  = $ping['ping_date'];
@@ -187,36 +187,36 @@ class PingInfo extends CommonDBTM
             if ($ping_action == 0) {
                 $content = "<i class=\"ti ti-question\" style='color: orange;font-size: 2em;' title=\"" . __(
                     "Automatic action has not be launched",
-                    'addressing'
+                    'addressing',
                 ) . "\">
                     </i><br>" . __("Ping informations not available", 'addressing');
             } else {
                 if ($ping_value == 1) {
                     $content = "<i class=\"ti ti-square-check\" style='color: darkgreen;font-size: 2em;' title='" . __(
                         "Last ping attempt",
-                        'addressing'
+                        'addressing',
                     ) . " : "
                           . Html::convDateTime($ping_date) . "'></i><br>" . __(
                               "Last ping attempt",
-                              'addressing'
+                              'addressing',
                           ) . " : "
                           . Html::convDateTime($ping_date);
                     $content .= "<br>" . __('IP') . "&nbsp;" . $ip = Report::string2ip(
-                        substr($ipname, 2)
+                        substr($ipname, 2),
                     );
                 } else {
                     $content = "<i class=\"ti ti-square-x\" style='color: darkred;font-size: 2em;' title='" . __(
                         "Last ping attempt",
-                        'addressing'
+                        'addressing',
                     ) . " : "
                           . Html::convDateTime($ping_date) . "'></i><br>" . __(
                               "Last ping attempt",
-                              'addressing'
+                              'addressing',
                           ) . " : "
                           . Html::convDateTime($ping_date);
                     $content .= "<br>" . __('IP') . "&nbsp;" . $ip = Report::string2ip(substr(
                         $ipname,
-                        2
+                        2,
                     ));
                 }
             }
@@ -234,16 +234,16 @@ class PingInfo extends CommonDBTM
     }
 
 
-   /**
-    * @param \CommonDBTM $item
-    */
+    /**
+     * @param \CommonDBTM $item
+     */
     public static function cleanForItem(CommonDBTM $item)
     {
 
         $temp = new self();
         $temp->deleteByCriteria(
             ['itemtype' => $item->getType(),
-            'items_id' => $item->getField('id')]
+                'items_id' => $item->getField('id')],
         );
     }
 }

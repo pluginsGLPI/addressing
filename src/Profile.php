@@ -1,30 +1,30 @@
 <?php
 
-/*
- -------------------------------------------------------------------------
- addressing plugin for GLPI
- Copyright (C) 2016-2026 by the addressing Development Team.
-
- https://github.com/pluginsGLPI/addressing
- -------------------------------------------------------------------------
-
- LICENSE
-
- This file is part of addressing.
-
- addressing is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 3 of the License, or
- (at your option) any later version.
-
- addressing is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with addressing. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+/**
+ * -------------------------------------------------------------------------
+ * addressing plugin for GLPI
+ * Copyright (C) 2016-2026 by the addressing Development Team.
+ *
+ * https://github.com/pluginsGLPI/addressing
+ * -------------------------------------------------------------------------
+ *
+ * LICENSE
+ *
+ * This file is part of addressing.
+ *
+ * addressing is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * addressing is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with addressing. If not, see <http://www.gnu.org/licenses/>.
+ * --------------------------------------------------------------------------
  */
 
 namespace GlpiPlugin\Addressing;
@@ -53,7 +53,7 @@ class Profile extends \Profile
                 'itemtype' => Addressing::class,
                 'label' => __('Generate reports', 'addressing'),
                 'field' => Addressing::$rightname,
-                'rights' => \Profile::getRightsFor(Addressing::class)
+                'rights' => \Profile::getRightsFor(Addressing::class),
             ],
             [
                 'itemtype' => Addressing::class,
@@ -61,8 +61,8 @@ class Profile extends \Profile
                 'field' => PingInfo::$rightname,
                 'rights' => [
                     READ => __s('Read'),
-                ]
-            ]
+                ],
+            ],
         ];
         return $rights;
     }
@@ -130,8 +130,8 @@ class Profile extends \Profile
                 'glpi_profilerights',
                 [
                     "profiles_id" => $profiles_id,
-                    "name" => $right
-                ]
+                    "name" => $right,
+                ],
             )) {
                 $myright['profiles_id'] = $profiles_id;
                 $myright['name'] = $right;
@@ -153,8 +153,8 @@ class Profile extends \Profile
             $profiles_id,
             [
                 'plugin_addressing' => ALLSTANDARDRIGHT,
-                'plugin_addressing_use_ping_in_equipment' => '1'
-            ]
+                'plugin_addressing_use_ping_in_equipment' => '1',
+            ],
         );
     }
 
@@ -207,8 +207,8 @@ class Profile extends \Profile
                 $profile['profiles_id'],
                 [
                     'plugin_addressing_use_ping_in_equipment'
-                    => $profile['use_ping_in_equipment']
-                ]
+                    => $profile['use_ping_in_equipment'],
+                ],
             );
         }
     }

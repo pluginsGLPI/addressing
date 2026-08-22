@@ -1,30 +1,30 @@
 <?php
 
-/*
- -------------------------------------------------------------------------
- addressing plugin for GLPI
- Copyright (C) 2016-2026 by the addressing Development Team.
-
- https://github.com/pluginsGLPI/addressing
- -------------------------------------------------------------------------
-
- LICENSE
-
- This file is part of addressing.
-
- addressing is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 3 of the License, or
- (at your option) any later version.
-
- addressing is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with addressing. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+/**
+ * -------------------------------------------------------------------------
+ * addressing plugin for GLPI
+ * Copyright (C) 2016-2026 by the addressing Development Team.
+ *
+ * https://github.com/pluginsGLPI/addressing
+ * -------------------------------------------------------------------------
+ *
+ * LICENSE
+ *
+ * This file is part of addressing.
+ *
+ * addressing is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * addressing is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with addressing. If not, see <http://www.gnu.org/licenses/>.
+ * --------------------------------------------------------------------------
  */
 
 namespace GlpiPlugin\Addressing;
@@ -615,7 +615,7 @@ class Addressing extends CommonDBTM
                 "",
                 "dev",
                 "entities_id",
-                $this->fields['entities_id']
+                $this->fields['entities_id'],
             ));
         }
         if (isset($type_filter)) {
@@ -682,7 +682,7 @@ class Addressing extends CommonDBTM
                 $where[] = new QueryExpression($dbu->getEntitiesRestrictRequest("", "dev", "entities_id", $entities));
             } else {
                 $where[] = new QueryExpression(
-                    $dbu->getEntitiesRestrictRequest("", "dev", "entities_id", $this->fields['entities_id'])
+                    $dbu->getEntitiesRestrictRequest("", "dev", "entities_id", $this->fields['entities_id']),
                 );
             }
             if (isset($type_filter)) {
@@ -696,7 +696,7 @@ class Addressing extends CommonDBTM
             }
             if ($this->fields["use_as_filter"] == 1 && $this->fields["networks_id"] && $DB->fieldExists(
                 $type::getTable(),
-                'networks_id'
+                'networks_id',
             )) {
                 $where['dev.networks_id'] = $this->fields["networks_id"];
             }
@@ -932,9 +932,9 @@ class Addressing extends CommonDBTM
                     'seedoubleip' => $doubles,
                     'seereservedip' => $reserved,
                     'seefreeip' => $free,
-                ]
+                ],
             ),
-            Report::class
+            Report::class,
         );
         $pager_html = ob_get_clean();
 
@@ -1010,7 +1010,7 @@ class Addressing extends CommonDBTM
             && Session::isMultiEntitiesMode()
             && $isadmin) {
             $actions['GlpiPlugin\Addressing\Addressing' . MassiveAction::CLASS_ACTION_SEPARATOR . 'transfer'] = __(
-                'Transfer'
+                'Transfer',
             );
         }
         return $actions;
@@ -1143,7 +1143,7 @@ class Addressing extends CommonDBTM
                                    document.getElementById('$name').value = '1';
                                  }
                              });
-                           })();"
+                           })();",
         );
         if ($value == 1) {
             echo "<a class=\"button\"><i class=\"$name fa-fw fas fa-2x fa-toggle-on enabled\"></i></a>";

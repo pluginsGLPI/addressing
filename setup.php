@@ -1,30 +1,30 @@
 <?php
 
-/*
- -------------------------------------------------------------------------
- addressing plugin for GLPI
- Copyright (C) 2016-2026 by the addressing Development Team.
-
- https://github.com/pluginsGLPI/addressing
- -------------------------------------------------------------------------
-
- LICENSE
-
- This file is part of addressing.
-
- addressing is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 3 of the License, or
- (at your option) any later version.
-
- addressing is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with addressing. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+/**
+ * -------------------------------------------------------------------------
+ * addressing plugin for GLPI
+ * Copyright (C) 2016-2026 by the addressing Development Team.
+ *
+ * https://github.com/pluginsGLPI/addressing
+ * -------------------------------------------------------------------------
+ *
+ * LICENSE
+ *
+ * This file is part of addressing.
+ *
+ * addressing is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * addressing is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with addressing. If not, see <http://www.gnu.org/licenses/>.
+ * --------------------------------------------------------------------------
  */
 
 use Glpi\Plugin\Hooks;
@@ -39,7 +39,7 @@ define('PLUGIN_ADDRESSING_VERSION', '3.2.4');
 if (!defined("PLUGIN_ADDRESSING_DIR")) {
     define("PLUGIN_ADDRESSING_DIR", Plugin::getPhpDir("addressing"));
     define("PLUGIN_ADDRESSING_DIR_NOFULL", Plugin::getPhpDir("addressing", false));
-    $root = $CFG_GLPI['root_doc'] . '/plugins/addressing';
+    $root = ($CFG_GLPI['root_doc'] ?? '') . '/plugins/addressing';
     define("PLUGIN_ADDRESSING_WEBDIR", $root);
 }
 
@@ -52,7 +52,7 @@ function plugin_init_addressing()
 
     Plugin::registerClass(
         Profile::class,
-        ['addtabon' => ['Profile']]
+        ['addtabon' => ['Profile']],
     );
 
     if (Session::getLoginUserID()) {
@@ -102,4 +102,3 @@ function plugin_version_addressing()
             ],
         ]];
 }
-

@@ -1,30 +1,30 @@
 <?php
 
-/*
- -------------------------------------------------------------------------
- addressing plugin for GLPI
- Copyright (C) 2016-2026 by the addressing Development Team.
-
- https://github.com/pluginsGLPI/addressing
- -------------------------------------------------------------------------
-
- LICENSE
-
- This file is part of addressing.
-
- addressing is free software; you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation; either version 3 of the License, or
- (at your option) any later version.
-
- addressing is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with addressing. If not, see <http://www.gnu.org/licenses/>.
- --------------------------------------------------------------------------
+/**
+ * -------------------------------------------------------------------------
+ * addressing plugin for GLPI
+ * Copyright (C) 2016-2026 by the addressing Development Team.
+ *
+ * https://github.com/pluginsGLPI/addressing
+ * -------------------------------------------------------------------------
+ *
+ * LICENSE
+ *
+ * This file is part of addressing.
+ *
+ * addressing is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * addressing is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with addressing. If not, see <http://www.gnu.org/licenses/>.
+ * --------------------------------------------------------------------------
  */
 
 use Glpi\Exception\Http\AccessDeniedHttpException;
@@ -32,6 +32,7 @@ use GlpiPlugin\Addressing\Addressing;
 use GlpiPlugin\Addressing\Filter;
 use GlpiPlugin\Addressing\Ping_Equipment;
 use GlpiPlugin\Addressing\ReserveIp;
+
 use function Safe\json_encode;
 
 Session::checkRight('plugin_addressing', UPDATE);
@@ -56,13 +57,13 @@ if (isset($_GET['action']) && $_GET['action'] == 'isName') {
         if ($item->isEntityAssign()) {
             $criteria = array_merge(
                 $criteria,
-                Session::getEntitiesRestrictCriteria($item->getTable(), '', '', $item->maybeRecursive())
+                getEntitiesRestrictCriteria($item->getTable(), '', '', $item->maybeRecursive()),
             );
         }
         $datas = $item->find($criteria);
         echo json_encode(count($datas) > 0);
     }
-} else if (isset($_POST['action']) && $_POST['action'] == 'viewFilter') {
+} elseif (isset($_POST['action']) && $_POST['action'] == 'viewFilter') {
     if (isset($_POST['items_id'])
        && isset($_POST["id"])) {
         $filter = new Filter();

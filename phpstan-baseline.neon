@@ -73,6 +73,12 @@ parameters:
 			path: src/Addressing.php
 
 		-
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 3
+			path: src/Addressing.php
+
+		-
 			message: '#^Undefined variable\: \$entities$#'
 			identifier: variable.undefined
 			count: 2
@@ -133,7 +139,7 @@ parameters:
 			path: src/Config.php
 
 		-
-			message: '#^Strict comparison using \=\=\= between ''TARBALL'' and ''CLOUD'' will always evaluate to false\.$#'
+			message: '#^Strict comparison using \=\=\= between ''GIT'' and ''CLOUD'' will always evaluate to false\.$#'
 			identifier: identical.alwaysFalse
 			count: 2
 			path: src/Config.php
@@ -148,18 +154,6 @@ parameters:
 			message: '#^Access to an undefined property CommonGLPI\:\:\$fields\.$#'
 			identifier: property.notFound
 			count: 1
-			path: src/Filter.php
-
-		-
-			message: '#^If condition is always true\.$#'
-			identifier: if.alwaysTrue
-			count: 1
-			path: src/Filter.php
-
-		-
-			message: '#^Right side of && is always true\.$#'
-			identifier: booleanAnd.rightAlwaysTrue
-			count: 2
 			path: src/Filter.php
 
 		-
@@ -187,12 +181,6 @@ parameters:
 			path: src/PingInfo.php
 
 		-
-			message: '#^Instantiating an object from an unrestricted dynamic string is forbidden \(see https\://github\.com/glpi\-project/phpstan\-glpi\?tab\=readme\-ov\-file\#forbiddynamicinstantiationrule\)\.$#'
-			identifier: glpi.forbidDynamicInstantiation
-			count: 1
-			path: src/Ping_Equipment.php
-
-		-
 			message: '#^Method GlpiPlugin\\Addressing\\Ping_Equipment\:\:getHostnameByPing\(\) should return array but returns string\.$#'
 			identifier: return.type
 			count: 2
@@ -211,25 +199,13 @@ parameters:
 			path: src/Ping_Equipment.php
 
 		-
-			message: '#^PHPDoc tag @param references unknown parameter\: \$id_addressing$#'
-			identifier: parameter.notFound
-			count: 1
-			path: src/Ping_Equipment.php
-
-		-
-			message: '#^Parameter \$ip of method GlpiPlugin\\Addressing\\Ping_Equipment\:\:showIPForm\(\) has invalid type GlpiPlugin\\Addressing\\type\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/Ping_Equipment.php
-
-		-
 			message: '#^Result of && is always false\.$#'
 			identifier: booleanAnd.alwaysFalse
 			count: 2
 			path: src/Ping_Equipment.php
 
 		-
-			message: '#^Strict comparison using \=\=\= between ''TARBALL'' and ''CLOUD'' will always evaluate to false\.$#'
+			message: '#^Strict comparison using \=\=\= between ''GIT'' and ''CLOUD'' will always evaluate to false\.$#'
 			identifier: identical.alwaysFalse
 			count: 2
 			path: src/Ping_Equipment.php
@@ -319,14 +295,14 @@ parameters:
 			path: src/Report.php
 
 		-
-			message: '#^Instantiating an object from an unrestricted dynamic string is forbidden \(see https\://github\.com/glpi\-project/phpstan\-glpi\?tab\=readme\-ov\-file\#forbiddynamicinstantiationrule\)\.$#'
-			identifier: glpi.forbidDynamicInstantiation
+			message: '#^PHPDoc tag @return has invalid value \(\)\: Unexpected token "\\n     ", expected type at offset 71 on line 6$#'
+			identifier: phpDoc.parseError
 			count: 1
 			path: src/ReserveIp.php
 
 		-
-			message: '#^PHPDoc tag @return has invalid value \(\)\: Unexpected token "\\n     ", expected type at offset 71 on line 6$#'
-			identifier: phpDoc.parseError
+			message: '#^Parameter \#3 \$input of method CommonDBTM\:\:can\(\) is passed by reference, so it expects variables only\.$#'
+			identifier: argument.byRef
 			count: 1
 			path: src/ReserveIp.php
 
