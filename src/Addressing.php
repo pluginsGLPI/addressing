@@ -1044,9 +1044,24 @@ class Addressing extends CommonDBTM
                 $input = $ma->getInput();
 
                 if ($item->getType() == Addressing::class) {
+                    // The destination entity is posted from the sub-form. The Entity
+                    // dropdown only restricts the choice in the UI, so this value is
+                    // attacker-controllable; confirm the caller actually has access to the
+                    // target entity before moving any range into it. GLPI does not enforce
+                    // entity access on the target of update(), so without this a privileged
+                    // user could push a range into an entity outside their scope.
+                    $entities_id = (int) ($input['entities_id'] ?? -1);
+                    if (!Session::haveAccessToEntity($entities_id)) {
+                        foreach ($ids as $key) {
+                            $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_NORIGHT);
+                        }
+                        $ma->addMessage($item->getErrorMessage(ERROR_RIGHT));
+                        break;
+                    }
+
                     foreach ($ids as $key) {
                         $values["id"] = $key;
-                        $values["entities_id"] = $input['entities_id'];
+                        $values["entities_id"] = $entities_id;
 
                         if ($item->update($values)) {
                             $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_OK);
