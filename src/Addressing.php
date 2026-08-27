@@ -1060,6 +1060,19 @@ class Addressing extends CommonDBTM
                     }
 
                     foreach ($ids as $key) {
+                        // The core massive-action engine does not pre-filter the posted item
+                        // ids by right for a plugin handler, and CommonDBTM::update() does not
+                        // re-check rights or entity boundary on the loaded object. Without an
+                        // explicit per-item UPDATE check here, a user holding the global
+                        // plugin_addressing UPDATE right but restricted to entity A could forge
+                        // items[...] with a range id from entity B and move it out of scope
+                        // (cross-entity IDOR write). Mirror the core generic behaviour
+                        // (MassiveAction::processForSeveralItemtypes()) and skip unauthorized ids.
+                        if (!$item->can($key, UPDATE)) {
+                            $ma->itemDone($item->getType(), $key, MassiveAction::ACTION_NORIGHT);
+                            continue;
+                        }
+
                         $values["id"] = $key;
                         $values["entities_id"] = $entities_id;
 
