@@ -292,11 +292,11 @@ function plugin_addressing_uninstall()
     //Delete rights associated with the plugin
     $profileRight = new ProfileRight();
 
-    // getAllRights() only exposes the main 'plugin_addressing' right (both of its
-    // entries share that $rightname); installation (createFirstAccess /
-    // migrateProfiles) additionally registers the dedicated
-    // 'plugin_addressing_use_ping_in_equipment' right. Purge both explicitly,
-    // otherwise the ping right stays orphaned in glpi_profilerights after uninstall.
+    // getAllRights() exposes both 'plugin_addressing' and
+    // 'plugin_addressing_use_ping_in_equipment'. The latter is kept in the list as a
+    // safety net: it is also registered outside of getAllRights() by
+    // createFirstAccess() / migrateProfiles(), and must never stay orphaned in
+    // glpi_profilerights after uninstall.
     $right_names = ['plugin_addressing_use_ping_in_equipment'];
     foreach (Profile::getAllRights() as $right) {
         $right_names[] = $right['field'];

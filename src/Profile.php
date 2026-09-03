@@ -56,9 +56,9 @@ class Profile extends \Profile
                 'rights' => \Profile::getRightsFor(Addressing::class),
             ],
             [
-                'itemtype' => Addressing::class,
+                'itemtype' => PingInfo::class,
                 'label' => __('Use ping on equipment form', 'addressing'),
-                'field' => PingInfo::$rightname,
+                'field' => 'plugin_addressing_use_ping_in_equipment',
                 'rights' => [
                     READ => __s('Read'),
                 ],
