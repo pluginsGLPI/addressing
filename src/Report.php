@@ -272,6 +272,16 @@ class Report extends CommonDBTM
                     }
                     if ($disp) {
                         foreach ($lines as $line) {
+                            // itemtype comes from the glpi_networkports rows: a plugin
+                            // uninstalled without cleaning its ports leaves a class name
+                            // that no longer exists, and instantiating it below would raise
+                            // an uncaught Error making the whole report unreachable. Skip
+                            // the row instead, as every other dynamic instantiation in this
+                            // plugin already does.
+                            $line_item = getItemForItemtype($line["itemtype"]);
+                            if (!($line_item instanceof CommonDBTM)) {
+                                continue;
+                            }
                             $row_num++;
                             $item_num = 1;
                             // Asset/port names are stored raw in DB and rendered through the
@@ -326,7 +336,7 @@ class Report extends CommonDBTM
                                 $current_row[$itemtype . '_' . (++$colnum)] = ['displayname' => $ip];
                             }
                             // Device
-                            $item = new $line["itemtype"]();
+                            $item = $line_item;
                             $link = Toolbox::getItemTypeFormURL($line["itemtype"]);
                             if ($line["itemtype"] != 'NetworkEquipment') {
                                 if ($item->canView()) {

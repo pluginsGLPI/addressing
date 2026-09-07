@@ -53,7 +53,12 @@ if (isset($_GET['action']) && $_GET['action'] == 'isName') {
     if (!($item instanceof CommonDBTM) || !$item->canView()) {
         echo json_encode(false);
     } else {
-        $criteria = ['name' => ['LIKE', $_GET['name'] ?? '']];
+        // % and _ keep their wildcard meaning inside a LIKE, so a raw name turns this
+        // existence check into a pattern-based enumeration of the entity's assets:
+        // name=% matches every asset instead of testing the string the UI submitted.
+        // Escape them so the posted value is only ever matched literally.
+        $name     = addcslashes((string) ($_GET['name'] ?? ''), '%_');
+        $criteria = ['name' => ['LIKE', $name]];
         if ($item->isEntityAssign()) {
             $criteria = array_merge(
                 $criteria,

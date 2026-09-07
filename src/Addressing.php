@@ -1281,7 +1281,12 @@ class Addressing extends CommonDBTM
         $options = [];
 
         foreach ($types as $itemtype) {
-            $item = new $itemtype();
+            // networkport_types can still list an itemtype whose plugin has been
+            // uninstalled; new $itemtype() would then be a fatal "Class not found".
+            $item = getItemForItemtype($itemtype);
+            if (!($item instanceof CommonDBTM)) {
+                continue;
+            }
             $options[$itemtype] = $item->getTypeName(1);
         }
 

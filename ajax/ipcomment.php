@@ -34,6 +34,7 @@
 use Glpi\Exception\Http\AccessDeniedHttpException;
 use GlpiPlugin\Addressing\Addressing;
 use GlpiPlugin\Addressing\IpComment;
+use GlpiPlugin\Addressing\Report;
 
 use function Safe\json_encode;
 
@@ -57,6 +58,26 @@ $addressing = new Addressing();
 if ($addressing_id <= 0 || !$addressing->can($addressing_id, UPDATE)) {
     throw new AccessDeniedHttpException();
 }
+
+// ipname is the report's row key and is supplied by the caller. The UPDATE right checked
+// above only proves this range is writable, not that this key belongs to it. Reject any
+// value that is not the "IP<unsigned long>" form built by Addressing::compute(), and any
+// address outside the range: otherwise a caller holding UPDATE on one of their own ranges
+// can store rows under arbitrary keys, which are never rendered back (the report joins on
+// the addresses the range actually contains) and are left behind when the range is deleted.
+// The digits are bounded to the unsigned 32-bit range before conversion: string2ip()
+// hands its argument to long2ip(), which raises an uncaught TypeError as soon as the
+// value no longer fits an int.
+if (!preg_match('/^IP(\d{1,10})$/', (string) $ipname, $matches)
+    || (int) $matches[1] > 4294967295) {
+    throw new AccessDeniedHttpException();
+}
+$ip = Report::string2ip((int) $matches[1]);
+if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) || !$addressing->containsIp($ip)) {
+    throw new AccessDeniedHttpException();
+}
+// Rebuild the key from the validated address instead of trusting the posted string.
+$ipname = 'IP' . $matches[1];
 
 $ipcomment = new IpComment();
 if ($ipcomment->getFromDBByCrit(['plugin_addressing_addressings_id' => $addressing_id, 'ipname' => $ipname])) {
