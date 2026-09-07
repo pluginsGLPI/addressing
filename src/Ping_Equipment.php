@@ -294,7 +294,6 @@ class Ping_Equipment extends CommonDBTM
      */
     public function showIPForm($ip)
     {
-        echo Html::script(PLUGIN_ADDRESSING_DIR_NOFULL . "/addressing.js");
 
         $config = new Config();
         $config->getFromDB('1');

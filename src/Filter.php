@@ -87,6 +87,60 @@ class Filter extends CommonDBTM
     }
 
     /**
+     * Validate the posted parent range and target entity.
+     *
+     * check()/can() validate the LOADED row, not the posted values, and
+     * CommonDBTM::update() enforces neither the entity boundary on a changed
+     * entities_id nor the readability of a changed parent. Both values are freely
+     * forgeable: plugin_addressing_addressings_id is a hidden field fed from an AJAX
+     * parameter, and entities_id comes from a dropdown that only restricts the UI.
+     * Without this guard a user of entity A could re-parent one of their own filters
+     * onto a range of entity B and have arbitrary text (the filter name) show up in
+     * the filter tab and report selector of an entity they have no access to.
+     *
+     * @param array<string,mixed> $input
+     */
+    private function validateParent(array $input): bool
+    {
+        if (isset($input['plugin_addressing_addressings_id'])) {
+            $addressings_id = (int) $input['plugin_addressing_addressings_id'];
+            $addressing     = new Addressing();
+            if ($addressings_id <= 0 || !$addressing->can($addressings_id, READ)) {
+                Session::addMessageAfterRedirect(
+                    __('You are not allowed to do this action'),
+                    false,
+                    ERROR,
+                );
+                return false;
+            }
+        }
+
+        if (isset($input['entities_id'])
+            && !Session::haveAccessToEntity((int) $input['entities_id'])) {
+            Session::addMessageAfterRedirect(__('You are not allowed to do this action'), false, ERROR);
+            return false;
+        }
+
+        return true;
+    }
+
+    public function prepareInputForAdd($input)
+    {
+        if (!is_array($input) || !$this->validateParent($input)) {
+            return false;
+        }
+        return $input;
+    }
+
+    public function prepareInputForUpdate($input)
+    {
+        if (!is_array($input) || !$this->validateParent($input)) {
+            return false;
+        }
+        return $input;
+    }
+
+    /**
      * Form of filter
      * @param  $ID
      * @param  $options
@@ -182,7 +236,13 @@ class Filter extends CommonDBTM
 
         $types = Addressing::dropdownItemtype();
         $filter = new self();
-        $datas = $filter->find(['plugin_addressing_addressings_id' => $item_id]);
+        // Restrict the listing to the caller's entity perimeter: filters written before
+        // validateParent() existed may still be attached to a range of another entity,
+        // and they must not surface here.
+        $datas = $filter->find(
+            ['plugin_addressing_addressings_id' => $item_id]
+            + getEntitiesRestrictCriteria(self::getTable()),
+        );
 
         $rows = [];
         foreach ($datas as $filter_item) {
@@ -238,7 +298,12 @@ class Filter extends CommonDBTM
     public static function dropdownFilters($id, $value)
     {
         $filter = new self();
-        $datas = $filter->find(['plugin_addressing_addressings_id' => $id]);
+        // Same entity perimeter as showList(): a filter stored outside the caller's
+        // entities is ignored by showReport() anyway, so never offer it here.
+        $datas = $filter->find(
+            ['plugin_addressing_addressings_id' => $id]
+            + getEntitiesRestrictCriteria(self::getTable()),
+        );
         $filters = [];
         $filters[0] = Dropdown::EMPTY_VALUE;
         foreach ($datas as $data) {
@@ -255,7 +320,11 @@ class Filter extends CommonDBTM
     public static function countForItem($id)
     {
         $filter = new self();
-        $datas = $filter->find(['plugin_addressing_addressings_id' => $id]);
+        // Keep the tab counter consistent with what showList() actually displays.
+        $datas = $filter->find(
+            ['plugin_addressing_addressings_id' => $id]
+            + getEntitiesRestrictCriteria(self::getTable()),
+        );
         return count($datas);
     }
 }

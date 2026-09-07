@@ -59,6 +59,18 @@ class Addressing extends CommonDBTM
         'Computer', 'NetworkEquipment', 'Peripheral', 'Phone', 'Printer', 'Enclosure', 'PDU', 'Cluster'];
     public $dohistory = true;
 
+    /**
+     * Largest number of addresses an addressing range may span.
+     *
+     * compute() materialises one PHP array entry per address of the range before it
+     * even queries the database, and the ping scan sends one ICMP probe per address:
+     * the cost of a range is strictly linear in its size. Without an upper bound, any
+     * user holding the plugin's CREATE right could store 0.0.0.0 - 255.255.255.255
+     * (4.29 billion entries) and exhaust the memory of the host.
+     * 65536 is a /16, well above any realistic addressing plan.
+     */
+    public const MAX_RANGE_SIZE = 65536;
+
     public static function getTypeName($nb = 0)
     {
         return _n('IP Addressing', 'IP Addressing', $nb, 'addressing');
@@ -329,6 +341,115 @@ class Addressing extends CommonDBTM
     }
 
 
+    /**
+     * Validate the posted range boundaries.
+     *
+     * Complements checkip(), which only checks that each octet is a number <= 255 and
+     * therefore accepts both an inverted range and an arbitrarily wide one.
+     *
+     * @param array<string,mixed> $input
+     */
+    private function validateRange(array $input): bool
+    {
+        $has_begin = array_key_exists('begin_ip', $input);
+        $has_end   = array_key_exists('end_ip', $input);
+
+        if (!$has_begin && !$has_end) {
+            // Partial update (massive action, single field): boundaries left untouched.
+            return true;
+        }
+
+        // A partial update may carry a single boundary: complete it with the stored
+        // one so the pair is always validated as a whole.
+        $begin = ip2long((string) ($has_begin ? $input['begin_ip'] : ($this->fields['begin_ip'] ?? '')));
+        $end   = ip2long((string) ($has_end ? $input['end_ip'] : ($this->fields['end_ip'] ?? '')));
+
+        if ($begin === false || $end === false) {
+            Session::addMessageAfterRedirect(__('Invalid data !!', 'addressing'), false, ERROR);
+            return false;
+        }
+
+        // Compare as unsigned 32 bit values so the check stays correct above
+        // 127.255.255.255, where ip2long() yields a negative int.
+        $size = (int) sprintf('%u', $end) - (int) sprintf('%u', $begin) + 1;
+
+        if ($size <= 0) {
+            Session::addMessageAfterRedirect(
+                __('The last IP address must be greater than or equal to the first one', 'addressing'),
+                false,
+                ERROR,
+            );
+            return false;
+        }
+
+        if ($size > self::MAX_RANGE_SIZE) {
+            Session::addMessageAfterRedirect(
+                sprintf(
+                    __('The IP range is too wide: %d addresses at most', 'addressing'),
+                    self::MAX_RANGE_SIZE,
+                ),
+                false,
+                ERROR,
+            );
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Validate the posted target entity.
+     *
+     * check()/can() validate the LOADED row, not the posted value, and
+     * CommonDBTM::update() does not enforce entity access on a changed entities_id.
+     * Without this guard a user restricted to entity A could move one of their own
+     * ranges into an entity they have no access to (cross-entity write). The same
+     * guard already exists on the "transfer" massive action; validating it here
+     * covers every write path at once (form, datainjection, API).
+     *
+     * @param array<string,mixed> $input
+     */
+    private function validateEntity(array $input): bool
+    {
+        if (!isset($input['entities_id'])) {
+            return true;
+        }
+
+        $entities_id = (int) $input['entities_id'];
+
+        if (isset($this->fields['entities_id'])
+            && $entities_id === (int) $this->fields['entities_id']) {
+            return true;
+        }
+
+        if (!Session::haveAccessToEntity($entities_id)) {
+            Session::addMessageAfterRedirect(__('You are not allowed to do this action'), false, ERROR);
+            return false;
+        }
+
+        return true;
+    }
+
+    public function prepareInputForAdd($input)
+    {
+        if (!is_array($input)
+            || !$this->validateRange($input)
+            || !$this->validateEntity($input)) {
+            return false;
+        }
+        return $input;
+    }
+
+    public function prepareInputForUpdate($input)
+    {
+        if (!is_array($input)
+            || !$this->validateRange($input)
+            || !$this->validateEntity($input)) {
+            return false;
+        }
+        return $input;
+    }
+
     /*
     function linkToExport($ID) {
 
@@ -580,6 +701,13 @@ class Addressing extends CommonDBTM
             }
         }
 
+        // $ipdeb/$ipfin reach this method through the variable-variable assignment
+        // above and are interpolated into a raw SQL QueryExpression below: force them
+        // to integers so nothing but a number can ever reach the query, and so the
+        // range arithmetic that follows is done on numbers rather than strings.
+        $ipdeb = (int) $ipdeb;
+        $ipfin = (int) $ipfin;
+
         if (isset($_GET["export"])) {
             if (isset($start)) {
                 $ipdeb += $start;
@@ -590,6 +718,24 @@ class Addressing extends CommonDBTM
             if ($ipdeb + $_SESSION["glpilist_limit"] <= $ipfin) {
                 $ipfin = $ipdeb + $_SESSION["glpilist_limit"] - 1;
             }
+        }
+
+        // Defensive bound, mirroring the MAX_RANGE_SIZE check now enforced at write
+        // time: rows stored before that check existed may still span an arbitrary
+        // interval, and the loop below materialises one array entry per address of the
+        // range. Refuse to compute rather than exhaust the memory of the host.
+        if ($ipfin < $ipdeb || ($ipfin - $ipdeb + 1) > self::MAX_RANGE_SIZE) {
+            if (!isCommandLine()) {
+                Session::addMessageAfterRedirect(
+                    sprintf(
+                        __('The IP range is too wide: %d addresses at most', 'addressing'),
+                        self::MAX_RANGE_SIZE,
+                    ),
+                    false,
+                    ERROR,
+                );
+            }
+            return [];
         }
 
         $result = [];

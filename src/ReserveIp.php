@@ -81,6 +81,29 @@ class ReserveIp extends CommonDBTM
             return false;
         }
 
+        // $input['ip'] is posted straight to this endpoint and, unlike the AJAX form
+        // that produced it (ajax/addressing.php), nothing here re-validates it: it ends
+        // up in the port name ("reserv-<value>") and in NetworkName__ipaddresses.
+        // Replay the two checks the form does: a syntactically valid IPv4, contained in
+        // a range the caller may READ, so a reservation cannot be tied to an address
+        // outside the caller's addressing plan.
+        $ip = filter_var($input['ip'] ?? '', FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
+        if ($ip === false || !Addressing::isIpInReadableRange($ip)) {
+            Session::addMessageAfterRedirect(__('Invalid data !!', 'addressing'), false, ERROR);
+            return false;
+        }
+        $input['ip'] = $ip;
+
+        // Dropdown ids are posted values: the UI restricts the choice to the target
+        // entity but a crafted request can carry the id of a value owned by another
+        // entity, which would then be written on the asset and its label read back.
+        foreach (['locations_id' => 'Location', 'states_id' => 'State', 'fqdns_id' => 'FQDN'] as $field => $itemtype) {
+            if (!$this->isUsableDropdownValue($itemtype, $input[$field] ?? 0)) {
+                Session::addMessageAfterRedirect(__('Invalid data !!', 'addressing'), false, ERROR);
+                return false;
+            }
+        }
+
         // $input['type'] is fully attacker-controlled ($_POST['type']). Restrict it to the
         // plugin's supported network port types and enforce the target itemtype's own
         // CREATE/UPDATE right (and entity access) before writing an asset/NetworkPort on
@@ -125,12 +148,17 @@ class ReserveIp extends CommonDBTM
 
         // Add a new port
         if ($id) {
+            // Bind the port to the entity of the asset carrying it rather than to the
+            // active session entity: the two can differ, which would leave the port
+            // misaligned with its own asset.
+            $port_entities_id = (int) ($item->fields['entities_id'] ?? $input['entities_id']);
+
             switch ($input['type']) {
                 case 'NetworkEquipment':
                     $newinput = [
                         "itemtype"                 => $input['type'],
                         "items_id"                 => $id,
-                        "entities_id"              => $_SESSION["glpiactive_entity"],
+                        "entities_id"              => $port_entities_id,
                         "name"                     => self::getPortName($input["ip"]),
                         "instantiation_type"       => "NetworkPortAggregate",
                         "_create_children"         => 1,
@@ -143,7 +171,7 @@ class ReserveIp extends CommonDBTM
                     $newinput = [
                         "itemtype"                 => $input['type'],
                         "items_id"                 => $id,
-                        "entities_id"              => $_SESSION["glpiactive_entity"],
+                        "entities_id"              => $port_entities_id,
                         "name"                     => self::getPortName($input["ip"]),
                         "instantiation_type"       => "NetworkPortEthernet",
                         "_create_children"         => 1,
@@ -168,6 +196,38 @@ class ReserveIp extends CommonDBTM
         }
 
         return true;
+    }
+
+    /**
+     * Whether a posted dropdown value lies within the caller's entity perimeter.
+     *
+     * Only the entity boundary is enforced, not the "dropdown" right: a technician
+     * legitimately reserving an IP does not necessarily hold it.
+     *
+     * @param string $itemtype dropdown class name
+     * @param mixed  $items_id posted id (0/empty means "no value", which is fine)
+     */
+    private function isUsableDropdownValue(string $itemtype, $items_id): bool
+    {
+        $items_id = (int) $items_id;
+        if ($items_id <= 0) {
+            return true;
+        }
+
+        $item = getItemForItemtype($itemtype);
+        if (!($item instanceof CommonDBTM) || !$item->getFromDB($items_id)) {
+            return false;
+        }
+
+        if (!$item->isEntityAssign()) {
+            // Global dropdown: no entity boundary to enforce.
+            return true;
+        }
+
+        return Session::haveAccessToEntity(
+            (int) $item->fields['entities_id'],
+            (bool) ($item->fields['is_recursive'] ?? false),
+        );
     }
 
     /**

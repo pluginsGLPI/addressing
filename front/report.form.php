@@ -33,8 +33,6 @@ use GlpiPlugin\Addressing\Addressing;
 $USEDBREPLICATE         = 1;
 $DBCONNECTION_REQUIRED  = 0;
 
-Html::header(Addressing::getTypeName(2), '', "tools", Addressing::class);
-
 if (!isset($_GET["start"])) {
     $_GET["start"] = 0;
 }
@@ -43,8 +41,14 @@ if (!isset($_GET["export"])) {
     $_GET["export"] = false;
 }
 
+// Check the right BEFORE emitting any output: check() throws when access is denied,
+// and once Html::header() has written the page head and navigation bar GLPI can no
+// longer render a proper error page - the client would get a truncated document
+// instead, which also makes range ids easier to enumerate.
 $addressing = new Addressing();
 $addressing->check((int) ($_GET['id'] ?? 0), READ);
+
+Html::header(Addressing::getTypeName(2), '', "tools", Addressing::class);
 $addressing->showReport($_GET);
 
 Html::footer();

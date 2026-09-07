@@ -48,6 +48,18 @@ class PingInfo extends CommonDBTM
 {
     public static $rightname = "plugin_addressing";
 
+    /**
+     * Largest number of ICMP probes a single ping run may send for one range.
+     *
+     * updatePingInfos() sends one synchronous probe per address of the range, each
+     * waiting up to a second for an answer. On a /16 that is 65536 sequential probes,
+     * i.e. roughly 18 hours holding a PHP worker (or a cron slot) and as many outgoing
+     * packets. The budget bounds a single run; the remaining addresses are simply left
+     * without ping information rather than letting the caller decide how long the scan
+     * lasts.
+     */
+    public const MAX_PING_TARGETS = 1024;
+
     public static function getTypeName($nb = 0)
     {
 
@@ -91,7 +103,10 @@ class PingInfo extends CommonDBTM
 
     public function updateAllAddressing()
     {
-        $old_memory           = ini_set("memory_limit", "-1");
+        // memory_limit is deliberately NOT lifted here: a cron task must fail cleanly
+        // on an oversized range instead of growing until the kernel OOM killer takes
+        // down an arbitrary process of the host (typically MySQL). The range size is
+        // now bounded by Addressing::MAX_RANGE_SIZE and the scan by MAX_PING_TARGETS.
         $old_execution        = ini_set("max_execution_time", "0");
         $addressing           = new Addressing();
         $addressings          = $addressing->find(['is_deleted' => 0,
@@ -102,7 +117,6 @@ class PingInfo extends CommonDBTM
             $ping_responses       = $this->updateAnAddressing($addressing);
             $total_ping_responses += $ping_responses;
         }
-        ini_set("memory_limit", $old_memory);
         ini_set("max_execution_time", $old_execution);
         return $total_ping_responses;
     }
@@ -135,10 +149,29 @@ class PingInfo extends CommonDBTM
         $system = $Config->fields["used_system"];
 
         $ping_response = 0;
+        $probes        = 0;
 
         $plugin_addressing_pinginfo = new PingInfo();
 
         foreach ($result as $num => $lines) {
+            // Bound the scan: each iteration spawns a blocking ICMP probe, so the cost
+            // of this loop is linear in the size of the range and entirely driven by
+            // caller-supplied boundaries. Stop once the budget is spent.
+            if ($probes >= self::MAX_PING_TARGETS) {
+                if (!isCommandLine()) {
+                    Session::addMessageAfterRedirect(
+                        sprintf(
+                            __('Ping stopped after %d addresses', 'addressing'),
+                            self::MAX_PING_TARGETS,
+                        ),
+                        false,
+                        WARNING,
+                    );
+                }
+                break;
+            }
+            $probes++;
+
             $ip = Report::string2ip(substr($num, 2));
 
             $ping_value                               = $Ping_Equipment->ping($system, $ip, "true");
