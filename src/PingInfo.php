@@ -196,7 +196,7 @@ class PingInfo extends CommonDBTM
     public static function getPingResponseForItem($params)
     {
 
-        $ping_right = Session::haveRight('plugin_addressing_use_ping_in_equipment', '1');
+        $ping_right = Session::haveRight('plugin_addressing_use_ping_in_equipment', READ);
         $item       = $params['item'];
 
         if ($ping_right

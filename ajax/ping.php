@@ -48,7 +48,7 @@ if (!isset($_POST['ip']) || !filter_var($_POST["ip"], FILTER_VALIDATE_IP)) {
 }
 
 $ip = $_POST['ip'];
-$itemtype = $_POST['itemtype'];
+$itemtype = $_POST['itemtype'] ?? '';
 $items_id = (int) ($_POST['items_id'] ?? 0);
 
 // itemtype/items_id are caller-supplied and drive the PingInfo row written below.

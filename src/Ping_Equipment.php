@@ -154,7 +154,10 @@ class Ping_Equipment extends CommonDBTM
         }
 
         $error = 1;
-        $list  = '';
+        // exec() is what turns $list into an array, and it only runs when a case below
+        // matches. A $system value outside the switch would otherwise leave a string here
+        // and make the implode() on $list fatal under PHP 8.
+        $list  = [];
         switch ($system) {
             case 0:
                 // linux ping
@@ -270,7 +273,10 @@ class Ping_Equipment extends CommonDBTM
         }
 
         $error = 1;
-        $list  = '';
+        // exec() is what turns $list into an array, and it only runs when a case below
+        // matches. A $system value outside the switch would otherwise leave a string here
+        // and make the implode() on $list fatal under PHP 8.
+        $list  = [];
         switch ($system) {
             case 0:
                 // linux host
@@ -284,7 +290,7 @@ class Ping_Equipment extends CommonDBTM
         }
         $list_str = implode('<br />', $list);
         //      return [$list_str, $error];
-        return $list[1];
+        return $list[1] ?? '';
     }
 
     /**

@@ -98,12 +98,30 @@ if (isset($_POST["add"])) {
     }
 
 } elseif (isset($_POST["search"])) {
-    $addressing->checkGlobal(READ);
+    // CommonGLPI::display() loads the range from the id of the array it is handed ($_POST
+    // here) but only checks READ on $_GET["id"], which is forced to "" above when absent.
+    // The per-item check would therefore be skipped and a POSTed id belonging to another
+    // entity would be loaded and its name rendered in the navigation header. Check the
+    // right on the id that is actually read; checkGlobal() alone only proves the plugin
+    // right is held somewhere, not that this range is readable. Without an id the page
+    // only renders the search form, for which the global right is enough.
+    $search_id = (int) ($_POST['id'] ?? 0);
+    if ($search_id > 0) {
+        $addressing->check($search_id, READ);
+    } else {
+        $addressing->checkGlobal(READ);
+    }
     Html::header(Addressing::getTypeName(2), '', "tools", Addressing::class);
     $addressing->display($_POST);
     Html::footer();
 } else {
-    $addressing->checkGlobal(READ);
+    // Same guard on the id display() will read here, applied before any output.
+    $display_id = (int) ($_GET['id'] ?? 0);
+    if ($display_id > 0) {
+        $addressing->check($display_id, READ);
+    } else {
+        $addressing->checkGlobal(READ);
+    }
     Html::header(Addressing::getTypeName(2), '', "tools", Addressing::class);
     $addressing->display($_GET);
     Html::footer();

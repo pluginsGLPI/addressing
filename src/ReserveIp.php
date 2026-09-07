@@ -118,6 +118,13 @@ class ReserveIp extends CommonDBTM
             return false;
         }
 
+        // entities_id drives both the asset lookup below and the entity the asset and its
+        // NetworkPort are written into. Normalise it once, like the other posted fields, so
+        // a request that omits it falls back to the root entity -- which can(-1, CREATE)
+        // then rejects unless the caller may reach it -- instead of raising a warning and
+        // reaching the query as null.
+        $input['entities_id'] = (int) ($input['entities_id'] ?? 0);
+
         // Find computer
         if (!$item->getFromDBByCrit(["name"        => $input["name_reserveip"],
             "entities_id" => $input['entities_id']])) {
