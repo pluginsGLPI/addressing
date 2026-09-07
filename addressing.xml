@@ -27,6 +27,11 @@
       <author>Nelly Mahu-Lasson</author>
    </authors>
    <versions>
+        <version>
+           <num>3.2.8</num>
+           <compatibility>~11.0</compatibility>
+           <download_url>https://github.com/pluginsGLPI/addressing/releases/download/3.2.8/glpi-addressing-3.2.8.tar.bz2</download_url>
+       </version>
        <version>
            <num>3.2.7</num>
            <compatibility>~11.0</compatibility>
