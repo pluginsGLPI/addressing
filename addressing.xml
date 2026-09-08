@@ -28,6 +28,11 @@
    </authors>
    <versions>
         <version>
+           <num>3.2.10</num>
+           <compatibility>~11.0</compatibility>
+           <download_url>https://github.com/pluginsGLPI/addressing/releases/download/3.2.10/glpi-addressing-3.2.10.tar.bz2</download_url>
+       </version>
+        <version>
            <num>3.2.9</num>
            <compatibility>~11.0</compatibility>
            <download_url>https://github.com/pluginsGLPI/addressing/releases/download/3.2.9/glpi-addressing-3.2.9.tar.bz2</download_url>
