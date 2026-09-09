@@ -44,10 +44,6 @@ use Session;
 use Toolbox;
 use Vlan;
 
-if (!defined('GLPI_ROOT')) {
-    die("Sorry. You can't access directly to this file");
-}
-
 /**
  * Class Addressing
  */

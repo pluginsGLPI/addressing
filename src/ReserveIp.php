@@ -36,10 +36,6 @@ use NetworkPort;
 use Profile_User;
 use Session;
 
-if (!defined('GLPI_ROOT')) {
-    die("Sorry. You can't access directly to this file");
-}
-
 /**
  * Class ReserveIp
  */
@@ -129,10 +125,16 @@ class ReserveIp extends CommonDBTM
         if (!$item->getFromDBByCrit(["name"        => $input["name_reserveip"],
             "entities_id" => $input['entities_id']])) {
             // Add computer
-            if (!$item->can(-1, CREATE, [
+            // can() takes its third argument by reference (?array &$input), so it has
+            // to be handed a variable: an inline array literal makes PHP raise
+            // "Argument #3 ($input) could not be passed by reference" at call time,
+            // before any right is even evaluated -- which broke every reservation that
+            // had to create the asset, whatever the caller's profile (GitHub issue #113).
+            $create_input = [
                 "name"        => $input["name_reserveip"],
                 "entities_id" => $input['entities_id'],
-            ])) {
+            ];
+            if (!$item->can(-1, CREATE, $create_input)) {
                 return false;
             }
             $id = $item->add(["name"         => $input["name_reserveip"],
