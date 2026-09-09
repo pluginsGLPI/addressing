@@ -109,12 +109,6 @@ parameters:
 			path: src/Addressing.php
 
 		-
-			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
-			identifier: glpi.forbidExit
-			count: 1
-			path: src/Addressing.php
-
-		-
 			message: '#^PHPDoc tag @param has invalid value \(array\| \$options\)\: Unexpected token "\$options", expected type at offset 152 on line 5$#'
 			identifier: phpDoc.parseError
 			count: 1
@@ -139,34 +133,10 @@ parameters:
 			path: src/Config.php
 
 		-
-			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
-			identifier: glpi.forbidExit
-			count: 1
-			path: src/Config.php
-
-		-
 			message: '#^Access to an undefined property CommonGLPI\:\:\$fields\.$#'
 			identifier: property.notFound
 			count: 1
 			path: src/Filter.php
-
-		-
-			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
-			identifier: glpi.forbidExit
-			count: 1
-			path: src/Filter.php
-
-		-
-			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
-			identifier: glpi.forbidExit
-			count: 1
-			path: src/IpComment.php
-
-		-
-			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
-			identifier: glpi.forbidExit
-			count: 1
-			path: src/PingInfo.php
 
 		-
 			message: '#^Method GlpiPlugin\\Addressing\\Ping_Equipment\:\:getHostnameByPing\(\) should return array but returns string\.$#'
@@ -199,20 +169,8 @@ parameters:
 			path: src/Ping_Equipment.php
 
 		-
-			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
-			identifier: glpi.forbidExit
-			count: 1
-			path: src/Ping_Equipment.php
-
-		-
 			message: '#^Call to an undefined method CommonGLPI\:\:getField\(\)\.$#'
 			identifier: method.notFound
-			count: 1
-			path: src/Profile.php
-
-		-
-			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
-			identifier: glpi.forbidExit
 			count: 1
 			path: src/Profile.php
 
@@ -265,25 +223,7 @@ parameters:
 			path: src/Report.php
 
 		-
-			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
-			identifier: glpi.forbidExit
-			count: 1
-			path: src/Report.php
-
-		-
 			message: '#^PHPDoc tag @return has invalid value \(\)\: Unexpected token "\\n     ", expected type at offset 71 on line 6$#'
 			identifier: phpDoc.parseError
-			count: 1
-			path: src/ReserveIp.php
-
-		-
-			message: '#^Parameter \#3 \$input of method CommonDBTM\:\:can\(\) is passed by reference, so it expects variables only\.$#'
-			identifier: argument.byRef
-			count: 1
-			path: src/ReserveIp.php
-
-		-
-			message: '#^You should not use the `die` function\. It prevents the execution of post\-request/post\-command routines\.$#'
-			identifier: glpi.forbidExit
 			count: 1
 			path: src/ReserveIp.php
