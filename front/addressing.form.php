@@ -67,7 +67,11 @@ if (isset($_POST["add"])) {
     $addressing->delete($_POST);
     $addressing->redirectToList();
 } elseif (isset($_POST["restore"])) {
-    $addressing->check($_POST['id'], PURGE);
+    // Restoring is the reverse of putting in the trashbin, so it is the DELETE bit that
+    // governs it, as in the core. Asking for PURGE here denied the action to the profiles
+    // that may put a range in the trashbin but not destroy it, which left them with rows
+    // they could no longer take back out.
+    $addressing->check((int) ($_POST['id'] ?? 0), DELETE);
     $addressing->restore($_POST);
     $addressing->redirectToList();
 } elseif (isset($_POST["purge"])) {

@@ -436,7 +436,12 @@ function plugin_addressing_dynamicReport($params)
             $ipfin  = sprintf("%u", ip2long($addressingFilter->fields['end_ip']));
             $result = $Addressing->compute($params["start"], ['ipdeb'       => $ipdeb,
                 'ipfin'       => $ipfin,
-                'entities_id' => $addressingFilter->fields['entities_id'],
+                // compute() extracts its parameters as variables and only tests isset($entities):
+                // the key has to be named "entities", as Addressing::showReport() already does.
+                // Spelled "entities_id" it created an unread variable and the entity restriction
+                // silently fell back to the range's own entity, so the same report did not have
+                // the same perimeter depending on which of the two renderers displayed it.
+                'entities'    => $addressingFilter->fields['entities_id'],
                 'type_filter' => $addressingFilter->fields['type']]);
         } else {
             $ipdeb  = sprintf("%u", ip2long($Addressing->fields["begin_ip"]));
@@ -444,7 +449,13 @@ function plugin_addressing_dynamicReport($params)
             $result = $Addressing->compute($params["start"], ['ipdeb' => $ipdeb,
                 'ipfin' => $ipfin]);
         }
-        $Report->displayReport($result, $Addressing, $params);
+        // Fourth argument, in the order Report::displayReport() reads it: index 0 is "ping on".
+        $Report->displayReport(
+            $result,
+            $Addressing,
+            $params,
+            [$params['ping_on'] ?? 1, $params['ping_off'] ?? 1],
+        );
 
         return true;
     }
@@ -475,7 +486,12 @@ function plugin_addressing_postinit()
 
     $PLUGIN_HOOKS[Hooks::ITEM_PURGE]['addressing'] = [];
 
-    foreach (Addressing::getTypes() as $type) {
+    // getTypes() filters the list with canView(), i.e. against the rights of whoever
+    // happens to run postinit(). A purge done from the CLI or the cron, where there is
+    // no session, or by a profile that cannot read the type, therefore left the ping
+    // information rows of the destroyed item behind. Hook registration describes what
+    // the plugin cleans up, not what the current caller may read.
+    foreach (Addressing::getTypes(true) as $type) {
         $PLUGIN_HOOKS[Hooks::ITEM_PURGE]['addressing'][$type]
            = [PingInfo::class, 'cleanForItem'];
     }

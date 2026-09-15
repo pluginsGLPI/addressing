@@ -97,12 +97,18 @@
                     <td>{{ switch_ping_off|raw }}</td>
 
                     <td class='center' colspan='4'>
-                        <button form='' type='submit' id='updatePingInfo'
-                                class='submit btn btn-primary me-2 center' name='updatePingInfo'
-                                title='{{ _x('button', 'Manual launch of ping', 'addressing') }}'>
-                            <i class='ti ti-refresh' data-hasqtip='0' aria-hidden='true'></i>&nbsp;
-                            {{ _x('button', 'Manual launch of ping', 'addressing') }}
-                        </button>
+                        {% if can_scan %}
+                            <button form='' type='submit' id='updatePingInfo'
+                                    class='submit btn btn-primary me-2 center' name='updatePingInfo'
+                                    title='{{ _x('button', 'Manual launch of ping', 'addressing') }}'>
+                                <i class='ti ti-refresh' data-hasqtip='0' aria-hidden='true'></i>&nbsp;
+                                {{ _x('button', 'Manual launch of ping', 'addressing') }}
+                            </button>
+                        {% else %}
+                            <span class="text-muted">
+                                {{ __('Ping is disabled in the plugin configuration', 'addressing') }}
+                            </span>
+                        {% endif %}
                     </td>
                 </tr>
             {% endif %}

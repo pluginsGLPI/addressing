@@ -25,10 +25,17 @@
  # --------------------------------------------------------------------------
  #}
 
-<div class='alert alert-warning'>
+{#
+ # "state" tells whether the probe was actually run: the form is also rendered when the ping is
+ # turned off, globally or on the range, and when the caller has just used its quota of probes.
+ # "error" only means something in the "done" state.
+ #}
+<div class='alert {{ state == 'done' ? 'alert-warning' : 'alert-info' }}'>
     <div class='d-flex'>
         <div class='me-2'>
-            {% if error %}
+            {% if state != 'done' %}
+                <i style='font-size: 2em;' class='ti ti-plug-connected-x'></i>
+            {% elseif error %}
                 <i style='color:forestgreen;font-size: 2em;' class='ti ti-circle-check'></i>
             {% else %}
                 <i style='color:orange;font-size: 2em;' class='ti ti-alert-triangle'></i>
@@ -37,7 +44,11 @@
         <div>
             <h4>{{ _n('IP address', 'IP addresses', 1) }} : {{ ip }}</h4>
             <div class='text-muted'>
-                {% if error %}
+                {% if state == 'disabled' %}
+                    <span>&nbsp;{{ __('Ping is disabled for this IP range', 'addressing') }}</span>
+                {% elseif state == 'unavailable' %}
+                    <span>&nbsp;{{ __('A ping has just been run for this address, please retry in a few seconds', 'addressing') }}</span>
+                {% elseif error %}
                     <span style='color:forestgreen'>&nbsp;{{ __('Ping: no response - free IP', 'addressing') }}</span>
                 {% else %}
                     <span style='color:orange'>&nbsp;{{ __('Ping: got a response - used IP', 'addressing') }}</span>

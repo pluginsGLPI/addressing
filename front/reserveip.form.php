@@ -33,10 +33,20 @@ $reserveip = new ReserveIp();
 
 if (isset($_POST['add'])) {
     $reserveip->check(-1, CREATE, $_POST);
-    $reserveip->reserveip($_POST);
+    // reserveip() returns false on each of its refusal paths, four of which are the
+    // authorisation and entity boundary checks. Announcing a success regardless let a
+    // technician record an address as reserved while it actually stayed free, and hid
+    // every refused attempt from the operator.
+    $reserved = $reserveip->reserveip($_POST);
     Html::popHeader(ReserveIp::getTypeName());
-    echo "<div class='alert alert-important alert-info d-flex'>";
-    echo __("The address has been reserved", "addressing");
-    echo "</div>";
+    if ($reserved) {
+        echo "<div class='alert alert-important alert-info d-flex'>";
+        echo __("The address has been reserved", "addressing");
+        echo "</div>";
+    } else {
+        echo "<div class='alert alert-important alert-danger d-flex'>";
+        echo __("The address could not be reserved", "addressing");
+        echo "</div>";
+    }
     Html::popFooter();
 }

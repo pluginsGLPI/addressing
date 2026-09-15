@@ -257,56 +257,54 @@ class Ping_Equipment extends CommonDBTM
     }
 
     /**
-     * @param $system
-     * @param $ip
-     *
-     * @return array
-     */
-    public function getHostnameByPing($system, $ip)
-    {
-        if (defined('GLPI_INSTALL_MODE') && GLPI_INSTALL_MODE === 'CLOUD') {
-            return '';
-        }
-
-        $error = 1;
-        // exec() is what turns $list into an array, and it only runs when a case below
-        // matches. A $system value outside the switch would otherwise leave a string here
-        // and make the implode() on $list fatal under PHP 8.
-        $list  = [];
-        switch ($system) {
-            case 0:
-                // linux host
-                exec("ping -c 1 -w 1 -a " . escapeshellarg($ip), $list, $error);
-                break;
-
-            case 1:
-                //windows
-                exec("ping.exe -n 1 -w 100 -i 64 -a " . escapeshellarg($ip), $list, $error);
-                break;
-        }
-        $list_str = implode('<br />', $list);
-        //      return [$list_str, $error];
-        return $list[1] ?? '';
-    }
-
-    /**
      * Show form
      *
-     * @param string $ip
+     * @param string     $ip
+     * @param Addressing $addressing range the address belongs to
      */
-    public function showIPForm($ip)
+    public function showIPForm($ip, Addressing $addressing)
     {
+
+        // PingInfo::isRangeScanEnabled() is the single decision point of the plugin: it reads
+        // both the global switch of the configuration, labelled "Use Ping on IP ranges", and the
+        // flag of the range. Only the cron task and the manual scan consulted it. This path is a
+        // range path too -- the terminal icon of the report -- and it probed whatever the setting
+        // said, so disabling the ping did not stop the server from emitting ICMP.
+        if (!PingInfo::isRangeScanEnabled($addressing)) {
+            TemplateRenderer::getInstance()->display('@addressing/ping_ip_form.html.twig', [
+                'ip'    => $ip,
+                'error' => 1,
+                'state' => 'disabled',
+            ]);
+            return;
+        }
 
         $config = new Config();
         $config->getFromDB('1');
         $system = $config->fields["used_system"];
 
-        $ping_equip = new Ping_Equipment();
-        [$message, $error] = $ping_equip->ping($system, $ip);
+        // The probe blocks for the whole timeout of the command and nothing but the caller
+        // decides how often it is asked for. Same two guards as the range scan, sized for a
+        // single address: a short cooldown per address, and a lock that refuses a concurrent
+        // call instead of queueing it behind the running probe. Both are held by PingInfo, so
+        // the four paths that probe cannot drift apart again.
+        $result = PingInfo::withProbeGuards($ip, static function () use ($system, $ip) {
+            return (new Ping_Equipment())->ping($system, $ip);
+        });
+        if ($result === null) {
+            TemplateRenderer::getInstance()->display('@addressing/ping_ip_form.html.twig', [
+                'ip'    => $ip,
+                'error' => 1,
+                'state' => 'unavailable',
+            ]);
+            return;
+        }
+        [$message, $error] = $result;
 
         TemplateRenderer::getInstance()->display('@addressing/ping_ip_form.html.twig', [
             'ip'    => $ip,
             'error' => $error,
+            'state' => 'done',
         ]);
     }
 }

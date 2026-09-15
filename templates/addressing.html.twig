@@ -202,7 +202,10 @@
                         </div>
 
 
-                        {% if config.isField('use_ping') %}
+                        {# isField() only tells the column exists, so this test was always true
+                           and the else branch below - which forces use_ping to 0 when ping is
+                           disabled - was dead code. Read the stored value instead. #}
+                        {% if config.fields['use_ping'] %}
                             {% if item.isField('use_ping') %}
                                 {{ fields.sliderField(
                                     'use_ping',

@@ -33,12 +33,17 @@
 // ----------------------------------------------------------------------
 
 use Glpi\Exception\Http\NotFoundHttpException;
+use GlpiPlugin\Addressing\Addressing;
 use GlpiPlugin\Addressing\Config;
 use GlpiPlugin\Addressing\Ping_Equipment;
 use GlpiPlugin\Addressing\PingInfo;
 use GlpiPlugin\Addressing\Report;
 
-Session::checkRight('plugin_addressing', UPDATE);
+// This endpoint pings a single equipment; the tab offering it is gated by seePingTab.php and
+// by PingInfo::showPingButton() on the dedicated right. Requiring the plugin UPDATE right here
+// instead both denied the feature to the profiles it was granted to and opened it to profiles
+// that were never granted it: use the same right as the two other entry points.
+Session::checkRight('plugin_addressing_use_ping_in_equipment', READ);
 
 header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();
@@ -54,6 +59,13 @@ $items_id = (int) ($_POST['items_id'] ?? 0);
 // itemtype/items_id are caller-supplied and drive the PingInfo row written below.
 // Reject unknown classes and any item outside the caller's entity perimeter so the
 // endpoint cannot be used to enumerate or pollute ping data across the entity boundary.
+// getItemForItemtype() resolves any CommonDBTM of the instance, well beyond what this plugin
+// deals with. Confront the posted value with the itemtypes the plugin actually supports before
+// instantiating it, so the endpoint cannot be pointed at an unrelated table.
+if (!is_string($itemtype) || !in_array($itemtype, Addressing::getTypes(true), true)) {
+    throw new NotFoundHttpException();
+}
+
 $item = getItemForItemtype($itemtype);
 if (!($item instanceof CommonDBTM) || !$item->can($items_id, READ)) {
     throw new NotFoundHttpException();
@@ -72,12 +84,34 @@ $config = new Config();
 $config->getFromDB('1');
 $system = $config->fields["used_system"];
 
-$ping_equip = new Ping_Equipment();
-[$message, $error] = $ping_equip->ping($system, $ip);
+// Each call runs a blocking probe whose timeout is about a second, and nothing but the caller
+// decides how often it is replayed: a few dozen concurrent requests hold as many workers, and
+// the instance sends a sustained ICMP stream towards a host chosen among the addresses of the
+// assets it may read. The range scan is already bounded by a cooldown and an exclusive lock;
+// PingInfo::withProbeGuards() applies the same two, sized for a single address. The lock is per
+// user and non blocking, so a concurrent call is refused instead of queueing behind the running
+// probe. Both calls to ping() run inside it: they are the two halves of one answer, the human
+// readable output and the boolean stored in the ping information row, so they share one lock
+// and one cooldown stamp rather than counting as two probes.
+$refusal = null;
+$result  = PingInfo::withProbeGuards($ip, static function () use ($system, $ip) {
+    $ping_equip = new Ping_Equipment();
+
+    return [$ping_equip->ping($system, $ip), $ping_equip->ping($system, $ip, "true")];
+}, $refusal);
+
+if ($result === null) {
+    echo htmlescape(
+        $refusal === PingInfo::PROBE_REFUSED_COOLDOWN
+            ? __('A ping has just been run for this address, please retry in a few seconds', 'addressing')
+            : __('A ping is already running, please retry in a few seconds', 'addressing'),
+    );
+    return;
+}
+
+[[$message, $error], $ping_value] = $result;
 
 $plugin_addressing_pinginfo = new PingInfo();
-
-$ping_value = $ping_equip->ping($system, $ip, "true");
 
 $id = 0;
 $ping_date = 0;
@@ -100,4 +134,6 @@ if ($ping_value == false || $ping_value == true) {
     }
 }
 
-echo $ping_response = $message;
+// The message carries the output of the probe. Escape it: the response is injected in the page
+// by the caller, and nothing guarantees the underlying command only ever returns plain text.
+echo htmlescape($message);

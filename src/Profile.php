@@ -134,8 +134,14 @@ class Profile extends \Profile
                 $myright['rights'] = $value;
                 $profileRight->add($myright);
 
-                //Add right to the current session
-                $_SESSION['glpiactiveprofile'][$right] = $value;
+                // Add right to the current session, but only when the profile being seeded is
+                // the one the caller is logged in with. migrateProfiles() walks every row of
+                // the legacy profile table and calls this method for each of them, so the
+                // rights of the last migrated profile used to be copied into the installing
+                // administrator's session, desynchronising it from what is stored for them.
+                if ((int) $profiles_id === (int) ($_SESSION['glpiactiveprofile']['id'] ?? 0)) {
+                    $_SESSION['glpiactiveprofile'][$right] = $value;
+                }
             }
         }
     }

@@ -64,4 +64,8 @@ if (isset($_POST['add'])) {
     $filter->check($_POST['id'], PURGE);
     $filter->delete($_POST, 1);
     Html::back();
+} else {
+    // No known action in the request: go back where the caller came from rather than
+    // answering a blank page.
+    Html::back();
 }

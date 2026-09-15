@@ -32,6 +32,7 @@ namespace GlpiPlugin\Addressing;
 use Ajax;
 use CommonDBTM;
 use DbUtils;
+use Glpi\Exception\Http\BadRequestHttpException;
 use Glpi\Search\Output\HTMLSearchOutput;
 use Glpi\Search\SearchEngine;
 use Html;
@@ -153,11 +154,56 @@ class Report extends CommonDBTM
      *
      * @return int
      */
-    public function displayReport(&$result, $Addressing, $values, $ping_status = [])
+    /**
+     * Confront a requested display type with the output modes the core actually supports.
+     *
+     * @param mixed $output_type
+     */
+    private static function validateOutputType($output_type): int
+    {
+        $allowed_output_types = [
+            Search::GLOBAL_SEARCH,
+            Search::HTML_OUTPUT,
+            Search::PDF_OUTPUT_LANDSCAPE,
+            Search::PDF_OUTPUT_PORTRAIT,
+            Search::CSV_OUTPUT,
+            Search::ODS_OUTPUT,
+            Search::XLSX_OUTPUT,
+            Search::NAMES_OUTPUT,
+        ];
+
+        if (!is_numeric($output_type) || !in_array((int) $output_type, $allowed_output_types, true)) {
+            throw new BadRequestHttpException();
+        }
+
+        return (int) $output_type;
+    }
+
+    /**
+     * Tell whether a requested display type renders the page, or a downloadable file.
+     *
+     * The entry point has to know this before emitting anything: the CSV, ODS and PDF writers
+     * send their own headers and body, so a page head written beforehand ends up captured
+     * inside the exported file.
+     *
+     * @param mixed $display_type
+     */
+    public static function isHtmlOutput($display_type): bool
+    {
+        $output = SearchEngine::getOutputForLegacyKey(self::validateOutputType($display_type));
+
+        return $output instanceof HTMLSearchOutput;
+    }
+
+    public function displayReport(&$result, Addressing $Addressing, array $values, array $ping_status = [])
     {
         global $CFG_GLPI;
 
-        $ping = $Addressing->fields["use_ping"];
+        // The flag of the range is only half of the decision: the configuration of the plugin
+        // carries a global switch, labelled "Use Ping on IP ranges", which this report ignored.
+        // Ask the single decision point instead, so the report, the cron task and the manual
+        // scan all answer the same question.
+        $ping = PingInfo::isRangeScanEnabled($Addressing) ? 1 : 0;
 
         // Get config
         $Config = new Config();
@@ -165,25 +211,25 @@ class Report extends CommonDBTM
         $system = $Config->fields["used_system"];
 
 
-        $default_values["start"] = $start = 0;
-        $default_values["id"] = $id = 0;
-        $default_values["export"] = $export = false;
+        // These used to be assigned through variable variables from the request, so $start kept
+        // whatever type the caller sent. It is immediately used in pagination arithmetic
+        // ($start + glpilist_limit), which raises a TypeError on an array and lets a negative
+        // offset walk outside the result set. Read each parameter explicitly, with its type.
+        $start  = max(0, (int) ($values['start'] ?? 0));
+        $id     = (int) ($values['id'] ?? 0);
+        $export = (bool) ($values['export'] ?? false);
 
-        foreach ($default_values as $key => $val) {
-            if (isset($values[$key])) {
-                $$key = $values[$key];
-            }
-        }
         $itemtype = Addressing::class;
-        // Set display type for export if define
-        $output_type = $values["display_type"] ?? Search::HTML_OUTPUT;
+        // Set display type for export if define. $values now carries the request parameters
+        // (it used to receive the ping status array by mistake, see Addressing::showReport()),
+        // so display_type is caller controlled here and has to be validated before it reaches
+        // the core: getOutputForLegacyKey(int $output_type) raises a TypeError on a non numeric
+        // value and a RuntimeException on a key outside the enumeration, neither of which is
+        // caught, turning an arbitrary parameter into a 500 with a full stack trace.
+        $output_type = self::validateOutputType($values["display_type"] ?? Search::HTML_OUTPUT);
         $output = SearchEngine::getOutputForLegacyKey($output_type);
         $is_html_output = $output instanceof HTMLSearchOutput;
         $html_output = '';
-
-        if (isset($values["display_type"])) {
-            $output_type = $values["display_type"];
-        }
 
         $headers = [];
         $rows = [];
@@ -306,16 +352,25 @@ class Report extends CommonDBTM
                                 'height' => 300,
                                 'dialog_class' => 'modal-sm',
                             ];
-                            $ping_link = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#ping$rand'>";
-                            $ping_link .= "<i class='ti ti-terminal-2 pointer' style='color: orange' title='" . __(
-                                "IP ping",
-                                'addressing',
-                            ) . "'></i></a>";
+                            // The icon opens an iframe that makes the server probe the address.
+                            // It was offered whatever the ping setting said, so neither the global
+                            // switch nor the flag of the range had any effect on this column --
+                            // report.html.twig already hides the manual launch button that way,
+                            // through can_scan. The cell itself stays, so the row keeps the number
+                            // of columns its header announces.
+                            $ping_link = "";
+                            if ($ping == 1) {
+                                $ping_link = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#ping$rand'>";
+                                $ping_link .= "<i class='ti ti-terminal-2 pointer' style='color: orange' title='" . __(
+                                    "IP ping",
+                                    'addressing',
+                                ) . "'></i></a>";
+                            }
 
                             if ($is_html_output) {
                                 $html_output .= $output::showItem("$ping_link ", $item_num, $row_num, "class='center'");
                             }
-                            if (isset($params) && count($params) > 0 && $is_html_output) {
+                            if ($ping == 1 && isset($params) && count($params) > 0 && $is_html_output) {
                                 echo Ajax::createIframeModalWindow(
                                     'ping' . $rand,
                                     "/plugins/addressing/ajax/addressing.php?action=ping&ip=" . $params['ip'],
@@ -434,9 +489,13 @@ class Report extends CommonDBTM
                                     'plugin_addressing_addressings_id' => $Addressing->getID(),
                                     'ipname' => $num,
                                 ])) {
-                                    foreach ($pings as $ping) {
-                                        $ping_value = $ping['ping_response'];
-                                        $ping_date = $ping['ping_date'];
+                                    // Reusing $ping as the loop variable replaced the ping setting
+                                    // of the range with a row of the ping information table for
+                                    // the whole remainder of the rendering, so every later test of
+                                    // $ping read an array instead of the flag.
+                                    foreach ($pings as $ping_info) {
+                                        $ping_value = $ping_info['ping_response'];
+                                        $ping_date = $ping_info['ping_date'];
                                     }
                                     $ping_action = 1;
                                 } else {
@@ -670,7 +729,7 @@ class Report extends CommonDBTM
 
                                       $('#ajax_loader').show();
                                       $.ajax({
-                                         url: '" . $CFG_GLPI["root_doc"] . PLUGIN_ADDRESSING_DIR_NOFULL . "/ajax/ipcomment.php',
+                                         url: '" . PLUGIN_ADDRESSING_WEBDIR . "/ajax/ipcomment.php',
                                             type: 'POST',
                                             data:
                                               {
@@ -735,23 +794,12 @@ class Report extends CommonDBTM
                             'height' => 300,
                             'dialog_class' => 'modal-sm',
                         ];
-                        $ping_link = "<a href=\"#\" data-bs-toggle='modal' data-bs-target='#ping$rand'>";
-                        $ping_link .= "<i class='ti ti-terminal-2 pointer' style='color: orange' title='" . __(
-                            "IP ping",
-                            'addressing',
-                        ) . "'></i></a>";
+                        // This whole branch is the one taken when the ping is off, yet it offered
+                        // the icon that makes the server probe the address, and the iframe behind
+                        // it ran the probe. Leave the cell empty: the column is still emitted, so
+                        // the row keeps the number of cells its header announces.
                         if ($is_html_output) {
-                            $html_output .= $output::showItem("$ping_link ", $item_num, $row_num, "class='center'");
-                        }
-                        if (isset($params) && count($params) > 0 && $is_html_output) {
-                            echo Ajax::createIframeModalWindow(
-                                'ping' . $rand,
-                                "/plugins/addressing/ajax/addressing.php?action=ping&ip=" . $params['ip'],
-                                [
-                                    'title' => __s('IP ping', 'addressing'),
-                                    'display' => false,
-                                ],
-                            );
+                            $html_output .= $output::showItem(" ", $item_num, $row_num, "class='center'");
                         }
                         if ($is_html_output) {
                             $html_output .= $output::showItem($ip, $item_num, $row_num);
@@ -848,7 +896,7 @@ class Report extends CommonDBTM
 
                                   $('#ajax_loader').show();
                                   $.ajax({
-                                     url: '" . $CFG_GLPI["root_doc"] . PLUGIN_ADDRESSING_DIR_NOFULL . "/ajax/ipcomment.php',
+                                     url: '" . PLUGIN_ADDRESSING_WEBDIR . "/ajax/ipcomment.php',
                                         type: 'POST',
                                         data:
                                           {
@@ -958,10 +1006,6 @@ class Report extends CommonDBTM
                                         $current_row[$itemtype . '_' . (++$colnum)] = ['displayname' => $ip];
                                     }
                                     $title = __('Ping: got a response - used IP', 'addressing');
-                                    //                        $Ping_Equipment = new Ping_Equipment();
-                                    //                        $hostname = $Ping_Equipment->getHostnameByPing($system, $ip);
-                                    //                        $text = iconv(mb_detect_encoding($hostname, mb_detect_order(), true), "UTF-8", $hostname);
-                                    //                        $title .= "<br>".$text;
                                     if ($is_html_output) {
                                         $html_output .= $output::showItem(
                                             $title,
@@ -1054,7 +1098,7 @@ class Report extends CommonDBTM
 
                                               $('#ajax_loader').show();
                                               $.ajax({
-                                                 url: '" . $CFG_GLPI["root_doc"] . PLUGIN_ADDRESSING_DIR_NOFULL . "/ajax/ipcomment.php',
+                                                 url: '" . PLUGIN_ADDRESSING_WEBDIR . "/ajax/ipcomment.php',
                                                     type: 'POST',
                                                     data:
                                                       {
@@ -1245,7 +1289,7 @@ class Report extends CommonDBTM
 
                                                   $('#ajax_loader').show();
                                                   $.ajax({
-                                                     url: '" . $CFG_GLPI["root_doc"] . PLUGIN_ADDRESSING_DIR_NOFULL . "/ajax/ipcomment.php',
+                                                     url: '" . PLUGIN_ADDRESSING_WEBDIR . "/ajax/ipcomment.php',
                                                         type: 'POST',
                                                         data:
                                                           {
@@ -1313,7 +1357,7 @@ class Report extends CommonDBTM
                     'count' => $numrows,
                     'search' => '',
                     'cols' => [],
-                    'rows' => $rows,
+                    'rows' => self::escapeExportFormulas($rows),
                 ],
             ]);
 
@@ -1329,6 +1373,64 @@ class Report extends CommonDBTM
             $output->displayData($addressing_data, []);
         }
         return $ping_response;
+    }
+
+    /**
+     * Neutralise spreadsheet formulas in the cells handed to the non HTML renderers.
+     *
+     * displayData() passes these rows to the CSV, ODS and PDF writers as they are, and a
+     * cell whose first character is one of = + - @ tab or carriage return is evaluated as
+     * a formula by Excel and LibreOffice as soon as the file is opened. Asset names, port
+     * names, user names and IP comments are free text written by any profile allowed to
+     * edit them, so the export turns the report into a stored code execution vector
+     * against whoever opens it -- typically the operator who asked for the export.
+     *
+     * The neutralisation is reversible on purpose: a single leading apostrophe is
+     * prepended, which spreadsheets strip on display and which a re-import can remove
+     * unambiguously, instead of mangling the exported value itself.
+     *
+     * @param array<int|string, array<int|string, mixed>> $rows
+     *
+     * @return array<int|string, array<int|string, mixed>>
+     */
+    private static function escapeExportFormulas(array $rows): array
+    {
+        foreach ($rows as $row_key => $row) {
+            if (!is_array($row)) {
+                continue;
+            }
+
+            foreach ($row as $cell_key => $cell) {
+                if (
+                    !is_array($cell)
+                    || !isset($cell['displayname'])
+                    || !is_string($cell['displayname'])
+                    || $cell['displayname'] === ''
+                ) {
+                    continue;
+                }
+
+                $value = $cell['displayname'];
+
+                // The report composes its cells as markup -- links to the asset, to the user,
+                // input fields for the comments -- and the very same array feeds the CSV, ODS
+                // and PDF writers, which dump it verbatim. Reduce a cell to the text a reader
+                // expects before anything else, and before the formula test below, so that a
+                // payload cannot hide its leading character behind a tag.
+                if (str_contains($value, '<')) {
+                    $value = html_entity_decode(strip_tags($value), ENT_QUOTES, 'UTF-8');
+                    $value = trim((string) preg_replace('/\s+/', ' ', $value));
+                }
+
+                if ($value !== '' && str_contains("=+-@\t\r", $value[0])) {
+                    $value = "'" . $value;
+                }
+
+                $rows[$row_key][$cell_key]['displayname'] = $value;
+            }
+        }
+
+        return $rows;
     }
 
     /**

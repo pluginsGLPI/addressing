@@ -107,10 +107,12 @@ if (isset($_GET['action']) && $_GET['action'] == 'isName') {
     $ip = filter_var($_GET['ip'] ?? '', FILTER_VALIDATE_IP);
     // showIPForm() issues a server-side ping against $ip. Restrict the target to an
     // IP contained in a range the caller may READ so this cannot be abused as an
-    // arbitrary internal-network scan oracle.
-    if ($ip !== false && Addressing::isIpInReadableRange($ip)) {
+    // arbitrary internal-network scan oracle. The range itself is handed over: it carries
+    // the ping flag showIPForm() now confronts the request with.
+    $range = $ip === false ? null : Addressing::findReadableRangeForIp($ip);
+    if ($range !== null) {
         $Ping_Equipment = new Ping_Equipment();
-        $Ping_Equipment->showIPForm($ip);
+        $Ping_Equipment->showIPForm($ip, $range);
     }
     Html::popFooter();
 } else {

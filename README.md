@@ -12,6 +12,9 @@ Ce plugin vous permet créer des rapports IP afin de visualiser les adresses ip 
 > * Ping adresses libres sur divers systèmes.
 > * Export du rapport en pdf, csv, slk
 
+> [!IMPORTANT]
+> Le ping est conditionné par deux réglages : l'option globale « Utiliser Ping » de la configuration du plugin **et** l'option « Utiliser Ping » de la plage. L'option globale est désormais réellement appliquée : lorsqu'elle est désactivée, aucune plage n'est scannée, ni par la tâche automatique ni par le lancement manuel.
+
 📖 [Documentation complète en français](docs/fr.md)
 
 ## English
@@ -22,5 +25,8 @@ This plugin enables you to create IP reports for visualize IP addresses used and
 > * Filter with network.
 > * Ping fonction for free ip for many systems.
 > * Report export to pdf, csv, slk
+
+> [!IMPORTANT]
+> Ping is gated by two settings: the global "Use Ping" option of the plugin configuration **and** the "Use Ping" option of the range. The global option is now actually enforced: when it is off, no range is scanned, neither by the cron task nor by the manual launch.
 
 📖 [Full documentation in English](docs/en.md)

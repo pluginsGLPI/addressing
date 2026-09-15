@@ -135,19 +135,32 @@ class Addressing extends CommonDBTM
      */
     public static function isIpInReadableRange(string $ip): bool
     {
+        return self::findReadableRangeForIp($ip) instanceof self;
+    }
+
+    /**
+     * Return a range the caller may READ that contains this address, if there is one.
+     *
+     * The ping switch is carried by the range, so the callers deciding whether to probe an
+     * address need the range itself and not only the fact that one exists.
+     *
+     * @param string $ip address to look for
+     **/
+    public static function findReadableRangeForIp(string $ip): ?self
+    {
         if (!Session::haveRight(self::$rightname, READ)) {
-            return false;
+            return null;
         }
 
         $range = new self();
         foreach ($range->find(getEntitiesRestrictCriteria(self::getTable())) as $row) {
             $range->fields = $row;
             if ($range->containsIp($ip)) {
-                return true;
+                return $range;
             }
         }
 
-        return false;
+        return null;
     }
 
     public function rawSearchOptions()
@@ -696,20 +709,29 @@ class Addressing extends CommonDBTM
     {
         global $DB;
 
-        $ipdeb = 0;
-        $ipfin = 0;
-        foreach ($params as $key => $val) {
-            if (isset($params[$key])) {
-                $$key = $params[$key];
-            }
+        // The parameters used to be turned into local variables by a variable-variable
+        // loop, so any key of the caller's array could create -- or silently overwrite --
+        // a local of this method, including the $where fragments, the $allowed_types
+        // whitelist and the $DB handle. Only four keys are actually understood here, and
+        // each one is normalised as it enters rather than further down, because $ipdeb
+        // and $ipfin are interpolated into a raw QueryExpression and $entities is
+        // concatenated into an SQL fragment by getEntitiesRestrictRequest().
+        $ipdeb = (int) ($params['ipdeb'] ?? 0);
+        $ipfin = (int) ($params['ipfin'] ?? 0);
+
+        $entities = null;
+        if (isset($params['entities'])) {
+            $entities = is_array($params['entities'])
+                ? array_map('intval', $params['entities'])
+                : (int) $params['entities'];
         }
 
-        // $ipdeb/$ipfin reach this method through the variable-variable assignment
-        // above and are interpolated into a raw SQL QueryExpression below: force them
-        // to integers so nothing but a number can ever reach the query, and so the
-        // range arithmetic that follows is done on numbers rather than strings.
-        $ipdeb = (int) $ipdeb;
-        $ipfin = (int) $ipfin;
+        // Kept as a plain string, compared against the readable itemtypes below: an array
+        // or an object would reach in_array() and the SQL criteria untyped.
+        $type_filter = null;
+        if (isset($params['type_filter']) && is_scalar($params['type_filter'])) {
+            $type_filter = (string) $params['type_filter'];
+        }
         // $start comes straight from the HTTP request and is used in the pagination
         // arithmetic below: a non numeric value raises a TypeError on PHP 8 and a negative
         // one walks the lower bound outside the declared range.
@@ -763,7 +785,7 @@ class Addressing extends CommonDBTM
             'dev.is_template'         => 0,
         ];
 
-        if (isset($entities)) {
+        if ($entities !== null) {
             $where[] = new QueryExpression($dbu->getEntitiesRestrictRequest("", "dev", "entities_id", $entities));
         } else {
             $where[] = new QueryExpression($dbu->getEntitiesRestrictRequest(
@@ -773,7 +795,7 @@ class Addressing extends CommonDBTM
                 $this->fields['entities_id'],
             ));
         }
-        if (isset($type_filter)) {
+        if ($type_filter !== null) {
             $where['glpi_ipaddresses.mainitemtype'] = $type_filter;
         }
         if ($this->fields["use_as_filter"] == 1 && $this->fields["networks_id"]) {
@@ -823,7 +845,7 @@ class Addressing extends CommonDBTM
             $subqueries[] = $networkequipment_subquery;
         }
 
-        if (isset($type_filter)) {
+        if ($type_filter !== null) {
             $types = in_array($type_filter, $allowed_types, true) ? [$type_filter] : [];
         } else {
             $types = $allowed_types;
@@ -839,14 +861,14 @@ class Addressing extends CommonDBTM
                 'glpi_ipaddresses.version' => ['LIKE', 4],
                 new QueryExpression("INET_ATON(glpi_ipaddresses.name) BETWEEN $ipdeb AND $ipfin"),
             ];
-            if (isset($entities)) {
+            if ($entities !== null) {
                 $where[] = new QueryExpression($dbu->getEntitiesRestrictRequest("", "dev", "entities_id", $entities));
             } else {
                 $where[] = new QueryExpression(
                     $dbu->getEntitiesRestrictRequest("", "dev", "entities_id", $this->fields['entities_id']),
                 );
             }
-            if (isset($type_filter)) {
+            if ($type_filter !== null) {
                 $where['glpi_ipaddresses.mainitemtype'] = $type_filter;
             }
             if ($item->maybeDeleted()) {
@@ -862,10 +884,15 @@ class Addressing extends CommonDBTM
                 $where['dev.networks_id'] = $this->fields["networks_id"];
             }
 
-            $addtype = addslashes($type);
             $select = [
                 'port.id',
-                new QueryExpression("'" . $addtype . "' AS itemtype"),
+                // addslashes() is not an SQL quoting function: it knows nothing of the
+                // connection charset nor of the MySQL escaping rules, and the result was
+                // concatenated straight into a QueryExpression, which the builder emits
+                // verbatim. The list of types is already narrowed to $allowed_types above,
+                // so nothing arbitrary reaches this point today, but the quoting of the
+                // connection is what must decide here.
+                new QueryExpression($DB::quoteValue($type) . ' AS itemtype'),
                 'port.items_id',
                 'dev.name AS dname',
                 'port.name AS pname',
@@ -931,7 +958,7 @@ class Addressing extends CommonDBTM
                 }
             }
         }
-        if (isset($type_filter)) {
+        if ($type_filter !== null) {
             foreach ($result as $key => $data) {
                 if (empty($data)) {
                     unset($result[$key]);
@@ -1042,6 +1069,9 @@ class Addressing extends CommonDBTM
         $doubles  = $params['seedoubleip'] ?? $this->fields['double_ip'];
 
         $use_ping = isset($this->fields['use_ping']) && $this->fields['use_ping'];
+        // The manual launch button submits to ajax/updatepinginfo.php, which refuses the scan
+        // when ping is disabled globally: the legend and the filters stay, the button goes.
+        $can_scan = PingInfo::isRangeScanEnabled($this);
         $ping_off = $params['ping_off'] ?? 1;
         $ping_on  = $params['ping_on'] ?? 1;
 
@@ -1076,12 +1106,19 @@ class Addressing extends CommonDBTM
             $switch_ping_off = ob_get_clean();
         }
 
+        // The three other access points to the filters of a range confront them with the
+        // entity perimeter of the session; this one did not, so a filter belonging to another
+        // entity was enough to make the selector appear. $params['id'] was also handed over
+        // raw while the very same identifier had already been cast a few lines above.
         $filter_list = new Filter();
-        $datas = $filter_list->find(['plugin_addressing_addressings_id' => $id]);
+        $datas = $filter_list->find(
+            ['plugin_addressing_addressings_id' => $id]
+            + getEntitiesRestrictCriteria(Filter::getTable()),
+        );
         $filter_dropdown = '';
         if (count($datas) > 0) {
             ob_start();
-            Filter::dropdownFilters($params['id'], $filter);
+            Filter::dropdownFilters($id, $filter);
             $filter_dropdown = ob_get_clean();
         }
 
@@ -1120,9 +1157,13 @@ class Addressing extends CommonDBTM
         // SearchEngine/HTMLSearchOutput (it drives HTML/CSV/PDF export for the per-IP
         // rows). Rewriting it to Twig is out of scope here (see project notes); its
         // output is captured as-is and embedded by the template.
-        $ping_status = [$ping_off, $ping_on];
+        // The signature is displayReport(&$result, $Addressing, $values, $ping_status = []):
+        // the status array used to land in $values, leaving $ping_status empty, so both
+        // switches fell back to "show everything" and the two ping filters of the report were
+        // silently inoperative. The array was built in the wrong order too, index 0 being read
+        // as "ping on".
         ob_start();
-        $ping_response = $Report->displayReport($result, $this, $ping_status);
+        $ping_response = $Report->displayReport($result, $this, $params, [$ping_on, $ping_off]);
         $report_html = ob_get_clean();
 
         $total_realfreeip = null;
@@ -1141,6 +1182,7 @@ class Addressing extends CommonDBTM
             'alloted'          => $alloted,
             'doubles'          => $doubles,
             'use_ping'         => $use_ping,
+            'can_scan'         => $can_scan,
             'form_url'         => Toolbox::getItemTypeFormURL(Addressing::class),
             'switch_alloted'   => $switch_alloted,
             'switch_doubles'   => $switch_doubles,
@@ -1372,8 +1414,9 @@ class Addressing extends CommonDBTM
             $menu['links']['add'] = self::getFormURL(false);
         }
 
-        if (Session::haveRight(static::$rightname, UPDATE)
-            || Session::haveRight("config", UPDATE)) {
+        // front/config.php checks the core config UPDATE right: a profile holding only the
+        // plugin UPDATE right was shown a configuration entry that could only answer 403.
+        if (Session::haveRight("config", UPDATE)) {
             //Entry icon in breadcrumb
             $menu['links']['config'] = Config::getSearchURL(false);
             //Link to config page in admin plugins list

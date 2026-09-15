@@ -32,12 +32,16 @@ use GlpiPlugin\Addressing\Addressing;
 
 $Addressing = new Addressing();
 
-Html::header(Addressing::getTypeName(2), '', "tools", Addressing::class);
-
-if ($Addressing->canView() || Session::haveRight("config", UPDATE)) {
-    Search::show(Addressing::class);
-} else {
+// Check the right before anything reaches the output. Html::header() used to run first and
+// emitted the whole page skeleton -- title carrying the object name, side menu, breadcrumb
+// positioned on the plugin entry -- to callers that were about to be refused. A started
+// output stream also stops the HTTP exception handler from producing a clean 403.
+if (!$Addressing->canView() && !Session::haveRight("config", UPDATE)) {
     throw new AccessDeniedHttpException();
 }
+
+Html::header(Addressing::getTypeName(2), '', "tools", Addressing::class);
+
+Search::show(Addressing::class);
 
 Html::footer();

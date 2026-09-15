@@ -77,6 +77,10 @@ class ReserveIp extends CommonDBTM
             return false;
         }
 
+        // Normalise the asset name once it is known to be present, like entities_id below:
+        // it is used as a lookup criterion and then written onto the asset itself.
+        $input['name_reserveip'] = trim((string) $input['name_reserveip']);
+
         // $input['ip'] is posted straight to this endpoint and, unlike the AJAX form
         // that produced it (ajax/addressing.php), nothing here re-validates it: it ends
         // up in the port name ("reserv-<value>") and in NetworkName__ipaddresses.
@@ -94,23 +98,46 @@ class ReserveIp extends CommonDBTM
         // entity but a crafted request can carry the id of a value owned by another
         // entity, which would then be written on the asset and its label read back.
         foreach (['locations_id' => 'Location', 'states_id' => 'State', 'fqdns_id' => 'FQDN'] as $field => $itemtype) {
-            if (!$this->isUsableDropdownValue($itemtype, $input[$field] ?? 0)) {
+            // Normalise while validating: checkMandatoryFields() above only covers the
+            // required fields, so a minimal POST omitting these three reached the
+            // add()/update() arrays and the NetworkPort payloads below as undefined keys --
+            // one PHP 8 warning per read, then an uncontrolled value written on the asset.
+            $input[$field] = (int) ($input[$field] ?? 0);
+            if (!$this->isUsableDropdownValue($itemtype, $input[$field])) {
                 Session::addMessageAfterRedirect(__('Invalid data !!', 'addressing'), false, ERROR);
                 return false;
             }
         }
+
+        // Same reasoning for the free text comment, which has no dropdown to validate it.
+        $input['comment'] = (string) ($input['comment'] ?? '');
+
+        // Every other posted field is validated above; mac was the exception and went straight
+        // into glpi_networkports.mac. This is not an injection -- the report escapes it and the
+        // exports go through PhpSpreadsheet -- but arbitrary text in a normalised inventory
+        // field silently defeats every later correlation (automatic inventory, DHCP, rules).
+        $mac = strtolower(trim((string) ($input['mac'] ?? '')));
+        if ($mac !== '' && !preg_match('/^([0-9a-f]{2}:){5}[0-9a-f]{2}$/', $mac)) {
+            Session::addMessageAfterRedirect(__('Invalid data !!', 'addressing'), false, ERROR);
+            return false;
+        }
+        $input['mac'] = $mac;
 
         // $input['type'] is fully attacker-controlled ($_POST['type']). Restrict it to the
         // plugin's supported network port types and enforce the target itemtype's own
         // CREATE/UPDATE right (and entity access) before writing an asset/NetworkPort on
         // the caller's behalf. The plugin right checked in front/reserveip.form.php only
         // gates access to the reservation feature itself, not to the underlying itemtype.
+        // Each refusal below used to return silently: no message for the legitimate user and
+        // no trace for the operator, while the controller announced a success anyway.
         if (!in_array($input['type'] ?? '', Addressing::getTypes(true), true)) {
+            Session::addMessageAfterRedirect(__('Invalid data !!', 'addressing'), false, ERROR);
             return false;
         }
 
         $item = getItemForItemtype($input['type']);
         if (!($item instanceof CommonDBTM)) {
+            Session::addMessageAfterRedirect(__('Invalid data !!', 'addressing'), false, ERROR);
             return false;
         }
 
@@ -135,6 +162,7 @@ class ReserveIp extends CommonDBTM
                 "entities_id" => $input['entities_id'],
             ];
             if (!$item->can(-1, CREATE, $create_input)) {
+                Session::addMessageAfterRedirect(__('You are not allowed to do this action'), false, ERROR);
                 return false;
             }
             $id = $item->add(["name"         => $input["name_reserveip"],
@@ -145,6 +173,7 @@ class ReserveIp extends CommonDBTM
         } else {
             $id = $item->getID();
             if (!$item->can($id, UPDATE)) {
+                Session::addMessageAfterRedirect(__('You are not allowed to do this action'), false, ERROR);
                 return false;
             }
             //update item
@@ -254,12 +283,16 @@ class ReserveIp extends CommonDBTM
         $mandatory_fields = ['name_reserveip' => __("Object's name", 'addressing'),
             'ip'   => _n("IP address", "IP addresses", 1)];
 
-        foreach ($input as $key => $value) {
-            if (isset($mandatory_fields[$key])) {
-                if ((isset($value) && empty($value)) || !isset($value)) {
-                    $msg[$key] = $mandatory_fields[$key];
-                    $checkKo   = true;
-                }
+        // Walk the reference list, not the submitted data: a field entirely omitted from the
+        // request never entered the loop, so the check passed. A missing name_reserveip then
+        // reached getFromDBByCrit() and add() as null, which either overwrote an existing
+        // nameless asset of the entity or created a new one.
+        foreach ($mandatory_fields as $key => $label) {
+            if (!isset($input[$key])
+                || !is_scalar($input[$key])
+                || trim((string) $input[$key]) === '') {
+                $msg[$key] = $label;
+                $checkKo   = true;
             }
         }
 
@@ -295,12 +328,37 @@ class ReserveIp extends CommonDBTM
         $config = new Config();
         $config->getFromDB('1');
         $system = $config->fields["used_system"];
-        $ping_equip = new Ping_Equipment();
-        $ping = $addressing->fields["use_ping"];
+        // The flag of the range is only half of the decision: the configuration of the plugin
+        // carries a global switch, labelled "Use Ping on IP ranges", which this form ignored, so
+        // opening it made the server probe the address even with the ping turned off. Ask the
+        // single decision point, as the cron task and the manual scan already do.
+        $ping = PingInfo::isRangeScanEnabled($addressing) ? 1 : 0;
         $msg = "";
         if ($ping == 1) {
-            [$message, $error] = $ping_equip->ping($system, $ip);
-            if ($error) {
+            // This form is reached by a plain GET and was the only probe path left with neither
+            // cooldown nor lock: it ran the blocking command as often as it was asked to, which
+            // made it the one an authenticated user would loop on to hold the whole worker pool
+            // and pour ICMP towards an internal host. Go through the same guards as the three
+            // other paths, and say the probe is unavailable rather than run it.
+            $refusal = null;
+            $result  = PingInfo::withProbeGuards($ip, static function () use ($system, $ip) {
+                return (new Ping_Equipment())->ping($system, $ip);
+            }, $refusal);
+            if ($result === null) {
+                $msg = "<div class='alert alert-info'>";
+                $msg .= "<i class='ti ti-clock'></i>";
+                $msg .= "<span>&nbsp;";
+                $msg .= htmlescape(
+                    $refusal === PingInfo::PROBE_REFUSED_COOLDOWN
+                        ? __(
+                            'A ping has just been run for this address, please retry in a few seconds',
+                            'addressing',
+                        )
+                        : __('A ping is already running, please retry in a few seconds', 'addressing'),
+                );
+                $msg .= "</span>";
+                $msg .= "</div>";
+            } elseif ($result[1]) {
                 $msg = "<div class='alert alert-success'>";
                 $msg .= "<i class='ti ti-circle-check' style='color:forestgreen'></i>";
                 $msg .= "<span style='color:forestgreen'>&nbsp;";
@@ -331,6 +389,13 @@ class ReserveIp extends CommonDBTM
             'params' => $options,
             'entities_rights' => $entities_rights,
             'root_addressing' => PLUGIN_ADDRESSING_WEBDIR,
+            // The type dropdown used to read a "config" variable this method never passed,
+            // which raises a Twig RuntimeError under GLPI_STRICT_ENV and silently drops the
+            // preselection everywhere else. The legacy form it was migrated from called
+            // Dropdown::showFromArray() without any value, so the first supported itemtype
+            // is the intended default: an empty string keeps that behaviour while making
+            // the contract of the template explicit.
+            'default_type' => '',
         ]);
     }
 }

@@ -29,6 +29,7 @@
 
 //Options for GLPI 0.71 and newer : need slave db to access the report
 use GlpiPlugin\Addressing\Addressing;
+use GlpiPlugin\Addressing\Report;
 
 $USEDBREPLICATE         = 1;
 $DBCONNECTION_REQUIRED  = 0;
@@ -48,7 +49,18 @@ if (!isset($_GET["export"])) {
 $addressing = new Addressing();
 $addressing->check((int) ($_GET['id'] ?? 0), READ);
 
-Html::header(Addressing::getTypeName(2), '', "tools", Addressing::class);
+// A non HTML display type makes the report answer with a downloadable file (CSV, ODS, PDF).
+// The page head was written first, so the whole GLPI layout was captured inside that file and
+// the export was unusable. Decide before producing any output; an unsupported value throws
+// here, while nothing has been sent yet and a proper error page can still be rendered.
+$is_html_output = Report::isHtmlOutput($_GET['display_type'] ?? Search::HTML_OUTPUT);
+
+if ($is_html_output) {
+    Html::header(Addressing::getTypeName(2), '', "tools", Addressing::class);
+}
+
 $addressing->showReport($_GET);
 
-Html::footer();
+if ($is_html_output) {
+    Html::footer();
+}

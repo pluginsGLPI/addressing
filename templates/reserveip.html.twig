@@ -48,7 +48,10 @@
             <div class="d-flex flex-row flex-wrap flex-xl-nowrap">
                 <div class="row flex-row align-items-start flex-grow-1">
                     <div class="row flex-row">
-                        <input type="hidden" name="plugin_addressing_addressings_id" value="{{ params['items_id']  }}"/>
+                        {# showReservationForm() passes the range under the key "id_addressing"; reading
+                           "items_id" left the hidden field empty, so every reservation made from this
+                           form was attached to the range 0 instead of the one being browsed. #}
+                        <input type="hidden" name="plugin_addressing_addressings_id" value="{{ params['id_addressing']|default(0) }}"/>
                         {% if msg %}
                             <br>{{ msg | raw }}
                         {% endif %}
@@ -111,7 +114,7 @@
 
                         {{ fields.dropdownArrayField(
                             'type',
-                            config["type"],
+                            default_type,
                             params['types'],
                             __('Type'),
                         ) }}

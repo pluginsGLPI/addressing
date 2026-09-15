@@ -79,33 +79,9 @@ parameters:
 			path: src/Addressing.php
 
 		-
-			message: '#^Undefined variable\: \$entities$#'
-			identifier: variable.undefined
-			count: 2
-			path: src/Addressing.php
-
-		-
-			message: '#^Undefined variable\: \$type_filter$#'
-			identifier: variable.undefined
-			count: 3
-			path: src/Addressing.php
-
-		-
 			message: '#^Unreachable statement \- code above always terminates\.$#'
 			identifier: deadCode.unreachable
 			count: 1
-			path: src/Addressing.php
-
-		-
-			message: '#^Variable \$entities in isset\(\) is never defined\.$#'
-			identifier: isset.variable
-			count: 2
-			path: src/Addressing.php
-
-		-
-			message: '#^Variable \$type_filter in isset\(\) is never defined\.$#'
-			identifier: isset.variable
-			count: 4
 			path: src/Addressing.php
 
 		-
@@ -139,12 +115,6 @@ parameters:
 			path: src/Filter.php
 
 		-
-			message: '#^Method GlpiPlugin\\Addressing\\Ping_Equipment\:\:getHostnameByPing\(\) should return array but returns string\.$#'
-			identifier: return.type
-			count: 2
-			path: src/Ping_Equipment.php
-
-		-
 			message: '#^Method GlpiPlugin\\Addressing\\Ping_Equipment\:\:ping\(\) should return array but returns false\.$#'
 			identifier: return.type
 			count: 1
@@ -159,7 +129,7 @@ parameters:
 		-
 			message: '#^Result of && is always false\.$#'
 			identifier: booleanAnd.alwaysFalse
-			count: 2
+			count: 1
 			path: src/Ping_Equipment.php
 
 		-
@@ -213,7 +183,7 @@ parameters:
 		-
 			message: '#^Variable \$params in isset\(\) always exists and is not nullable\.$#'
 			identifier: isset.variable
-			count: 8
+			count: 7
 			path: src/Report.php
 
 		-

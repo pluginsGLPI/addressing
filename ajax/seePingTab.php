@@ -48,8 +48,13 @@ if (isset($_POST['action']) && $_POST['action'] == "viewPingform") {
 
     $pingE = new Ping_Equipment();
     $pingE->showPingForm($itemtype, $items_id);
-}
 
-$_POST['name'] = "ping_item";
-$_POST['rand'] = "";
-Ajax::commonDropdownUpdateItem($_POST);
+    // This legacy tail used to run outside the branch, on every request. $_POST is entirely
+    // caller-controlled and its "toupdate" key drives the jQuery snippet the core generates,
+    // so the endpoint answered a $(...).load("<caller supplied url>") fragment even when no
+    // ping form had been asked for. Ajax::updateItemJsCode() escapes it, so there is no XSS,
+    // but the reflected surface had no functional counterpart outside this branch.
+    $_POST['name'] = "ping_item";
+    $_POST['rand'] = "";
+    Ajax::commonDropdownUpdateItem($_POST);
+}
