@@ -39,7 +39,12 @@ use Html;
  */
 class Config extends CommonDBTM
 {
-    public static $rightname = "plugin_addressing";
+    // The web controllers (front/config.php, front/config.form.php) and the menu entry
+    // in setup.php all gate this screen on the "config" right, but $rightname is what the
+    // generic core paths (legacy REST API, massive actions, data injection) actually
+    // enforce. Keeping "plugin_addressing" here would let any technician holding the
+    // plugin right rewrite the instance wide settings, ping command included.
+    public static $rightname = "config";
 
     public function showForm($ID, $options = [])
     {

@@ -333,13 +333,23 @@ class Report extends CommonDBTM
                             }
                             // Device
                             $item = $line_item;
+                            // Defence in depth on top of the itemtype filtering done in
+                            // Addressing::compute(): when the profile cannot read the asset, degrade
+                            // every detail it carries to a neutral label instead of only dropping the
+                            // link to its form. The address itself stays listed as used.
+                            $can_view_device = $item->canView();
+                            $restricted_label = htmlspecialchars(
+                                __("Restricted access", "addressing"),
+                                ENT_QUOTES,
+                                "UTF-8",
+                            );
                             $link = Toolbox::getItemTypeFormURL($line["itemtype"]);
                             if ($line["itemtype"] != 'NetworkEquipment') {
                                 if ($item->canView()) {
                                     $output_iddev = "<a href='" . $link . "?id=" . $line["on_device"] . "'>" . $name
                                         . (empty($name) || $_SESSION["glpiis_ids_visible"] ? " (" . $line["on_device"] . ")" : "") . "</a>";
                                 } else {
-                                    $output_iddev = $name . (empty($name) || $_SESSION["glpiis_ids_visible"] ? " (" . $line["on_device"] . ")" : "");
+                                    $output_iddev = $restricted_label;
                                 }
                             } else {
                                 if ($item->canView()) {
@@ -351,7 +361,7 @@ class Report extends CommonDBTM
                                     $output_iddev = "<a href='" . $link . "?id=" . $line["on_device"] . "'>" . $linkp . $name
                                         . (empty($name) || $_SESSION["glpiis_ids_visible"] ? " (" . $line["on_device"] . ")" : "") . "</a>";
                                 } else {
-                                    $output_iddev = $namep . " - " . $name . (empty($name) || $_SESSION["glpiis_ids_visible"] ? " (" . $line["on_device"] . ")" : "");
+                                    $output_iddev = $restricted_label;
                                 }
                             }
                             if ($is_html_output) {
@@ -360,7 +370,7 @@ class Report extends CommonDBTM
                                 $current_row[$itemtype . '_' . (++$colnum)] = ['displayname' => $output_iddev];
                             }
                             // User
-                            if ($line["users_id"] && $user->getFromDB($line["users_id"])) {
+                            if ($line["users_id"] && $can_view_device && $user->getFromDB($line["users_id"])) {
                                 $dbu = new DbUtils();
                                 $username = $dbu->formatUserName(
                                     $user->fields["id"],
@@ -390,7 +400,7 @@ class Report extends CommonDBTM
                             }
 
                             // Mac
-                            if ($line["id"]) {
+                            if ($line["id"] && $can_view_device) {
                                 $mac = htmlspecialchars((string) $line["mac"], ENT_QUOTES, 'UTF-8');
                                 if ($item->canView()) {
                                     $output_mac = "<a href='" . $CFG_GLPI["root_doc"] . "/front/networkport.form.php?id="

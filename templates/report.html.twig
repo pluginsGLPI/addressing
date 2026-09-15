@@ -124,7 +124,10 @@
 
     <script type='text/javascript'>
         $('#updatePingInfo').click(function() {
-            var addressing_id = {{ id }};
+            {# Twig auto escaping is HTML contextual and does nothing useful inside a
+               <script> block, so read the identifier from the hidden field of the form
+               above rather than interpolating it here. #}
+            var addressing_id = parseInt($('#filtering_form input[name=id]').val(), 10) || 0;
 
             $('#ajax_loader').show();
             $.ajax({

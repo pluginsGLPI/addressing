@@ -40,6 +40,7 @@ use Glpi\DBAL\QuerySubQuery;
 use Glpi\DBAL\QueryUnion;
 use Html;
 use MassiveAction;
+use NetworkEquipment;
 use Session;
 use Toolbox;
 use Vlan;
@@ -88,6 +89,12 @@ class Addressing extends CommonDBTM
         $temp1->deleteByCriteria(['plugin_addressing_addressings_id' => $this->fields['id']]);
         $temp2 = new Filter();
         $temp2->deleteByCriteria(['plugin_addressing_addressings_id' => $this->fields['id']]);
+        // IpComment carries the same plugin_addressing_addressings_id foreign key as the
+        // two tables above (rows are created by ajax/ipcomment.php): purge it too, otherwise
+        // free text annotations survive the range and resurface on a later range that gets
+        // the same auto increment id, possibly in another entity.
+        $temp3 = new IpComment();
+        $temp3->deleteByCriteria(['plugin_addressing_addressings_id' => $this->fields['id']]);
     }
 
     /**
@@ -703,14 +710,14 @@ class Addressing extends CommonDBTM
         // range arithmetic that follows is done on numbers rather than strings.
         $ipdeb = (int) $ipdeb;
         $ipfin = (int) $ipfin;
+        // $start comes straight from the HTTP request and is used in the pagination
+        // arithmetic below: a non numeric value raises a TypeError on PHP 8 and a negative
+        // one walks the lower bound outside the declared range.
+        $start = max(0, (int) $start);
 
         if (isset($_GET["export"])) {
-            if (isset($start)) {
-                $ipdeb += $start;
-            }
-            if ($ipdeb > $ipfin) {
-                $ipdeb = $ipfin;
-            }
+            // Keep the paginated window inside the stored range whatever the offset is.
+            $ipdeb = min($ipdeb + $start, $ipfin);
             if ($ipdeb + $_SESSION["glpilist_limit"] <= $ipfin) {
                 $ipfin = $ipdeb + $_SESSION["glpilist_limit"] - 1;
             }
@@ -742,6 +749,12 @@ class Addressing extends CommonDBTM
         $dbu = new DbUtils();
         $subqueries = [];
 
+        // Collect only the itemtypes the caller may actually read. getTypes(true) returns
+        // every supported itemtype regardless of rights, which leaks the name, MAC address,
+        // port name and assigned user of assets the profile has no READ right on. An address
+        // carried by an unreadable itemtype stays counted as used, but without asset detail.
+        $allowed_types = self::getTypes();
+
         $where = [
             'glpi_ipaddresses.name'   => ['!=', ''],
             'glpi_ipaddresses.version' => ['LIKE', 4],
@@ -767,7 +780,7 @@ class Addressing extends CommonDBTM
             $where['dev.networks_id'] = $this->fields["networks_id"];
         }
 
-        $subqueries[] = new QuerySubQuery([
+        $networkequipment_subquery = new QuerySubQuery([
             'SELECT' => [
                 'port.id',
                 new QueryExpression("'NetworkEquipment' AS itemtype"),
@@ -804,10 +817,16 @@ class Addressing extends CommonDBTM
             'WHERE' => $where,
         ]);
 
+        // The subquery above is hardcoded on NetworkEquipment: only feed it to the union
+        // when the profile is actually allowed to read that itemtype.
+        if (in_array(NetworkEquipment::class, $allowed_types, true)) {
+            $subqueries[] = $networkequipment_subquery;
+        }
+
         if (isset($type_filter)) {
-            $types = [$type_filter];
+            $types = in_array($type_filter, $allowed_types, true) ? [$type_filter] : [];
         } else {
-            $types = self::getTypes(true);
+            $types = $allowed_types;
         }
 
         foreach ($types as $type) {
@@ -890,6 +909,12 @@ class Addressing extends CommonDBTM
             ]);
         }
 
+        // Every itemtype was filtered out by the rights check above: there is nothing
+        // this profile may read, and a UNION of zero subqueries is not valid SQL.
+        if (count($subqueries) === 0) {
+            return $result;
+        }
+
         $union = new QueryUnion($subqueries, false);
         $req = $DB->request(['FROM' => $union]);
 
@@ -934,6 +959,15 @@ class Addressing extends CommonDBTM
                 $$key = $params[$key];
             }
         }
+
+        // getFromDB() does not cast its argument, and MySQL coerces a string to a number
+        // when comparing it to an INT column: "1-alert(1)" would match the row with id 1
+        // and then reach the template. Force the integer types here, before any use.
+        // $start is also used in pagination arithmetic, which raises a TypeError in PHP 8
+        // on a non numeric value and lets a negative offset walk outside the stored range.
+        $id    = (int) $id;
+        $start = max(0, (int) $start);
+        $filter = (int) $filter;
 
         if (!$this->getFromDB($id)) {
             TemplateRenderer::getInstance()->display('@addressing/report_invalid.html.twig');

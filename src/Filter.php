@@ -117,6 +117,16 @@ class Filter extends CommonDBTM
             return false;
         }
 
+        // The type field stores an itemtype class name used later as a report filter
+        // criterion. Confront it with the plugin reference list instead of persisting
+        // whatever was posted, so no consumer ever inherits an attacker controlled itemtype.
+        if (isset($input['type'])
+            && $input['type'] !== ''
+            && !in_array($input['type'], Addressing::getTypes(true), true)) {
+            Session::addMessageAfterRedirect(__('Invalid item type', 'addressing'), false, ERROR);
+            return false;
+        }
+
         return true;
     }
 
