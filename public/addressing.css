@@ -61,3 +61,47 @@
    padding: 10px;
    margin: 10px;
 }
+
+/*
+ * Dark-palette adaptation for the addressing report.
+ *
+ * The report is a legacy table whose cell backgrounds and status icons are written as
+ * inline styles, which no rule can override without !important. Report.php, hook.php
+ * and PingInfo.php read them as variables instead, keeping the original colour as the
+ * fallback, so a page served without this file renders exactly as it did before. The
+ * light values below are those originals, untouched.
+ *
+ * --add-cell-bg  keeps the contrast the grey cells had against the surface, 1.32:1
+ *                either way.
+ * --add-state-ok / --add-state-ko  keep the same hue at the lightness that reproduces
+ *                the contrast those icons had on a light cell: 5.6:1 and 7.5:1. Left
+ *                as they were, dark green and dark red fell to 2.1:1 and 1.6:1.
+ *
+ * The five status backgrounds below are deliberately not touched: the legend names
+ * them, so they have to stay recognisable. Only the text laid over them moves, since
+ * it follows the theme and would otherwise sit between 1.7:1 and 2.2:1 on them.
+ */
+:root {
+   --add-cell-bg: #e0e0e0;
+   --add-state-ok: darkgreen;
+   --add-state-ko: darkred;
+}
+
+:root[data-glpi-theme-dark="1"] {
+   --add-cell-bg: #222222;
+   --add-state-ok: #00b300;
+   --add-state-ko: #ff9494;
+}
+
+:root[data-glpi-theme-dark="1"] .plugin_addressing_ip_double,
+:root[data-glpi-theme-dark="1"] .plugin_addressing_ip_free,
+:root[data-glpi-theme-dark="1"] .plugin_addressing_ip_reserved,
+:root[data-glpi-theme-dark="1"] .plugin_addressing_ping_on,
+:root[data-glpi-theme-dark="1"] .plugin_addressing_ping_off,
+:root[data-glpi-theme-dark="1"] .plugin_addressing_ip_double a,
+:root[data-glpi-theme-dark="1"] .plugin_addressing_ip_free a,
+:root[data-glpi-theme-dark="1"] .plugin_addressing_ip_reserved a,
+:root[data-glpi-theme-dark="1"] .plugin_addressing_ping_on a,
+:root[data-glpi-theme-dark="1"] .plugin_addressing_ping_off a {
+   color: #1f2937;
+}

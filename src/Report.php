@@ -521,7 +521,7 @@ class Report extends CommonDBTM
                                             "$content ",
                                             $item_num,
                                             $row_num,
-                                            "style='background-color:#e0e0e0' class='center'",
+                                            "style='background-color:var(--add-cell-bg, #e0e0e0)' class='center'",
                                         );
                                         $rand = mt_rand();
                                         $params = [
@@ -541,7 +541,7 @@ class Report extends CommonDBTM
                                             "$reserv ",
                                             $item_num,
                                             $row_num,
-                                            "style='background-color:#e0e0e0' class='center'",
+                                            "style='background-color:var(--add-cell-bg, #e0e0e0)' class='center'",
                                         );
                                         if (isset($params) && count(
                                             $params,
@@ -565,14 +565,14 @@ class Report extends CommonDBTM
                                     if ($ping_value) {
                                         if ($is_html_output) {
                                             $html_output .= $output::showItem(
-                                                "<i class=\"ti ti-square-check\" style='color: darkgreen;font-size: 2em;' title='" . __(
+                                                "<i class=\"ti ti-square-check\" style='color: var(--add-state-ok, darkgreen);font-size: 2em;' title='" . __(
                                                     "Last ping attempt",
                                                     'addressing',
                                                 ) . " : "
                                                 . Html::convDateTime($ping_date) . "'></i>",
                                                 $item_num,
                                                 $row_num,
-                                                "style='background-color:#e0e0e0' class='center'",
+                                                "style='background-color:var(--add-cell-bg, #e0e0e0)' class='center'",
                                             );
 
                                             if ($Addressing->fields["reserved_ip"] && strstr(
@@ -587,14 +587,14 @@ class Report extends CommonDBTM
                                                     $reserv,
                                                     $item_num,
                                                     $row_num,
-                                                    "style='background-color:#e0e0e0' class='center'",
+                                                    "style='background-color:var(--add-cell-bg, #e0e0e0)' class='center'",
                                                 );
                                             } else {
                                                 $html_output .= $output::showItem(
                                                     " ",
                                                     $item_num,
                                                     $row_num,
-                                                    "style='background-color:#e0e0e0' class='center'",
+                                                    "style='background-color:var(--add-cell-bg, #e0e0e0)' class='center'",
                                                 );
                                             }
                                         } else {
@@ -614,12 +614,12 @@ class Report extends CommonDBTM
                                     } else {
                                         if ($is_html_output) {
                                             $html_output .= $output::showItem(
-                                                "<i class=\"ti ti-square-x\" style='color: darkred;font-size: 2em;' title='"
+                                                "<i class=\"ti ti-square-x\" style='color: var(--add-state-ko, darkred);font-size: 2em;' title='"
                                                 . __("Last ping attempt", 'addressing') . " : "
                                                 . Html::convDateTime($ping_date) . "'></i>",
                                                 $item_num,
                                                 $row_num,
-                                                "style='background-color:#e0e0e0' class='center'",
+                                                "style='background-color:var(--add-cell-bg, #e0e0e0)' class='center'",
                                             );
                                             if ($Addressing->fields["reserved_ip"] && strstr(
                                                 $line["pname"],
@@ -630,7 +630,7 @@ class Report extends CommonDBTM
                                                     . __('Reserved Address', 'addressing') . "'></i>",
                                                     $item_num,
                                                     $row_num,
-                                                    "style='background-color:#e0e0e0' class='center'",
+                                                    "style='background-color:var(--add-cell-bg, #e0e0e0)' class='center'",
                                                 );
                                             } else {
                                                 $rand = mt_rand();
@@ -651,7 +651,7 @@ class Report extends CommonDBTM
                                                     "$reserv ",
                                                     $item_num,
                                                     $row_num,
-                                                    "style='background-color:#e0e0e0' class='center'",
+                                                    "style='background-color:var(--add-cell-bg, #e0e0e0)' class='center'",
                                                 );
                                                 if (isset($params) && count(
                                                     $params,
@@ -690,7 +690,7 @@ class Report extends CommonDBTM
                                         " ",
                                         $item_num,
                                         $row_num,
-                                        "style='background-color:#e0e0e0' class='center'",
+                                        "style='background-color:var(--add-cell-bg, #e0e0e0)' class='center'",
                                     );
                                 } else {
                                     $current_row[$itemtype . '_' . (++$colnum)] = ['displayname' => ""];
@@ -711,7 +711,7 @@ class Report extends CommonDBTM
                       value="' . htmlspecialchars($comments, ENT_QUOTES, 'UTF-8') . '">',
                                     $item_num,
                                     $row_num,
-                                    "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'",
+                                    "style='background-color:var(--add-cell-bg, #e0e0e0)' class='center' onChange='updateFA$rand()'",
                                 );
                             } else {
                                 $current_row[$itemtype . '_' . (++$colnum)] = ['displayname' => $comments];
@@ -721,7 +721,7 @@ class Report extends CommonDBTM
                                     '<i id="save' . $num . '" class="ti ti-device-floppy center pointer" style="color:forestgreen;font-size: 2em;"></i>',
                                     $item_num,
                                     $row_num,
-                                    "style='background-color:#e0e0e0' class='center' onClick='updateComment$rand()'",
+                                    "style='background-color:var(--add-cell-bg, #e0e0e0)' class='center' onClick='updateComment$rand()'",
                                 );
                                 echo "<script>
 
@@ -857,7 +857,7 @@ class Report extends CommonDBTM
                                 "$reserv ",
                                 $item_num,
                                 $row_num,
-                                "style='background-color:#e0e0e0' class='center'",
+                                "style='background-color:var(--add-cell-bg, #e0e0e0)' class='center'",
                             );
                         } else {
                             $current_row[$itemtype . '_' . (++$colnum)] = ['displayname' => " "];
@@ -879,7 +879,7 @@ class Report extends CommonDBTM
                       value="' . htmlspecialchars($comments, ENT_QUOTES, 'UTF-8') . '">',
                                 $item_num,
                                 $row_num,
-                                "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'",
+                                "style='background-color:var(--add-cell-bg, #e0e0e0)' class='center' onChange='updateFA$rand()'",
                             );
                         } else {
                             $current_row[$itemtype . '_' . (++$colnum)] = ['displayname' => $comments];
@@ -889,7 +889,7 @@ class Report extends CommonDBTM
                                 '<i id="save' . $num . '" class="ti ti-device-floppy center pointer" style="color:forestgreen;font-size: 2em;"></i>',
                                 $item_num,
                                 $row_num,
-                                "style='background-color:#e0e0e0' class='center' onClick='updateComment$rand()'",
+                                "style='background-color:var(--add-cell-bg, #e0e0e0)' class='center' onClick='updateComment$rand()'",
                             );
                             echo "<script>
                               function updateComment$rand() {
@@ -1022,7 +1022,7 @@ class Report extends CommonDBTM
                                                 'addressing',
                                             ) . "\"></i>";
                                         } else {
-                                            $content = "<i class=\"ti ti-square-check\" style='color: darkgreen;font-size: 2em;' title='" . __(
+                                            $content = "<i class=\"ti ti-square-check\" style='color: var(--add-state-ok, darkgreen);font-size: 2em;' title='" . __(
                                                 "Last ping attempt",
                                                 'addressing',
                                             ) . " : "
@@ -1050,7 +1050,7 @@ class Report extends CommonDBTM
                                                 "$content ",
                                                 $item_num,
                                                 $row_num,
-                                                "style='background-color:#e0e0e0' class='center'",
+                                                "style='background-color:var(--add-cell-bg, #e0e0e0)' class='center'",
                                             );
                                         } else {
                                             $current_row[$itemtype . '_' . (++$colnum)] = ['displayname' => $content];
@@ -1061,7 +1061,7 @@ class Report extends CommonDBTM
                                             "$reserv ",
                                             $item_num,
                                             $row_num,
-                                            "style='background-color:#e0e0e0' class='center'",
+                                            "style='background-color:var(--add-cell-bg, #e0e0e0)' class='center'",
                                         );
                                     } else {
                                         $current_row[$itemtype . '_' . (++$colnum)] = ['displayname' => $reserv];
@@ -1080,7 +1080,7 @@ class Report extends CommonDBTM
                                  value="' . htmlspecialchars($comments, ENT_QUOTES, 'UTF-8') . '">',
                                             $item_num,
                                             $row_num,
-                                            "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'",
+                                            "style='background-color:var(--add-cell-bg, #e0e0e0)' class='center' onChange='updateFA$rand()'",
                                         );
                                     } else {
                                         $current_row[$itemtype . '_' . (++$colnum)] = ['displayname' => $comments];
@@ -1090,7 +1090,7 @@ class Report extends CommonDBTM
                                             '<i id="save' . $num . '" class="ti ti-device-floppy center pointer" style="color:forestgreen;font-size: 2em;"></i>',
                                             $item_num,
                                             $row_num,
-                                            "style='background-color:#e0e0e0' class='center' onClick='updateComment$rand()'",
+                                            "style='background-color:var(--add-cell-bg, #e0e0e0)' class='center' onClick='updateComment$rand()'",
                                         );
 
                                         echo "<script>
@@ -1197,7 +1197,7 @@ class Report extends CommonDBTM
                                                 'addressing',
                                             ) . "\"></i>";
                                         } else {
-                                            $content = "<i class=\"ti ti-square-x\" style='color: darkred;font-size: 2em;' title='" . __(
+                                            $content = "<i class=\"ti ti-square-x\" style='color: var(--add-state-ko, darkred);font-size: 2em;' title='" . __(
                                                 "Last ping attempt",
                                                 'addressing',
                                             ) . " : "
@@ -1240,7 +1240,7 @@ class Report extends CommonDBTM
                                                 "$content ",
                                                 $item_num,
                                                 $row_num,
-                                                "style='background-color:#e0e0e0' class='center'",
+                                                "style='background-color:var(--add-cell-bg, #e0e0e0)' class='center'",
                                             );
                                         } else {
                                             $current_row[$itemtype . '_' . (++$colnum)] = ['displayname' => $content];
@@ -1251,7 +1251,7 @@ class Report extends CommonDBTM
                                             "$reserv ",
                                             $item_num,
                                             $row_num,
-                                            "style='background-color:#e0e0e0' class='center'",
+                                            "style='background-color:var(--add-cell-bg, #e0e0e0)' class='center'",
                                         );
                                     } else {
                                         $current_row[$itemtype . '_' . (++$colnum)] = ['displayname' => $reserv];
@@ -1271,7 +1271,7 @@ class Report extends CommonDBTM
                       value="' . htmlspecialchars($comments, ENT_QUOTES, 'UTF-8') . '">',
                                             $item_num,
                                             $row_num,
-                                            "style='background-color:#e0e0e0' class='center' onChange='updateFA$rand()'",
+                                            "style='background-color:var(--add-cell-bg, #e0e0e0)' class='center' onChange='updateFA$rand()'",
                                         );
                                     } else {
                                         $current_row[$itemtype . '_' . (++$colnum)] = ['displayname' => $comments];
@@ -1281,7 +1281,7 @@ class Report extends CommonDBTM
                                             '<i id="save' . $num . '" class="ti ti-device-floppy center pointer" style="color:forestgreen;font-size: 2em;"></i>',
                                             $item_num,
                                             $row_num,
-                                            "style='background-color:#e0e0e0' class='center' onClick='updateComment$rand()'",
+                                            "style='background-color:var(--add-cell-bg, #e0e0e0)' class='center' onClick='updateComment$rand()'",
                                         );
 
                                         echo "<script>

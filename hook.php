@@ -379,12 +379,12 @@ function plugin_addressing_giveItem($type, $ID, $data, $num)
         switch ($table . '.' . $field) {
             case "glpi_plugin_addressing_pinginfos.ping_response":
                 if ($data[$num][0]['name'] == "1") {
-                    $out .= "<i class=\"ti ti-square-check\" style='color: darkgreen;font-size: 2em;'></i><br>" . __(
+                    $out .= "<i class=\"ti ti-square-check\" style='color: var(--add-state-ok, darkgreen);font-size: 2em;'></i><br>" . __(
                         'Last ping OK',
                         'addressing',
                     );
                 } elseif ($data[$num][0]['name'] == "0") {
-                    $out .= "<i class=\"ti ti-square-x\" style='color: darkred;font-size: 2em;'></i><br>" . __(
+                    $out .= "<i class=\"ti ti-square-x\" style='color: var(--add-state-ko, darkred);font-size: 2em;'></i><br>" . __(
                         'Last ping KO',
                         'addressing',
                     );

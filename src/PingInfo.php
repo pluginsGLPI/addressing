@@ -500,7 +500,7 @@ class PingInfo extends CommonDBTM
                     </i><br>" . __("Ping informations not available", 'addressing');
             } else {
                 if ($ping_value == 1) {
-                    $content = "<i class=\"ti ti-square-check\" style='color: darkgreen;font-size: 2em;' title='" . __(
+                    $content = "<i class=\"ti ti-square-check\" style='color: var(--add-state-ok, darkgreen);font-size: 2em;' title='" . __(
                         "Last ping attempt",
                         'addressing',
                     ) . " : "
@@ -513,7 +513,7 @@ class PingInfo extends CommonDBTM
                         substr($ipname, 2),
                     );
                 } else {
-                    $content = "<i class=\"ti ti-square-x\" style='color: darkred;font-size: 2em;' title='" . __(
+                    $content = "<i class=\"ti ti-square-x\" style='color: var(--add-state-ko, darkred);font-size: 2em;' title='" . __(
                         "Last ping attempt",
                         'addressing',
                     ) . " : "
