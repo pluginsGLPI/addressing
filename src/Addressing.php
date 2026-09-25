@@ -975,26 +975,16 @@ class Addressing extends CommonDBTM
     {
         $Report = new Report();
 
-        // Default values of parameters
-        $default_values["start"] = $start = 0;
-        $default_values["id"] = $id = 0;
-        $default_values["export"] = $export = false;
-        $default_values['filter'] = $filter = 0;
-
-        foreach ($default_values as $key => $val) {
-            if (isset($params[$key])) {
-                $$key = $params[$key];
-            }
-        }
-
-        // getFromDB() does not cast its argument, and MySQL coerces a string to a number
-        // when comparing it to an INT column: "1-alert(1)" would match the row with id 1
-        // and then reach the template. Force the integer types here, before any use.
-        // $start is also used in pagination arithmetic, which raises a TypeError in PHP 8
-        // on a non numeric value and lets a negative offset walk outside the stored range.
-        $id    = (int) $id;
-        $start = max(0, (int) $start);
-        $filter = (int) $filter;
+        // Read each parameter explicitly rather than through a variable-variable loop, which
+        // turned any key later added to the defaults into a local controlled by the caller
+        // ($params is $_GET). getFromDB() does not cast its argument, and MySQL coerces a
+        // string to a number when comparing it to an INT column: "1-alert(1)" would match
+        // the row with id 1 and then reach the template. $start is also used in pagination
+        // arithmetic, which raises a TypeError in PHP 8 on a non numeric value and lets a
+        // negative offset walk outside the stored range.
+        $id     = (int) ($params['id'] ?? 0);
+        $start  = max(0, (int) ($params['start'] ?? 0));
+        $filter = (int) ($params['filter'] ?? 0);
 
         if (!$this->getFromDB($id)) {
             TemplateRenderer::getInstance()->display('@addressing/report_invalid.html.twig');

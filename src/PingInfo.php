@@ -278,6 +278,38 @@ class PingInfo extends CommonDBTM
         return _n('IP Addressing', 'IP Addressing', $nb, 'addressing');
     }
 
+    /*
+     * The table has no entities_id, so checkEntity() is a no-op and can() would reduce to the
+     * global plugin_addressing right: the generic front/pingInfo.form.php route of the core
+     * would then read, rewrite or purge the ping results of any entity's ranges. Rows are only
+     * written by the cron, ajax/ping.php and Addressing::cleanDBonPurge(), none of which goes
+     * through can() on this class, so no generic access is granted at all.
+     */
+    public static function canView(): bool
+    {
+        return false;
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
+    public static function canUpdate(): bool
+    {
+        return false;
+    }
+
+    public static function canDelete(): bool
+    {
+        return false;
+    }
+
+    public static function canPurge(): bool
+    {
+        return false;
+    }
+
     /**
      * @param $name
      **/

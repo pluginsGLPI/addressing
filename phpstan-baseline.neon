@@ -37,12 +37,6 @@ parameters:
 			path: src/Addressing.php
 
 		-
-			message: '#^Comparison operation "\>" between 0 and 0 is always false\.$#'
-			identifier: greater.alwaysFalse
-			count: 1
-			path: src/Addressing.php
-
-		-
 			message: '#^Instantiating an object from an unrestricted dynamic string is forbidden \(see https\://github\.com/glpi\-project/phpstan\-glpi\?tab\=readme\-ov\-file\#forbiddynamicinstantiationrule\)\.$#'
 			identifier: glpi.forbidDynamicInstantiation
 			count: 1
@@ -70,12 +64,6 @@ parameters:
 			message: '#^PHPDoc tag @throws with type GlpitestSQLError is not subtype of Throwable$#'
 			identifier: throws.notThrowable
 			count: 1
-			path: src/Addressing.php
-
-		-
-			message: '#^Result of && is always false\.$#'
-			identifier: booleanAnd.alwaysFalse
-			count: 3
 			path: src/Addressing.php
 
 		-

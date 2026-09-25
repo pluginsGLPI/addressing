@@ -476,7 +476,8 @@ function plugin_addressing_addOrderBy($itemtype, $ID, $order, $key)
 {
     if ($itemtype == Addressing::class
         && ($ID == 100 || $ID == 101)) {
-        return "ORDER BY INET_ATON(ITEM_$key) $order";
+        // $key holds the namespaced itemtype: quote the alias as the SELECT does, or the backslashes break the query
+        return "ORDER BY INET_ATON(`ITEM_$key`) $order";
     }
 }
 
