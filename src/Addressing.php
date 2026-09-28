@@ -1065,8 +1065,8 @@ class Addressing extends CommonDBTM
         $ping_off = $params['ping_off'] ?? 1;
         $ping_on  = $params['ping_on'] ?? 1;
 
-        // showSwitchField()/Html::submit()/Html::printPager()/Report::displayReport() are
-        // legacy GLPI/plugin helpers that echo directly; capture their output so it can be
+        // showSwitchField()/Html::submit()/Html::printPager() are legacy GLPI/plugin
+        // helpers that echo directly; capture their output so it can be
         // embedded by the Twig template below instead of leaving raw echo in this method.
         ob_start();
         self::showSwitchField('seeallotedip', $alloted);
@@ -1143,22 +1143,14 @@ class Addressing extends CommonDBTM
 
         $result = array_slice($result, $start, $_SESSION["glpilist_limit"]);
 
-        // Report::displayReport() is a large legacy renderer tightly coupled to GLPI's
-        // SearchEngine/HTMLSearchOutput (it drives HTML/CSV/PDF export for the per-IP
-        // rows). Rewriting it to Twig is out of scope here (see project notes); its
-        // output is captured as-is and embedded by the template.
-        // The signature is displayReport(&$result, $Addressing, $values, $ping_status = []):
-        // the status array used to land in $values, leaving $ping_status empty, so both
-        // switches fell back to "show everything" and the two ping filters of the report were
-        // silently inoperative. The array was built in the wrong order too, index 0 being read
-        // as "ping on".
-        ob_start();
-        $ping_response = $Report->displayReport($result, $this, $params, [$ping_on, $ping_off]);
-        $report_html = ob_get_clean();
+        // The rows of the report, rendered by report_ip_list.html.twig. The status array is
+        // read as [ping on, ping off]; it used to be handed over as the request parameters,
+        // which left both ping filters of the report silently inoperative.
+        $report = $Report->getReportData($result, $this, [$ping_on, $ping_off]);
 
         $total_realfreeip = null;
         if ($this->fields['use_ping']) {
-            $total_realfreeip = $nbipf - $ping_response;
+            $total_realfreeip = $nbipf - $report['ping_response'];
         }
 
         TemplateRenderer::getInstance()->display('@addressing/report.html.twig', [
@@ -1173,6 +1165,7 @@ class Addressing extends CommonDBTM
             'doubles'          => $doubles,
             'use_ping'         => $use_ping,
             'can_scan'         => $can_scan,
+            'ping_url'         => PLUGIN_ADDRESSING_WEBDIR . '/ajax/updatepinginfo.php',
             'form_url'         => Toolbox::getItemTypeFormURL(Addressing::class),
             'switch_alloted'   => $switch_alloted,
             'switch_doubles'   => $switch_doubles,
@@ -1185,7 +1178,7 @@ class Addressing extends CommonDBTM
             'search_button'    => $search_button,
             'close_form'       => $close_form,
             'pager_html'       => $pager_html,
-            'report_html'      => $report_html,
+            'report'           => $report,
             'total_realfreeip' => $total_realfreeip,
         ]);
     }

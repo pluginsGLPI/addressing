@@ -62,6 +62,40 @@
    margin: 10px;
 }
 
+/* Cells and icons of the IP report (templates/report_ip_list.html.twig). */
+.plugin_addressing_cell {
+   background-color: var(--add-cell-bg);
+   text-align: center;
+}
+
+.plugin_addressing_icon {
+   font-size: 2em;
+}
+
+.plugin_addressing_icon_warning {
+   color: orange;
+}
+
+.plugin_addressing_icon_ok {
+   color: var(--add-state-ok);
+}
+
+.plugin_addressing_icon_ko {
+   color: var(--add-state-ko);
+}
+
+.plugin_addressing_icon_reserve {
+   color: #d56f15;
+}
+
+.plugin_addressing_icon_saved {
+   color: forestgreen;
+}
+
+.plugin_addressing_icon_saved.plugin_addressing_icon_unsaved {
+   color: orange;
+}
+
 /*
  * Dark-palette adaptation for the addressing report.
  *

@@ -133,54 +133,6 @@ parameters:
 			path: src/Profile.php
 
 		-
-			message: '#^If condition is always false\.$#'
-			identifier: if.alwaysFalse
-			count: 1
-			path: src/Report.php
-
-		-
-			message: '#^If condition is always true\.$#'
-			identifier: if.alwaysTrue
-			count: 2
-			path: src/Report.php
-
-		-
-			message: '#^Parameter \#1 \$odd of static method GlpiPlugin\\Addressing\\Report\:\:showNewLine\(\) expects bool, int\<0, 1\>\|string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Report.php
-
-		-
-			message: '#^Parameter \#1 \$odd of static method GlpiPlugin\\Addressing\\Report\:\:showNewLine\(\) expects bool, string given\.$#'
-			identifier: argument.type
-			count: 4
-			path: src/Report.php
-
-		-
-			message: '#^Right side of && is always true\.$#'
-			identifier: booleanAnd.rightAlwaysTrue
-			count: 4
-			path: src/Report.php
-
-		-
-			message: '#^Static method Glpi\\Search\\Output\\HTMLSearchOutput\:\:showEndLine\(\) invoked with 1 parameter, 0 required\.$#'
-			identifier: arguments.count
-			count: 5
-			path: src/Report.php
-
-		-
-			message: '#^Variable \$params in isset\(\) always exists and is not nullable\.$#'
-			identifier: isset.variable
-			count: 7
-			path: src/Report.php
-
-		-
-			message: '#^Variable \$ping_date might not be defined\.$#'
-			identifier: variable.undefined
-			count: 2
-			path: src/Report.php
-
-		-
 			message: '#^PHPDoc tag @return has invalid value \(\)\: Unexpected token "\\n     ", expected type at offset 71 on line 6$#'
 			identifier: phpDoc.parseError
 			count: 1

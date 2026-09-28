@@ -1,0 +1,141 @@
+{#
+ # -------------------------------------------------------------------------
+ # addressing plugin for GLPI
+ # Copyright (C) 2016-2026 by the addressing Development Team.
+ #
+ # https://github.com/pluginsGLPI/addressing
+ # -------------------------------------------------------------------------
+ #
+ # LICENSE
+ #
+ # This file is part of addressing.
+ #
+ # addressing is free software; you can redistribute it and/or modify
+ # it under the terms of the GNU General Public License as published by
+ # the Free Software Foundation; either version 3 of the License, or
+ # (at your option) any later version.
+ #
+ # addressing is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ # GNU General Public License for more details.
+ #
+ # You should have received a copy of the GNU General Public License
+ # along with addressing. If not, see <http://www.gnu.org/licenses/>.
+ # --------------------------------------------------------------------------
+ #}
+
+{# Rows of the IP report, built by Report::getReportData(). The comments are saved and the
+   modals are fed by public/scripts/ip_report.js. #}
+
+{% macro link_cell(cell) %}
+    {% if cell.url is not empty %}
+        <a href="{{ cell.url }}">{{ cell.label }}</a>
+    {% else %}
+        {{ cell.label }}
+    {% endif %}
+{% endmacro %}
+
+<div class="text-center">
+    <table class="table card-table table-hover"
+           data-addressing-report
+           data-addressing-id="{{ addressing_id }}"
+           data-addressing-comment-url="{{ comment_url }}">
+        <thead>
+            <tr>
+                <th></th>
+                <th>{{ __('IP') }}</th>
+                <th>{{ __('Connected to') }}</th>
+                <th>{{ _n('User', 'Users', 1) }}</th>
+                <th>{{ __('MAC address') }}</th>
+                <th>{{ __('Item type') }}</th>
+                {% if use_ping %}
+                    <th>{{ __('Ping result', 'addressing') }}</th>
+                {% endif %}
+                <th>{{ __('Reservation', 'addressing') }}</th>
+                <th>{{ __('Comments') }}</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+                <tr class="{{ row.class }}">
+                    <td class="center">
+                        {% if row.ping_url is not empty %}
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#addressing_ping_modal"
+                               data-addressing-modal-url="{{ row.ping_url }}">
+                                <i class="ti ti-terminal-2 pointer plugin_addressing_icon_warning"
+                                   title="{{ __('IP ping', 'addressing') }}"></i>
+                            </a>
+                        {% endif %}
+                    </td>
+                    <td>{{ row.ip }}</td>
+                    <td>{{ _self.link_cell(row.device) }}</td>
+                    <td>{{ _self.link_cell(row.user) }}</td>
+                    <td>{{ _self.link_cell(row.mac) }}</td>
+                    <td>{{ row.type }}</td>
+                    {% if use_ping %}
+                        <td class="plugin_addressing_cell">
+                            {% if row.ping_state == 'unknown' %}
+                                <i class="ti ti-question plugin_addressing_icon plugin_addressing_icon_warning"
+                                   title="{{ __('Automatic action has not be launched', 'addressing') }}"></i>
+                            {% elseif row.ping_state == 'ok' %}
+                                <i class="ti ti-square-check plugin_addressing_icon plugin_addressing_icon_ok"
+                                   title="{{ __('Last ping attempt', 'addressing') }} : {{ row.ping_date }}"></i>
+                            {% elseif row.ping_state == 'ko' %}
+                                <i class="ti ti-square-x plugin_addressing_icon plugin_addressing_icon_ko"
+                                   title="{{ __('Last ping attempt', 'addressing') }} : {{ row.ping_date }}"></i>
+                            {% endif %}
+                        </td>
+                    {% endif %}
+                    <td class="plugin_addressing_cell">
+                        {% if row.reservation == 'reserved' %}
+                            <i class="ti ti-clipboard-check plugin_addressing_icon plugin_addressing_icon_reserve"
+                               title="{{ __('Reserved Address', 'addressing') }}"></i>
+                        {% elseif row.reservation_url is not empty %}
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#addressing_reservation_modal"
+                               data-addressing-modal-url="{{ row.reservation_url }}">
+                                <i class="ti ti-clipboard pointer plugin_addressing_icon plugin_addressing_icon_reserve"
+                                   title="{{ __('Reserve IP', 'addressing') }}"></i>
+                            </a>
+                        {% endif %}
+                    </td>
+                    <td class="plugin_addressing_cell">
+                        <input type="text" class="form-control" id="comment{{ row.ipname }}"
+                               value="{{ row.comment }}" aria-label="{{ __('Comments') }}"
+                               data-addressing-comment="{{ row.ipname }}">
+                    </td>
+                    <td class="plugin_addressing_cell">
+                        <button type="button" class="btn btn-link p-0" id="save{{ row.ipname }}"
+                                title="{{ _x('button', 'Save') }}"
+                                data-addressing-save="{{ row.ipname }}">
+                            <i class="ti ti-device-floppy plugin_addressing_icon plugin_addressing_icon_saved"></i>
+                        </button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% for modal in [
+    {id: 'addressing_ping_modal', title: __('IP ping', 'addressing'), reload: false},
+    {id: 'addressing_reservation_modal', title: __('IP reservation', 'addressing'), reload: true},
+] %}
+    {# One modal of each kind for the whole page, instead of one per address: the link that
+       opens it carries the URL loaded in the iframe. #}
+    <div id="{{ modal.id }}" class="modal fade" tabindex="-1" role="dialog"
+         data-addressing-iframe-modal {{ modal.reload ? 'data-addressing-reload-on-close' : '' }}>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <h3 class="modal-title">{{ modal.title }}</h3>
+                </div>
+                <div class="modal-body">
+                    <iframe class="iframe" width="100%" height="400" frameborder="0"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}

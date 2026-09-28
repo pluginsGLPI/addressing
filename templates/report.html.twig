@@ -98,8 +98,10 @@
 
                     <td class='center' colspan='4'>
                         {% if can_scan %}
-                            <button form='' type='submit' id='updatePingInfo'
+                            <button form='' type='button' id='updatePingInfo'
                                     class='submit btn btn-primary me-2 center' name='updatePingInfo'
+                                    data-addressing-launch-ping
+                                    data-addressing-url='{{ ping_url }}'
                                     title='{{ _x('button', 'Manual launch of ping', 'addressing') }}'>
                                 <i class='ti ti-refresh' data-hasqtip='0' aria-hidden='true'></i>&nbsp;
                                 {{ _x('button', 'Manual launch of ping', 'addressing') }}
@@ -126,40 +128,16 @@
         </tr>
     </table>
 
+    {# Html::closeForm() markup, carrying the CSRF token of the form. #}
     {{ close_form|raw }}
 
-    <script type='text/javascript'>
-        $('#updatePingInfo').click(function() {
-            {# Twig auto escaping is HTML contextual and does nothing useful inside a
-               <script> block, so read the identifier from the hidden field of the form
-               above rather than interpolating it here. #}
-            var addressing_id = parseInt($('#filtering_form input[name=id]').val(), 10) || 0;
+    {# The manual launch of the ping and the rows below are handled by public/scripts/ip_report.js. #}
+    <div id='ajax_loader' class="ajax_loader d-none"></div>
 
-            $('#ajax_loader').show();
-            $.ajax({
-                url: '{{ config('root_doc') }}/plugins/addressing/ajax/updatepinginfo.php',
-                type: 'POST',
-                data: {'addressing_id': addressing_id},
-                success: function(response) {
-                    $('#ajax_loader').hide();
-                    if (response == 1) {
-                        document.location.reload();
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.log(xhr);
-                    console.log(status);
-                    console.log(error);
-                }
-            });
-        });
-    </script>
-
-    <div id='ajax_loader' class="ajax_loader hidden"></div>
-
+    {# Html::printPager() markup: the core pager helper only echoes. #}
     {{ pager_html|raw }}
 
-    {{ report_html|raw }}
+    {{ include('@addressing/report_ip_list.html.twig', report) }}
 
     {% if total_realfreeip is not null %}
         <table class='tab_cadre_fixe'>

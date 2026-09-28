@@ -81,6 +81,7 @@ function plugin_init_addressing()
         if (isset($_SESSION['glpiactiveprofile']['interface'])
             && $_SESSION['glpiactiveprofile']['interface'] == 'central') {
             $PLUGIN_HOOKS[Hooks::ADD_CSS]['addressing']        = "addressing.css";
+            $PLUGIN_HOOKS[Hooks::ADD_JAVASCRIPT_MODULE]['addressing'][] = "scripts/ip_report.js";
         }
     }
 }
