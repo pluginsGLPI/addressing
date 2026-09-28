@@ -258,7 +258,7 @@ msgstr "Ip en double"
 #: templates/config.html.twig:109 templates/profile.html.twig:34
 msgctxt "button"
 msgid "Save"
-msgstr "Sauver"
+msgstr "Sauvegarder"
 
 #: templates/reserveip.html.twig:185
 msgid "Status"
