@@ -85,22 +85,33 @@ if (isset($_GET['action']) && $_GET['action'] == 'isName') {
         throw new AccessDeniedHttpException();
     }
     IPNetwork::showIPNetworkProperties($_POST['entities_id']);
-} elseif (isset($_POST['action']) && $_POST['action'] == 'entities_location') {
-    if (!Session::haveAccessToEntity((int) $_POST['entities_id'])) {
+} elseif (isset($_POST['action']) && in_array($_POST['action'], ['entities_location', 'entities_fqdn'], true)) {
+    $entities_id = (int) ($_POST['entities_id'] ?? 0);
+    if (!Session::haveAccessToEntity($entities_id)) {
         throw new AccessDeniedHttpException();
     }
-    echo __('Location');
-    Dropdown::show('Location', ['name'   => "locations_id",
-        'value'  => $_POST["value"],
-        'entity' => $_POST['entities_id']]);
-} elseif (isset($_POST['action']) && $_POST['action'] == 'entities_fqdn') {
-    if (!Session::haveAccessToEntity((int) $_POST['entities_id'])) {
-        throw new AccessDeniedHttpException();
+    $itemtype = $_POST['action'] === 'entities_location' ? Location::class : FQDN::class;
+
+    // The preselected value is posted too: Dropdown::show() prints the label of any id it is
+    // given, so an id taken from another entity disclosed the name of a location or FQDN
+    // outside the perimeter of the caller. Keep it only when that item may be seen.
+    $value = (int) ($_POST['value'] ?? 0);
+    $dropdown = new $itemtype();
+    if (
+        $value > 0
+        && (!$dropdown->getFromDB($value)
+            || !Session::haveAccessToEntity($dropdown->fields['entities_id'], (bool) $dropdown->fields['is_recursive']))
+    ) {
+        $value = 0;
     }
-    echo __('FQDN');
-    Dropdown::show('FQDN', ['name'   => "fqdns_id",
-        'value'  => $_POST["value"],
-        'entity' => $_POST['entities_id']]);
+
+    // Only the input is reloaded: the label stays in the form, outside the updated container.
+    $itemtype::dropdown([
+        'name'   => $itemtype::getForeignKeyField(),
+        'value'  => $value,
+        'entity' => $entities_id,
+        'width'  => '100%',
+    ]);
 } elseif (isset($_GET['action']) && $_GET['action'] == 'ping') {
     Html::popHeader(__s('IP ping', 'addressing'), $_SERVER['PHP_SELF']);
 

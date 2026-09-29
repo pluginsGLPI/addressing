@@ -25,110 +25,37 @@
  # --------------------------------------------------------------------------
  #}
 
-{% import "components/form/fields_macros.html.twig" as fields %}
+{% extends 'generic_show_form.html.twig' %}
+{% import 'components/form/fields_macros.html.twig' as fields %}
 
-{% set field_options = {} %}
+{% block form_fields %}
+    {{ fields.hiddenField('plugin_addressing_addressings_id', params['items_id']) }}
 
-{% set bg = "" %}
-{% if item.isDeleted() %}
-    {% set bg = "asset-deleted" %}
-{% endif %}
-
-<div class="asset {{ bg }}">
-    {% include("components/form/header.html.twig") %}
-
-    {% set rand = random() %}
-    {% set params  = params ?? [] %}
-    {% set target       = params['target'] ?? item.getFormURL() %}
-    {% set withtemplate = params['withtemplate'] ?? "" %}
-    {% set item_type = item.getType() %}
-
-    <div class="card-body d-flex">
-        <div class="col-12 flex-column">
-            <div class="d-flex flex-row flex-wrap flex-xl-nowrap">
-                <div class="row flex-row align-items-start flex-grow-1">
-                    <div class="row flex-row">
-
-                        <input type="hidden" name="plugin_addressing_addressings_id" value="{{ params['items_id']  }}"/>
-
-                        {% if item.isField('name') %}
-                            {{ fields.autoNameField(
-                                "name",
-                                item,
-                                __('Name'),
-                                withtemplate
-                            ) }}
-                        {% endif %}
-
-                        {% if item.isField('entities_id') %}
-                            {{ fields.dropdownField(
-                                "Entity",
-                                "entities_id",
-                                item.fields['entities_id'],
-                                "Entity"|itemtype_name
-                            ) }}
-                        {% endif %}
-
-                        {{ fields.dropdownArrayField(
-                            'type',
-                            config["type"],
-                            params['types'],
-                            __('Type'),
-                            field_options
-                        ) }}
-
-                        {% if item.isField('begin_ip') %}
-                            {{ _self.ipField(
-                                'begin_ip',
-                                item.fields['begin_ip'],
-                                __('First IP', 'addressing'),
-                                {'full_width': true}
-                            ) }}
-                        {% endif %}
-
-                        {% if item.isField('end_ip') %}
-                            {{ _self.ipField(
-                                'end_ip',
-                                item.fields['end_ip'],
-                                __('Last IP', 'addressing'),
-                                {'full_width': true}
-                            ) }}
-                        {% endif %}
-
-                        {# The empty bytes of the last IP are prefilled by public/scripts/forms.js. #}
-
-                        <div class="form-field row align-items-center col-12 col-sm-6 mb-2">
-                            <label class="col-form-label col-xxl-5 text-xxl-end ">
-                                {{ __('Report for the IP Range', 'addressing') }}
-                            </label>
-                            <div class="col-xxl-7 field-container">
-                                <div id='plugaddr_range'>
-                                    {{ item.isNewItem() ? '-' : item.fields['begin_ip'] ~ ' - ' ~ item.fields['end_ip'] }}
-                                </div>
-                            </div>
-                        </div>
-
-                    </div> {# .row #}
-                </div> {# .row #}
-            </div> {# .flex-row #}
-        </div>
-        <div class="col-3 flex-column">
-            <div class="flex-row asset-pictures">
-                {#                {% include("components/form/pictures.html.twig") with {'gallery_type': ''} %} #}
-            </div>
-        </div>
-    </div> {# .card-body #}
-
-    {% include("components/form/buttons.html.twig") %}
-    {#    {% include("components/form/inventory_info.html.twig") %} #}
-
-
-    {% if params['formfooter'] == null %}
-        <div class="card-footer mx-n2 mb-n2 mt-4">
-            {% include("components/form/dates.html.twig") %}
-        </div>
+    {% if item.isField('name') %}
+        {{ fields.autoNameField('name', item, __('Name'), withtemplate, field_options) }}
     {% endif %}
-</div>
+
+    {% if item.isField('entities_id') %}
+        {{ fields.dropdownField('Entity', 'entities_id', item.fields['entities_id'], 'Entity'|itemtype_name, field_options) }}
+    {% endif %}
+
+    {{ fields.dropdownArrayField('type', item.fields['type'], params['types'], __('Type'), field_options) }}
+
+    {% if item.isField('begin_ip') %}
+        {{ _self.ipField('begin_ip', item.fields['begin_ip'], __('First IP', 'addressing'), {'full_width': true}) }}
+    {% endif %}
+
+    {# The empty bytes of the last IP are prefilled by public/scripts/forms.js. #}
+    {% if item.isField('end_ip') %}
+        {{ _self.ipField('end_ip', item.fields['end_ip'], __('Last IP', 'addressing'), {'full_width': true}) }}
+    {% endif %}
+
+    {{ fields.readOnlyField(
+        '',
+        item.isNewItem() ? '-' : item.fields['begin_ip'] ~ ' - ' ~ item.fields['end_ip'],
+        __('Report for the IP Range', 'addressing')
+    ) }}
+{% endblock %}
 
 {% macro ipField(name, value, label = '', options = {}) %}
     {% set field %}

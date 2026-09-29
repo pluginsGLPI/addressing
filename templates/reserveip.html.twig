@@ -25,216 +25,121 @@
  # --------------------------------------------------------------------------
  #}
 
-{% import "components/form/fields_macros.html.twig" as fields %}
+{% extends 'generic_show_form.html.twig' %}
+{% import 'components/form/fields_macros.html.twig' as fields %}
 
-{% set field_options = {} %}
+{% block form_fields %}
+    {% set addressing_url = root_addressing ~ '/ajax/addressing.php' %}
 
-{% set bg = "" %}
-{% if item.isDeleted() %}
-    {% set bg = "asset-deleted" %}
-{% endif %}
+    {# showReservationForm() passes the range under the key "id_addressing"; reading
+       "items_id" left the hidden field empty, so every reservation made from this
+       form was attached to the range 0 instead of the one being browsed. #}
+    {{ fields.hiddenField('plugin_addressing_addressings_id', params['id_addressing']|default(0)) }}
 
-<div class="asset {{ bg }}">
-    {% include("components/form/header.html.twig") %}
-
-    {% set rand_field = rand|default(random()) %}
-    {% set params  = params ?? [] %}
-    {% set target       = params['target'] ?? item.getFormURL() %}
-    {% set withtemplate = params['withtemplate'] ?? "" %}
-    {% set item_type = item.getType() %}
-
-    <br><div class="card-body d-flex">
-        <div class="col-12 flex-column">
-            <div class="d-flex flex-row flex-wrap flex-xl-nowrap">
-                <div class="row flex-row align-items-start flex-grow-1">
-                    <div class="row flex-row">
-                        {# showReservationForm() passes the range under the key "id_addressing"; reading
-                           "items_id" left the hidden field empty, so every reservation made from this
-                           form was attached to the range 0 instead of the one being browsed. #}
-                        <input type="hidden" name="plugin_addressing_addressings_id" value="{{ params['id_addressing']|default(0) }}"/>
-                        {% if ping_state in ['cooldown', 'locked'] %}
-                            <div class='alert alert-info'>
-                                <i class='ti ti-clock'></i>
-                                <span>&nbsp;{{ ping_state == 'cooldown'
-                                    ? __('A ping has just been run for this address, please retry in a few seconds', 'addressing')
-                                    : __('A ping is already running, please retry in a few seconds', 'addressing') }}</span>
-                            </div>
-                        {% elseif ping_state == 'free' %}
-                            <div class='alert alert-success'>
-                                <i class='ti ti-circle-check plugin_addressing_icon_saved'></i>
-                                <span class='plugin_addressing_icon_saved'>&nbsp;{{ __('Ping: no response - free IP', 'addressing') }}</span>
-                            </div>
-                        {% elseif ping_state == 'used' %}
-                            <div class='alert alert-warning'>
-                                <i class='ti ti-alert-triangle plugin_addressing_icon_warning'></i>
-                                <span class='plugin_addressing_icon_warning'>&nbsp;{{ __('Ping: got a response - used IP', 'addressing') }}</span>
-                            </div>
-                        {% endif %}
-
-                        {% if entities_rights is defined and entities_rights == true %}
-                            {% if item.isField('entities_id') %}
-                                {{ fields.dropdownField(
-                                    "Entity",
-                                    "entities_id",
-                                    item.fields['entities_id'],
-                                    "Entity"|itemtype_name,
-                                    {
-                                        rand: rand_field,
-                                    }
-                                ) }}
-                            {% endif %}
-
-                            {% do call('Ajax::updateItemOnSelectEvent', [
-                                'dropdown_entities_id' ~ rand,
-                                'entities_networkip',
-                                config('root_doc') ~ '/plugins/addressing/ajax/addressing.php',
-                                {
-                                    action    : 'entities_networkip',
-                                    entities_id    : '__VALUE__',
-                                }
-                            ]) %}
-
-                            {% do call('Ajax::updateItemOnSelectEvent', [
-                                'dropdown_entities_id' ~ rand,
-                                'entities_location',
-                                config('root_doc') ~ '/plugins/addressing/ajax/addressing.php',
-                                {
-                                    action    : 'entities_location',
-                                    entities_id    : '__VALUE__',
-                                    value    : item.fields['locations_id'],
-                                }
-                            ]) %}
-
-                            {% do call('Ajax::updateItemOnSelectEvent', [
-                                'dropdown_entities_id' ~ rand,
-                                'entities_fqdn',
-                                config('root_doc') ~ '/plugins/addressing/ajax/addressing.php',
-                                {
-                                    action    : 'entities_fqdn',
-                                    entities_id    : '__VALUE__',
-                                    value    : item.fields['fqdns_id'],
-                                }
-                            ]) %}
-                        {% endif %}
-
-                        <div class="form-field row align-items-center col-12 col-sm-6 mb-2">
-                            <label class="col-form-label col-xxl-5 text-xxl-end ">
-                                {{ _n("IP address", "IP addresses", 1) }}
-                            </label>
-                            <div class="col-xxl-7 field-container">
-                                {{  params['ip']  }}
-                                <input type="hidden" name="ip" value="{{ params['ip']  }}"/>
-                            </div>
-                        </div>
-
-                        {{ fields.dropdownArrayField(
-                            'type',
-                            default_type,
-                            params['types'],
-                            __('Type'),
-                        ) }}
-
-
-                        <div class="form-field row align-items-center col-12 col-sm-6 mb-2">
-                            <label class="col-form-label col-xxl-5 text-xxl-end ">
-                                {{ __('Name') }}
-                            </label>
-                            <div class="col-xxl-7 field-container">
-                                <input type="text" name="name_reserveip" id="name_reserveip"
-                                       data-addressing-name-check="{{ root_addressing }}/ajax/addressing.php">
-                            </div>
-                        </div>
-
-                        {# Checked by public/scripts/forms.js when the name changes. #}
-                        <div class="alert alert-warning d-none" id="nameUsedItem">
-                        <i class='ti ti-alert-triangle plugin_addressing_icon plugin_addressing_icon_warning'></i>&nbsp;
-                        {{ __('Name already in use', 'addressing') }}
-                        </div>
-
-                        <div class="alert alert-success d-none" id="nameNotUsedItem">
-                            <i class='ti ti-check plugin_addressing_icon plugin_addressing_icon_saved'></i>&nbsp;
-                            {{ __('Ok you can use this name', 'addressing') }}
-                        </div>
-
-                        {% if item.isField('locations_id') %}
-                            <div id='entities_location' class="form-field row align-items-center col-12 col-sm-6  mb-2">
-                                {{ fields.dropdownField(
-                                    "Location",
-                                    "locations_id",
-                                    item.fields['locations_id'],
-                                    "Location"|itemtype_name,
-                                    {
-                                        'entity': item.fields['entities_id'],
-                                    }
-                                ) }}
-                            </div>
-                        {% endif %}
-
-                        <div class="form-field row align-items-center col-12 col-sm-6 mb-2">
-                            <label class="col-form-label col-xxl-5 text-xxl-end ">
-                                {{ __("Status") }}
-                            </label>
-                            <div class="col-xxl-7 field-container">
-                                {% do call('State::dropdown', [item.fields['entities_id']]) %}
-                            </div>
-                        </div>
-
-
-                        {{ fields.textField('mac', '', __("MAC address")) }}
-
-                        {% if item.isField('fqdns_id') %}
-                        <div id='entities_fqdn' class="form-field row align-items-center col-12 col-sm-6  mb-2">
-                            {{ fields.dropdownField(
-                                "FQDN",
-                                "fqdns_id",
-                                item.fields['fqdns_id'],
-                                "FQDN"|itemtype_name,
-                                {
-                                    'entity': item.fields['entities_id'],
-                                }
-                            ) }}
-                        </div>
-                        {% endif %}
-
-                        <div class="form-field row align-items-center col-12 col-sm-6 mb-2">
-                            <label class="col-form-label col-xxl-5 text-xxl-end ">
-                                {{ __("Network") }}
-                            </label>
-                            <div id='entities_networkip' class="col-xxl-7 field-container">
-                                {% do call('IPNetwork::showIPNetworkProperties', [item.fields['entities_id']]) %}
-                            </div>
-                        </div>
-
-                        {% if item.isField('comment') %}
-                            {{ fields.textareaField(
-                                "comment",
-                                item.fields['comment'],
-                                _n('Comment', 'Comments', 2),
-                                {'full_width': true}
-                            ) }}
-                        {% endif %}
-
-                    </div> {# .row #}
-                </div> {# .row #}
-            </div> {# .flex-row #}
+    {% if ping_state in ['cooldown', 'locked'] %}
+        <div class='alert alert-info'>
+            <i class='ti ti-clock'></i>
+            <span>&nbsp;{{ ping_state == 'cooldown'
+                ? __('A ping has just been run for this address, please retry in a few seconds', 'addressing')
+                : __('A ping is already running, please retry in a few seconds', 'addressing') }}</span>
         </div>
-        <div class="col-3 flex-column">
-            <div class="flex-row asset-pictures">
-                {#                {% include("components/form/pictures.html.twig") with {'gallery_type': ''} %} #}
-            </div>
+    {% elseif ping_state == 'free' %}
+        <div class='alert alert-success'>
+            <i class='ti ti-circle-check plugin_addressing_icon_saved'></i>
+            <span class='plugin_addressing_icon_saved'>&nbsp;{{ __('Ping: no response - free IP', 'addressing') }}</span>
         </div>
-    </div> {# .card-body #}
-
-    {% include("components/form/buttons.html.twig") %}
-    {#    {% include("components/form/inventory_info.html.twig") %} #}
-
-
-    {% if params['formfooter'] == null %}
-        <div class="card-footer mx-n2 mb-n2 mt-4">
-            {% include("components/form/dates.html.twig") %}
+    {% elseif ping_state == 'used' %}
+        <div class='alert alert-warning'>
+            <i class='ti ti-alert-triangle plugin_addressing_icon_warning'></i>
+            <span class='plugin_addressing_icon_warning'>&nbsp;{{ __('Ping: got a response - used IP', 'addressing') }}</span>
         </div>
     {% endif %}
-</div>
+
+    {% if entities_rights and item.isField('entities_id') %}
+        {# The core dropdown reloads the network, location and FQDN fields of the chosen entity. #}
+        {{ fields.dropdownField('Entity', 'entities_id', item.fields['entities_id'], 'Entity'|itemtype_name, field_options|merge({
+            'toupdate': [
+                {
+                    'value_fieldname': 'entities_id',
+                    'to_update': 'entities_networkip',
+                    'url': addressing_url,
+                    'moreparams': {'action': 'entities_networkip'},
+                },
+                {
+                    'value_fieldname': 'entities_id',
+                    'to_update': 'entities_location',
+                    'url': addressing_url,
+                    'moreparams': {'action': 'entities_location', 'value': item.fields['locations_id']},
+                },
+                {
+                    'value_fieldname': 'entities_id',
+                    'to_update': 'entities_fqdn',
+                    'url': addressing_url,
+                    'moreparams': {'action': 'entities_fqdn', 'value': item.fields['fqdns_id']},
+                },
+            ],
+        })) }}
+    {% endif %}
+
+    {{ fields.readOnlyField('', params['ip'], _n('IP address', 'IP addresses', 1)) }}
+    {{ fields.hiddenField('ip', params['ip']) }}
+
+    {{ fields.dropdownArrayField('type', default_type, params['types'], __('Type'), field_options) }}
+
+    {# Checked by public/scripts/forms.js when the name changes. #}
+    {{ fields.textField('name_reserveip', '', __('Name'), {
+        'id': 'name_reserveip',
+        'additional_attributes': {'data-addressing-name-check': addressing_url},
+    }) }}
+
+    <div class="alert alert-warning d-none" id="nameUsedItem">
+        <i class='ti ti-alert-triangle plugin_addressing_icon plugin_addressing_icon_warning'></i>&nbsp;
+        {{ __('Name already in use', 'addressing') }}
+    </div>
+
+    <div class="alert alert-success d-none" id="nameNotUsedItem">
+        <i class='ti ti-check plugin_addressing_icon plugin_addressing_icon_saved'></i>&nbsp;
+        {{ __('Ok you can use this name', 'addressing') }}
+    </div>
+
+    {% if item.isField('locations_id') %}
+        {{ fields.dropdownField('Location', 'locations_id', item.fields['locations_id'], 'Location'|itemtype_name, field_options|merge({
+            'entity': item.fields['entities_id'],
+            'container_id': 'entities_location',
+        })) }}
+    {% endif %}
+
+    {{ fields.dropdownField('State', 'states_id', 0, __('Status'), field_options|merge({
+        'entity': item.fields['entities_id'],
+    })) }}
+
+    {{ fields.textField('mac', '', __('MAC address'), field_options) }}
+
+    {% if item.isField('fqdns_id') %}
+        {{ fields.dropdownField('FQDN', 'fqdns_id', item.fields['fqdns_id'], 'FQDN'|itemtype_name, field_options|merge({
+            'entity': item.fields['entities_id'],
+            'container_id': 'entities_fqdn',
+        })) }}
+    {% endif %}
+
+    {# Same markup as IPNetwork::showIPNetworkProperties(), which ajax/addressing.php returns on an entity change. #}
+    {{ fields.dropdownField('IPNetwork', 'ipnetworks_id', 0, __('Network'), field_options|merge({
+        'entity': item.fields['entities_id'],
+        'container_id': 'entities_networkip',
+        'toupdate': {
+            'value_fieldname': 'ipnetworks_id',
+            'to_update': 'show_ipnetwork_' ~ rand,
+            'url': config('root_doc') ~ '/ajax/dropdownShowIPNetwork.php',
+        },
+        'add_field_html': '<span id="show_ipnetwork_' ~ rand ~ '"></span>',
+    })) }}
+
+    {% if item.isField('comment') %}
+        {{ fields.textareaField('comment', item.fields['comment'], _n('Comment', 'Comments', 2), field_options|merge({
+            'full_width': true,
+        })) }}
+    {% endif %}
+{% endblock %}
 
 {% macro ipField(name, value, label = '', options = {}) %}
     {% set field %}

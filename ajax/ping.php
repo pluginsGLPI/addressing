@@ -113,25 +113,21 @@ if ($result === null) {
 
 $plugin_addressing_pinginfo = new PingInfo();
 
-$id = 0;
-$ping_date = 0;
-if ($ping_value == false || $ping_value == true) {
-    $ping_date = $_SESSION['glpi_currenttime'];
-    if ($pings = $plugin_addressing_pinginfo->find(['itemtype' => $itemtype,
-        'items_id' => $items_id])) {
-        foreach ($pings as $ping) {
-            $id = $ping['id'];
-            $num = "IP" . Report::ip2string($ip);
-            $plugin_addressing_pinginfo->update(['id' => $id,
-                'ping_response' => $ping_value,
-                'ping_date' => $ping_date, 'ipname' => $num]);
-        }
-    } else {
-        $num = "IP" . Report::ip2string($ip);
-        $plugin_addressing_pinginfo->add(['ping_response' => $ping_value,
-            'ping_date' => $ping_date, 'itemtype' => $itemtype,
-            'items_id' => $items_id, 'ipname' => $num]);
+// ping() always answers a boolean in "true" mode, so the result is always recorded.
+$ping_response = $ping_value ? 1 : 0;
+$ping_date     = $_SESSION['glpi_currenttime'];
+$num           = "IP" . Report::ip2string($ip);
+if ($pings = $plugin_addressing_pinginfo->find(['itemtype' => $itemtype,
+    'items_id' => $items_id])) {
+    foreach ($pings as $ping) {
+        $plugin_addressing_pinginfo->update(['id' => $ping['id'],
+            'ping_response' => $ping_response,
+            'ping_date' => $ping_date, 'ipname' => $num]);
     }
+} else {
+    $plugin_addressing_pinginfo->add(['ping_response' => $ping_response,
+        'ping_date' => $ping_date, 'itemtype' => $itemtype,
+        'items_id' => $items_id, 'ipname' => $num]);
 }
 
 // The message carries the output of the probe. Escape it: the response is injected in the page

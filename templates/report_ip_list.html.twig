@@ -118,22 +118,23 @@
     </table>
 </div>
 
+{# The reservation form is a full item form: give it the room of the core item modals. #}
 {% for modal in [
-    {id: 'addressing_ping_modal', title: __('IP ping', 'addressing'), reload: false},
-    {id: 'addressing_reservation_modal', title: __('IP reservation', 'addressing'), reload: true},
+    {id: 'addressing_ping_modal', title: __('IP ping', 'addressing'), reload: false, size: 'modal-lg', height: '400px'},
+    {id: 'addressing_reservation_modal', title: __('IP reservation', 'addressing'), reload: true, size: 'modal-xl', height: '75vh'},
 ] %}
     {# One modal of each kind for the whole page, instead of one per address: the link that
        opens it carries the URL loaded in the iframe. #}
     <div id="{{ modal.id }}" class="modal fade" tabindex="-1" role="dialog"
          data-addressing-iframe-modal {{ modal.reload ? 'data-addressing-reload-on-close' : '' }}>
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog {{ modal.size }}">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     <h3 class="modal-title">{{ modal.title }}</h3>
                 </div>
                 <div class="modal-body">
-                    <iframe class="iframe" width="100%" height="400" frameborder="0"></iframe>
+                    <iframe class="iframe w-100 border-0" style="height: {{ modal.height }}"></iframe>
                 </div>
             </div>
         </div>
