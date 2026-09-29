@@ -65,6 +65,7 @@ class Ping_Equipment extends CommonDBTM
             'empty_value' => Dropdown::EMPTY_VALUE,
             'itemtype'    => $dbu->getItemTypeForTable($obj->getTable()),
             'items_id'    => $items_id,
+            'ping_url'    => PLUGIN_ADDRESSING_WEBDIR . '/ajax/ping.php',
         ]);
     }
 

@@ -52,8 +52,23 @@
                            "items_id" left the hidden field empty, so every reservation made from this
                            form was attached to the range 0 instead of the one being browsed. #}
                         <input type="hidden" name="plugin_addressing_addressings_id" value="{{ params['id_addressing']|default(0) }}"/>
-                        {% if msg %}
-                            <br>{{ msg | raw }}
+                        {% if ping_state in ['cooldown', 'locked'] %}
+                            <div class='alert alert-info'>
+                                <i class='ti ti-clock'></i>
+                                <span>&nbsp;{{ ping_state == 'cooldown'
+                                    ? __('A ping has just been run for this address, please retry in a few seconds', 'addressing')
+                                    : __('A ping is already running, please retry in a few seconds', 'addressing') }}</span>
+                            </div>
+                        {% elseif ping_state == 'free' %}
+                            <div class='alert alert-success'>
+                                <i class='ti ti-circle-check plugin_addressing_icon_saved'></i>
+                                <span class='plugin_addressing_icon_saved'>&nbsp;{{ __('Ping: no response - free IP', 'addressing') }}</span>
+                            </div>
+                        {% elseif ping_state == 'used' %}
+                            <div class='alert alert-warning'>
+                                <i class='ti ti-alert-triangle plugin_addressing_icon_warning'></i>
+                                <span class='plugin_addressing_icon_warning'>&nbsp;{{ __('Ping: got a response - used IP', 'addressing') }}</span>
+                            </div>
                         {% endif %}
 
                         {% if entities_rights is defined and entities_rights == true %}
@@ -125,47 +140,19 @@
                                 {{ __('Name') }}
                             </label>
                             <div class="col-xxl-7 field-container">
-                                <input type="text" name="name_reserveip" id="name_reserveip" onchange="nameIsThere()">
+                                <input type="text" name="name_reserveip" id="name_reserveip"
+                                       data-addressing-name-check="{{ root_addressing }}/ajax/addressing.php">
                             </div>
                         </div>
 
-                        <script type='text/javascript'>
-                            function nameIsThere() {
-                                var root_doc = '{{ root_addressing }}';
-                                var nameElm = $('input[id*="name_reserveip"]');
-                                var typeElm = $('select[name="type"]');
-                                var divNameUsedItemElm = $('div[id="nameUsedItem"]');
-                                var divNameNotUsedItemElm = $('div[id="nameNotUsedItem"]');
-                                $.ajax({
-                                    url: root_doc + "/ajax/addressing.php",
-                                    type: "GET",
-                                    dataType: "json",
-                                    data: {
-                                        action: 'isName',
-                                        name: (nameElm.length != 0) ? nameElm.val() : '0',
-                                        type: (typeElm.length != 0) ? typeElm.val() : '0',
-                                    },
-                                    success: function (json) {
-                                        if (json) {
-                                            divNameUsedItemElm.show();
-                                            divNameNotUsedItemElm.hide();
-                                        } else {
-                                            divNameUsedItemElm.hide();
-                                            divNameNotUsedItemElm.show();
-                                        }
-                                    }
-                                });
-                            }
-
-                        </script>
-
-                        <div class="alert alert-warning" style="display: none;" id="nameUsedItem">
-                        <i class='ti ti-alert-triangle' style='color:orange;font-size: 2em;'></i>&nbsp;
+                        {# Checked by public/scripts/forms.js when the name changes. #}
+                        <div class="alert alert-warning d-none" id="nameUsedItem">
+                        <i class='ti ti-alert-triangle plugin_addressing_icon plugin_addressing_icon_warning'></i>&nbsp;
                         {{ __('Name already in use', 'addressing') }}
                         </div>
 
-                        <div class="alert alert-success" style="display: none;" id="nameNotUsedItem">
-                            <i class='ti ti-check' style='color:forestgreen;font-size: 2em;'></i>&nbsp;
+                        <div class="alert alert-success d-none" id="nameNotUsedItem">
+                            <i class='ti ti-check plugin_addressing_icon plugin_addressing_icon_saved'></i>&nbsp;
                             {{ __('Ok you can use this name', 'addressing') }}
                         </div>
 

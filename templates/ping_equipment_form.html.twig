@@ -25,45 +25,40 @@
  # --------------------------------------------------------------------------
  #}
 
-<table class='tab_cadre_fixe'>
+{# The ping is run by public/scripts/forms.js. #}
+<table class='tab_cadre_fixe' data-addressing-ping-equipment="{{ ping_url }}"
+       data-addressing-itemtype="{{ itemtype }}" data-addressing-items-id="{{ items_id }}">
     <tr class='tab_bg_2 left'>
         <th colspan='3'>{{ __('IP ping', 'addressing') }}</th>
         <th>
-            <i class='btn btn-sm btn-light ti ti-circle-x' onclick='$("#ping_item").hide();'></i>
+            <button type='button' class='btn btn-sm btn-light' title="{{ __('Close') }}"
+                    data-addressing-ping-close="ping_item">
+                <i class='ti ti-circle-x'></i>
+            </button>
         </th>
     </tr>
     {% if list_ip|length > 0 %}
         <tr class='tab_bg_1'>
             <td>{{ __('IP') }} : </td>
             <td colspan='3'>
-                <select style='width:200px' class='form-select' id='ip'>
+                <select class='form-select w-auto d-inline-block' id='ip' data-addressing-ping-ip>
                     <option>{{ empty_value }}</option>
                     {% for ip, label in list_ip %}
                         <option value="{{ ip }}">{{ label }}</option>
                     {% endfor %}
                 </select>
                 &nbsp;<input class='submit btn btn-primary' type='button'
-                              value='{{ __('IP ping', 'addressing') }}' id='ping_ip'>
+                              value='{{ __('IP ping', 'addressing') }}' id='ping_ip' data-addressing-ping-run>
             </td>
         </tr>
         <tr class='tab_bg_1'>
             <td>{{ __('Ping result', 'addressing') }} : </td>
             <td colspan='3'>
-                <div id='ping_response' class='plugin_addressing_ping_equipment'></div>
+                <div id='ping_response' class='plugin_addressing_ping_equipment' data-addressing-ping-output></div>
             </td>
         </tr>
     {% endif %}
 </table>
-
-<script type='text/javascript'>
-    $(document).on('click', '#ping_ip', function(event) {
-        $('#ping_response').load('{{ config('root_doc') }}/plugins/addressing/ajax/ping.php', {
-            'ip': $('#ip').val(),
-            'itemtype': '{{ itemtype|e('js') }}',
-            'items_id': {{ items_id }}
-        });
-    });
-</script>
 
 {% if list_ip|length == 0 %}
     {{ __('No IP for this equipment', 'addressing') }}

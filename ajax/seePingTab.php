@@ -37,24 +37,12 @@ if (strpos($_SERVER['PHP_SELF'], "seePingTab.php")) {
 Session::checkRight("plugin_addressing_use_ping_in_equipment", READ);
 
 if (isset($_POST['action']) && $_POST['action'] == "viewPingform") {
-    echo Html::scriptBlock("$('#ping_item').show();");
-
     // itemtype/items_id are caller-supplied and drive which asset's IP/port data gets
-    // disclosed below. Cast items_id to an int (it is otherwise reflected verbatim into
-    // a JS literal further down the call chain) and let Ping_Equipment::showPingForm()
+    // disclosed below. Cast items_id to an int and let Ping_Equipment::showPingForm()
     // validate the itemtype against a whitelist and check READ on the target item.
     $itemtype = $_POST['itemtype'] ?? '';
     $items_id = (int) ($_POST['items_id'] ?? 0);
 
     $pingE = new Ping_Equipment();
     $pingE->showPingForm($itemtype, $items_id);
-
-    // This legacy tail used to run outside the branch, on every request. $_POST is entirely
-    // caller-controlled and its "toupdate" key drives the jQuery snippet the core generates,
-    // so the endpoint answered a $(...).load("<caller supplied url>") fragment even when no
-    // ping form had been asked for. Ajax::updateItemJsCode() escapes it, so there is no XSS,
-    // but the reflected surface had no functional counterpart outside this branch.
-    $_POST['name'] = "ping_item";
-    $_POST['rand'] = "";
-    Ajax::commonDropdownUpdateItem($_POST);
 }

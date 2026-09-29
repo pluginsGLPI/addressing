@@ -333,7 +333,8 @@ class ReserveIp extends CommonDBTM
         // opening it made the server probe the address even with the ping turned off. Ask the
         // single decision point, as the cron task and the manual scan already do.
         $ping = PingInfo::isRangeScanEnabled($addressing) ? 1 : 0;
-        $msg = "";
+        // State of the ping shown above the form: null when the ping is not used.
+        $ping_state = null;
         if ($ping == 1) {
             // This form is reached by a plain GET and was the only probe path left with neither
             // cooldown nor lock: it ran the blocking command as often as it was asked to, which
@@ -345,33 +346,9 @@ class ReserveIp extends CommonDBTM
                 return (new Ping_Equipment())->ping($system, $ip);
             }, $refusal);
             if ($result === null) {
-                $msg = "<div class='alert alert-info'>";
-                $msg .= "<i class='ti ti-clock'></i>";
-                $msg .= "<span>&nbsp;";
-                $msg .= htmlescape(
-                    $refusal === PingInfo::PROBE_REFUSED_COOLDOWN
-                        ? __(
-                            'A ping has just been run for this address, please retry in a few seconds',
-                            'addressing',
-                        )
-                        : __('A ping is already running, please retry in a few seconds', 'addressing'),
-                );
-                $msg .= "</span>";
-                $msg .= "</div>";
-            } elseif ($result[1]) {
-                $msg = "<div class='alert alert-success'>";
-                $msg .= "<i class='ti ti-circle-check' style='color:forestgreen'></i>";
-                $msg .= "<span style='color:forestgreen'>&nbsp;";
-                $msg .= __('Ping: no response - free IP', 'addressing');
-                $msg .= "</span>";
-                $msg .= "</div>";
+                $ping_state = $refusal === PingInfo::PROBE_REFUSED_COOLDOWN ? 'cooldown' : 'locked';
             } else {
-                $msg = "<div class='alert alert-warning'>";
-                $msg .= "<i class='ti ti-alert-triangle' style='color:orange'></i>";
-                $msg .= "<span style='color:orange'>&nbsp;";
-                $msg .= __('Ping: got a response - used IP', 'addressing');
-                $msg .= "</span>";
-                $msg .= "</div>";
+                $ping_state = $result[1] ? 'free' : 'used';
             }
         }
         $options['types'] = Addressing::dropdownItemtype();
@@ -385,7 +362,7 @@ class ReserveIp extends CommonDBTM
         TemplateRenderer::getInstance()->display('@addressing/reserveip.html.twig', [
             'item' => $this,
             'rand' =>  $rand,
-            'msg' => $msg,
+            'ping_state' => $ping_state,
             'params' => $options,
             'entities_rights' => $entities_rights,
             'root_addressing' => PLUGIN_ADDRESSING_WEBDIR,

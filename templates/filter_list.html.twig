@@ -26,19 +26,22 @@
  #}
 
 {% if canedit %}
+    {# The add and edit forms are loaded here by public/scripts/filter.js. #}
     <div id="viewfilter{{ item_id }}{{ rand }}"></div>
-    <script type='text/javascript'>
-        {{ add_button_script|raw }}
-    </script>
     <div class='center firstbloc'>
-        <a class='submit btn btn-primary me-2' href='javascript:viewAddFilter{{ item_id }}{{ rand }}();'>
+        <button type='button' class='submit btn btn-primary me-2'
+                data-addressing-filter-form="-1"
+                data-addressing-filter-target="viewfilter{{ item_id }}{{ rand }}"
+                data-addressing-filter-url="{{ filter_url }}"
+                data-addressing-filter-range="{{ item_id }}">
             {{ __('Add a filter', 'addressing') }}
-        </a>
+        </button>
     </div>
 {% endif %}
 
 <div class='spaced'>
     {% if canedit and nb %}
+        {# Html::openMassiveActionsForm() and Html::showMassiveActions() markup, built by the core. #}
         {{ massiveactions_top|raw }}
     {% endif %}
 
@@ -49,6 +52,7 @@
             </tr>
             <tr>
                 {% if canedit and nb %}
+                    {# Html::getCheckAllAsCheckbox() markup, built by the core. #}
                     <th width='10'>{{ checkall|raw }}</th>
                 {% endif %}
                 <th class='center b'>{{ __('Name') }}</th>
@@ -61,25 +65,27 @@
             {% for row in rows %}
                 <tr class='tab_bg_1'>
                     {% if canedit %}
-                        <td width='10'>
-                            {{ row.checkbox|raw }}
-                            <script type='text/javascript'>
-                                {{ row.edit_script|raw }}
-                            </script>
-                        </td>
+                        {# Html::getMassiveActionCheckBox() markup, built by the core. #}
+                        <td width='10'>{{ row.checkbox|raw }}</td>
                     {% endif %}
-                    {% set edit_attr = canedit ? ('style="cursor:pointer" onClick="viewEditFilter' ~ row.id ~ rand ~ '();"') : '' %}
-                    <td {{ edit_attr|raw }}>{{ row.name }}</td>
-                    <td {{ edit_attr|raw }}>{{ row.entity_name }}</td>
-                    <td {{ edit_attr|raw }}>{{ row.type_name }}</td>
-                    <td {{ edit_attr|raw }}>{{ row.begin_ip }}</td>
-                    <td {{ edit_attr|raw }}>{{ row.end_ip }}</td>
+                    {% for value in [row.name, row.entity_name, row.type_name, row.begin_ip, row.end_ip] %}
+                        {% if canedit %}
+                            <td class='pointer'
+                                data-addressing-filter-form="{{ row.id }}"
+                                data-addressing-filter-target="viewfilter{{ item_id }}{{ rand }}"
+                                data-addressing-filter-url="{{ filter_url }}"
+                                data-addressing-filter-range="{{ item_id }}">{{ value }}</td>
+                        {% else %}
+                            <td>{{ value }}</td>
+                        {% endif %}
+                    {% endfor %}
                 </tr>
             {% endfor %}
 
             {% if nb %}
                 <tr>
                     {% if canedit and nb %}
+                        {# Html::getCheckAllAsCheckbox() markup, built by the core. #}
                         <th width='10'>{{ checkall|raw }}</th>
                     {% endif %}
                     <th class='center b'>{{ __('Name') }}</th>
@@ -93,6 +99,7 @@
     {% endif %}
 
     {% if canedit and nb %}
+        {# Massive actions of the core, and Html::closeForm() carrying the CSRF token. #}
         {{ massiveactions_bottom|raw }}
         {{ close_form|raw }}
     {% endif %}

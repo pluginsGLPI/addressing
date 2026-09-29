@@ -466,15 +466,6 @@ class Addressing extends CommonDBTM
         return $input;
     }
 
-    /*
-    function linkToExport($ID) {
-
-       echo "<div class='center'>";
-       echo "<a href='./report.form.php?id=".$ID."&export=true'>".__('Export')."</a>";
-       echo "</div>";
-    }*/
-
-
     /**
      * @param       $start
      * @param array $params
@@ -482,229 +473,6 @@ class Addressing extends CommonDBTM
      * @return array
      * @throws \GlpitestSQLError
      */
-    //    function compute($start, $params = [])
-    //    {
-    //        global $DB;
-    //
-    //        $ipdeb = 0;
-    //        $ipfin = 0;
-    //        foreach ($params as $key => $val) {
-    //            if (isset($params[$key])) {
-    //                $$key = $params[$key];
-    //            }
-    //        }
-    //
-    //        if (isset($_GET["export"])) {
-    //            if (isset($start)) {
-    //                $ipdeb += $start;
-    //            }
-    //            if ($ipdeb > $ipfin) {
-    //                $ipdeb = $ipfin;
-    //            }
-    //            if ($ipdeb + $_SESSION["glpilist_limit"] <= $ipfin) {
-    //                $ipfin = $ipdeb + $_SESSION["glpilist_limit"] - 1;
-    //            }
-    //        }
-    //
-    //        $result = [];
-    //        for ($ip = $ipdeb; $ip <= $ipfin; $ip++) {
-    //            $result["IP" . $ip] = [];
-    //        }
-    //
-    //        $criteria = [
-    //            'SELECT' => [
-    //                'port' => ['id', 'mac'],
-    //                'dev' => ['id AS on_device', 'name AS dname', 'users_id'],
-    //                'glpi_ipaddresses' => ['name AS ip'],
-    //                new QueryExpression('INET_ATON(`glpi_ipaddresses`.`name`) AS ipnum'),
-    //                new QueryExpression("'NetworkEquipment' AS itemtype"),
-    //                new QueryExpression("'' AS pname")
-    //            ],
-    //            'FROM' => 'glpi_networkports AS port',
-    //            'LEFT JOIN' => [
-    //                'glpi_networkequipments AS dev' => [
-    //                    'ON' => [
-    //                        'port' => 'items_id',
-    //                        'dev' => 'id',
-    //                        ['AND' => ['port.itemtype' => 'NetworkEquipment']]
-    //                    ]
-    //                ],
-    //                'glpi_networknames' => [
-    //                    'ON' => [
-    //                        'port' => 'id',
-    //                        'glpi_networknames' => 'items_id'
-    //                    ]
-    //                ],
-    //                'glpi_ipaddresses' => [
-    //                    'ON' => [
-    //                        'glpi_ipaddresses' => 'items_id',
-    //                        'glpi_networknames' => 'id'
-    //                    ]
-    //                ],
-    //            ],
-    //            'WHERE' => [
-    //                'glpi_ipaddresses.name' => [['IS NOT', null]],  // IS NOT NULL
-    //                ['glpi_ipaddresses.name' => ['!=', '']],       // != ''
-    //                'glpi_ipaddresses.version' => ['LIKE', 4],
-    //                [
-    //                    'AND' => [
-    //                        new QueryExpression(
-    //                            "INET_ATON(`glpi_ipaddresses`.`name`) BETWEEN " . intval($ipdeb) . " AND " . intval($ipfin)
-    //                        )
-    //                    ]
-    //                ],
-    //                'dev.is_deleted' => 0,
-    //                'dev.is_template' => 0,
-    //            ],
-    //        ];
-    //        $dbu = new DbUtils();
-    //        if (isset($entities) && is_array($entities)) {
-    //            $entitiesStr = implode(',', array_map('intval', $entities));
-    //        } else {
-    //            $entitiesStr = isset($entities) ? $entities : $this->fields['entities_id'];
-    //        }
-    //        $entitiesRestrict = $dbu->getEntitiesRestrictRequest(" AND ", "dev", "entities_id", $entitiesStr);
-    //        $entitiesRestrict = preg_replace('/^ AND /', '', $entitiesRestrict);
-    //        if (!empty($entitiesRestrict)) {
-    //            $criteria['WHERE'][] = new QueryExpression($entitiesRestrict);
-    //        }
-    //        if (isset($type_filter)) {
-    //            $criteria['WHERE'][] = new QueryExpression("glpi_ipaddresses.mainitemtype = '" . $type_filter . "'");
-    //        }
-    //
-    //        if ($this->fields["use_as_filter"] == 1 && $this->fields["networks_id"]) {
-    //            $criteria['WHERE'][] = new QueryExpression("dev.networks_id = " . $this->fields["networks_id"]);
-    //        }
-    //
-    //        //$ntypes = $CFG_GLPI["networkport_types"];
-    //        //foreach ($ntypes as $k => $v) {
-    //        //   if ($v == 'PluginFusioninventoryUnknownDevice') {
-    //        //      unset($ntypes[$k]);
-    //        //   }
-    //        //}
-    //        if (isset($type_filter)) {
-    //            $types = [$type_filter];
-    //        } else {
-    //            $types = self::getTypes(true);
-    //        }
-    //
-    //        $dbu = new DbUtils();
-    //
-    //        foreach ($types as $type) {
-    //            if (!($item = $dbu->getItemForItemtype($type))) {
-    //                continue;
-    //            }
-    //            $itemtable = $dbu->getTableForItemType($type);
-    //
-    //            $select = [
-    //                'port' => ['id', 'items_id', 'name AS pname', 'mac'],
-    //                'dev' => ['name AS dname'],
-    //                'glpi_ipaddresses' => ['name AS ip'],
-    //                new QueryExpression("'" . $type . "' AS itemtype"),
-    //                new QueryExpression("INET_ATON(`glpi_ipaddresses`.`name`) AS ipnum"),
-    //            ];
-    //            if ($type == 'PluginFusioninventoryUnknownDevice'
-    //                || $type == 'Enclosure'
-    //                || $type == 'PDU'
-    //                || $type == 'Cluster'
-    //                || $type == 'Unmanaged') {
-    //                $select[] = new QueryExpression("0 AS users_id");
-    //            } else {
-    //                $select['dev'][] = 'users_id';
-    //            }
-    //
-    //            $criteria = [
-    //                'SELECT' => $select,
-    //                'FROM' => "glpi_networkports AS port",
-    //                'LEFT JOIN' => [
-    //                    "$itemtable AS dev" => [
-    //                        'ON' => [
-    //                            'port' => 'items_id',
-    //                            'dev' => 'id',
-    //                            ['AND' => ['port.itemtype' => $type]],
-    //                        ]
-    //                    ],
-    //                    'glpi_networknames' => [
-    //                        'ON' => [
-    //                            'port' => 'id',
-    //                            'glpi_networknames' => 'items_id',
-    //                        ]
-    //                    ],
-    //                    'glpi_ipaddresses' => [
-    //                        'ON' => [
-    //                            'glpi_ipaddresses' => 'items_id',
-    //                            'glpi_networknames' => 'id',
-    //                        ]
-    //                    ],
-    //                ],
-    //                'WHERE' => [
-    //                    ['glpi_ipaddresses.name' => ['IS NOT', null]],   // IS NOT NULL
-    //                    ['glpi_ipaddresses.name' => ['!=', '']],         // != ''
-    //                    ['glpi_ipaddresses.version' => ['LIKE', 4]],
-    //                    new QueryExpression(
-    //                        "INET_ATON(`glpi_ipaddresses`.`name`) BETWEEN " . intval($ipdeb) . " AND " . intval($ipfin)
-    //                    ),
-    //                ],
-    //                'GROUP' => ['ip', 'port.mac'],
-    //                'ORDER' => ['ipnum']
-    //            ];
-    //
-    //            if (isset($entities) && is_array($entities)) {
-    //                $entitiesStr = implode(',', array_map('intval', $entities));
-    //            } elseif (isset($entities)) {
-    //                $entitiesStr = $entities;
-    //            } else {
-    //                $entitiesStr = $this->fields['entities_id'];
-    //            }
-    //
-    //            $entitiesRestrict = $dbu->getEntitiesRestrictRequest(" AND ", "dev", "entities_id", $entitiesStr);
-    //            $entitiesRestrict = preg_replace('/^ AND /', '', $entitiesRestrict);
-    //            if (!empty($entitiesRestrict)) {
-    //                $criteria['WHERE'][] = new QueryExpression($entitiesRestrict);
-    //            }
-    //
-    //            if (isset($type_filter)) {
-    //                $criteria['WHERE'][] = new QueryExpression("glpi_ipaddresses.mainitemtype = '" . $type_filter . "'");
-    //            }
-    //
-    //            if ($item->maybeDeleted()) {
-    //                $criteria['WHERE']['dev.is_deleted'] = 0;
-    //            }
-    //
-    //            if ($item->maybeTemplate()) {
-    //                $criteria['WHERE']['dev.is_template'] = 0;
-    //            }
-    //
-    //            if ($this->fields["use_as_filter"] == 1 && $this->fields["networks_id"]
-    //                && $DB->fieldExists($type::getTable(), 'networks_id')) {
-    //                $criteria['WHERE']['dev.networks_id'] = $this->fields["networks_id"];
-    //            }
-    //        }
-    //
-    //        $iterator = $DB->request($criteria);
-    //        foreach ($iterator as $row) {
-    //            $result["IP" . $row["ipnum"]][] = $row;
-    //        }
-    //        foreach ($result as $key => $data) {
-    //            if (count($data) > 1) {
-    //                foreach ($data as $keyip => $ip) {
-    //                    if (empty($ip['pname'])) {
-    //                        unset($result[$key][$keyip]);
-    //                    }
-    //                }
-    //            }
-    //        }
-    //        if (isset($type_filter)) {
-    //            foreach ($result as $key => $data) {
-    //                if (empty($data)) {
-    //                    unset($result[$key]);
-    //                }
-    //            }
-    //        }
-    //        return $result;
-    //    }
-
-
     public function compute($start, $params = [])
     {
         global $DB;
@@ -1065,37 +833,6 @@ class Addressing extends CommonDBTM
         $ping_off = $params['ping_off'] ?? 1;
         $ping_on  = $params['ping_on'] ?? 1;
 
-        // showSwitchField()/Html::submit()/Html::printPager() are legacy GLPI/plugin
-        // helpers that echo directly; capture their output so it can be
-        // embedded by the Twig template below instead of leaving raw echo in this method.
-        ob_start();
-        self::showSwitchField('seeallotedip', $alloted);
-        $switch_alloted = ob_get_clean();
-
-        ob_start();
-        self::showSwitchField('seedoubleip', $doubles);
-        $switch_doubles = ob_get_clean();
-
-        ob_start();
-        self::showSwitchField('seereservedip', $reserved);
-        $switch_reserved = ob_get_clean();
-
-        ob_start();
-        self::showSwitchField('seefreeip', $free);
-        $switch_free = ob_get_clean();
-
-        $switch_ping_on  = '';
-        $switch_ping_off = '';
-        if ($use_ping) {
-            ob_start();
-            self::showSwitchField('ping_on', $ping_on);
-            $switch_ping_on = ob_get_clean();
-
-            ob_start();
-            self::showSwitchField('ping_off', $ping_off);
-            $switch_ping_off = ob_get_clean();
-        }
-
         // The three other access points to the filters of a range confront them with the
         // entity perimeter of the session; this one did not, so a filter belonging to another
         // entity was enough to make the selector appear. $params['id'] was also handed over
@@ -1107,19 +844,14 @@ class Addressing extends CommonDBTM
         );
         $filter_dropdown = '';
         if (count($datas) > 0) {
-            ob_start();
-            Filter::dropdownFilters($id, $filter);
-            $filter_dropdown = ob_get_clean();
+            $filter_dropdown = Filter::dropdownFilters($id, $filter);
         }
-
-        ob_start();
-        echo Html::submit(_x('button', 'Search'), ['name' => 'search', 'class' => 'btn btn-primary me-2']);
-        $search_button = ob_get_clean();
 
         // closeForm(false) returns the markup (including the CSRF hidden field) instead
         // of echoing it, so the Twig template can place it inside the form fragment.
         $close_form = Html::closeForm(false);
 
+        // printPager() only echoes, and the pager template of the core has no export selector.
         ob_start();
         Html::printPager(
             $start,
@@ -1167,15 +899,10 @@ class Addressing extends CommonDBTM
             'can_scan'         => $can_scan,
             'ping_url'         => PLUGIN_ADDRESSING_WEBDIR . '/ajax/updatepinginfo.php',
             'form_url'         => Toolbox::getItemTypeFormURL(Addressing::class),
-            'switch_alloted'   => $switch_alloted,
-            'switch_doubles'   => $switch_doubles,
-            'switch_reserved'  => $switch_reserved,
-            'switch_free'      => $switch_free,
-            'switch_ping_on'   => $switch_ping_on,
-            'switch_ping_off'  => $switch_ping_off,
+            'ping_on'          => $ping_on,
+            'ping_off'         => $ping_off,
             'has_filters'      => count($datas) > 0,
             'filter_dropdown'  => $filter_dropdown,
-            'search_button'    => $search_button,
             'close_form'       => $close_form,
             'pager_html'       => $pager_html,
             'report'           => $report,
@@ -1347,43 +1074,6 @@ class Addressing extends CommonDBTM
 
         //      asort($options);
         return $options;
-    }
-
-    /**
-     * @param $name
-     * @param $value
-     */
-    public static function showSwitchField($name, $value)
-    {
-        echo Html::hidden($name, [
-            'id' => $name,
-            'value' => $value,
-        ]);
-        echo Html::scriptBlock(
-            "(function(){
-                             var toggleButton = $('.$name');
-                             toggleButton.click(function() {
-                             if ($(this).hasClass('fa-toggle-on')) {
-                                   toggleButton.removeClass('fa-toggle-on');
-                                   toggleButton.addClass('fa-toggle-off');
-                                   toggleButton.removeClass('enabled');
-                                   toggleButton.addClass('disabled');
-                                   document.getElementById('$name').value = '0';
-                                 } else {
-                                   toggleButton.removeClass('fa-toggle-off');
-                                   toggleButton.addClass('fa-toggle-on');
-                                   toggleButton.removeClass('disabled');
-                                   toggleButton.addClass('enabled');
-                                   document.getElementById('$name').value = '1';
-                                 }
-                             });
-                           })();",
-        );
-        if ($value == 1) {
-            echo "<a class=\"button\"><i class=\"$name fa-fw fas fa-2x fa-toggle-on enabled\"></i></a>";
-        } else {
-            echo "<a class=\"button\"><i class=\"$name fa-fw fas fa-2x fa-toggle-off disabled\"></i></a>";
-        }
     }
 
     public static function getMenuContent()

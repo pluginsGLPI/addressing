@@ -95,43 +95,16 @@
                             ) }}
                         {% endif %}
 
-                        <script type='text/javascript'>
-                            function endip(index) {
-                                if ($('#end_ip' + index).val() == '') {
-                                    if (index == 3) {
-                                        $('#end_ip' + index).val('254');
-                                    } else {
-                                        $('#end_ip' + index).val($('#begin_ip' + index).val());
-                                    }
-                                }
-                            }
-
-                            $(function() {
-                                $("input[name^='end_ip']").focus(function() {
-                                    endip($(this).data('index'));
-                                });
-                            });
-
-                        </script>
+                        {# The empty bytes of the last IP are prefilled by public/scripts/forms.js. #}
 
                         <div class="form-field row align-items-center col-12 col-sm-6 mb-2">
                             <label class="col-form-label col-xxl-5 text-xxl-end ">
                                 {{ __('Report for the IP Range', 'addressing') }}
                             </label>
                             <div class="col-xxl-7 field-container">
-                                <input type="hidden" name="plugaddr_ipdeb" id="plugaddr_ipdeb" value=" {{ item.fields["begin_ip"] }}"/>
-                                <input type="hidden" name="plugaddr_ipfin" id="plugaddr_ipfin" value=" {{ item.fields["end_ip"] }}"/>
-                                <div id='plugaddr_range'>-</div>
-                                {% if not (item.isNewItem()) %}
-                                <script type='text/javascript'>
-                                    $(document).ready(function() {
-                                        var ipdebstr = document.getElementById("plugaddr_ipdeb").value;
-                                        var ipfinstr = document.getElementById("plugaddr_ipfin").value;
-
-                                        document.getElementById("plugaddr_range").innerHTML = "" + ipdebstr + " - " + ipfinstr;
-                                    });
-                                </script>
-                                {% endif %}
+                                <div id='plugaddr_range'>
+                                    {{ item.isNewItem() ? '-' : item.fields['begin_ip'] ~ ' - ' ~ item.fields['end_ip'] }}
+                                </div>
                             </div>
                         </div>
 
@@ -173,19 +146,19 @@
         <div class="row flex-nowrap">
             <div class="col-auto">
                 <input type="text" class="form-control" value="{{ ipexploded[0] }}"
-                       name="{{ name }}0" id="{{ name }}0" data-index="0" size="2" maxlength="3">
+                       name="{{ name }}0" id="{{ name }}0" data-index="0" data-addressing-ip="{{ name }}" size="2" maxlength="3">
             </div>
             <div class="col-auto">
                 <input type="text" class="form-control" value="{{ ipexploded[1] }}"
-                       name="{{ name }}1" id="{{ name }}1" data-index="1" size="2" maxlength="3">
+                       name="{{ name }}1" id="{{ name }}1" data-index="1" data-addressing-ip="{{ name }}" size="2" maxlength="3">
             </div>
             <div class="col-auto">
                 <input type="text" class="form-control" value="{{ ipexploded[2] }}"
-                       name="{{ name }}2" id="{{ name }}2" data-index="2" size="2" maxlength="3" >
+                       name="{{ name }}2" id="{{ name }}2" data-index="2" data-addressing-ip="{{ name }}" size="2" maxlength="3" >
             </div>
             <div class="col-auto">
                 <input type="text" class="form-control" value="{{ ipexploded[3] }}"
-                       name="{{ name }}3" id="{{ name }}3" data-index="3" size="2" maxlength="3">
+                       name="{{ name }}3" id="{{ name }}3" data-index="3" data-addressing-ip="{{ name }}" size="2" maxlength="3">
             </div>
         </div>
     {% endset %}

@@ -25,15 +25,13 @@
  # --------------------------------------------------------------------------
  #}
 
-<div class="spaced">
-    <form method="post" action="{{ 'Profile'|itemtype_form_path }}">
-        {% do profile.displayRightsChoiceMatrix(rights, {'title': title}) %}
-
-        <div class="center">
-            <input type="hidden" name="id" value="{{ id }}">
-            <button type='submit' name='update' class='btn btn-primary'>{{ _x('button', 'Save') }}</button>
-        </div>
-
-        <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
-    </form>
-</div>
+{# Outcome of front/reserveip.form.php, shown in the popup of the reservation. #}
+{% if reserved %}
+    <div class="alert alert-important alert-info d-flex">
+        {{ __("The address has been reserved", "addressing") }}
+    </div>
+{% else %}
+    <div class="alert alert-important alert-danger d-flex">
+        {{ __("The address could not be reserved", "addressing") }}
+    </div>
+{% endif %}

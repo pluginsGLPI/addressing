@@ -29,7 +29,6 @@
 
 namespace GlpiPlugin\Addressing;
 
-use Ajax;
 use CommonDBTM;
 use CronTask;
 use Glpi\Application\View\TemplateRenderer;
@@ -512,63 +511,18 @@ class PingInfo extends CommonDBTM
             $itemtype                   = $item->getType();
             $plugin_addressing_pinginfo = new PingInfo();
 
-            $ping_action = 0;
-            $ping_value  = 0;
-            if ($pings = $plugin_addressing_pinginfo->find(['itemtype' => $itemtype,
-                'items_id' => $items_id])) {
-                foreach ($pings as $ping) {
-                    $ping_value = $ping['ping_response'];
-                    $ping_date  = $ping['ping_date'];
-                    $ipname     = $ping['ipname'];
-                }
-                $ping_action = 1;
-            }
-
-            if ($ping_action == 0) {
-                $content = "<i class=\"ti ti-question\" style='color: orange;font-size: 2em;' title=\"" . __(
-                    "Automatic action has not be launched",
-                    'addressing',
-                ) . "\">
-                    </i><br>" . __("Ping informations not available", 'addressing');
-            } else {
-                if ($ping_value == 1) {
-                    $content = "<i class=\"ti ti-square-check\" style='color: var(--add-state-ok, darkgreen);font-size: 2em;' title='" . __(
-                        "Last ping attempt",
-                        'addressing',
-                    ) . " : "
-                          . Html::convDateTime($ping_date) . "'></i><br>" . __(
-                              "Last ping attempt",
-                              'addressing',
-                          ) . " : "
-                          . Html::convDateTime($ping_date);
-                    $content .= "<br>" . __('IP') . "&nbsp;" . $ip = Report::string2ip(
-                        substr($ipname, 2),
-                    );
-                } else {
-                    $content = "<i class=\"ti ti-square-x\" style='color: var(--add-state-ko, darkred);font-size: 2em;' title='" . __(
-                        "Last ping attempt",
-                        'addressing',
-                    ) . " : "
-                          . Html::convDateTime($ping_date) . "'></i><br>" . __(
-                              "Last ping attempt",
-                              'addressing',
-                          ) . " : "
-                          . Html::convDateTime($ping_date);
-                    $content .= "<br>" . __('IP') . "&nbsp;" . $ip = Report::string2ip(substr(
-                        $ipname,
-                        2,
-                    ));
-                }
-            }
-
-            $rand = mt_rand();
+            // The last known ping of the item, if the automatic action ever reached it.
+            $pings = $plugin_addressing_pinginfo->find(['itemtype' => $itemtype, 'items_id' => $items_id]);
+            $ping  = $pings === [] ? null : end($pings);
 
             TemplateRenderer::getInstance()->display('@addressing/pinginfo.html.twig', [
-                'content' => $content,
-                'items_id' => $items_id,
-                'itemtype' => $itemtype,
-                'rand' => $rand,
-                'root_dir' => PLUGIN_ADDRESSING_WEBDIR,
+                'ping_state' => $ping === null ? 'unknown' : ($ping['ping_response'] == 1 ? 'ok' : 'ko'),
+                'ping_date'  => $ping === null ? '' : Html::convDateTime($ping['ping_date']),
+                'ping_ip'    => $ping === null ? '' : Report::string2ip(substr((string) $ping['ipname'], 2)),
+                'items_id'   => $items_id,
+                'itemtype'   => $itemtype,
+                'rand'       => mt_rand(),
+                'ping_form'  => PLUGIN_ADDRESSING_WEBDIR . '/ajax/seePingTab.php',
             ]);
         }
     }

@@ -42,7 +42,7 @@
                     {{ __('Number of doubles IP', 'addressing') }} {{ nbipd }}<br>
                 {% endif %}
             </td>
-            <td style='padding: 10px;margin: 10px;'>
+            <td class='p-2 m-2'>
                 <table class='netport-legend'>
                     <tr><th colspan='4'>{{ __('Caption') }}</th></tr>
                     <tr>
@@ -76,25 +76,25 @@
             <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
             <tr class='tab_bg_1 center'>
                 <td>{{ __('Assigned IP', 'addressing') }}</td>
-                <td>{{ switch_alloted|raw }}</td>
+                <td>{{ _self.toggle('seeallotedip', alloted) }}</td>
 
                 <td>{{ __('Same IP', 'addressing') }}</td>
-                <td>{{ switch_doubles|raw }}</td>
+                <td>{{ _self.toggle('seedoubleip', doubles) }}</td>
 
                 <td>{{ __('Reserved IP', 'addressing') }}</td>
-                <td>{{ switch_reserved|raw }}</td>
+                <td>{{ _self.toggle('seereservedip', reserved) }}</td>
 
                 <td>{{ __('Free IP', 'addressing') }}</td>
-                <td>{{ switch_free|raw }}</td>
+                <td>{{ _self.toggle('seefreeip', free) }}</td>
             </tr>
 
             {% if use_ping %}
                 <tr class='tab_bg_1 center'>
                     <td>{{ __('Ping: no response - free IP', 'addressing') }}</td>
-                    <td>{{ switch_ping_on|raw }}</td>
+                    <td>{{ _self.toggle('ping_on', ping_on) }}</td>
 
                     <td>{{ __('Ping: got a response - used IP', 'addressing') }}</td>
-                    <td>{{ switch_ping_off|raw }}</td>
+                    <td>{{ _self.toggle('ping_off', ping_off) }}</td>
 
                     <td class='center' colspan='4'>
                         {% if can_scan %}
@@ -118,12 +118,13 @@
             {% if has_filters %}
                 <tr class='tab_bg_1 center'>
                     <td colspan='4'>{{ _n('Filter', 'Filters', 2, 'addressing') }}</td>
+                    {# Dropdown::showFromArray() markup, built by the core. #}
                     <td colspan='4'>{{ filter_dropdown|raw }}</td>
                 </tr>
             {% endif %}
 
             <tr class='tab_bg_1 center'>
-                <td colspan='8'>{{ search_button|raw }}</td>
+                <td colspan='8'><button type='submit' name='search' class='btn btn-primary me-2'>{{ _x('button', 'Search') }}</button></td>
             </tr>
         </tr>
     </table>
@@ -147,3 +148,11 @@
         </table>
     {% endif %}
 </div>
+
+{# Hidden field posted with the filtering form, toggled by public/scripts/ip_report.js. #}
+{% macro toggle(name, value) %}
+    <input type="hidden" name="{{ name }}" id="{{ name }}" value="{{ value == 1 ? 1 : 0 }}">
+    <a class="button" role="button" data-addressing-toggle="{{ name }}">
+        <i class="fa-fw fas fa-2x {{ value == 1 ? 'fa-toggle-on enabled' : 'fa-toggle-off disabled' }}"></i>
+    </a>
+{% endmacro %}

@@ -53,7 +53,16 @@
                                 {{ __('Ping result', 'addressing') }}
                             </label>
                             <div class="col-xxl-9 field-container">
-                                {{ content |raw }}
+                                {% if ping_state == 'unknown' %}
+                                    <i class="ti ti-question plugin_addressing_icon plugin_addressing_icon_warning"
+                                       title="{{ __('Automatic action has not be launched', 'addressing') }}"></i><br>
+                                    {{ __('Ping informations not available', 'addressing') }}
+                                {% else %}
+                                    <i class="ti {{ ping_state == 'ok' ? 'ti-square-check plugin_addressing_icon_ok' : 'ti-square-x plugin_addressing_icon_ko' }} plugin_addressing_icon"
+                                       title="{{ __('Last ping attempt', 'addressing') }} : {{ ping_date }}"></i><br>
+                                    {{ __('Last ping attempt', 'addressing') }} : {{ ping_date }}<br>
+                                    {{ __('IP') }}&nbsp;{{ ping_ip }}
+                                {% endif %}
                             </div>
                         </div>
 
@@ -62,28 +71,19 @@
                                 {{ _x('button','Manual launch of ping','addressing') }}
                             </label>
                             <div class="col-xxl-7 field-container">
-                                <button form="" class="btn btn-primary btn-sm" type="submit"
-                                        onclick='viewPingform{{ items_id }}{{ rand }}();'>
-                                    <i class='ti ti-terminal-2' style='font-size:2em;'
-                                       title=' {{ _x('button','Manual launch of ping','addressing') }}'></i>
+                                {# The ping form is loaded below by public/scripts/forms.js. #}
+                                <button form="" class="btn btn-primary btn-sm" type="button"
+                                        title="{{ _x('button', 'Manual launch of ping', 'addressing') }}"
+                                        data-addressing-ping-form="{{ ping_form }}"
+                                        data-addressing-ping-target="ping_item"
+                                        data-addressing-items-id="{{ items_id }}"
+                                        data-addressing-itemtype="{{ itemtype }}">
+                                    <i class='ti ti-terminal-2 plugin_addressing_icon'></i>
                                 </button>
-                                <script type='text/javascript'>
-                                    function viewPingform{{ items_id }}{{ rand }}() {
-                                        {% do call(['Ajax', 'updateItemJsCode'], [
-                                            'ping_item',
-                                            config('root_doc') ~ '/plugins/addressing/ajax/seePingTab.php',
-                                            {
-                                                action: 'viewPingform',
-                                                items_id: items_id,
-                                                itemtype: itemtype
-                                            }
-                                        ]) %}
-                                    }
-                                </script>
                             </div>
                         </div> {# .row #}
 
-                        <div id='ping_item' class="form-field row align-items-center col-12 col-sm-12 mb-2">
+                        <div id='ping_item' class="d-none form-field row align-items-center col-12 col-sm-12 mb-2">
                         </div>
 
                     </div> {# .row #}

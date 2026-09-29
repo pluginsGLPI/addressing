@@ -29,7 +29,6 @@
 
 namespace GlpiPlugin\Addressing;
 
-use Ajax;
 use CommonDBTM;
 use CommonGLPI;
 use Dropdown;
@@ -175,10 +174,6 @@ class Filter extends CommonDBTM
     public static function showList($item, $options = [])
     {
 
-        // Cast to int at the source: showList() is reached via displayTabContentForItem()
-        // with $_GET, so $item['id'] is attacker-controlled. It is interpolated into a JS
-        // function name emitted inside a <script> block (rendered |raw in the template); an
-        // int cannot carry a </script> breakout or any XSS payload.
         $item_id = (int) ($item['id'] ?? 0);
         $rand          = mt_rand();
         $p['readonly'] = false;
@@ -196,24 +191,6 @@ class Filter extends CommonDBTM
         }
 
         $nb = self::countForItem($item_id);
-
-        // "Add filter" trigger script; item_id is cast to int above so it is safe to
-        // interpolate into the emitted JS function name.
-        $add_button_script = '';
-        if ($canedit) {
-            ob_start();
-            echo "function viewAddFilter" . $item_id . "$rand() {\n";
-            $params = ['action' => 'viewFilter',
-                'items_id'   => $item_id,
-                'id'         => -1];
-            Ajax::updateItemJsCode(
-                "viewfilter" . $item_id . "$rand",
-                "/plugins/addressing/ajax/addressing.php",
-                $params,
-            );
-            echo "};";
-            $add_button_script = ob_get_clean();
-        }
 
         $massiveactions_top    = '';
         $massiveactions_bottom = '';
@@ -254,19 +231,6 @@ class Filter extends CommonDBTM
         foreach ($datas as $filter_item) {
             $checkbox = $canedit ? Html::getMassiveActionCheckBox(__CLASS__, $filter_item['id']) : '';
 
-            ob_start();
-            echo "function viewEditFilter" . $filter_item["id"] . "$rand() {\n";
-            $edit_params = ['action' => 'viewFilter',
-                'items_id'   => $item_id,
-                'id'         => $filter_item['id']];
-            Ajax::updateItemJsCode(
-                "viewfilter" . $item_id . "$rand",
-                "/plugins/addressing/ajax/addressing.php",
-                $edit_params,
-            );
-            echo "};";
-            $edit_script = ob_get_clean();
-
             // name/begin_ip/end_ip are stored as submitted by the user; leave them
             // unescaped here and let the Twig template's auto-escaping handle them
             // (this is what removes the stored XSS that existed in the legacy echo).
@@ -278,7 +242,6 @@ class Filter extends CommonDBTM
                 'begin_ip'    => $filter_item['begin_ip'],
                 'end_ip'      => $filter_item['end_ip'],
                 'checkbox'    => $checkbox,
-                'edit_script' => $edit_script,
             ];
         }
 
@@ -287,7 +250,7 @@ class Filter extends CommonDBTM
             'rand'                  => $rand,
             'canedit'               => $canedit,
             'nb'                    => $nb,
-            'add_button_script'     => $add_button_script,
+            'filter_url'            => PLUGIN_ADDRESSING_WEBDIR . '/ajax/addressing.php',
             'massiveactions_top'    => $massiveactions_top,
             'massiveactions_bottom' => $massiveactions_bottom,
             'checkall'              => $checkall,
@@ -300,6 +263,7 @@ class Filter extends CommonDBTM
      * Dropdown of filters
      * @param  $id
      * @param  $value
+     * @return string
      */
     public static function dropdownFilters($id, $value)
     {
@@ -315,7 +279,7 @@ class Filter extends CommonDBTM
         foreach ($datas as $data) {
             $filters[$data['id']] = $data['name'];
         }
-        Dropdown::showFromArray('filter', $filters, ['value' => $value]);
+        return Dropdown::showFromArray('filter', $filters, ['value' => $value, 'display' => false]);
     }
 
     /**

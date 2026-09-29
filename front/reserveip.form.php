@@ -27,6 +27,7 @@
  * --------------------------------------------------------------------------
  */
 
+use Glpi\Application\View\TemplateRenderer;
 use GlpiPlugin\Addressing\ReserveIp;
 
 $reserveip = new ReserveIp();
@@ -39,14 +40,8 @@ if (isset($_POST['add'])) {
     // every refused attempt from the operator.
     $reserved = $reserveip->reserveip($_POST);
     Html::popHeader(ReserveIp::getTypeName());
-    if ($reserved) {
-        echo "<div class='alert alert-important alert-info d-flex'>";
-        echo __("The address has been reserved", "addressing");
-        echo "</div>";
-    } else {
-        echo "<div class='alert alert-important alert-danger d-flex'>";
-        echo __("The address could not be reserved", "addressing");
-        echo "</div>";
-    }
+    TemplateRenderer::getInstance()->display('@addressing/reserveip_result.html.twig', [
+        'reserved' => $reserved,
+    ]);
     Html::popFooter();
 }

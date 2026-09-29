@@ -25,12 +25,12 @@
  * --------------------------------------------------------------------------
  */
 
-/* global getAjaxCsrfToken */
+import {post} from './common.js';
 
 /**
  * Behaviours of the IP report (templates/report.html.twig and templates/report_ip_list.html.twig):
- * saving the comment of an address, the iframe modals of the ping and of the reservation, and
- * the manual launch of the ping of the range.
+ * the switches of the filtering form, saving the comment of an address, the iframe modals of the
+ * ping and of the reservation, and the manual launch of the ping of the range.
  */
 
 const UNSAVED_CLASS = 'plugin_addressing_icon_unsaved';
@@ -39,18 +39,20 @@ function toggleLoader(visible) {
     document.getElementById('ajax_loader')?.classList.toggle('d-none', !visible);
 }
 
-async function post(url, data) {
-    const body = new FormData();
-    Object.entries(data).forEach(([key, value]) => body.append(key, value));
-
-    return fetch(url, {
-        method: 'POST',
-        body: body,
-        headers: {
-            'X-Glpi-Csrf-Token': getAjaxCsrfToken(),
-            'X-Requested-With': 'XMLHttpRequest',
-        },
-    });
+// Flip a switch of the filtering form and the hidden field posted with it.
+function toggleSwitch(button) {
+    const name = button.getAttribute('data-addressing-toggle');
+    const field = button.closest('form')?.querySelector(`input[name="${CSS.escape(name)}"]`);
+    const icon = button.querySelector('i');
+    if (!field || !icon) {
+        return;
+    }
+    const enabled = field.value !== '1';
+    field.value = enabled ? '1' : '0';
+    icon.classList.toggle('fa-toggle-on', enabled);
+    icon.classList.toggle('enabled', enabled);
+    icon.classList.toggle('fa-toggle-off', !enabled);
+    icon.classList.toggle('disabled', !enabled);
 }
 
 async function saveComment(button) {
@@ -92,6 +94,13 @@ async function launchPing(button) {
 }
 
 document.addEventListener('click', (event) => {
+    const toggle = event.target.closest('[data-addressing-toggle]');
+    if (toggle !== null) {
+        event.preventDefault();
+        toggleSwitch(toggle);
+        return;
+    }
+
     const save = event.target.closest('[data-addressing-save]');
     if (save !== null) {
         saveComment(save);
