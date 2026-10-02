@@ -10,6 +10,7 @@
         "phpunit/phpunit": "^11.5"
     },
     "config": {
+        "autoloader-suffix": "PluginAddressing",
         "optimize-autoloader": true,
         "platform": {
             "php": "8.2.99"
