@@ -53,6 +53,39 @@ class ReserveIp extends CommonDBTM
         return "glpi_plugin_addressing_addressings";
     }
 
+    /*
+     * The class shares the table of the ranges without their guards (validateEntity(),
+     * validateRange(), cleanDBonPurge()): the generic routes of the core (REST API, massive
+     * actions, front/reserveIp.form.php) could otherwise move a range to a foreign entity,
+     * store inverted bounds or purge it leaving its filters and comments behind. It only
+     * serves reserveip() and showReservationForm(), whose callers check Addressing and the
+     * target item themselves, so no generic access is granted at all.
+     */
+    public static function canView(): bool
+    {
+        return false;
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
+    }
+
+    public static function canUpdate(): bool
+    {
+        return false;
+    }
+
+    public static function canDelete(): bool
+    {
+        return false;
+    }
+
+    public static function canPurge(): bool
+    {
+        return false;
+    }
+
     /**
      * @param $ip
      *

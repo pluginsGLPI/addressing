@@ -28,12 +28,15 @@
  */
 
 use Glpi\Application\View\TemplateRenderer;
+use GlpiPlugin\Addressing\Addressing;
 use GlpiPlugin\Addressing\ReserveIp;
 
 $reserveip = new ReserveIp();
 
 if (isset($_POST['add'])) {
-    $reserveip->check(-1, CREATE, $_POST);
+    // ReserveIp grants no generic right of its own: the reservation is an addressing action,
+    // and reserveip() checks the target item (CREATE or UPDATE, entity included) itself.
+    Session::checkRight(Addressing::$rightname, CREATE);
     // reserveip() returns false on each of its refusal paths, four of which are the
     // authorisation and entity boundary checks. Announcing a success regardless let a
     // technician record an address as reserved while it actually stayed free, and hid
