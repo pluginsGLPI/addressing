@@ -4,8 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Xavier CAILLAUD <thetsmr@gmail.com>, 2025
-# DWXXX, 2026
+# Xavier CAILLAUD <thetsmr@gmail.com>, 2026
 # 
 #, fuzzy
 msgid ""
@@ -14,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-06-24 09:26+0200\n"
 "PO-Revision-Date: 2025-09-23 12:17+0000\n"
-"Last-Translator: DWXXX, 2026\n"
+"Last-Translator: Xavier CAILLAUD <thetsmr@gmail.com>, 2026\n"
 "Language-Team: English (United Kingdom) (https://app.transifex.com/pluginsGLPI/teams/73419/en_GB/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -39,8 +38,8 @@ msgstr "Automatic action has not be launched"
 #: templates/addressing.html.twig:228 templates/reserveip.html.twig:222
 msgid "Comment"
 msgid_plural "Comments"
-msgstr[0] "备注"
-msgstr[1] "备注"
+msgstr[0] "Comment"
+msgstr[1] "Comments"
 
 #: templates/addressing.html.twig:267
 msgid "Default fields for reservation"
@@ -78,14 +77,14 @@ msgstr "Generate reports"
 #: src/Profile.php:80
 msgid "IP Addressing"
 msgid_plural "IP Addressing"
-msgstr[0] "IP地址"
-msgstr[1] "IP地址"
+msgstr[0] "IP Addressing"
+msgstr[1] "IP Addressing"
 
 #: templates/reserveip.html.twig:104
 msgid "IP address"
 msgid_plural "IP addresses"
-msgstr[0] "IP地址"
-msgstr[1] "IP地址"
+msgstr[0] "IP address"
+msgstr[1] "IP addresses"
 
 #: ajax/addressing.php:72 src/Ping_Equipment.php:106
 #: src/Ping_Equipment.php:122 src/Report.php:301 src/Report.php:313
@@ -128,7 +127,7 @@ msgstr "Launch ping for each ip report"
 
 #: templates/reserveip.html.twig:193
 msgid "MAC address"
-msgstr "MAC地址"
+msgstr "MAC address"
 
 #: src/Addressing.php:902 src/Addressing.php:906
 #: templates/pinginfo.html.twig:62 templates/pinginfo.html.twig:68
@@ -139,7 +138,7 @@ msgstr "Manual launch of ping"
 #: templates/addressing.html.twig:55 templates/filter.html.twig:58
 #: templates/reserveip.html.twig:122
 msgid "Name"
-msgstr "名称"
+msgstr "Name"
 
 #: templates/reserveip.html.twig:161
 msgid "Name already in use"
@@ -147,7 +146,7 @@ msgstr "Name already in use"
 
 #: templates/reserveip.html.twig:211
 msgid "Network"
-msgstr "网络"
+msgstr "Network"
 
 #: src/Ping_Equipment.php:143
 msgid "No IP for this equipment"
@@ -175,7 +174,7 @@ msgstr "Object's name"
 
 #: templates/reserveip.html.twig:166
 msgid "Ok you can use this name"
-msgstr "好，你可以使用此名称"
+msgstr "Ok you can use this name"
 
 #: src/Addressing.php:112
 msgid "Ping free IP"
@@ -192,7 +191,7 @@ msgstr "Ping result"
 
 #: src/Ping_Equipment.php:158
 msgid "Ping unavailable in cloud mode"
-msgstr "在云模式下Ping不可用"
+msgstr "Ping unavailable in cloud mode"
 
 #: src/Addressing.php:833 src/Addressing.php:894 src/Ping_Equipment.php:327
 #: src/Report.php:938 src/ReserveIp.php:221
@@ -255,11 +254,11 @@ msgstr "Same IP"
 #: templates/config.html.twig:109 templates/profile.html.twig:34
 msgctxt "button"
 msgid "Save"
-msgstr "保存"
+msgstr "Save"
 
 #: templates/reserveip.html.twig:185
 msgid "Status"
-msgstr "状态"
+msgstr "Status"
 
 #: src/Report.php:521 src/Report.php:968
 msgid "Success"
@@ -279,7 +278,7 @@ msgstr "The display of items depends on these criterias"
 
 #: templates/filter.html.twig:76 templates/reserveip.html.twig:116
 msgid "Type"
-msgstr "类型"
+msgstr "Type"
 
 #: templates/addressing.html.twig:210
 msgid "Use Ping"
@@ -287,7 +286,7 @@ msgstr "Use Ping"
 
 #: templates/config.html.twig:75
 msgid "Use Ping on IP ranges"
-msgstr "在IP范围使用Ping"
+msgstr "Use Ping on IP ranges"
 
 #: src/Profile.php:60
 msgid "Use ping on equipment form"
