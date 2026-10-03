@@ -304,7 +304,9 @@ function plugin_addressing_uninstall()
     }
 
     Profile::removeRightsFromSession();
-    CronTask::unregister("addressing");
+    // Deleted by its exact itemtype: CronTask::unregister()'s LIKE pattern does not match the
+    // backslashes of a namespaced itemtype, so the task stayed listed in the automatic actions.
+    $DB->delete('glpi_crontasks', ['itemtype' => PingInfo::class]);
 
     foreach ($tables as $table) {
         $migration->dropTable($table);
