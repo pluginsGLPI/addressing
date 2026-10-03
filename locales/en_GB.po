@@ -38,7 +38,7 @@ msgstr "Automatic action has not be launched"
 #: templates/addressing.html.twig:228 templates/reserveip.html.twig:222
 msgid "Comment"
 msgid_plural "Comments"
-msgstr[0] "备注"
+msgstr[0] "Comment"
 msgstr[1] "Comments"
 
 #: templates/addressing.html.twig:267
@@ -77,13 +77,13 @@ msgstr "Generate reports"
 #: src/Profile.php:80
 msgid "IP Addressing"
 msgid_plural "IP Addressing"
-msgstr[0] "IP地址"
+msgstr[0] "IP Addressing"
 msgstr[1] "IP Addressing"
 
 #: templates/reserveip.html.twig:104
 msgid "IP address"
 msgid_plural "IP addresses"
-msgstr[0] "IP地址"
+msgstr[0] "IP address"
 msgstr[1] "IP addresses"
 
 #: ajax/addressing.php:72 src/Ping_Equipment.php:106
