@@ -44,7 +44,7 @@ class Config extends CommonDBTM
     // generic core paths (legacy REST API, massive actions, data injection) actually
     // enforce. Keeping "plugin_addressing" here would let any technician holding the
     // plugin right rewrite the instance wide settings, ping command included.
-    public static $rightname = "config";
+    public static string $rightname = "config";
 
     public function showForm($ID, $options = [])
     {

@@ -38,7 +38,7 @@ use GlpiPlugin\Addressing\Report;
 
 use function Safe\json_encode;
 
-Session::checkRight('plugin_addressing', UPDATE);
+Session::checkRight(Addressing::$rightname, UPDATE);
 
 header("Content-Type: application/json; charset=UTF-8");
 Html::header_nocache();

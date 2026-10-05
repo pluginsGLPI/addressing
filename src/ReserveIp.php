@@ -41,7 +41,7 @@ use Session;
  */
 class ReserveIp extends CommonDBTM
 {
-    public static $rightname = 'plugin_addressing';
+    public static string $rightname = 'plugin_addressing';
 
     public static function getTypeName($nb = 0)
     {

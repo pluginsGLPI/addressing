@@ -36,7 +36,7 @@ $Addressing = new Addressing();
 // emitted the whole page skeleton -- title carrying the object name, side menu, breadcrumb
 // positioned on the plugin entry -- to callers that were about to be refused. A started
 // output stream also stops the HTTP exception handler from producing a clean 403.
-if (!$Addressing->canView() && !Session::haveRight("config", UPDATE)) {
+if (!$Addressing->canView() && !Session::haveRight(\Config::$rightname, UPDATE)) {
     throw new AccessDeniedHttpException();
 }
 

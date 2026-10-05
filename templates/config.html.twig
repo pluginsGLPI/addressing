@@ -30,10 +30,10 @@
 {% set field_options = {'label_class': 'col-4', 'input_class': 'col-8', 'full_width': false} %}
 
 {# The core header already opens the <form> and the #mainformtable div, and the core
-   buttons template below closes both while emitting the CSRF token, the id field and
-   the Save button. The form declared here was nested inside that one, which browsers
-   drop: the submitted form was therefore the outer one, left open and without a token
-   by a template that included the header but not the buttons. Its action attribute also
+   buttons template below closes both while emitting the id field and the Save button.
+   The form declared here was nested inside that one, which browsers drop: the submitted
+   form was therefore the outer one, left open by a template that included the header
+   but not the buttons. Its action attribute also
    read an {{ action }} variable that showForm() never passed. #}
 {{ include('components/form/header.html.twig') }}
 <div class="card">

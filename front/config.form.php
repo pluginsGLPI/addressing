@@ -34,7 +34,7 @@ use GlpiPlugin\Addressing\Config;
 if (Plugin::isPluginActive("addressing")) {
     $Config = new Config();
 
-    Session::checkRight("config", UPDATE);
+    Session::checkRight(\Config::$rightname, UPDATE);
 
     if (isset($_POST["update"])) {
         $Config->update($_POST);

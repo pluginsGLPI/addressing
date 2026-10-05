@@ -25,8 +25,6 @@
  * --------------------------------------------------------------------------
  */
 
-/* global getAjaxCsrfToken */
-
 /**
  * Helpers shared by the modules of the plugin.
  */
@@ -34,8 +32,8 @@
 /**
  * POST fields to an endpoint of the plugin.
  *
- * CheckCsrfListener rejects a POST without a token, and X-Requested-With routes the request
- * through the AJAX branch, which reads the token from the header.
+ * CheckCsrfListener validates the same-origin headers the browser sends with fetch(), and
+ * X-Requested-With routes the request through the AJAX branch.
  *
  * @param {string}                 url
  * @param {Object<string, string>} data
@@ -50,7 +48,6 @@ export async function post(url, data) {
         method: 'POST',
         body: body,
         headers: {
-            'X-Glpi-Csrf-Token': getAjaxCsrfToken(),
             'X-Requested-With': 'XMLHttpRequest',
         },
     });

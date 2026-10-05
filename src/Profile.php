@@ -40,7 +40,10 @@ use Session;
  */
 class Profile extends \Profile
 {
-    public static $rightname = "profile";
+    public static string $rightname = "profile";
+
+    // Secondary plugin right; the main one is Addressing::$rightname ('plugin_addressing')
+    public const RIGHT_USE_PING_IN_EQUIPMENT = 'plugin_addressing_use_ping_in_equipment';
 
     public static function getAllRights()
     {

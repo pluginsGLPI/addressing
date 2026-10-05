@@ -35,7 +35,7 @@ use GlpiPlugin\Addressing\ReserveIp;
 
 use function Safe\json_encode;
 
-Session::checkRight('plugin_addressing', UPDATE);
+Session::checkRight(Addressing::$rightname, UPDATE);
 
 Html::header_nocache();
 header("Content-Type: text/html; charset=UTF-8");

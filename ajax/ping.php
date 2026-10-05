@@ -38,12 +38,13 @@ use GlpiPlugin\Addressing\Config;
 use GlpiPlugin\Addressing\Ping_Equipment;
 use GlpiPlugin\Addressing\PingInfo;
 use GlpiPlugin\Addressing\Report;
+use GlpiPlugin\Addressing\Profile;
 
 // This endpoint pings a single equipment; the tab offering it is gated by seePingTab.php and
 // by PingInfo::showPingButton() on the dedicated right. Requiring the plugin UPDATE right here
 // instead both denied the feature to the profiles it was granted to and opened it to profiles
 // that were never granted it: use the same right as the two other entry points.
-Session::checkRight('plugin_addressing_use_ping_in_equipment', READ);
+Session::checkRight(Profile::RIGHT_USE_PING_IN_EQUIPMENT, READ);
 
 header("Content-Type: text/html; charset=UTF-8");
 Html::header_nocache();

@@ -50,11 +50,11 @@ use Vlan;
  */
 class Addressing extends CommonDBTM
 {
-    public static $rightname = "plugin_addressing";
+    public static string $rightname = "plugin_addressing";
 
     public static $types = [
         'Computer', 'NetworkEquipment', 'Peripheral', 'Phone', 'Printer', 'Enclosure', 'PDU', 'Cluster'];
-    public $dohistory = true;
+    public bool $dohistory = true;
 
     /**
      * Largest number of addresses an addressing range may span.
@@ -483,7 +483,7 @@ class Addressing extends CommonDBTM
         // whitelist and the $DB handle. Only four keys are actually understood here, and
         // each one is normalised as it enters rather than further down, because $ipdeb
         // and $ipfin are interpolated into a raw QueryExpression and $entities is
-        // concatenated into an SQL fragment by getEntitiesRestrictRequest().
+        // handed to getEntitiesRestrictCriteria().
         $ipdeb = (int) ($params['ipdeb'] ?? 0);
         $ipfin = (int) ($params['ipfin'] ?? 0);
 
@@ -554,14 +554,9 @@ class Addressing extends CommonDBTM
         ];
 
         if ($entities !== null) {
-            $where[] = new QueryExpression($dbu->getEntitiesRestrictRequest("", "dev", "entities_id", $entities));
+            $where[] = $dbu->getEntitiesRestrictCriteria("dev", "entities_id", $entities);
         } else {
-            $where[] = new QueryExpression($dbu->getEntitiesRestrictRequest(
-                "",
-                "dev",
-                "entities_id",
-                $this->fields['entities_id'],
-            ));
+            $where[] = $dbu->getEntitiesRestrictCriteria("dev", "entities_id", $this->fields['entities_id']);
         }
         if ($type_filter !== null) {
             $where['glpi_ipaddresses.mainitemtype'] = $type_filter;
@@ -630,11 +625,9 @@ class Addressing extends CommonDBTM
                 new QueryExpression("INET_ATON(glpi_ipaddresses.name) BETWEEN $ipdeb AND $ipfin"),
             ];
             if ($entities !== null) {
-                $where[] = new QueryExpression($dbu->getEntitiesRestrictRequest("", "dev", "entities_id", $entities));
+                $where[] = $dbu->getEntitiesRestrictCriteria("dev", "entities_id", $entities);
             } else {
-                $where[] = new QueryExpression(
-                    $dbu->getEntitiesRestrictRequest("", "dev", "entities_id", $this->fields['entities_id']),
-                );
+                $where[] = $dbu->getEntitiesRestrictCriteria("dev", "entities_id", $this->fields['entities_id']);
             }
             if ($type_filter !== null) {
                 $where['glpi_ipaddresses.mainitemtype'] = $type_filter;
@@ -847,8 +840,8 @@ class Addressing extends CommonDBTM
             $filter_dropdown = Filter::dropdownFilters($id, $filter);
         }
 
-        // closeForm(false) returns the markup (including the CSRF hidden field) instead
-        // of echoing it, so the Twig template can place it inside the form fragment.
+        // closeForm(false) returns the markup instead of echoing it, so the Twig template
+        // can place it inside the form fragment.
         $close_form = Html::closeForm(false);
 
         // printPager() only echoes, and the pager template of the core has no export selector.
@@ -934,7 +927,7 @@ class Addressing extends CommonDBTM
         $isadmin = static::canUpdate();
         $actions = parent::getSpecificMassiveActions($checkitem);
 
-        if (Session::haveRight('transfer', READ)
+        if (Session::haveRight(\Transfer::$rightname, READ)
             && Session::isMultiEntitiesMode()
             && $isadmin) {
             $actions['GlpiPlugin\Addressing\Addressing' . MassiveAction::CLASS_ACTION_SEPARATOR . 'transfer'] = __(
@@ -1083,13 +1076,13 @@ class Addressing extends CommonDBTM
         $menu['page'] = self::getSearchURL(false);
         $menu['links']['search'] = self::getSearchURL(false);
         $menu['links']['lists'] = "";
-        if (Session::haveRight('plugin_addressing', UPDATE)) {
+        if (Session::haveRight(Addressing::$rightname, UPDATE)) {
             $menu['links']['add'] = self::getFormURL(false);
         }
 
         // front/config.php checks the core config UPDATE right: a profile holding only the
         // plugin UPDATE right was shown a configuration entry that could only answer 403.
-        if (Session::haveRight("config", UPDATE)) {
+        if (Session::haveRight(\Config::$rightname, UPDATE)) {
             //Entry icon in breadcrumb
             $menu['links']['config'] = Config::getSearchURL(false);
             //Link to config page in admin plugins list

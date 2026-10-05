@@ -56,16 +56,16 @@ function plugin_init_addressing()
     );
 
     if (Session::getLoginUserID()) {
-        if (Session::haveRight('plugin_addressing', READ)) {
+        if (Session::haveRight(Addressing::$rightname, READ)) {
             $PLUGIN_HOOKS[Hooks::MENU_TOADD]['addressing'] = ['tools'  => Addressing::class];
         }
 
-        if (Session::haveRight('plugin_addressing', UPDATE)) {
+        if (Session::haveRight(Addressing::$rightname, UPDATE)) {
             $PLUGIN_HOOKS[Hooks::USE_MASSIVE_ACTION]['addressing']   = 1;
         }
 
         // Config page
-        if (Session::haveRight("config", UPDATE)) {
+        if (Session::haveRight(\Config::$rightname, UPDATE)) {
             $PLUGIN_HOOKS[Hooks::CONFIG_PAGE]['addressing']             = 'front/config.php';
         }
 
@@ -99,8 +99,8 @@ function plugin_version_addressing()
         'homepage'       => 'https://github.com/pluginsGLPI/addressing',
         'requirements'   => [
             'glpi' => [
-                'min' => '11.0',
-                'max' => '12.0',
+                'min' => '11.0.99',
+                'max' => '12.0.99',
             ],
         ]];
 }

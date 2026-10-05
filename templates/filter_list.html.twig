@@ -99,7 +99,7 @@
     {% endif %}
 
     {% if canedit and nb %}
-        {# Massive actions of the core, and Html::closeForm() carrying the CSRF token. #}
+        {# Massive actions of the core, and Html::closeForm(). #}
         {{ massiveactions_bottom|raw }}
         {{ close_form|raw }}
     {% endif %}

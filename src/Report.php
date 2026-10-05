@@ -48,7 +48,7 @@ use User;
  */
 class Report extends CommonDBTM
 {
-    public static $rightname = "plugin_addressing";
+    public static string $rightname = "plugin_addressing";
 
     public static function getTypeName($nb = 0)
     {

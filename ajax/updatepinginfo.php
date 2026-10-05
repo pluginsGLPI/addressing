@@ -36,7 +36,7 @@ use Glpi\Exception\Http\AccessDeniedHttpException;
 use GlpiPlugin\Addressing\Addressing;
 use GlpiPlugin\Addressing\PingInfo;
 
-Session::checkRight('plugin_addressing', UPDATE);
+Session::checkRight(Addressing::$rightname, UPDATE);
 header("Content-Type: application/json; charset=UTF-8");
 Html::header_nocache();
 

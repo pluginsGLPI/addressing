@@ -342,7 +342,7 @@ function plugin_addressing_getAddSearchOptions($itemtype)
     $sopt = [];
 
     if (in_array($itemtype, Addressing::getTypes(true))) {
-        if (Session::haveRight("plugin_addressing", READ)) {
+        if (Session::haveRight(Addressing::$rightname, READ)) {
             $sopt[5000]['table']         = 'glpi_plugin_addressing_pinginfos';
             $sopt[5000]['field']         = 'ping_response';
             $sopt[5000]['name']          = __('Ping result', 'addressing');

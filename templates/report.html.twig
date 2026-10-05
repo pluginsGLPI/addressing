@@ -73,7 +73,6 @@
     <table class='tab_cadre_fixe'>
         <tr class='tab_bg_2 center'>
             <input type="hidden" name="id" value="{{ id }}">
-            <input type="hidden" name="_glpi_csrf_token" value="{{ csrf_token() }}">
             <tr class='tab_bg_1 center'>
                 <td>{{ __('Assigned IP', 'addressing') }}</td>
                 <td>{{ _self.toggle('seeallotedip', alloted) }}</td>
@@ -129,7 +128,7 @@
         </tr>
     </table>
 
-    {# Html::closeForm() markup, carrying the CSRF token of the form. #}
+    {# Html::closeForm() markup, closing the form. #}
     {{ close_form|raw }}
 
     {# The manual launch of the ping and the rows below are handled by public/scripts/ip_report.js. #}

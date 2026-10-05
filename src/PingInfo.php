@@ -42,7 +42,7 @@ use Session;
  */
 class PingInfo extends CommonDBTM
 {
-    public static $rightname = "plugin_addressing";
+    public static string $rightname = "plugin_addressing";
 
     /**
      * Largest number of ICMP probes a single ping run may send for one range.
@@ -502,7 +502,7 @@ class PingInfo extends CommonDBTM
     public static function getPingResponseForItem($params)
     {
 
-        $ping_right = Session::haveRight('plugin_addressing_use_ping_in_equipment', READ);
+        $ping_right = Session::haveRight(Profile::RIGHT_USE_PING_IN_EQUIPMENT, READ);
         $item       = $params['item'];
 
         if ($ping_right

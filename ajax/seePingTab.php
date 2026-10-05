@@ -28,13 +28,14 @@
  */
 
 use GlpiPlugin\Addressing\Ping_Equipment;
+use GlpiPlugin\Addressing\Profile;
 
 if (strpos($_SERVER['PHP_SELF'], "seePingTab.php")) {
     header("Content-Type: text/html; charset=UTF-8");
     Html::header_nocache();
 }
 
-Session::checkRight("plugin_addressing_use_ping_in_equipment", READ);
+Session::checkRight(Profile::RIGHT_USE_PING_IN_EQUIPMENT, READ);
 
 if (isset($_POST['action']) && $_POST['action'] == "viewPingform") {
     // itemtype/items_id are caller-supplied and drive which asset's IP/port data gets

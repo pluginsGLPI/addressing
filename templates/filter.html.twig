@@ -29,7 +29,7 @@
 {% import 'components/form/fields_macros.html.twig' as fields %}
 
 {% block form_fields %}
-    {{ fields.hiddenField('plugin_addressing_addressings_id', params['items_id']) }}
+    {{ fields.hiddenField('plugin_addressing_addressings_id', params['items_id'] ?? item.fields['plugin_addressing_addressings_id']) }}
 
     {% if item.isField('name') %}
         {{ fields.autoNameField('name', item, __('Name'), withtemplate, field_options) }}

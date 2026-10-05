@@ -42,7 +42,7 @@ use Session;
  */
 class Filter extends CommonDBTM
 {
-    public static $rightname = "plugin_addressing";
+    public static string $rightname = "plugin_addressing";
 
     public static function getTypeName($nb = 0)
     {
@@ -212,8 +212,8 @@ class Filter extends CommonDBTM
             Html::showMassiveActions($massiveactionparams);
             $massiveactions_bottom = ob_get_clean();
 
-            // closeForm(false) returns the markup (including the CSRF hidden field)
-            // instead of echoing it, so it can be placed by the Twig template.
+            // closeForm(false) returns the markup instead of echoing it, so it can be
+            // placed by the Twig template.
             $close_form = Html::closeForm(false);
         }
 
