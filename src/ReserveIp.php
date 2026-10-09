@@ -352,7 +352,11 @@ class ReserveIp extends CommonDBTM
         $addressing->getFromDB($id_addressing);
 
         $this->forceTable(Addressing::getTable());
-        $this->initForm(-1);
+        // Only the empty fields are needed. initForm(-1) runs check(-1, CREATE), which always
+        // fails since canCreate() returns false on purpose (see above): the modal was refused
+        // to every user. The callers enforce the rights (ajax/addressing.php: UPDATE on the
+        // plugin, READ on the range and the IP inside it; reserveip() on submission).
+        $this->getEmpty();
         $options['colspan'] = 2;
         $options['no_header'] = true;
         $options['id_addressing'] = $id_addressing;
