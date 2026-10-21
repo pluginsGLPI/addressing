@@ -359,6 +359,10 @@ class ReserveIp extends CommonDBTM
         $this->getEmpty();
         $options['colspan'] = 2;
         $options['no_header'] = true;
+        // canEdit() is false on purpose too, and the form header only opens the <form> tag when
+        // canedit holds: the "Add" button was left outside any form and did nothing. Rendering
+        // only, the rights are enforced on submission (front/reserveip.form.php, reserveip()).
+        $options['canedit'] = true;
         $options['id_addressing'] = $id_addressing;
         $options['ip'] = $ip;
 
