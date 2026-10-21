@@ -1,15 +1,16 @@
 {
     "require": {
-        "php": ">=8.2"
+        "php": ">=8.3"
     },
     "require-dev": {
         "glpi-project/tools": "^0.8"
     },
     "config": {
+        "platform-check": false,
         "autoloader-suffix": "PluginAddressing",
         "optimize-autoloader": true,
         "platform": {
-            "php": "8.2.99"
+            "php": "8.3.99"
         },
         "sort-packages": true
     },
