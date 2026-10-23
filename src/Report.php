@@ -40,7 +40,6 @@ use Html;
 use NetworkEquipment;
 use NetworkPort;
 use Search;
-use Toolbox;
 use User;
 
 /**
@@ -198,9 +197,11 @@ class Report extends CommonDBTM
                         if (empty($line['dname']) || $_SESSION['glpiis_ids_visible']) {
                             $label .= ' (' . $line['on_device'] . ')';
                         }
+                        // getFormURLWithID() rather than the URL derived from the class name: the
+                        // form of a custom asset is front/asset/asset.form.php?class=... (#127)
                         $row['device'] = self::newCell(
                             $label,
-                            Toolbox::getItemTypeFormURL($line['itemtype']) . '?id=' . (int) $line['on_device'],
+                            $item::getFormURLWithID((int) $line['on_device']),
                         );
                     } else {
                         $row['device'] = self::newCell(__('Restricted access', 'addressing'));
