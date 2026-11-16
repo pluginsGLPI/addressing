@@ -97,6 +97,9 @@ function plugin_version_addressing()
         'author'         => 'Gilles Portheault, Xavier Caillaud, Remi Collet, Nelly Mahu-Lasson',
         'license'        => 'GPLv3+',
         'homepage'       => 'https://github.com/pluginsGLPI/addressing',
+        // No inline event handler, javascript: URL nor script without nonce: the plugin works
+        // under the Content Security Policy of GLPI
+        'csp_compliant'  => true,
         'requirements'   => [
             'glpi' => [
                 'min' => '11.0',

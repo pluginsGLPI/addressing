@@ -71,6 +71,12 @@ export function replaceContent(container, html) {
         Array.from(original.attributes).forEach((attribute) => {
             script.setAttribute(attribute.name, attribute.value);
         });
+        // Content Security Policy: the browser empties the nonce attribute of an inserted script
+        // and only keeps it in the nonce property, so the copied attribute is blank
+        const nonce = original.nonce || window.CFG_GLPI?.csp_nonce;
+        if (nonce) {
+            script.nonce = nonce;
+        }
         script.textContent = original.textContent;
         original.replaceWith(script);
     });
